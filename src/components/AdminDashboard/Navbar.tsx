@@ -12,7 +12,7 @@ function Navbar() {
   const [showMenuLinks, setShowMenuLinks] = useState<boolean>(false);
 
   return (
-    <div className="relative px-6 py-8 h-30 bg-white col-span-full flex items-center justify-between border-b-2 border-neutral-100 ">
+    <nav className="relative px-6 py-8 h-12 md:h-[8vh] bg-white col-span-full flex items-center justify-between border-b-2 border-neutral-100 ">
       <Link
         href="/"
         className="text-md sm:text-xl md:text-2xl font-bold text-cyan-400 "
@@ -42,7 +42,7 @@ function Navbar() {
         </li>
       </ul>
       <Image
-        onClick={() => setShowMenuLinks(true)}
+        onClick={() => setShowMenuLinks((show) => !show)}
         className="cursor-pointer md:hidden"
         src="/menu.png"
         alt="menu"
@@ -50,8 +50,10 @@ function Navbar() {
         height={42}
       />
 
-      {showMenuLinks && <ResponsiveMenuLinks />}
-    </div>
+      {showMenuLinks && (
+        <ResponsiveMenuLinks setShowMenuLinks={setShowMenuLinks} />
+      )}
+    </nav>
   );
 }
 

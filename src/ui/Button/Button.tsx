@@ -2,10 +2,11 @@ import styles from "./Button.module.scss";
 
 import { ButtonProps } from "@/types/types";
 
-function Button({ variation, children, icon }: ButtonProps) {
+function Button({ variation, children, icon, width, onClick }: ButtonProps) {
   return (
     <button
-      style={{ backgroundColor: variation }}
+      onClick={onClick}
+      style={{ backgroundColor: variation, width: width }}
       className={`${styles.btn}  `}
     >
       <span>{children}</span>

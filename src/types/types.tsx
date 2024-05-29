@@ -7,5 +7,7 @@ export interface InputProps {
 export interface ButtonProps {
   children: React.ReactNode;
   variation: string;
+  width: string;
   icon?: React.ReactNode;
+  onClick?: () => void;
 }

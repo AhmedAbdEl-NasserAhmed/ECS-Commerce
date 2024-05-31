@@ -1,37 +1,47 @@
 import { TextField } from "@mui/material";
 
 interface CustomizedTextFieldProps {
-  name: string;
   type: string;
   width: string;
   label: string;
   variant: "filled" | "outlined" | "standard";
   size: "small" | "medium";
+  field: object;
   inputProps?: object;
   borderColor?: string;
+  error?: boolean;
+  helperText?: string;
 }
 
 function CustomizedTextField({
   borderColor = "rgb(6 182 212)",
-  name,
   type,
   width,
   label,
   variant,
   size,
   inputProps,
+  error,
+  helperText,
+  field,
 }: CustomizedTextFieldProps) {
   return (
     <TextField
-      name={name}
+      {...field}
+      error={error}
+      helperText={helperText}
       type={type}
       label={label}
       variant={variant}
       size={size}
       InputProps={inputProps}
+      FormHelperTextProps={{ style: { fontSize: "1.2rem" } }}
       sx={{
+        helperText: {
+          fontSize: "4rem",
+        },
         input: {
-          fontSize: "1.3rem",
+          fontSize: "1.4rem",
         },
 
         "& .MuiOutlinedInput-root": {

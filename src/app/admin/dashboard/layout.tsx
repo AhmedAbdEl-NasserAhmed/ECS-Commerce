@@ -8,9 +8,9 @@ interface Props {
 
 function AdminPage({ children }: Props) {
   return (
-    <div className="bg-gradient-to-r from-mainColor to-cyan-500 min-h-screen px-12 py-12 ">
+    <div className="bg-gradient-to-r from-mainColor to-cyan-500  h-[100vh] px-3 py-3  ">
       <div
-        className={`${styles.container} bg-white h-[90vh] w-[94%] m-auto rounded-xl overflow-hidden shadow-lg`}
+        className={`${styles.container} bg-white rounded-lg overflow-hidden h-full shadow-lg`}
       >
         <Navbar />
         <Links />

@@ -12,7 +12,7 @@ function Navbar() {
   const [showMenuLinks, setShowMenuLinks] = useState<boolean>(false);
 
   return (
-    <nav className="relative px-6 py-8 h-12 md:h-[8vh] bg-white col-span-full flex items-center justify-between border-b-2 border-neutral-100 ">
+    <nav className="relative px-6 py-8 h-[8vh]  bg-white col-span-full flex items-center justify-between border-b-2 border-neutral-100 ">
       <Link
         href="/"
         className="text-md sm:text-xl md:text-2xl font-bold text-cyan-400 "

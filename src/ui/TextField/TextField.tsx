@@ -1,17 +1,5 @@
+import { CustomizedTextFieldProps } from "@/types/types";
 import { TextField } from "@mui/material";
-
-interface CustomizedTextFieldProps {
-  type: string;
-  width: string;
-  label: string;
-  variant: "filled" | "outlined" | "standard";
-  size: "small" | "medium";
-  field: object;
-  inputProps?: object;
-  borderColor?: string;
-  error?: boolean;
-  helperText?: string;
-}
 
 function CustomizedTextField({
   borderColor = "rgb(6 182 212)",
@@ -35,7 +23,7 @@ function CustomizedTextField({
       variant={variant}
       size={size}
       InputProps={inputProps}
-      FormHelperTextProps={{ style: { fontSize: "1.2rem" } }}
+      FormHelperTextProps={{ style: { fontSize: "1rem" } }}
       sx={{
         helperText: {
           fontSize: "4rem",

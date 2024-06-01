@@ -14,9 +14,7 @@ function AdminPage({ children }: Props) {
       >
         <Navbar />
         <Links />
-        <div className="bg-red-400 text-white col-span-full md:col-auto ">
-          {children}
-        </div>
+        <div className="col-span-full md:col-auto ">{children}</div>
       </div>
     </div>
   );

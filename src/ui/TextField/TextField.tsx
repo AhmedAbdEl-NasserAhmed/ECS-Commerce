@@ -2,9 +2,7 @@ import { CustomizedTextFieldProps } from "@/types/types";
 import { TextField } from "@mui/material";
 
 function CustomizedTextField({
-  borderColor = "rgb(6 182 212)",
   type,
-  width,
   label,
   variant,
   size,
@@ -12,45 +10,39 @@ function CustomizedTextField({
   error,
   helperText,
   field,
+  sx,
+  inputLabelProps,
+  formerHelperStyles,
+  className,
 }: CustomizedTextFieldProps) {
-  return (
-    <TextField
-      {...field}
-      error={error}
-      helperText={helperText}
-      type={type}
-      label={label}
-      variant={variant}
-      size={size}
-      InputProps={inputProps}
-      FormHelperTextProps={{ style: { fontSize: "1rem" } }}
-      sx={{
-        helperText: {
-          fontSize: "4rem",
-        },
-        input: {
-          fontSize: "1.4rem",
-        },
-
-        "& .MuiOutlinedInput-root": {
-          "& fieldset": {
-            borderColor,
-            borderRadius: "5px",
-            borderWidth: "2px",
-          },
-
-          "&:hover fieldset": {
-            borderColor,
-          },
-
-          "&.Mui-focused fieldset": {
-            borderColor,
-          },
-        },
-        width: width,
-      }}
-    />
-  );
+  if (field) {
+    return (
+      <TextField
+        {...field}
+        error={error}
+        className={className}
+        helperText={helperText}
+        type={type}
+        label={label}
+        variant={variant}
+        size={size}
+        InputProps={inputProps}
+        FormHelperTextProps={formerHelperStyles}
+        sx={sx}
+      />
+    );
+  } else {
+    return (
+      <TextField
+        sx={sx}
+        InputLabelProps={inputLabelProps}
+        size={size}
+        label={label}
+        variant={variant}
+        InputProps={inputProps}
+      />
+    );
+  }
 }
 
 export default CustomizedTextField;

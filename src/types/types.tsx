@@ -1,13 +1,25 @@
-export interface InputProps {
-  type: string;
-  placeholder?: string;
-  extraPlaceholder?: string;
+export interface LoginFormData {
+  loginEmail: string;
+  loginPassword: string;
 }
 
-export interface ButtonProps {
-  children: React.ReactNode;
-  variation: string;
+export interface CustomizedTextFieldProps {
+  type: string;
   width: string;
-  icon?: React.ReactNode;
-  onClick?: () => void;
+  label: string;
+  variant: "filled" | "outlined" | "standard";
+  size: "small" | "medium";
+  field: object;
+  inputProps?: object;
+  borderColor?: string;
+  error?: boolean;
+  helperText?: string;
+}
+
+export interface AdminDashboardLink {
+  id: number;
+  className: string;
+  icon: React.ReactNode;
+  headLine: string;
+  href: string;
 }

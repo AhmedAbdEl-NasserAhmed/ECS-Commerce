@@ -1,15 +1,36 @@
-import { FieldError } from "react-hook-form";
+import { FieldPath } from "react-hook-form";
 
 export interface LoginFormData {
   loginEmail: string;
   loginPassword: string;
 }
 
+interface Name {
+  productName: string;
+  productCategory: string;
+  productQuantity: string;
+  productDescription: string;
+  productColors: {
+    value: string;
+    label: string;
+    color: string;
+  }[];
+  productSizes: {
+    value: string;
+    label: string;
+    color: string;
+  }[];
+}
+
 export interface CustomizedTextFieldProps {
-  type: string;
-  label: string;
-  variant: "filled" | "outlined" | "standard";
-  size: "small" | "medium";
+  type?: string;
+  name?: FieldPath<Name>;
+  label?: string;
+  variant?: "filled" | "outlined" | "standard";
+  size?: "small" | "medium";
+  rules?: object;
+  id?: string;
+  defaultValue?: string | ColourOption[] | SizesOption[];
   field?: object;
   inputProps?: object;
   borderColor?: string;
@@ -23,6 +44,9 @@ export interface CustomizedTextFieldProps {
   rows?: number;
   value?: React.ReactNode;
   onChange?: () => void;
+  row?: number;
+  placeholder?: string;
+  options?: ColourOption[];
 }
 
 export interface AdminDashboardLink {
@@ -68,4 +92,6 @@ export interface SelecteMenuProps {
   hasError: boolean;
   placeholder: string;
   options: ColourOption[] | SizesOption[];
+  errors: object;
+  name: string;
 }

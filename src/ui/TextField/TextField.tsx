@@ -14,10 +14,12 @@ function CustomizedTextField({
   inputLabelProps,
   formerHelperStyles,
   className,
+  multiline,
 }: CustomizedTextFieldProps) {
   if (field) {
     return (
       <TextField
+        multiline={multiline}
         {...field}
         error={error}
         className={className}

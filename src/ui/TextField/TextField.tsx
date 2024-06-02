@@ -23,7 +23,6 @@ function CustomizedTextField({
     return (
       <TextField
         multiline={multiline}
-        {...field}
         error={error}
         rows={rows}
         className={className}
@@ -35,6 +34,7 @@ function CustomizedTextField({
         InputProps={inputProps}
         FormHelperTextProps={formerHelperStyles}
         sx={sx}
+        {...field}
       />
     );
   } else {

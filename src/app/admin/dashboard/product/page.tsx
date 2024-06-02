@@ -1,5 +1,6 @@
 "use client";
 
+import ShowUploadedImageProduct from "@/components/AdminDashboard/showUploadedProductImage";
 import { colourOptions } from "@/constants/colorOptions";
 import { sizesOptions } from "@/constants/sizesOptions";
 import { ProductFormInputs } from "@/types/types";
@@ -9,7 +10,7 @@ import CustomizedTextField from "@/ui/TextField/TextField";
 import UploadButton from "@/ui/uploadButton";
 import { Box, Button, Typography, styled } from "@mui/material";
 import Image from "next/image";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { HiCloudUpload } from "react-icons/hi";
 
@@ -19,6 +20,7 @@ function ProductPage() {
     control,
     watch,
     reset,
+    setValue,
     formState: { errors },
   } = useForm<ProductFormInputs>();
 
@@ -32,7 +34,7 @@ function ProductPage() {
 
   const formData = watch();
 
-  // console.log(formData);
+  console.log(formData);
 
   const [pickedImagePath, setPickedImagePath] = useState<string>("");
 
@@ -52,23 +54,34 @@ function ProductPage() {
     fileReader.readAsDataURL(file);
   }
 
-  // console.log("pickedImagePath", pickedImagePath);
-
   return (
-    <Box component="div" className=" p-[2rem] md:p-[4rem]  ">
-      <Typography
-        className="text-cyan-500 font-semibold mb-[2rem]"
-        variant="h4"
-        component="h4"
+    <Box component="div" className=" p-[2rem] md:p-[4rem] overflow-y-scroll  ">
+      <Box
+        component="div"
+        className="flex justify-between items-center mb-[2rem]"
       >
-        ADD PRODUCT
-      </Typography>
+        <Typography
+          className="text-cyan-500 font-semibold "
+          variant="h4"
+          component="h4"
+        >
+          ADD PRODUCT
+        </Typography>
+        <Box component="div" className="md:hidden">
+          {pickedImagePath && (
+            <ShowUploadedImageProduct pickedImagePath={pickedImagePath} />
+          )}
+        </Box>
+      </Box>
       <Box
         component="form"
-        className="flex items-center gap-[2.2rem]  "
+        className="flex items-center gap-[2.2rem]   "
         onSubmit={handleSubmit(onSubmit)}
       >
-        <Box component="div" className="flex flex-col gap-[2.2rem] w-1/2">
+        <Box
+          component="div"
+          className="flex flex-col gap-[2.2rem] w-full md:w-1/2  "
+        >
           <Controller
             name="productName"
             control={control}
@@ -300,6 +313,7 @@ function ProductPage() {
           </Box>
           <Box component="div">
             <Button
+              className="w-full md:w-max"
               sx={{
                 backgroundColor: "#3dbadd",
                 "&:hover": {
@@ -312,11 +326,22 @@ function ProductPage() {
             >
               Add Product
             </Button>
+            <Button
+              className=" md:hidden w-full md:w-max mt-6 md:mt-0"
+              component="label"
+              role={undefined}
+              variant="contained"
+              tabIndex={-1}
+              startIcon={<HiCloudUpload />}
+            >
+              Upload Product Image
+              <UploadButton handleImagePath={handleImagepath} />
+            </Button>
           </Box>
         </Box>
         <Box
           component="div"
-          className=" flex flex-col justify-between gap-12 text-center w-1/2  h-[60vh] "
+          className=" flex-col justify-between gap-12 text-center w-1/2 hidden md:flex  h-[60vh] "
         >
           {pickedImagePath && (
             <Box component="div" className="relative w-full h-full">

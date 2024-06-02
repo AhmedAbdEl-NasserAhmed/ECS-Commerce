@@ -27,7 +27,6 @@ export interface CustomizedTextFieldProps {
 
 export interface AdminDashboardLink {
   id: number;
-  className: string;
   icon: React.ReactNode;
   headLine: string;
   href: string;

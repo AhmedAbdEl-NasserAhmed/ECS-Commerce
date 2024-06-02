@@ -2,15 +2,17 @@
 
 import ShowUploadedImageProduct from "@/components/AdminDashboard/showUploadedProductImage";
 import { colourOptions } from "@/constants/colorOptions";
+import productFormInputs from "@/constants/productFormInputs";
+import productFormInputsSelectMenus from "@/constants/productFormInputsSelectMenus";
 import { sizesOptions } from "@/constants/sizesOptions";
 import { ProductFormInputs } from "@/types/types";
 import ErrorMessage from "@/ui/ErrorMessage/ErrorMessage";
 import SelectMenu from "@/ui/SelectMenu/SelectMenu";
 import CustomizedTextField from "@/ui/TextField/TextField";
 import UploadButton from "@/ui/uploadButton";
-import { Box, Button, Typography, styled } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import Image from "next/image";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { HiCloudUpload } from "react-icons/hi";
 
@@ -30,11 +32,7 @@ function ProductPage() {
     reset();
   }
 
-  // console.log("errors", errors);
-
   const formData = watch();
-
-  console.log(formData);
 
   const [pickedImagePath, setPickedImagePath] = useState<string>("");
 
@@ -82,235 +80,57 @@ function ProductPage() {
           component="div"
           className="flex flex-col gap-[2.2rem] w-full md:w-1/2  "
         >
-          <Controller
-            name="productName"
-            control={control}
-            defaultValue=""
-            rules={{
-              required: "This field is required",
-            }}
-            render={({ field }) => (
-              <CustomizedTextField
-                field={field}
-                error={!!errors.productName}
-                formerHelperStyles={{ style: { fontSize: "1rem" } }}
-                helperText={
-                  errors.productName ? errors.productName.message : ""
-                }
-                type="text"
-                label="Product Name"
-                variant="outlined"
-                size="small"
-                sx={{
-                  input: {
-                    fontSize: "1.4rem",
-                  },
-
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": {
-                      borderColor: "rgb(6 182 212)",
-                      borderRadius: "5px",
-                      borderWidth: "2px",
-                    },
-                    "&.Mui-error .MuiOutlinedInput-notchedOutline": {
-                      borderColor: "rgb(186, 9, 9)", // Customize the border color on error here
-                    },
-
-                    "&:hover fieldset": {
-                      borderColor: "rgb(6 182 212)",
-                    },
-
-                    "&.Mui-focused fieldset": {
-                      borderColor: "rgb(6 182 212)",
-                    },
-                  },
-                }}
+          {productFormInputs.map((input) => {
+            return (
+              <Controller
+                key={input.id}
+                name={input.name}
+                control={control}
+                defaultValue={input.defaultValue}
+                rules={input.rules}
+                render={({ field }) => (
+                  <CustomizedTextField
+                    multiline={input.multiline}
+                    rows={input.row}
+                    field={field}
+                    error={!!errors[input.name]}
+                    formerHelperStyles={input.formerHelperStyles}
+                    helperText={
+                      errors[input.name] ? errors[input.name].message : ""
+                    }
+                    type={input.type}
+                    label={input.label}
+                    variant={input.variant}
+                    size={input.size}
+                    sx={input.sx}
+                  />
+                )}
               />
-            )}
-          />
-          <Controller
-            name="productCategory"
-            control={control}
-            defaultValue=""
-            rules={{
-              required: "This field is required",
-            }}
-            render={({ field }) => (
-              <CustomizedTextField
-                formerHelperStyles={{ style: { fontSize: "1rem" } }}
-                field={field}
-                error={!!errors.productCategory}
-                helperText={
-                  errors.productCategory ? errors.productCategory.message : ""
-                }
-                type="text"
-                label="Product Category"
-                variant="outlined"
-                size="small"
-                sx={{
-                  input: {
-                    fontSize: "1.4rem",
-                  },
+            );
+          })}
 
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": {
-                      borderColor: "rgb(6 182 212)",
-                      borderRadius: "5px",
-                      borderWidth: "2px",
-                    },
-                    "&.Mui-error .MuiOutlinedInput-notchedOutline": {
-                      borderColor: "rgb(186, 9, 9)", // Customize the border color on error here
-                    },
-
-                    "&:hover fieldset": {
-                      borderColor: "rgb(6 182 212)",
-                    },
-
-                    "&.Mui-focused fieldset": {
-                      borderColor: "rgb(6 182 212)",
-                    },
-                  },
-                }}
+          {productFormInputsSelectMenus.map((selectMenu) => {
+            return (
+              <Controller
+                key={selectMenu.id}
+                name={selectMenu.name}
+                control={control}
+                defaultValue={selectMenu.defaultValue}
+                rules={selectMenu.rules}
+                render={({ field }) => (
+                  <SelectMenu
+                    name={selectMenu.name}
+                    errors={errors}
+                    options={selectMenu.options}
+                    hasError={!!errors[selectMenu.name]}
+                    field={field}
+                    placeholder={selectMenu.placeholder}
+                  />
+                )}
               />
-            )}
-          />
-          <Controller
-            name="productQuantity"
-            control={control}
-            defaultValue=""
-            rules={{
-              required: "This field is required",
-            }}
-            render={({ field }) => (
-              <CustomizedTextField
-                formerHelperStyles={{ style: { fontSize: "1rem" } }}
-                field={field}
-                error={!!errors.productQuantity}
-                helperText={
-                  errors.productQuantity ? errors.productQuantity.message : ""
-                }
-                type="number"
-                label="Product Quantity"
-                variant="outlined"
-                size="small"
-                sx={{
-                  input: {
-                    fontSize: "1.4rem",
-                  },
+            );
+          })}
 
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": {
-                      borderColor: "rgb(6 182 212)",
-                      borderRadius: "5px",
-                      borderWidth: "2px",
-                    },
-                    "&.Mui-error .MuiOutlinedInput-notchedOutline": {
-                      borderColor: "rgb(186, 9, 9)", // Customize the border color on error here
-                    },
-
-                    "&:hover fieldset": {
-                      borderColor: "rgb(6 182 212)",
-                    },
-
-                    "&.Mui-focused fieldset": {
-                      borderColor: "rgb(6 182 212)",
-                    },
-                  },
-                }}
-              />
-            )}
-          />
-          <Controller
-            name="productDescription"
-            control={control}
-            defaultValue=""
-            rules={{
-              required: "This field is required",
-            }}
-            render={({ field }) => (
-              <CustomizedTextField
-                multiline={true}
-                rows={4}
-                formerHelperStyles={{ style: { fontSize: "1rem" } }}
-                field={field}
-                error={!!errors.productDescription}
-                helperText={
-                  errors.productDescription
-                    ? errors.productDescription.message
-                    : ""
-                }
-                type="text"
-                label="Product Description"
-                variant="outlined"
-                size="medium"
-                sx={{
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": {
-                      borderColor: "rgb(6 182 212)",
-                      borderRadius: "5px",
-                      borderWidth: "2px",
-                    },
-                    "&.Mui-error .MuiOutlinedInput-notchedOutline": {
-                      borderColor: "rgb(186, 9, 9)", // Customize the border color on error here
-                    },
-
-                    "&:hover fieldset": {
-                      borderColor: "rgb(6 182 212)",
-                    },
-
-                    "&.Mui-focused fieldset": {
-                      borderColor: "rgb(6 182 212)",
-                    },
-                  },
-                  "& .MuiInputBase-input": {
-                    fontSize: "1.4rem", // Customize the font size here
-                  },
-                }}
-              />
-            )}
-          />
-          <Box component="div" className="flex flex-col gap-2 ">
-            <Controller
-              name="productColors"
-              control={control}
-              defaultValue={[]}
-              rules={{
-                required: "This field is required",
-              }}
-              render={({ field }) => (
-                <SelectMenu
-                  options={colourOptions}
-                  hasError={!!errors["productColors"]}
-                  field={field}
-                  placeholder="Product Colors"
-                />
-              )}
-            />
-            {errors["productColors"] && (
-              <ErrorMessage message={errors["productColors"]?.message} />
-            )}
-          </Box>
-          <Box component="div" className="flex flex-col gap-2 ">
-            <Controller
-              name="productSizes"
-              control={control}
-              defaultValue={[]}
-              rules={{
-                required: "This field is required",
-              }}
-              render={({ field }) => (
-                <SelectMenu
-                  options={sizesOptions}
-                  hasError={!!errors["productSizes"]}
-                  field={field}
-                  placeholder="Product Sizes"
-                />
-              )}
-            />
-            {errors["productSizes"] && (
-              <ErrorMessage message={errors["productSizes"]?.message} />
-            )}
-          </Box>
           <Box component="div">
             <Button
               className="w-full md:w-max"

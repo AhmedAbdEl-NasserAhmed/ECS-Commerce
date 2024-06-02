@@ -15,6 +15,9 @@ function CustomizedTextField({
   formerHelperStyles,
   className,
   multiline,
+  rows,
+  value,
+  onChange,
 }: CustomizedTextFieldProps) {
   if (field) {
     return (
@@ -22,6 +25,7 @@ function CustomizedTextField({
         multiline={multiline}
         {...field}
         error={error}
+        rows={rows}
         className={className}
         helperText={helperText}
         type={type}
@@ -36,6 +40,9 @@ function CustomizedTextField({
   } else {
     return (
       <TextField
+        className={className}
+        onChange={onChange}
+        value={value}
         sx={sx}
         InputLabelProps={inputLabelProps}
         size={size}

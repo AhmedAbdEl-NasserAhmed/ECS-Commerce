@@ -20,6 +20,9 @@ export interface CustomizedTextFieldProps {
   formerHelperStyles?: object;
   className?: string;
   multiline?: boolean;
+  rows?: number;
+  value?: React.ReactNode;
+  onChange?: () => void;
 }
 
 export interface AdminDashboardLink {
@@ -57,11 +60,13 @@ export interface ProductFormInputs {
     color: string;
   }[];
   productDescription: string;
+  productImage: string;
 }
 
 export interface SelecteMenuProps {
   field: object;
-  className: string;
+  className?: string;
   hasError: boolean;
+  placeholder: string;
   options: ColourOption[] | SizesOption[];
 }

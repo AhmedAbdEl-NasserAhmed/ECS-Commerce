@@ -3,4 +3,6 @@
   grid-template-rows: max-content 1fr;
   grid-template-columns: minmax(max-content, 1fr) 4fr;
   justify-content: space-between;
+  overflow-y: scroll;
+  height: 100%;
 }

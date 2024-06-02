@@ -4,8 +4,8 @@ import Image from "next/image";
 import { FaAngleDown, FaSearch } from "react-icons/fa";
 import { HiOutlineBell } from "react-icons/hi2";
 import { Box, InputAdornment, TextField } from "@mui/material";
-
 import NavMenu from "./NavMenu";
+import CustomizedTextField from "@/ui/TextField/TextField";
 
 function Navbar() {
   return (
@@ -22,19 +22,36 @@ function Navbar() {
         className="px-[5rem] justify-between py-12 w-full  "
       >
         <Box component="div" className="hidden md:block w-1/2">
-          <TextField
+          <CustomizedTextField
+            type="text"
             sx={{
               width: "100%",
               input: {
                 fontSize: "1.4rem",
               },
+              "& .MuiOutlinedInput-root": {
+                "& fieldset": {
+                  borderColor: "rgb(6 182 212)",
+                  borderRadius: "5px",
+                  borderWidth: "2px",
+                },
+
+                "&:hover fieldset": {
+                  borderColor: "rgb(6 182 212)",
+                },
+
+                "&.Mui-focused fieldset": {
+                  borderRadius: "6px",
+                  borderWidth: "3px",
+                  borderColor: "rgb(6 182 212)",
+                },
+              },
             }}
-            InputLabelProps={{ style: { fontSize: "1.25rem" } }}
+            inputLabelProps={{ style: { fontSize: "1.25rem" } }}
             size="small"
-            id="outlined-basic"
             label="Search"
-            variant="filled"
-            InputProps={{
+            variant="outlined"
+            inputProps={{
               endAdornment: (
                 <InputAdornment style={{ fontSize: "1.25rem" }} position="end">
                   <FaSearch />

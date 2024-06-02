@@ -21,3 +21,23 @@ ul {
   -webkit-text-fill-color: transparent !important;
   font-weight: bold !important;
 }
+
+::-webkit-scrollbar {
+  width: 2px;
+  border-radius: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgb(90, 192, 199);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(94, 215, 224);
+}

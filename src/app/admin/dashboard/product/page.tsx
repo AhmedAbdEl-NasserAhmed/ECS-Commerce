@@ -1,12 +1,9 @@
 "use client";
 
 import ShowUploadedImageProduct from "@/components/AdminDashboard/showUploadedProductImage";
-import { colourOptions } from "@/constants/colorOptions";
 import productFormInputs from "@/constants/productFormInputs";
 import productFormInputsSelectMenus from "@/constants/productFormInputsSelectMenus";
-import { sizesOptions } from "@/constants/sizesOptions";
 import { ProductFormInputs } from "@/types/types";
-import ErrorMessage from "@/ui/ErrorMessage/ErrorMessage";
 import SelectMenu from "@/ui/SelectMenu/SelectMenu";
 import CustomizedTextField from "@/ui/TextField/TextField";
 import UploadButton from "@/ui/uploadButton";
@@ -131,7 +128,7 @@ function ProductPage() {
             );
           })}
 
-          <Box component="div">
+          <Box component="div" className="flex items-center gap-12">
             <Button
               className="w-full md:w-max"
               sx={{
@@ -147,7 +144,7 @@ function ProductPage() {
               Add Product
             </Button>
             <Button
-              className=" md:hidden w-full md:w-max mt-6 md:mt-0"
+              className=" md:hidden w-full md:w-max m"
               component="label"
               role={undefined}
               variant="contained"

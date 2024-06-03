@@ -7,7 +7,7 @@ import { Box, InputAdornment, TextField } from "@mui/material";
 import NavMenu from "./NavMenu";
 import CustomizedTextField from "@/ui/TextField/TextField";
 
-function Navbar() {
+function Navbar({ showMenuLinks, setShowMenuLinks }) {
   return (
     <Box
       component="nav"
@@ -80,7 +80,10 @@ function Navbar() {
             <HiOutlineBell />
           </li>
         </ul>
-        <NavMenu />
+        <NavMenu
+          showMenuLinks={showMenuLinks}
+          setShowMenuLinks={setShowMenuLinks}
+        />
       </Box>
     </Box>
   );

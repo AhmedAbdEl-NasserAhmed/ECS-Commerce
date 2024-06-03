@@ -18,6 +18,7 @@ export default function RootLayout({
     <html lang="en">
       <body suppressHydrationWarning={true} className={inter.className}>
         {children}
+        <div id="modal"></div>
       </body>
     </html>
   );

@@ -20,4 +20,7 @@ export const productTableHeaders = [
     name: "Product Price",
     serverKey: "productPrice",
   },
+  {
+    name: "Actions",
+  },
 ];

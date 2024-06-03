@@ -5,14 +5,10 @@ import { Box, Typography } from "@mui/material";
 
 function ProductsOverview() {
   return (
-    <Box className=" p-[1.8rem] md:p-[4rem]" component="div">
-      <Typography
-        className="text-cyan-500 font-semibold mb-8 "
-        variant="h4"
-        component="h4"
-      >
+    <Box className=" p-[1rem] md:p-[4rem] w-full  " component="div">
+      <h2 className="text-xl sm:text-3xl text-cyan-500 font-semibold mb-12 ">
         PRODUCTS OVERVIEW
-      </Typography>
+      </h2>
       <BaseTable tableHeaders={productTableHeaders} content={products} />
     </Box>
   );

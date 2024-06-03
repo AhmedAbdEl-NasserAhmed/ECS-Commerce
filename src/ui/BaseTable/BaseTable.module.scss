@@ -1,30 +1,61 @@
 .table {
-  border-collapse: collapse;
-  min-width: min(80vw, 100%);
+  min-width: clamp(20%, 80vw, 100%);
   margin: 0 auto;
   letter-spacing: 0.8px;
   text-align: center;
+  height: 70vh;
 
   thead {
-    font-size: 1.35rem;
+    font-size: clamp(0.8rem, 1.5vw, 1.3rem);
     background-color: rgb(10, 36, 51);
     border-radius: 5px;
     color: white;
-    height: 8vh;
+    height: 5vh;
+    word-wrap: break-word;
   }
 
   th,
   td {
-    border-bottom: 1px solid rgba(205, 204, 204, 0.667);
-    background-color: rgba(244, 244, 244, 0.683);
+    max-width: 10rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   tbody {
-    font-size: 1.3rem;
-    height: 20vh;
+    font-size: clamp(1.1rem, 1vw, 1.3rem);
   }
 
   tbody > tr:nth-child(even) {
-    background-color: rgba(197, 197, 197, 0.683);
+    background-color: rgb(240, 240, 240);
+  }
+
+  @media (max-width: 520px) {
+    thead {
+      display: none; /* Hide table headers for very small screens */
+    }
+
+    td {
+      display: block; /* Make table cells block elements */
+      width: 100%;
+      text-align: center; /* Align text to left */
+      border: 1px solid rgba(222, 222, 222, 0.847);
+    }
+
+    tr {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 2rem;
+
+      img {
+        object-fit: cover;
+        width: 100%;
+      }
+    }
+
+    tbody > tr:nth-child(even) {
+      background-color: transparent;
+    }
   }
 }

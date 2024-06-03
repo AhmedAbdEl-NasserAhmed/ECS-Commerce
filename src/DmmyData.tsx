@@ -13,4 +13,32 @@ export const products = [
     productQuantity: "5",
     productPrice: "900 $",
   },
+  {
+    productImage: "/cart.jpg",
+    productName: "I phone 12 prox max",
+    productCategory: "Mobiles",
+    productQuantity: "5",
+    productPrice: "900 $",
+  },
+  {
+    productImage: "/cart.jpg",
+    productName: "I phone 12 prox max",
+    productCategory: "Mobiles",
+    productQuantity: "5",
+    productPrice: "900 $",
+  },
+  {
+    productImage: "/cart.jpg",
+    productName: "I phone 12 prox max",
+    productCategory: "Mobiles",
+    productQuantity: "5",
+    productPrice: "900 $",
+  },
+  {
+    productImage: "/cart.jpg",
+    productName: "I phone 12 prox max",
+    productCategory: "Mobiles",
+    productQuantity: "5",
+    productPrice: "900 $",
+  },
 ];

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import styles from "./BaseTable.module.scss";
 import { Box } from "@mui/material";
+import Menus from "../Menus/Menus";
 
 function BaseTable({ tableHeaders, content }) {
   return (
@@ -22,12 +23,12 @@ function BaseTable({ tableHeaders, content }) {
                     {header.type === "image" ? (
                       <Box
                         component="div"
-                        className="flex justify-center items-center"
+                        className="md:flex justify-center items-center "
                       >
                         <Image
-                          objectFit="contain"
-                          width={65}
-                          height={65}
+                          objectFit="cover"
+                          width={55}
+                          height={55}
                           src={product["productImage"]}
                           alt="product Image"
                         />
@@ -35,6 +36,7 @@ function BaseTable({ tableHeaders, content }) {
                     ) : (
                       product[header.serverKey]
                     )}
+                    {header.name === "Actions" && <Menus />}
                   </td>
                 );
               })}

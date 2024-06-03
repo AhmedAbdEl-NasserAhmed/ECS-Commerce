@@ -1,48 +1,57 @@
+"use client";
+
+import useClickOutside from "@/hooks/useClickOutside";
 import { cloneElement, createContext, useContext, useState } from "react";
 import { createPortal } from "react-dom";
+import styles from "./Modal.module.scss";
 
 interface ModalContextProps {
   openId: string;
   openModal: (id: string) => void;
-  close: () => void;
+  closeModal: () => void;
 }
 
-const ModalContext = createContext<ModalContextProps>(undefined);
+const ModalContext = createContext<ModalContextProps>({} as ModalContextProps);
 
 function Modal({ children }) {
   const [openId, setOpenId] = useState<string>("");
 
   const openModal = setOpenId;
 
-  const close = () => setOpenId("");
+  const closeModal = () => setOpenId("");
 
   return (
-    <ModalContext.Provider value={{ openId, openModal, close }}>
+    <ModalContext.Provider value={{ openId, openModal, closeModal }}>
       {children}
     </ModalContext.Provider>
   );
 }
 
-function Open({ id, children }) {
+function Open({ opens, children }) {
   const { openModal } = useContext(ModalContext);
 
-  return cloneElement(children, () => openModal(id));
+  return cloneElement(children, { onClick: () => openModal(opens) });
 }
 
-function Window({ id, children }) {
-  const { close, openId } = useContext(ModalContext);
+function Window({ name, children }) {
+  const { closeModal, openId } = useContext(ModalContext);
 
-  if (id !== openId) return null;
+  const reference = useClickOutside({ close: closeModal });
+
+  if (name !== openId) return null;
 
   return createPortal(
-    <div className="overlay">
-      <div className="modal">{children}</div>
+    <div className={styles.overlay}>
+      <div ref={reference} className={styles.modal}>
+        <div>{children}</div>
+      </div>
     </div>,
     document.getElementById("modal")
   );
 }
 
 Modal.Open = Open;
+
 Modal.Window = Window;
 
 export default Modal;

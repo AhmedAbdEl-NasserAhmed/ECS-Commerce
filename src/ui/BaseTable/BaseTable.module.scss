@@ -1,0 +1,30 @@
+.table {
+  border-collapse: collapse;
+  min-width: min(80vw, 100%);
+  margin: 0 auto;
+  letter-spacing: 0.8px;
+  text-align: center;
+
+  thead {
+    font-size: 1.35rem;
+    background-color: rgb(10, 36, 51);
+    border-radius: 5px;
+    color: white;
+    height: 8vh;
+  }
+
+  th,
+  td {
+    border-bottom: 1px solid rgba(205, 204, 204, 0.667);
+    background-color: rgba(244, 244, 244, 0.683);
+  }
+
+  tbody {
+    font-size: 1.3rem;
+    height: 20vh;
+  }
+
+  tbody > tr:nth-child(even) {
+    background-color: rgba(197, 197, 197, 0.683);
+  }
+}

@@ -56,7 +56,7 @@ function ProductPage() {
     >
       <Box
         component="div"
-        className="flex justify-between items-center mb-[2rem]"
+        className="flex justify-between items-center mb-[1rem] md:mb-[2rem]"
       >
         <Typography
           className="text-cyan-500 font-semibold "
@@ -78,7 +78,7 @@ function ProductPage() {
       >
         <Box
           component="div"
-          className="flex flex-col gap-[2.2rem] w-full md:w-1/2  "
+          className="flex flex-col gap-[1.55rem]  md:gap-[2rem] w-full md:w-1/2  "
         >
           {productFormInputs.map((input) => {
             return (
@@ -166,7 +166,7 @@ function ProductPage() {
           {pickedImagePath && (
             <Box component="div" className="relative w-full h-full">
               <Image
-                objectFit="cover"
+                objectFit="contain"
                 src={pickedImagePath}
                 fill
                 alt="product image"

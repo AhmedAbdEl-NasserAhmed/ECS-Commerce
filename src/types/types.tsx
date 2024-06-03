@@ -8,8 +8,9 @@ export interface LoginFormData {
 interface Name {
   productName: string;
   productCategory: string;
-  productQuantity: string;
+  productQuantity: number;
   productDescription: string;
+  productPrice: number;
   productColors: {
     value: string;
     label: string;
@@ -71,7 +72,8 @@ export interface SizesOption {
 export interface ProductFormInputs {
   productName: string;
   productCategory: string;
-  productQuantity: string;
+  productQuantity: number;
+  productPrice: number;
   productColors: {
     value: string;
     label: string;

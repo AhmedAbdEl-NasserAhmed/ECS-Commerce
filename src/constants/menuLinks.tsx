@@ -8,7 +8,7 @@ export const productLinks: AdminDashboardLink[] = [
     id: 1,
     icon: <FaEye />,
     headLine: "VIEW PRODUCTS",
-    href: "",
+    href: "/admin/dashboard/productsOverview",
   },
   {
     id: 2,

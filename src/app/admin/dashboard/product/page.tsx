@@ -50,7 +50,10 @@ function ProductPage() {
   }
 
   return (
-    <Box component="div" className=" p-[2rem] md:p-[4rem] overflow-y-scroll  ">
+    <Box
+      component="div"
+      className=" p-[1.8rem] md:p-[4rem] overflow-y-scroll  "
+    >
       <Box
         component="div"
         className="flex justify-between items-center mb-[2rem]"
@@ -128,7 +131,7 @@ function ProductPage() {
             );
           })}
 
-          <Box component="div" className="flex items-center gap-12">
+          <Box component="div" className="flex items-center gap-12 md:block ">
             <Button
               className="w-full md:w-max"
               sx={{
@@ -144,14 +147,14 @@ function ProductPage() {
               Add Product
             </Button>
             <Button
-              className=" md:hidden w-full md:w-max m"
+              className=" md:hidden w-full "
               component="label"
               role={undefined}
               variant="contained"
               tabIndex={-1}
               startIcon={<HiCloudUpload />}
             >
-              Upload Product Image
+              Upload Image
               <UploadButton handleImagePath={handleImagepath} />
             </Button>
           </Box>

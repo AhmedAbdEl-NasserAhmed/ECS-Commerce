@@ -133,7 +133,7 @@ function ProductPage() {
 
           <Box component="div" className="flex items-center gap-12 md:block ">
             <Button
-              className="w-full md:w-max"
+              className="w-full md:w-max "
               sx={{
                 backgroundColor: "#3dbadd",
                 "&:hover": {

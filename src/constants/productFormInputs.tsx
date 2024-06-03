@@ -83,7 +83,7 @@ export const productFormInputs: CustomizedTextFieldProps[] = [
       required: "This field is required",
     },
     formerHelperStyles: { style: { fontSize: "1rem" } },
-    type: "text",
+    type: "number",
     label: "Product Quantity",
     variant: "outlined",
     size: "small",

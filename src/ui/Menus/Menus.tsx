@@ -1,4 +1,6 @@
-import { createContext, useContext, useState } from "react";
+"use client";
+
+import { createContext, useContext, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { HiEllipsisVertical } from "react-icons/hi2";
 import styles from "./Menus.module.scss";
@@ -17,9 +19,9 @@ interface PositionObject {
 
 interface MenusContext {
   openId: string;
-  close: (id: string) => void;
-  openHandler: (id: string) => void;
   position: object;
+  closeMenus: (id: string) => void;
+  openHandler: (id: string) => void;
   setPosition: (object: PositionObject) => void;
 }
 
@@ -30,13 +32,13 @@ function Menus({ children }) {
 
   const [position, setPosition] = useState(null);
 
-  const close = () => setOpenId("");
+  const closeMenus = () => setOpenId("");
 
   const openHandler = setOpenId;
 
   return (
     <MenusContext.Provider
-      value={{ openId, close, openHandler, position, setPosition }}
+      value={{ openId, closeMenus, openHandler, position, setPosition }}
     >
       {children}
     </MenusContext.Provider>
@@ -48,7 +50,8 @@ function Menu({ children }) {
 }
 
 function Toggle({ id }) {
-  const { openId, close, setPosition, openHandler } = useContext(MenusContext);
+  const { openId, closeMenus, setPosition, openHandler } =
+    useContext(MenusContext);
 
   function handleClick(e) {
     e.stopPropagation();
@@ -60,7 +63,7 @@ function Toggle({ id }) {
       y: rect.y + rect.height - 15,
     });
 
-    openId === "" || openId !== id ? openHandler(id) : close("");
+    openId === "" || openId !== id ? openHandler(id) : closeMenus("");
   }
 
   return (
@@ -71,15 +74,19 @@ function Toggle({ id }) {
 }
 
 function List({ id, children }) {
-  const { openId, position, close } = useContext(MenusContext);
+  const { openId, position, closeMenus } = useContext(MenusContext);
 
-  const menuRef = useClickOutside({ close, StopBubbling: false });
+  useEffect(() => {
+    function handleScrolling() {
+      closeMenus("");
+    }
 
-  function hanldeScrolling() {
-    close("");
-  }
+    window.addEventListener("scroll", handleScrolling);
 
-  window.addEventListener("scroll", hanldeScrolling);
+    return () => window.removeEventListener("scroll", handleScrolling);
+  }, [closeMenus]);
+
+  const menuRef = useClickOutside({ close: closeMenus, StopBubbling: false });
 
   if (openId !== id) return null;
 
@@ -96,11 +103,11 @@ function List({ id, children }) {
 }
 
 function MenusButton({ children, onClick, icon }: MenusButton) {
-  const { close } = useContext(MenusContext);
+  const { closeMenus } = useContext(MenusContext);
 
   function handleClick() {
     onClick();
-    close("");
+    closeMenus("");
   }
 
   return (

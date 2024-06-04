@@ -36,7 +36,7 @@ function Open({ opens, children }) {
 function Window({ name, children }) {
   const { closeModal, openId } = useContext(ModalContext);
 
-  const reference = useClickOutside({ close: closeModal });
+  const reference = useClickOutside({ close: closeModal, StopBubbling: true });
 
   if (name !== openId) return null;
 

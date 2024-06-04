@@ -4,24 +4,23 @@
     border: none;
     padding: 0.1rem;
     border-radius: 5px;
-    transform: translateX(0.8rem);
     transition: all 0.2s;
 
     &:hover {
-      background-color: var(--color-grey-20);
+      background-color: rgb(227, 227, 227);
     }
 
     & svg {
-      width: 2.4rem;
-      height: 2.4rem;
-      color: var(--color-blue-50);
+      width: 2rem;
+      height: 2rem;
+      color: rgb(10, 36, 51);
     }
   }
 
   &__menu {
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: center;
   }
 
   &__list {
@@ -37,8 +36,8 @@
     text-align: left;
     background: none;
     border: none;
-    padding: 1.2rem 2.4rem;
-    font-size: 1.4rem;
+    padding: 0.8rem 1.5rem;
+    font-size: 1.2rem;
     transition: all 0.2s;
 
     display: flex;
@@ -46,13 +45,13 @@
     gap: 1.6rem;
 
     &:hover {
-      background-color: var(--color-grey-10);
+      background-color: rgba(226, 226, 226, 0.5);
     }
 
     & svg {
       width: 1.6rem;
       height: 1.6rem;
-      color: var(--color-grey-20);
+      color: rgba(10, 36, 51, 0.747);
       transition: all 0.3s;
     }
   }

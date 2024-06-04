@@ -55,6 +55,7 @@ export interface AdminDashboardLink {
   icon: React.ReactNode;
   headLine: string;
   href: string;
+  pathName?: string;
 }
 
 export interface ColourOption {

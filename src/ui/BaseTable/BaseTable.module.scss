@@ -1,19 +1,13 @@
 .table {
-  min-width: clamp(20%, 80vw, 100%);
+  width: 100%;
   margin: 0 auto;
   letter-spacing: 0.8px;
   text-align: center;
   height: 70vh;
-
-  @media (max-width: 550px) {
-    tr,
-    td {
-      overflow-x: scroll;
-    }
-  }
+  border-collapse: collapse;
 
   thead {
-    font-size: clamp(0.8rem, 1.5vw, 1.3rem);
+    font-size: clamp(1.2rem, 1.7vw, 1.3rem);
     background-color: rgb(10, 36, 51);
     border-radius: 5px;
     color: white;
@@ -30,40 +24,10 @@
   }
 
   tbody {
-    font-size: clamp(1.1rem, 1vw, 1.3rem);
+    font-size: clamp(1.1rem, 1.5vw, 1.3rem);
   }
 
   tbody > tr:nth-child(even) {
     background-color: rgb(240, 240, 240);
   }
-
-  // @media (max-width: 520px) {
-  //   //   thead {
-  //   //     display: none; /* Hide table headers for very small screens */
-  //   //   }
-
-  //   //   td {
-  //   //     display: block; /* Make table cells block elements */
-  //   //     width: 100%;
-  //   //     text-align: center; /* Align text to left */
-  //   //     border: 1px solid rgba(222, 222, 222, 0.847);
-  //   //   }
-
-  //   //   tr {
-  //   //     display: flex;
-  //   //     flex-direction: column;
-  //   //     align-items: center;
-  //   //     margin-bottom: 2rem;
-
-  //   //     img {
-  //   //       object-fit: cover;
-  //   //       width: 100%;
-  //   //     }
-  //   //   }
-
-  //   //   tbody > tr:nth-child(even) {
-  //   //     background-color: transparent;
-  //   //   }
-  //   // }
-  // }
 }

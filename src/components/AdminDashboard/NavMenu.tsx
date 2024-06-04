@@ -2,7 +2,9 @@ import Image from "next/image";
 import { useState } from "react";
 import ResponsiveMenuLinks from "./ResponsiveMenuLinks";
 
-function NavMenu({ showMenuLinks, setShowMenuLinks }) {
+function NavMenu() {
+  const [showMenuLinks, setShowMenuLinks] = useState<boolean>(false);
+
   return (
     <>
       <Image

@@ -41,9 +41,8 @@ function ProductPage() {
     const fileReader = new FileReader();
 
     fileReader.onload = () => {
-      if (typeof fileReader.result === "string") {
+      if (typeof fileReader.result === "string")
         setPickedImagePath(fileReader.result);
-      }
     };
 
     fileReader.readAsDataURL(file);
@@ -161,7 +160,7 @@ function ProductPage() {
         </Box>
         <Box
           component="div"
-          className=" flex-col justify-between gap-12 text-center w-1/2 hidden md:flex  h-[60vh] "
+          className=" flex-col items-center justify-between gap-12 text-center w-1/2 hidden md:flex  h-[60vh] "
         >
           {pickedImagePath && (
             <Box component="div" className="relative w-full h-full">
@@ -174,9 +173,12 @@ function ProductPage() {
             </Box>
           )}
           {!pickedImagePath && (
-            <p className="font-semibold text-md">
-              No Product Image to display (optional)
-            </p>
+            <Box
+              component="div"
+              className="font-semibold text-md w-full lg:w-3/4 h-full flex justify-center items-center border-2 border-cyan-600"
+            >
+              <p> No Product Image to display (optional)</p>
+            </Box>
           )}
           <Button
             className="self-center"

@@ -9,12 +9,14 @@ export const productLinks: AdminDashboardLink[] = [
     icon: <FaEye />,
     headLine: "VIEW PRODUCTS",
     href: "/admin/dashboard/productsOverview",
+    pathName: "productsOverview",
   },
   {
     id: 2,
     icon: <FaBox />,
     headLine: "ADD PRODUCT",
     href: "/admin/dashboard/product",
+    pathName: "product",
   },
 ];
 
@@ -30,6 +32,7 @@ export const blogsLinks: AdminDashboardLink[] = [
     icon: <FaBlogger />,
     headLine: "ADD BLOG",
     href: "/admin/dashboard/blog",
+    pathName: "blog",
   },
 ];
 

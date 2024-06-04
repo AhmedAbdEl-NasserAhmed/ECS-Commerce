@@ -1,7 +1,7 @@
 export const products = [
   {
     id: "1",
-    productImage: "/cart.jpg",
+    productImage: "/iphone.jpg",
     productName: "I phone 14 prox max",
     productCategory: "Mobiles",
     productQuantity: "14",
@@ -9,7 +9,7 @@ export const products = [
   },
   {
     id: "2",
-    productImage: "/cart.jpg",
+    productImage: "/iphone.jpg",
     productName: "I phone 12 prox max",
     productCategory: "Mobiles",
     productQuantity: "5",
@@ -17,7 +17,7 @@ export const products = [
   },
   {
     id: "3",
-    productImage: "/cart.jpg",
+    productImage: "/iphone.jpg",
     productName: "I phone 12 prox max",
     productCategory: "Mobiles",
     productQuantity: "5",
@@ -25,7 +25,7 @@ export const products = [
   },
   {
     id: "4",
-    productImage: "/cart.jpg",
+    productImage: "/iphone.jpg",
     productName: "I phone 12 prox max",
     productCategory: "Mobiles",
     productQuantity: "5",
@@ -33,7 +33,7 @@ export const products = [
   },
   {
     id: "5",
-    productImage: "/cart.jpg",
+    productImage: "/iphone.jpg",
     productName: "I phone 12 prox max",
     productCategory: "Mobiles",
     productQuantity: "5",
@@ -41,7 +41,7 @@ export const products = [
   },
   {
     id: "6",
-    productImage: "/cart.jpg",
+    productImage: "/iphone.jpg",
     productName: "I phone 12 prox max",
     productCategory: "Mobiles",
     productQuantity: "5",

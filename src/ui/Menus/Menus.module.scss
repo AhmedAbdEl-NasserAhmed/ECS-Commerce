@@ -36,21 +36,21 @@
     text-align: left;
     background: none;
     border: none;
-    padding: 0.8rem 1.5rem;
+    padding: 1rem 1.75rem;
     font-size: 1.2rem;
     transition: all 0.2s;
 
     display: flex;
     align-items: center;
-    gap: 1.6rem;
+    gap: 1.4rem;
 
     &:hover {
       background-color: rgba(226, 226, 226, 0.5);
     }
 
     & svg {
-      width: 1.6rem;
-      height: 1.6rem;
+      width: 1.5rem;
+      height: 1.5rem;
       color: rgba(10, 36, 51, 0.747);
       transition: all 0.3s;
     }

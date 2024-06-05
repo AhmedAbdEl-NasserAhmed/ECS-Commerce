@@ -1,0 +1,13 @@
+.delete-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+  align-items: center;
+  gap: 3rem;
+  background-color: white;
+  width: min(85vw, 45rem);
+  transition: 0.5s all;
+  border-radius: 5px;
+  padding: min(1.4rem, 4vw);
+}

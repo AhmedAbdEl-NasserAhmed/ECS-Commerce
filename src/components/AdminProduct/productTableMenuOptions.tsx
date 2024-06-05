@@ -4,6 +4,7 @@ import Menus from "@/ui/Menus/Menus";
 import Modal from "@/ui/Modal/Modal";
 import { HiEye, HiMiniPencilSquare, HiTrash } from "react-icons/hi2";
 import ProductDetails from "./ProductDeatails/ProductDetails";
+import DeleteWindow from "@/ui/DeleteWindow/DeleteWindow";
 
 function ProductTableMenuOptions({ product }) {
   return (
@@ -34,7 +35,7 @@ function ProductTableMenuOptions({ product }) {
         </Modal.Window>
 
         <Modal.Window name="delete">
-          <p>delete</p>
+          <DeleteWindow message="Are you sure that you want to delete this Product ?" />
         </Modal.Window>
       </Menus.Menu>
     </Modal>

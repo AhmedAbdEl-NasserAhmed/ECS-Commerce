@@ -12,6 +12,7 @@ import productFormInputsSelectMenus from "@/constants/productFormInputsSelectMen
 import SelectMenu from "@/ui/SelectMenu/SelectMenu";
 import Image from "next/image";
 import productFormInputs from "@/constants/productFormInputs";
+import CloseButton from "@/ui/CloseButton/CloseButton";
 
 interface Props {
   product: AdminProductProps;
@@ -37,8 +38,6 @@ function ProductEdit({ product, setShowModal }: Props) {
   });
 
   function onSubmit(data: AdminProductProps) {
-    console.log("data", data);
-
     reset();
   }
 
@@ -63,6 +62,9 @@ function ProductEdit({ product, setShowModal }: Props) {
 
   return (
     <Box className={styles["product-edit"]} component="div">
+      {/* <div className="self-end">
+        <CloseButton />
+      </div> */}
       <Box component="div" className="flex justify-between items-center ">
         <Typography
           className="text-cyan-500 font-semibold "
@@ -137,9 +139,12 @@ function ProductEdit({ product, setShowModal }: Props) {
             );
           })}
 
-          <Box component="div" className="flex items-center gap-12 md:block ">
+          <Box
+            component="div"
+            className="flex items-center flex-col md:flex-row gap-6  justify-between w-full "
+          >
             <Button
-              className="w-full md:w-max "
+              className=" w-full md:w-max  "
               sx={{
                 backgroundColor: "#3dbadd",
                 "&:hover": {
@@ -150,8 +155,9 @@ function ProductEdit({ product, setShowModal }: Props) {
               variant="contained"
               size="large"
             >
-              Add Product
+              Update Product
             </Button>
+
             <Button
               className=" md:hidden w-full "
               component="label"
@@ -163,6 +169,21 @@ function ProductEdit({ product, setShowModal }: Props) {
               Upload Image
               <UploadButton handleImagePath={handleImagepath} />
             </Button>
+            <Button
+              onClick={setShowModal}
+              className="w-full md:w-max  "
+              sx={{
+                backgroundColor: "rgb(75 85 99)",
+                "&:hover": {
+                  backgroundColor: "rgb(55 65 81)",
+                },
+              }}
+              type="submit"
+              variant="contained"
+              size="large"
+            >
+              Cancel
+            </Button>
           </Box>
         </Box>
         <Box
@@ -172,7 +193,9 @@ function ProductEdit({ product, setShowModal }: Props) {
           {pickedImagePath && (
             <Box component="div" className="relative w-full h-full">
               <Image
-                objectFit="contain"
+                style={{
+                  objectFit: "contain", // cover, contain, none
+                }}
                 src={pickedImagePath}
                 fill
                 alt="product image"
@@ -195,7 +218,7 @@ function ProductEdit({ product, setShowModal }: Props) {
             tabIndex={-1}
             startIcon={<HiCloudUpload />}
           >
-            Upload Product Image
+            Update Product Image
             <UploadButton handleImagePath={handleImagepath} />
           </Button>
         </Box>

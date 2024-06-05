@@ -9,4 +9,6 @@
   transition: 0.5s all;
   border-radius: 5px;
   padding: min(2rem, 4vw);
+  max-height: 95vh;
+  overflow-y: scroll;
 }

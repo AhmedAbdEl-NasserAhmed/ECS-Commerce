@@ -9,8 +9,6 @@ interface Props {
 }
 
 function ProductDetails({ product, setShowModal }: Props) {
-  console.log("product", product);
-
   return (
     <Box component="div" className={styles["product-details"]}>
       <h2 className="text-white text-center bg-gray-600 p-2 md:p-3 lg:p-4 rounded-md font-bold  text-[1.2rem] sm:text-[1.4rem] md:text-[1.6rem] lg:text-3xl  tracking-wide ">

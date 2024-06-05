@@ -5,6 +5,7 @@ import Modal from "@/ui/Modal/Modal";
 import { HiEye, HiMiniPencilSquare, HiTrash } from "react-icons/hi2";
 import ProductDetails from "./ProductDeatails/ProductDetails";
 import DeleteWindow from "@/ui/DeleteWindow/DeleteWindow";
+import ProductEdit from "./ProductEdit/ProductEdit";
 
 function ProductTableMenuOptions({ product }) {
   return (
@@ -31,7 +32,7 @@ function ProductTableMenuOptions({ product }) {
         </Modal.Window>
 
         <Modal.Window name="edit">
-          <p>edit</p>
+          <ProductEdit product={product} />
         </Modal.Window>
 
         <Modal.Window name="delete">

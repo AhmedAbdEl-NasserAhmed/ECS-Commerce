@@ -1,0 +1,12 @@
+.product-edit {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  justify-content: space-between;
+  position: relative;
+  background-color: white;
+  width: min(85vw, 85rem);
+  transition: 0.5s all;
+  border-radius: 5px;
+  padding: min(2rem, 4vw);
+}

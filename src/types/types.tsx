@@ -5,11 +5,10 @@ export interface LoginFormData {
   loginPassword: string;
 }
 
-interface Name {
+export interface AdminProductProps {
   productName: string;
   productCategory: string;
   productQuantity: number;
-  productDescription: string;
   productPrice: number;
   productColors: {
     value: string;
@@ -21,11 +20,13 @@ interface Name {
     label: string;
     color: string;
   }[];
+  productDescription: string;
+  productImage: string;
 }
 
 export interface CustomizedTextFieldProps {
   type?: string;
-  name?: FieldPath<Name>;
+  name?: FieldPath<AdminProductProps>;
   label?: string;
   variant?: "filled" | "outlined" | "standard";
   size?: "small" | "medium";
@@ -68,25 +69,6 @@ export interface SizesOption {
   value: string;
   label: string;
   color: string;
-}
-
-export interface AdminProductProps {
-  productName: string;
-  productCategory: string;
-  productQuantity: number;
-  productPrice: number;
-  productColors: {
-    value: string;
-    label: string;
-    color: string;
-  }[];
-  productSizes: {
-    value: string;
-    label: string;
-    color: string;
-  }[];
-  productDescription: string;
-  productImage: string;
 }
 
 export interface SelecteMenuProps {

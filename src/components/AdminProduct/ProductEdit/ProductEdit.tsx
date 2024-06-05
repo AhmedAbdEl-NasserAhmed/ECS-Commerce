@@ -1,26 +1,40 @@
-"use client";
-
-import ShowUploadedImageProduct from "@/components/AdminProduct/showUploadedProductImage";
-import productFormInputs from "@/constants/productFormInputs";
-import productFormInputsSelectMenus from "@/constants/productFormInputsSelectMenus";
-import { AdminProductProps } from "@/types/types";
-import SelectMenu from "@/ui/SelectMenu/SelectMenu";
-import CustomizedTextField from "@/ui/TextField/TextField";
-import UploadButton from "@/ui/uploadButton";
 import { Box, Button, Typography } from "@mui/material";
-import Image from "next/image";
-import { ChangeEvent, useState } from "react";
-import { useForm, Controller } from "react-hook-form";
-import { HiCloudUpload } from "react-icons/hi";
 
-function ProductPage() {
+import styles from "./ProductEdit.module.scss";
+import { AdminProductProps } from "@/types/types";
+import { HiCloudUpload } from "react-icons/hi";
+import UploadButton from "@/ui/uploadButton";
+import { Controller, useForm } from "react-hook-form";
+import { ChangeEvent, useState } from "react";
+import ShowUploadedImageProduct from "../showUploadedProductImage";
+import CustomizedTextField from "@/ui/TextField/TextField";
+import productFormInputsSelectMenus from "@/constants/productFormInputsSelectMenus";
+import SelectMenu from "@/ui/SelectMenu/SelectMenu";
+import Image from "next/image";
+import productFormInputs from "@/constants/productFormInputs";
+
+interface Props {
+  product: AdminProductProps;
+  setShowModal?: () => void;
+}
+
+function ProductEdit({ product, setShowModal }: Props) {
   const {
     handleSubmit,
     control,
-
     reset,
     formState: { errors },
-  } = useForm<AdminProductProps>();
+  } = useForm<AdminProductProps>({
+    defaultValues: {
+      productName: product.productName,
+      productCategory: product.productCategory,
+      productQuantity: product.productQuantity,
+      productPrice: product.productPrice,
+      productDescription: product.productDescription,
+      productColors: product.productColors,
+      productSizes: product.productSizes,
+    },
+  });
 
   function onSubmit(data: AdminProductProps) {
     console.log("data", data);
@@ -28,7 +42,9 @@ function ProductPage() {
     reset();
   }
 
-  const [pickedImagePath, setPickedImagePath] = useState<string>("");
+  const [pickedImagePath, setPickedImagePath] = useState<string>(
+    product.productImage
+  );
 
   function handleImagepath(e: ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -46,20 +62,14 @@ function ProductPage() {
   }
 
   return (
-    <Box
-      component="div"
-      className=" p-[1.8rem] md:p-[4rem] overflow-y-scroll  "
-    >
-      <Box
-        component="div"
-        className="flex justify-between items-center mb-[1rem] md:mb-[2rem]"
-      >
+    <Box className={styles["product-edit"]} component="div">
+      <Box component="div" className="flex justify-between items-center ">
         <Typography
           className="text-cyan-500 font-semibold "
           variant="h4"
           component="h4"
         >
-          ADD PRODUCT
+          EDIT PRODUCT
         </Typography>
         <Box component="div" className="md:hidden">
           {pickedImagePath && (
@@ -194,4 +204,4 @@ function ProductPage() {
   );
 }
 
-export default ProductPage;
+export default ProductEdit;

@@ -12,7 +12,7 @@ const style = {
   position: "absolute" as "absolute",
   top: "50%",
   left: "50%",
-  width: 400,
+  width: 450,
   height: 400,
   transform: "translate(-50%, -50%)",
   bgcolor: "background.paper",
@@ -51,9 +51,9 @@ export default function ShowUploadedImageProduct({ pickedImagePath }: Props) {
       >
         <Fade in={open}>
           <Box sx={style}>
-            <Box component="div">
+            <Box component="div" className="flex justify-center items-center">
               <Image
-                objectFit="cover"
+                objectFit="contain"
                 src={pickedImagePath}
                 fill
                 alt="product image"

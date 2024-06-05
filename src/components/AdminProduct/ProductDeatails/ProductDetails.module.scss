@@ -1,0 +1,13 @@
+.product-details {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  justify-content: space-between;
+  position: relative;
+  background-color: white;
+  width: min(85vw, 80rem);
+  transition: 0.5s all;
+  border-radius: 5px;
+  padding: min(1.4rem, 4vw);
+  overflow: hidden;
+}

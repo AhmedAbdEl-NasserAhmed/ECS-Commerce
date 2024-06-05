@@ -70,7 +70,7 @@ export interface SizesOption {
   color: string;
 }
 
-export interface ProductFormInputs {
+export interface AdminProductProps {
   productName: string;
   productCategory: string;
   productQuantity: number;

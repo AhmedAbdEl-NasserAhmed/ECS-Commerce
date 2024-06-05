@@ -3,10 +3,9 @@
 import Menus from "@/ui/Menus/Menus";
 import Modal from "@/ui/Modal/Modal";
 import { HiEye, HiMiniPencilSquare, HiTrash } from "react-icons/hi2";
+import ProductDetails from "./ProductDeatails/ProductDetails";
 
 function ProductTableMenuOptions({ product }) {
-  // console.log(product);
-
   return (
     <Modal>
       <Menus.Menu>
@@ -27,7 +26,7 @@ function ProductTableMenuOptions({ product }) {
         </Menus.List>
 
         <Modal.Window name="view">
-          <p>View</p>
+          <ProductDetails product={product} />
         </Modal.Window>
 
         <Modal.Window name="edit">

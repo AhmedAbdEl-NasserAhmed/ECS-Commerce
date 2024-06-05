@@ -3,7 +3,7 @@
 import Image from "next/image";
 import styles from "./BaseTable.module.scss";
 import { Box } from "@mui/material";
-import ProductTableMenuOptions from "@/components/AdminDashboard/productTableMenuOptions";
+import ProductTableMenuOptions from "@/components/AdminProduct/productTableMenuOptions";
 
 function BaseTable({ tableHeaders, content }) {
   return (

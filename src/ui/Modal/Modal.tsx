@@ -43,7 +43,7 @@ function Window({ name, children }) {
   return createPortal(
     <div className={styles.overlay}>
       <div ref={reference} className={styles.modal}>
-        <div>{children}</div>
+        <div>{cloneElement(children, { setShowModal: closeModal })}</div>
       </div>
     </div>,
     document.getElementById("modal")

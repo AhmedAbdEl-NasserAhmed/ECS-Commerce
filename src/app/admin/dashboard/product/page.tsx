@@ -1,9 +1,9 @@
 "use client";
 
-import ShowUploadedImageProduct from "@/components/AdminDashboard/showUploadedProductImage";
+import ShowUploadedImageProduct from "@/components/AdminProduct/showUploadedProductImage";
 import productFormInputs from "@/constants/productFormInputs";
 import productFormInputsSelectMenus from "@/constants/productFormInputsSelectMenus";
-import { ProductFormInputs } from "@/types/types";
+import { AdminProductProps } from "@/types/types";
 import SelectMenu from "@/ui/SelectMenu/SelectMenu";
 import CustomizedTextField from "@/ui/TextField/TextField";
 import UploadButton from "@/ui/uploadButton";
@@ -21,9 +21,9 @@ function ProductPage() {
     reset,
     setValue,
     formState: { errors },
-  } = useForm<ProductFormInputs>();
+  } = useForm<AdminProductProps>();
 
-  function onSubmit(data: ProductFormInputs) {
+  function onSubmit(data: AdminProductProps) {
     console.log("data", data);
 
     reset();
@@ -175,7 +175,7 @@ function ProductPage() {
           {!pickedImagePath && (
             <Box
               component="div"
-              className="font-semibold text-md w-full lg:w-3/4 h-full flex justify-center items-center border-2 border-cyan-600"
+              className="font-semibold text-md w-full lg:w-3/4 h-full flex justify-center items-center border-2 border-gray-300"
             >
               <p> No Product Image to display (optional)</p>
             </Box>

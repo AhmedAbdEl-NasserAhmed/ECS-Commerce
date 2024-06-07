@@ -20,6 +20,7 @@ interface Props {
 function UploadButton({ handleImagePath }: Props) {
   return (
     <VisuallyHiddenInput
+      multiple
       accept="image/png, image/jpeg"
       onChange={handleImagePath}
       type="file"

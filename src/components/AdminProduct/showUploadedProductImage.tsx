@@ -22,10 +22,12 @@ const style = {
 };
 
 interface Props {
-  pickedImagePath: string;
+  selectedImagePaths: string;
 }
 
-export default function ShowUploadedImageProduct({ pickedImagePath }: Props) {
+export default function ShowUploadedImageProduct({
+  selectedImagePaths,
+}: Props) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -52,12 +54,7 @@ export default function ShowUploadedImageProduct({ pickedImagePath }: Props) {
         <Fade in={open}>
           <Box sx={style}>
             <Box component="div" className="flex justify-center items-center">
-              <Image
-                objectFit="contain"
-                src={pickedImagePath}
-                fill
-                alt="product image"
-              />
+              <Image objectFit="contain" src={""} fill alt="product image" />
             </Box>
           </Box>
         </Fade>

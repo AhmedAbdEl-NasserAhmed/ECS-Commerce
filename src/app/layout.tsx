@@ -17,10 +17,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body suppressHydrationWarning={true} className={inter.className}>
-        <StoreProvider>{children}</StoreProvider>
-        <div id="modal"></div>
-      </body>
+      <StoreProvider>
+        <body suppressHydrationWarning={true} className={inter.className}>
+          {children}
+          <div id="modal"></div>
+        </body>
+      </StoreProvider>
     </html>
   );
 }

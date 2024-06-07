@@ -5,6 +5,7 @@
 html {
   font-size: 62.5%;
   box-sizing: border-box;
+  overflow: hidden;
 }
 
 ul {
@@ -40,4 +41,15 @@ ul {
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: rgb(94, 215, 224);
+}
+
+.slider-img {
+  transform: translateX(0) !important;
+  z-index: 50 !important;
+  opacity: 1 !important;
+}
+
+.clear-opacity {
+  opacity: 0 !important;
+  background-color: transparent !important;
 }

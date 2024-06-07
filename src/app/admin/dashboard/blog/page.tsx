@@ -69,7 +69,7 @@ function BlogPage() {
             Add Blog
           </Button>
         </Box>
-        <div
+        {/* <div
           dangerouslySetInnerHTML={{ __html: value }}
           style={{
             marginTop: "20px",
@@ -80,7 +80,7 @@ function BlogPage() {
             fontSize: "16px",
             lineHeight: "1.5",
           }}
-        />
+        /> */}
       </Box>
     </Box>
   );

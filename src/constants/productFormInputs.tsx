@@ -75,45 +75,45 @@ export const productFormInputs: CustomizedTextFieldProps[] = [
       },
     },
   },
+  // {
+  //   id: "3",
+  //   name: "productQuantity",
+  //   defaultValue: "",
+  //   rules: {
+  //     required: "This field is required",
+  //   },
+  //   formerHelperStyles: { style: { fontSize: "1rem" } },
+  //   type: "number",
+  //   label: "Product Quantity",
+  //   variant: "outlined",
+  //   size: "small",
+  //   sx: {
+  //     input: {
+  //       fontSize: "1.4rem",
+  //     },
+
+  //     "& .MuiOutlinedInput-root": {
+  //       "& fieldset": {
+  //         borderColor: "rgb(6 182 212)",
+  //         borderRadius: "5px",
+  //         borderWidth: "2px",
+  //       },
+  //       "&.Mui-error .MuiOutlinedInput-notchedOutline": {
+  //         borderColor: "rgb(186, 9, 9)",
+  //       },
+
+  //       "&:hover fieldset": {
+  //         borderColor: "rgb(6 182 212)",
+  //       },
+
+  //       "&.Mui-focused fieldset": {
+  //         borderColor: "rgb(6 182 212)",
+  //       },
+  //     },
+  //   },
+  // },
   {
     id: "3",
-    name: "productQuantity",
-    defaultValue: "",
-    rules: {
-      required: "This field is required",
-    },
-    formerHelperStyles: { style: { fontSize: "1rem" } },
-    type: "number",
-    label: "Product Quantity",
-    variant: "outlined",
-    size: "small",
-    sx: {
-      input: {
-        fontSize: "1.4rem",
-      },
-
-      "& .MuiOutlinedInput-root": {
-        "& fieldset": {
-          borderColor: "rgb(6 182 212)",
-          borderRadius: "5px",
-          borderWidth: "2px",
-        },
-        "&.Mui-error .MuiOutlinedInput-notchedOutline": {
-          borderColor: "rgb(186, 9, 9)",
-        },
-
-        "&:hover fieldset": {
-          borderColor: "rgb(6 182 212)",
-        },
-
-        "&.Mui-focused fieldset": {
-          borderColor: "rgb(6 182 212)",
-        },
-      },
-    },
-  },
-  {
-    id: "4",
     name: "productPrice",
     defaultValue: "",
     rules: {
@@ -150,7 +150,7 @@ export const productFormInputs: CustomizedTextFieldProps[] = [
     },
   },
   {
-    id: "5",
+    id: "4",
     name: "productDescription",
     defaultValue: "",
     rules: {

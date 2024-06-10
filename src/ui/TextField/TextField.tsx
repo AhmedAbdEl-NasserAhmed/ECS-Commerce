@@ -1,5 +1,5 @@
 import { CustomizedTextFieldProps } from "@/types/types";
-import { TextField } from "@mui/material";
+import { Box, TextField } from "@mui/material";
 
 function CustomizedTextField({
   type,
@@ -13,29 +13,35 @@ function CustomizedTextField({
   sx,
   inputLabelProps,
   formerHelperStyles,
+  textlabel,
   className,
   multiline,
   rows,
   value,
   onChange,
+  placeholder,
 }: CustomizedTextFieldProps) {
   if (field) {
     return (
-      <TextField
-        multiline={multiline}
-        error={error}
-        rows={rows}
-        className={className}
-        helperText={helperText}
-        type={type}
-        label={label}
-        variant={variant}
-        size={size}
-        InputProps={inputProps}
-        FormHelperTextProps={formerHelperStyles}
-        sx={sx}
-        {...field}
-      />
+      <Box component="div" className="flex flex-col gap-4 text-gray-600 ">
+        {textlabel && <label className="text-[1.4rem]">{textlabel}</label>}
+        <TextField
+          placeholder={placeholder}
+          multiline={multiline}
+          error={error}
+          rows={rows}
+          className={className}
+          helperText={helperText}
+          type={type}
+          label={label}
+          variant={variant}
+          size={size}
+          InputProps={inputProps}
+          FormHelperTextProps={formerHelperStyles}
+          sx={sx}
+          {...field}
+        />
+      </Box>
     );
   } else {
     return (

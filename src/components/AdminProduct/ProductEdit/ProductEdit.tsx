@@ -12,7 +12,6 @@ import productFormInputsSelectMenus from "@/constants/productFormInputsSelectMen
 import SelectMenu from "@/ui/SelectMenu/SelectMenu";
 import Image from "next/image";
 import productFormInputs from "@/constants/productFormInputs";
-import CloseButton from "@/ui/CloseButton/CloseButton";
 
 interface Props {
   product: AdminProductProps;
@@ -29,11 +28,8 @@ function ProductEdit({ product, setShowModal }: Props) {
     defaultValues: {
       productName: product.productName,
       productCategory: product.productCategory,
-      productQuantity: product.productQuantity,
       productPrice: product.productPrice,
       productDescription: product.productDescription,
-      productColors: product.productColors,
-      productSizes: product.productSizes,
     },
   });
 
@@ -73,20 +69,20 @@ function ProductEdit({ product, setShowModal }: Props) {
         >
           EDIT PRODUCT
         </Typography>
-        <Box component="div" className="md:hidden">
+        {/* <Box component="div" className="md:hidden">
           {pickedImagePath && (
             <ShowUploadedImageProduct pickedImagePath={pickedImagePath} />
           )}
-        </Box>
+        </Box> */}
       </Box>
       <Box
         component="form"
-        className="flex items-center gap-[2.2rem]   "
+        className="flex  gap-[2.2rem]   "
         onSubmit={handleSubmit(onSubmit)}
       >
         <Box
           component="div"
-          className="flex flex-col gap-[1.55rem]  md:gap-[2rem] w-full md:w-1/2  "
+          className="flex flex-col gap-[1.55rem] mt-0 sm:mt-10  md:gap-[2rem] w-full md:w-1/2  "
         >
           {productFormInputs.map((input) => {
             return (
@@ -117,7 +113,7 @@ function ProductEdit({ product, setShowModal }: Props) {
             );
           })}
 
-          {productFormInputsSelectMenus.map((selectMenu) => {
+          {/* {productFormInputsSelectMenus.map((selectMenu) => {
             return (
               <Controller
                 key={selectMenu.id}
@@ -137,7 +133,7 @@ function ProductEdit({ product, setShowModal }: Props) {
                 )}
               />
             );
-          })}
+          })} */}
 
           <Box
             component="div"

@@ -2,7 +2,6 @@
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css"; // Import Quill Snow theme CSS
 import { FaNewspaper } from "react-icons/fa";
-import Quill from "quill";
 
 import { Box, Button } from "@mui/material";
 

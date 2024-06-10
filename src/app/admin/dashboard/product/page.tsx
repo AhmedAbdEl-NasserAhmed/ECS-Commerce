@@ -12,6 +12,7 @@ import { Box, Button, Typography } from "@mui/material";
 import Image from "next/image";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
+import toast from "react-hot-toast";
 import { HiCloudUpload } from "react-icons/hi";
 import { HiOutlinePlusCircle } from "react-icons/hi2";
 
@@ -19,7 +20,6 @@ function ProductPage() {
   const {
     handleSubmit,
     control,
-
     reset,
     formState: { errors },
   } = useForm<AdminProductProps>();
@@ -34,9 +34,6 @@ function ProductPage() {
 
   const [currentIndex, setCurrentIndex] = useState<number>(0);
 
-  const [uploadImagesNumber, setUploadedImagesNumber] =
-    useState<boolean>(false);
-
   function handleImagepath(e: ChangeEvent<HTMLInputElement>) {
     const files = e.target.files;
 
@@ -50,10 +47,8 @@ function ProductPage() {
       pickedImagePaths.length + selectedImages.length > 8;
 
     if (selectedImages.length > 8 || exceededImagesNumber) {
-      setUploadedImagesNumber(true);
+      toast.error(" Please Do not upload more than 8 images");
       return;
-    } else {
-      setUploadedImagesNumber(false);
     }
 
     setPickedImagePaths((prevImages) => prevImages.concat(selectedImages));
@@ -62,20 +57,23 @@ function ProductPage() {
   useEffect(() => {
     if (!pickedImagePaths.length) return;
 
-    const timer = setTimeout(() => {
-      setCurrentIndex((prev) =>
-        currentIndex === pickedImagePaths.length - 1 ? 0 : prev + 1
-      );
-    }, 3000);
+    const timer = setTimeout(
+      () => {
+        setCurrentIndex((prev) =>
+          currentIndex === pickedImagePaths.length - 1 ||
+          currentIndex > pickedImagePaths.length - 1
+            ? 0
+            : prev + 1
+        );
+      },
+      currentIndex > pickedImagePaths.length - 1 ? 0 : 3000
+    );
 
     return () => clearTimeout(timer);
   }, [currentIndex, pickedImagePaths]);
 
   return (
-    <Box
-      component="div"
-      className=" p-[1.8rem] md:p-[4rem] overflow-y-scroll  "
-    >
+    <Box component="div" className=" p-[1.8rem] md:p-[4rem]   ">
       <Box
         component="div"
         className="flex justify-between items-center mb-[1rem] md:mb-[2rem] "
@@ -87,15 +85,20 @@ function ProductPage() {
         >
           ADD PRODUCT
         </Typography>
-        {/* <Box component="div" className="md:hidden">
-          {pickedImagePaths && (
-            // <ShowUploadedImageProduct selectedImagePaths={pickedImagePaths} />
+        <Box component="div" className="md:hidden">
+          {pickedImagePaths.length > 0 && (
+            <ShowUploadedImageProduct
+              setPickedImagePaths={setPickedImagePaths}
+              currentIndex={currentIndex}
+              setCurrentIndex={setCurrentIndex}
+              selectedImagePaths={pickedImagePaths}
+            />
           )}
-        </Box> */}
+        </Box>
       </Box>
       <Box
         component="form"
-        className="flex  gap-[2.2rem]   "
+        className="flex gap-[12rem] "
         onSubmit={handleSubmit(onSubmit)}
       >
         <Box
@@ -131,7 +134,7 @@ function ProductPage() {
             );
           })}
 
-          {productFormInputsSelectMenus.map((selectMenu) => {
+          {/* {productFormInputsSelectMenus.map((selectMenu) => {
             return (
               <Controller
                 key={selectMenu.id}
@@ -151,7 +154,7 @@ function ProductPage() {
                 )}
               />
             );
-          })}
+          })} */}
 
           <Box component="div" className="flex items-center gap-12 md:block ">
             <Button
@@ -176,7 +179,7 @@ function ProductPage() {
               tabIndex={-1}
               startIcon={<HiCloudUpload />}
             >
-              Upload Image
+              Upload Images
               <UploadButton handleImagePath={handleImagepath} />
             </Button>
           </Box>
@@ -184,16 +187,8 @@ function ProductPage() {
 
         <Box
           component="div"
-          className=" md:flex flex-col gap-10 w-1/2 max-h-[60vh] hidden "
+          className=" md:flex flex-col gap-[3rem] w-1/2 max-h-[50vh] hidden "
         >
-          {uploadImagesNumber && (
-            <p className="text-center text-xl bg-red-400 w-max m-auto font-bold p-2  text-white">
-              Please Do not upload more than 8 images
-            </p>
-          )}
-
-          {/* {!pickedImagePaths.length && !uploadImagesNumber && (
-          )} */}
           {pickedImagePaths.length > 0 && (
             <Box component="div" className="w-full relative h-full  ">
               {pickedImagePaths.map((image, index) => {
@@ -231,7 +226,7 @@ function ProductPage() {
                     onClick={() => setCurrentIndex(index)}
                     className={`${
                       index === currentIndex ? "border-2 border-gray-600" : ""
-                    } relative flex cursor-pointer border-2 border-cyan-500`}
+                    } group relative flex cursor-pointer border-2 border-cyan-500 z-10`}
                     key={index}
                   >
                     <Image
@@ -241,57 +236,73 @@ function ProductPage() {
                       height={35}
                       alt="product image"
                     />
+
                     <span
                       className={`absolute opacity-40 ${
                         currentIndex === index ? "clear-opacity" : ""
                       } bg-slate-600 left-0 top-0 h-full w-full`}
                     ></span>
+                    <span
+                      onClick={() => {
+                        setPickedImagePaths((data) =>
+                          data.filter((e) => e !== image)
+                        );
+                      }}
+                      className="absolute opacity-0 group-hover:opacity-100 flex transition-all duration-500 text-center  justify-center items-center  w-4 h-4 text-white right-0 top-0  text-sm  bg-red-600"
+                    >
+                      X
+                    </span>
                   </Box>
                 ))}
+                {pickedImagePaths.length < 8 && (
+                  <div className="flex cursor-pointer text-center justify-center transition-all duration-300 hover:bg-slate-200 text-xl gap-6 items-center w-[4.5rem]  border-2 border-dashed border-black">
+                    <Button
+                      className="flex flex-col lg:flex-row md:flex-col justify-center  items-center gap-4"
+                      component="label"
+                      role={undefined}
+                      variant="text"
+                      tabIndex={-1}
+                      sx={{
+                        fontSize: "1.7rem",
+                        color: "black",
+                        "&:hover": {
+                          backgroundColor: "transparent",
+                        },
+                      }}
+                    >
+                      <UploadButton handleImagePath={handleImagepath} />
+                      <span className="text-4xl">
+                        <HiOutlinePlusCircle />
+                      </span>
+                    </Button>
+                  </div>
+                )}
               </Box>
             </Box>
           )}
 
-          {pickedImagePaths.length < 8 && (
-            <div className="flex cursor-pointer text-center justify-end transition-all duration-300 hover:bg-slate-200 text-xl gap-6 items-center border-2 border-dashed border-black">
+          {pickedImagePaths.length < 1 && (
+            <div className="flex cursor-pointer text-center justify-end transition-all duration-300 hover:bg-slate-200 text-xl gap-6 items-center border-2 h-full border-dashed border-black">
               <Button
-                className="flex justify-center w-full h-full items-center gap-4"
+                className="flex flex-col  justify-center w-full h-full items-center gap-4"
                 component="label"
                 role={undefined}
                 variant="text"
                 tabIndex={-1}
                 sx={{
-                  fontSize: "1.6rem",
+                  fontSize: "1.7rem",
                   "&:hover": {
                     backgroundColor: "transparent",
                   },
                 }}
               >
-                Start Adding up to 8 Images
+                Start Adding up to (8) Product Images
                 <UploadButton handleImagePath={handleImagepath} />
                 <span className="text-4xl">
                   <HiOutlinePlusCircle />
                 </span>
               </Button>
             </div>
-            // <Button
-            //   className="self-center"
-            //   component="label"
-            //   role={undefined}
-            //   variant="contained"
-            //   tabIndex={-1}
-            //   startIcon={<HiCloudUpload />}
-            //   sx={{
-            //     fontSize: "1rem",
-            //     backgroundColor: "rgb(6 182 212)",
-            //     "&:hover": {
-            //       backgroundColor: "rgb(6 182 212)",
-            //     },
-            //   }}
-            // >
-            //   Upload Product Image
-            //   <UploadButton handleImagePath={handleImagepath} />
-            // </Button>
           )}
         </Box>
       </Box>
@@ -300,5 +311,3 @@ function ProductPage() {
 }
 
 export default ProductPage;
-
-//  className=" flex-col items-center justify-between gap-12 text-center w-1/2 hidden md:flex  h-[60vh] "

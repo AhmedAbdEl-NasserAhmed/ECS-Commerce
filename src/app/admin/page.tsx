@@ -2,7 +2,7 @@ import AdminLoginForm from "@/components/Forms/Admin/AdminLoginForm/AdminLoginFo
 
 function LoginPage() {
   return (
-    <div className="bg-gradient-to-r  from-mainColor to-cyan-500 min-h-screen flex flex-col items-center justify-center gap-8">
+    <div className="bg-[url('/bg-gradient.png')] bg-no-repeat bg-center min-h-screen flex flex-col items-center justify-center gap-8">
       <AdminLoginForm />
     </div>
   );

@@ -46,7 +46,7 @@ function ProductDetails({ product, setShowModal }: Props) {
             <p className="text-xl ">{product.productPrice} </p>
           </Box>
 
-          <Box component="li" className="flex items-center gap-2 ">
+          {/* <Box component="li" className="flex items-center gap-2 ">
             <p className="text-xl font-semibold ">colors :</p>
 
             {product.productColors.map((color) => (
@@ -58,7 +58,7 @@ function ProductDetails({ product, setShowModal }: Props) {
                 &nbsp;
               </span>
             ))}
-          </Box>
+          </Box> */}
 
           <Box component="li" className="flex flex-wrap gap-2 items-center ">
             <p className="text-xl font-semibold ">Description :</p>

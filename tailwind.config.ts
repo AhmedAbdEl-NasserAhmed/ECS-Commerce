@@ -15,7 +15,7 @@ const config: Config = {
       },
       colors: {
         mainColor: "#4170f2",
-        // mainColor: "#255fff",
+        accentColor: "#FDFDFD",
       },
     },
   },

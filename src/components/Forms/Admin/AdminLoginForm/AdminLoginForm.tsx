@@ -1,6 +1,5 @@
 "use client";
 
-import styles from "./AdminLoginForm.module.scss";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
@@ -17,6 +16,7 @@ import { HiArrowRightEndOnRectangle } from "react-icons/hi2";
 import { useForm, Controller } from "react-hook-form";
 import { LoginFormData } from "@/types/types";
 import { emailRegex } from "@/constants/regx";
+import Image from "next/image";
 
 function AdminLoginForm() {
   const router = useRouter();
@@ -43,16 +43,51 @@ function AdminLoginForm() {
     <Box
       component="form"
       onSubmit={handleSubmit(onSubmit)}
-      className="relative bg-white px-6 py-8 sm:px-9 sm:py-10 w-3/4 md:w-[60%] lg:w-1/2 xl:w-1/3 2xl:w-1/3 rounded-lg shadow-lg "
+      className="relative flex w-[85vw] md:w-[70vw] flex-col lg:flex-row rounded-xl shadow-lg h-[95vh] lg:h-[65vh] overflow-hidden "
     >
-      <Box component="div" display="flex" flexDirection="column" gap={4}>
-        <Typography
-          variant="h2"
-          component="h2"
-          className={`${styles["form-header"]} text-[2rem] sm:text-[2.2rem] md:text-[2.4rem] h-[4vh]  font-extrabold `}
-        >
-          Welcome Back,
-        </Typography>
+      <Box
+        component="div"
+        className="relative p-9 flex flex-col justify-between lg:w-1/2 w-full h-full bg-[url('/sign-in-img.png')] bg-no-repeat bg-cover bg-center   "
+      >
+        <Image
+          src="/logo-login.png"
+          alt="logo image"
+          width={250}
+          height={250}
+          objectFit="contain"
+        />
+        <p className="text-white text-[1.67rem] font-medium text-center w-4/5 ml-auto mr-auto mb-[5rem]">
+          Nulla laborum sit voluptate anim in. Nulla ut qui ex ipsum id aliqua
+          amet exercitation. Anim ididunt anim anim voluptate enim.
+        </p>
+      </Box>
+      <Box
+        component="div"
+        display="flex"
+        flexDirection="column"
+        gap={4}
+        className=" px-12 py-10  grow bg-white rounded-xl lg:rounded-none"
+      >
+        <Box component="div" className="flex flex-col gap-4">
+          <Typography
+            variant="h2"
+            component="h2"
+            className=" text-[2rem] font-medium tracking-wide"
+          >
+            Welcome Back!
+          </Typography>
+
+          <Typography
+            variant="h5"
+            component="h5"
+            className=" text-[1.4rem] tracking-wider "
+          >
+            Sign in to continue to{" "}
+            <Link className="text-blue-400" href="/">
+              AndShop
+            </Link>
+          </Typography>
+        </Box>
         <Box component="div" display="flex" flexDirection="column" gap={3}>
           <Controller
             name="loginEmail"
@@ -67,14 +102,15 @@ function AdminLoginForm() {
             }}
             render={({ field }) => (
               <CustomizedTextField
+                textlabel="User Name"
                 formerHelperStyles={{ style: { fontSize: "1rem" } }}
                 field={field}
                 error={!!errors.loginEmail}
                 helperText={errors.loginEmail ? errors.loginEmail.message : ""}
                 type="text"
-                label="Email"
+                placeholder="Enter username"
                 variant="outlined"
-                size="medium"
+                size="small"
                 sx={{
                   helperText: {
                     fontSize: "4rem",
@@ -85,20 +121,35 @@ function AdminLoginForm() {
 
                   "& .MuiOutlinedInput-root": {
                     "& fieldset": {
-                      borderColor: "rgb(6 182 212)",
-                      borderRadius: "5px",
                       borderWidth: "2px",
+                      borderRadius: "40px",
+                      borderColor: "#dcdbdb",
+                      backgroundColor: "#f1f1f152",
                     },
+
+                    "& .MuiInputBase-input": {
+                      paddingBlock: "1rem",
+                      paddingInline: "1.8rem",
+                      fontSize: "1.5rem",
+                      color: "#878787",
+
+                      "&::placeholder": {
+                        color: "#939393",
+                        fontSize: "1.5rem",
+                        opacity: 1,
+                      },
+                    },
+
                     "&.Mui-error .MuiOutlinedInput-notchedOutline": {
                       borderColor: "rgb(186, 9, 9)", // Customize the border color on error here
                     },
 
                     "&:hover fieldset": {
-                      borderColor: "rgb(6 182 212)",
+                      borderColor: "#dcdbdb",
                     },
 
                     "&.Mui-focused fieldset": {
-                      borderColor: "rgb(6 182 212)",
+                      borderColor: "#dcdbdb",
                     },
                   },
                 }}
@@ -119,9 +170,9 @@ function AdminLoginForm() {
                 }
                 field={field}
                 type={showPassword ? "text" : "password"}
-                label="Password"
+                placeholder="Enter password"
                 variant="outlined"
-                size="medium"
+                size="small"
                 sx={{
                   helperText: {
                     fontSize: "4rem",
@@ -176,7 +227,7 @@ function AdminLoginForm() {
           }}
           type="submit"
           variant="contained"
-          size="large"
+          size="medium"
           endIcon={<HiArrowRightEndOnRectangle />}
         >
           Log In

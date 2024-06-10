@@ -13,10 +13,6 @@ export const productTableHeaders = [
     serverKey: "productCategory",
   },
   {
-    name: "Product Quantity",
-    serverKey: "productQuantity",
-  },
-  {
     name: "Product Price",
     serverKey: "productPrice",
   },

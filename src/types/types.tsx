@@ -49,6 +49,7 @@ export interface CustomizedTextFieldProps {
   row?: number;
   placeholder?: string;
   options?: ColourOption[];
+  textlabel?: string;
 }
 
 export interface AdminDashboardLink {

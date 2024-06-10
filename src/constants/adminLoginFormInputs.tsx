@@ -33,12 +33,12 @@ export function adminLoginFormInputs(
         "& .MuiOutlinedInput-root": {
           "& fieldset": {
             borderWidth: "1px",
-            borderRadius: "40px",
             borderColor: "#dcdbdb",
             backgroundColor: "#ffffff52",
           },
 
           "& .MuiInputBase-input": {
+            backgroundColor: "none",
             paddingBlock: "1rem",
             paddingInline: "1.8rem",
             fontSize: "1.5rem",
@@ -87,7 +87,6 @@ export function adminLoginFormInputs(
         "& .MuiOutlinedInput-root": {
           "& fieldset": {
             borderWidth: "1px",
-            borderRadius: "40px",
             borderColor: "#dcdbdb",
             backgroundColor: "#ffffff52",
           },

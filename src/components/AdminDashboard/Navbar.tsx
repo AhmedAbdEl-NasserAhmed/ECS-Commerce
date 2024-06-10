@@ -6,61 +6,89 @@ import { HiOutlineBell } from "react-icons/hi2";
 import { Box, InputAdornment, TextField } from "@mui/material";
 import NavMenu from "./NavMenu";
 import CustomizedTextField from "@/ui/TextField/TextField";
+import { HiMenuAlt3 } from "react-icons/hi";
 
-function Navbar() {
+interface Props {
+  setExpand?: (isTrue: any) => void;
+}
+
+function Navbar({ setExpand }: Props) {
   return (
     <Box
       component="nav"
       display="flex"
       alignItems="center"
-      className="relative h-[10vh] bg-white border-b-2 col-span-full md:col-auto  border-gray-200 justify-between"
+      className="h-[10vh] border-b-2  bg-[#FFFFFF] sticky top-0 border-gray-100 justify-between"
     >
       <Box
         component="div"
         display="flex"
         alignItems="center"
-        className="px-[5rem] justify-between py-12 w-full  "
+        className="px-8 justify-between py-12 w-full "
       >
-        <Box component="div" className="hidden md:block w-1/2">
-          <CustomizedTextField
-            type="text"
-            sx={{
-              width: "100%",
-              input: {
-                fontSize: "1.4rem",
-              },
-              "& .MuiOutlinedInput-root": {
-                "& fieldset": {
-                  borderColor: "rgb(6 182 212)",
-                  borderRadius: "5px",
-                  borderWidth: "2px",
+        <Box component="div" className="flex items-center w-full gap-6  ">
+          <span
+            className="text-4xl cursor-pointer"
+            onClick={() => setExpand((prev: boolean) => !prev)}
+          >
+            <HiMenuAlt3 />
+          </span>
+          <Box component="div" className="w-1/2">
+            <CustomizedTextField
+              type="text"
+              size="small"
+              placeholder="Search.."
+              variant="outlined"
+              sx={{
+                width: "100%",
+                input: {
+                  fontSize: "1.4rem",
                 },
 
-                "&:hover fieldset": {
-                  borderColor: "rgb(6 182 212)",
-                },
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": {
+                    backgroundColor: "#ebebeb46",
+                    borderRadius: "20px",
+                  },
 
-                "&.Mui-focused fieldset": {
-                  borderRadius: "6px",
-                  borderWidth: "3px",
-                  borderColor: "rgb(6 182 212)",
+                  "&.Mui-focused fieldset": {
+                    borderWidth: "1px",
+                    borderColor: "#dcdbdb",
+                  },
+
+                  "&:hover fieldset": {
+                    borderColor: "#dcdbdb",
+                  },
+
+                  "& .MuiInputBase-input": {
+                    paddingBlock: "0.8rem",
+                    paddingInline: "1.8rem",
+                    fontSize: "1.5rem",
+                    color: "#525151",
+
+                    "&::placeholder": {
+                      color: "#878787",
+                      fontSize: "1.5rem",
+                      opacity: 1,
+                    },
+                  },
                 },
-              },
-            }}
-            inputLabelProps={{ style: { fontSize: "1.25rem" } }}
-            size="small"
-            label="Search"
-            variant="outlined"
-            inputProps={{
-              endAdornment: (
-                <InputAdornment style={{ fontSize: "1.25rem" }} position="end">
-                  <FaSearch />
-                </InputAdornment>
-              ),
-            }}
-          />
+              }}
+              inputProps={{
+                endAdornment: (
+                  <InputAdornment
+                    style={{ fontSize: "1.25rem" }}
+                    position="end"
+                  >
+                    <FaSearch />
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </Box>
         </Box>
-        <ul className="flex items-center gap-3 sm:gap-5 text-3xl">
+
+        <ul className="flex items-center gap-3 sm:gap-5 text-3xl ">
           <li className="flex justify-center items-center gap-2 ">
             <div className="  w-[2.4rem] h-[2.4rem] sm:w-[3rem]  sm:h-[3rem] relative ">
               <Image
@@ -75,7 +103,6 @@ function Navbar() {
               <FaAngleDown />
             </span>
           </li>
-
           <li>
             <HiOutlineBell />
           </li>

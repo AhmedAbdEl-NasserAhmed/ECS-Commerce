@@ -46,6 +46,7 @@ function CustomizedTextField({
   } else {
     return (
       <TextField
+        placeholder={placeholder}
         className={className}
         onChange={onChange}
         value={value}

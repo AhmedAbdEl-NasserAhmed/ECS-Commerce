@@ -10,14 +10,16 @@ interface Props {
 }
 
 function AdminPage({ children }: Props) {
+  const [expand, setExpand] = useState<boolean>(false);
+
   return (
-    <div className="bg-gradient-to-r from-mainColor to-cyan-500 overflow-hidden  h-[100vh] px-3 py-3  ">
-      <div
-        className={`${styles.container} bg-white rounded-2xl overflow-y-scroll shadow-lg `}
-      >
-        <Navbar />
-        <Links />
-        <div className="col-span-full md:col-auto ">{children}</div>
+    <div className="overflow-hidden  h-[100vh] ">
+      <div className="grid grid-cols-[max-Content_5fr] h-full bg-white rounded-2xl  shadow-lg ">
+        <Links expand={expand} />
+        <div>
+          <Navbar setExpand={setExpand} />
+          <div>{children}</div>
+        </div>
       </div>
     </div>
   );

@@ -73,7 +73,7 @@ function ProductPage() {
   }, [currentIndex, pickedImagePaths]);
 
   return (
-    <Box component="div" className=" p-[1.8rem] md:p-[4rem]   ">
+    <Box component="div" className=" p-[1.8rem] md:p-[4rem] ">
       <Box
         component="div"
         className="flex justify-between items-center mb-[1rem] md:mb-[2rem] "

@@ -13,8 +13,21 @@ const config: Config = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+      transitionProperty: {
+        "opacity-visibility": "opacity, transform",
+      },
+      transitionDuration: {
+        opacity: "500ms",
+        transform: "500ms",
+      },
       fontFamily: {
         sans: ["var(--font-poppins)", "sans-serif"],
+      },
+      variants: {
+        extend: {
+          transitionProperty: ["hover", "focus"],
+          transitionDuration: ["hover", "focus"],
+        },
       },
       colors: {
         mainColor: "#4170f2",

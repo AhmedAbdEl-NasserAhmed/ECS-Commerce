@@ -19,7 +19,7 @@ function LinksList({ header, links, onClick }: LinksListProps) {
   return (
     <Box
       component="ul"
-      className="flex flex-col items-center md:items-start gap-6 lg:gap-5 md:px-8 md:py-6 lg:px-12 lg:py-8  mt-8 md:mt-0"
+      className="flex flex-col items-center md:items-start gap-6 lg:gap-5 md:px-8 md:py-6 lg:px-12 lg:py-8  mt-8 md:mt-0 "
     >
       <h2 className="md:text-gray-400 text-[1rem] text-white font-extrabold md:text-[1.3rem] md:bg-transparent mb-2 bg-gray-600 px-4 py-2 ">
         {header}

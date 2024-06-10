@@ -2,21 +2,13 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import {
-  Box,
-  Button,
-  IconButton,
-  InputAdornment,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { useState } from "react";
-import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 import CustomizedTextField from "@/ui/TextField/TextField";
-import { HiArrowRightEndOnRectangle } from "react-icons/hi2";
 import { useForm, Controller } from "react-hook-form";
 import { LoginFormData } from "@/types/types";
-import { emailRegex } from "@/constants/regx";
 import Image from "next/image";
+import { adminLoginFormInputs } from "@/constants/adminLoginFormInputs";
 
 function AdminLoginForm() {
   const router = useRouter();
@@ -72,7 +64,7 @@ function AdminLoginForm() {
           <Typography
             variant="h2"
             component="h2"
-            className=" text-[2rem] font-medium tracking-wide"
+            className=" text-[2rem] font-medium tracking-wide   "
           >
             Welcome Back!
           </Typography>
@@ -84,162 +76,67 @@ function AdminLoginForm() {
           >
             Sign in to continue to{" "}
             <Link className="text-blue-400" href="/">
-              AndShop
+              Pite Tech
             </Link>
           </Typography>
         </Box>
         <Box component="div" display="flex" flexDirection="column" gap={3}>
-          <Controller
-            name="loginEmail"
-            control={control}
-            defaultValue=""
-            rules={{
-              required: "Please Enter A Valid Email",
-              pattern: {
-                value: emailRegex,
-                message: "Please Enter Valid Email Format",
-              },
-            }}
-            render={({ field }) => (
-              <CustomizedTextField
-                textlabel="User Name"
-                formerHelperStyles={{ style: { fontSize: "1rem" } }}
-                field={field}
-                error={!!errors.loginEmail}
-                helperText={errors.loginEmail ? errors.loginEmail.message : ""}
-                type="text"
-                placeholder="Enter username"
-                variant="outlined"
-                size="small"
-                sx={{
-                  helperText: {
-                    fontSize: "4rem",
-                  },
-                  input: {
-                    fontSize: "1.4rem",
-                  },
-
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": {
-                      borderWidth: "2px",
-                      borderRadius: "40px",
-                      borderColor: "#dcdbdb",
-                      backgroundColor: "#f1f1f152",
-                    },
-
-                    "& .MuiInputBase-input": {
-                      paddingBlock: "1rem",
-                      paddingInline: "1.8rem",
-                      fontSize: "1.5rem",
-                      color: "#878787",
-
-                      "&::placeholder": {
-                        color: "#939393",
-                        fontSize: "1.5rem",
-                        opacity: 1,
-                      },
-                    },
-
-                    "&.Mui-error .MuiOutlinedInput-notchedOutline": {
-                      borderColor: "rgb(186, 9, 9)", // Customize the border color on error here
-                    },
-
-                    "&:hover fieldset": {
-                      borderColor: "#dcdbdb",
-                    },
-
-                    "&.Mui-focused fieldset": {
-                      borderColor: "#dcdbdb",
-                    },
-                  },
-                }}
-              />
-            )}
-          />
-          <Controller
-            name="loginPassword"
-            control={control}
-            defaultValue=""
-            rules={{ required: "Please Enter A valid Password" }}
-            render={({ field }) => (
-              <CustomizedTextField
-                formerHelperStyles={{ style: { fontSize: "1rem" } }}
-                error={!!errors.loginPassword}
-                helperText={
-                  errors.loginPassword ? errors.loginPassword.message : ""
-                }
-                field={field}
-                type={showPassword ? "text" : "password"}
-                placeholder="Enter password"
-                variant="outlined"
-                size="small"
-                sx={{
-                  helperText: {
-                    fontSize: "4rem",
-                  },
-                  input: {
-                    fontSize: "1.4rem",
-                  },
-
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": {
-                      borderColor: "rgb(6 182 212)",
-                      borderRadius: "5px",
-                      borderWidth: "2px",
-                    },
-                    "&.Mui-error .MuiOutlinedInput-notchedOutline": {
-                      borderColor: "rgb(186, 9, 9)", // Customize the border color on error here
-                    },
-
-                    "&:hover fieldset": {
-                      borderColor: "rgb(6 182 212)",
-                    },
-
-                    "&.Mui-focused fieldset": {
-                      borderColor: "rgb(6 182 212)",
-                    },
-                  },
-                  width: "100%",
-                }}
-                inputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="toggle password visibility"
-                        onClick={handleClickShowPassword}
-                        edge="end"
-                      >
-                        {showPassword ? <MdVisibilityOff /> : <MdVisibility />}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
-              />
-            )}
-          />
+          {adminLoginFormInputs(showPassword, handleClickShowPassword).map(
+            (input) => {
+              return (
+                <Controller
+                  key={input.id}
+                  name={input.name as keyof LoginFormData}
+                  control={control}
+                  defaultValue=""
+                  rules={input.rules}
+                  render={({ field }) => (
+                    <CustomizedTextField
+                      textlabel={input.textlabel}
+                      formerHelperStyles={input.formerHelperStyles}
+                      field={field}
+                      error={!!errors[input.name as keyof LoginFormData]}
+                      helperText={
+                        errors[input.name as keyof LoginFormData]
+                          ? errors[input.name as keyof LoginFormData]?.message
+                          : ""
+                      }
+                      type={input.type}
+                      placeholder={input.placeholder}
+                      variant="outlined"
+                      size="small"
+                      sx={input.sx}
+                      inputProps={input.inputProps}
+                    />
+                  )}
+                />
+              );
+            }
+          )}
+        </Box>
+        <Box component="div" className="flex justify-end">
+          <Link
+            className="text-blue-500 font-semibold sm:text-md md:text-xl "
+            href=""
+          >
+            Forgot password ?
+          </Link>
         </Box>
         <Button
           sx={{
-            backgroundColor: "#3dbadd",
+            padding: "0.85rem",
+            fontSize: "1.2rem",
+            backgroundColor: "#5b93ff",
             "&:hover": {
-              backgroundColor: "#28abcf",
+              backgroundColor: "#4f80e1",
             },
           }}
           type="submit"
           variant="contained"
-          size="medium"
-          endIcon={<HiArrowRightEndOnRectangle />}
+          size="large"
         >
-          Log In
+          Login
         </Button>
-        <Box component="div" className="text-center">
-          <Link
-            className="text-cyan-500 font-semibold sm:text-md md:text-xl "
-            href=""
-          >
-            Forgotten password ?
-          </Link>
-        </Box>
       </Box>
     </Box>
   );

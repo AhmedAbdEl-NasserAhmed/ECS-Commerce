@@ -23,8 +23,8 @@ function CustomizedTextField({
 }: CustomizedTextFieldProps) {
   if (field) {
     return (
-      <Box component="div" className="flex flex-col gap-4 text-gray-600 ">
-        {textlabel && <label className="text-[1.4rem]">{textlabel}</label>}
+      <Box component="div" className="flex flex-col gap-4   ">
+        {textlabel && <label className=" text-xl">{textlabel}</label>}
         <TextField
           placeholder={placeholder}
           multiline={multiline}

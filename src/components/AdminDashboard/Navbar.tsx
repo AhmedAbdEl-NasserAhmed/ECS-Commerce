@@ -4,7 +4,6 @@ import Image from "next/image";
 import { FaAngleDown, FaSearch } from "react-icons/fa";
 import { HiOutlineBell } from "react-icons/hi2";
 import { Box, InputAdornment, TextField } from "@mui/material";
-import NavMenu from "./NavMenu";
 import CustomizedTextField from "@/ui/TextField/TextField";
 import { HiMenuAlt3 } from "react-icons/hi";
 
@@ -107,7 +106,6 @@ function Navbar({ setExpand }: Props) {
             <HiOutlineBell />
           </li>
         </ul>
-        <NavMenu />
       </Box>
     </Box>
   );

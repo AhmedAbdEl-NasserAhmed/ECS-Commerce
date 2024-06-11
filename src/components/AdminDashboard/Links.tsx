@@ -5,6 +5,7 @@ import { HiMenuAlt3, HiOutlineViewGrid } from "react-icons/hi";
 import Accordian from "@/ui/Accordian/Accordian";
 import { HiChevronRight, HiOutlineCube } from "react-icons/hi2";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
 interface Props {
   expand: boolean;
@@ -14,15 +15,19 @@ interface Props {
 function Links({ setExpand, expand }: Props) {
   const params = usePathname();
 
-  console.log("expand", expand);
+  const [windowWidth, setWindowWidth] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (window?.innerWidth > 1020) setWindowWidth(true);
+  }, []);
 
   return (
     <Box
-      onMouseEnter={window.innerWidth > 1020 ? () => setExpand(false) : null}
+      onMouseEnter={windowWidth ? () => setExpand(false) : null}
       component="div"
       className={` ${
         expand ? "w-0 lg:w-[5vw]" : "lg:w-[16vw]"
-      }  flex border-2 transition-all duration-500 absolute w-[30rem]  h-full z-50  lg:relative group border-gray-100 bg-[#FFFFFF] flex-col overflow-hidden  `}
+      }  flex border-2 transition-all duration-500 absolute w-[30rem]  h-full z-50  lg:relative group border-gray-100 bg-[#FFFFFF] flex-col overflow-hidden shadow-lg  lg:shadow-none  `}
     >
       <Box
         component="div"

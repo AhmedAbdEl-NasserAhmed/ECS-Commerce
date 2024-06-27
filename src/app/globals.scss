@@ -9,7 +9,6 @@
 html {
   font-size: 62.5%;
   box-sizing: border-box;
-  overflow: hidden;
 }
 
 ul {
@@ -39,7 +38,7 @@ ul {
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: rgb(90, 192, 199);
+  background: #5b93ff;
 }
 
 /* Handle on hover */

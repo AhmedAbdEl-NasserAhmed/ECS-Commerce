@@ -10,6 +10,10 @@ export interface AdminProductProps {
   productCategory: string;
   productQuantity: number;
   productPrice: number;
+  productMainCategory: string;
+  productSubCategory: string;
+  productDiscount: string;
+  productType: string;
   productColors: {
     value: string;
     label: string;
@@ -50,6 +54,11 @@ export interface CustomizedTextFieldProps {
   placeholder?: string;
   options?: ColourOption[];
   textlabel?: string;
+  inputType?: string;
+  selectOptions?: {
+    value: string;
+    label: string;
+  }[];
 }
 
 export interface AdminDashboardLink {

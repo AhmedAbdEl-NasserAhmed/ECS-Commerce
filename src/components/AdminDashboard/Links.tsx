@@ -5,29 +5,25 @@ import { HiMenuAlt3, HiOutlineViewGrid } from "react-icons/hi";
 import Accordian from "@/ui/Accordian/Accordian";
 import { HiChevronRight, HiOutlineCube } from "react-icons/hi2";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useHandleWindowWidth } from "@/hooks/useHandleWindowWidth";
 
 interface Props {
   expand: boolean;
-  setExpand?: (value) => void;
+  setExpand?: (value: unknown) => void;
 }
 
 function Links({ setExpand, expand }: Props) {
   const params = usePathname();
 
-  const [windowWidth, setWindowWidth] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (window?.innerWidth > 1020) setWindowWidth(true);
-  }, []);
+  const isWidthHiger = useHandleWindowWidth();
 
   return (
     <Box
-      onMouseEnter={windowWidth ? () => setExpand(false) : null}
+      onMouseEnter={isWidthHiger ? () => setExpand(false) : null}
       component="div"
       className={` ${
-        expand ? "w-0 lg:w-[5vw]" : "lg:w-[16vw]"
-      }  flex border-2 transition-all duration-500 absolute w-[30rem]  h-full z-50  lg:relative group border-gray-100 bg-[#FFFFFF] flex-col overflow-hidden shadow-lg  lg:shadow-none  `}
+        expand ? "min-[100px]:w-0 sm:w-0 md:w-0 lg:w-[5vw]" : "lg:w-[16vw]"
+      }  flex border-2 transition-all duration-500 absolute w-[30rem] top-[calc(100vh-90vh)]   h-screen  z-[40] lg:sticky lg:top-0 group border-gray-100 bg-[#FFFFFF] flex-col overflow-hidden shadow-lg  lg:shadow-none  `}
     >
       <Box
         component="div"
@@ -55,12 +51,12 @@ function Links({ setExpand, expand }: Props) {
             PITE TECH
           </p>
         </Link>
-        <span
-          className="lg:hidden absolute right-4 top-8 z-50 text-4xl cursor-pointer"
+        {/* <span
+          className="hidden absolute right-4 top-8 z-50 text-4xl cursor-pointer"
           onClick={() => setExpand((prev) => !prev)}
         >
           <HiMenuAlt3 />
-        </span>
+        </span> */}
       </Box>
       <Box component="div">
         <Link
@@ -87,7 +83,11 @@ function Links({ setExpand, expand }: Props) {
           >
             <div className="flex items-center gap-4">
               <span className="text-4xl ">
-                <HiOutlineCube />
+                <HiOutlineCube
+                  style={{
+                    color: params.includes("product") ? "#5b93ff" : "",
+                  }}
+                />
               </span>
               <p
                 className={` 
@@ -137,3 +137,8 @@ function Links({ setExpand, expand }: Props) {
 }
 
 export default Links;
+
+// style={{
+//   transform:
+//     "currentRoute" === "product" ? "rotate(90deg)" : "rotate(0)",
+// }}

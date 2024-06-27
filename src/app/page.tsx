@@ -5,8 +5,8 @@ function HomePage() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center gap-8">
       <h2 className="text-center">
-        <p className="text-[5rem] text-white">PETI TECH</p>
-        <p className="text-[5rem] text-white">E - COMMERCE SITE</p>
+        <p className="text-[5rem] text-black">PETI TECH</p>
+        <p className="text-[5rem] text-black">E - COMMERCE SITE</p>
       </h2>
       <div>
         <Link

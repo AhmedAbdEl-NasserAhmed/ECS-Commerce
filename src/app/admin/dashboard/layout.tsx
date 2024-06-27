@@ -13,8 +13,8 @@ function AdminPage({ children }: Props) {
   const [expand, setExpand] = useState<boolean>(false);
 
   return (
-    <div className="overflow-hidden  h-[100vh] ">
-      <div className="grid grid-cols-[max-Content_5fr] h-full bg-white rounded-2xl  shadow-lg ">
+    <div className=" h-[100vh] ">
+      <div className="grid grid-cols-[max-Content_5fr]  bg-white rounded-2xl  shadow-lg ">
         <Accordian>
           <Links setExpand={setExpand} expand={expand} />
         </Accordian>

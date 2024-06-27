@@ -17,7 +17,7 @@ function Navbar({ setExpand }: Props) {
       component="nav"
       display="flex"
       alignItems="center"
-      className="h-[10vh] border-b-2  bg-[#FFFFFF] sticky top-0 border-gray-100 justify-between"
+      className="h-[10vh] border-b-2 bg-[#FFFFFF] sticky top-0 z-50 border-gray-100 justify-between"
     >
       <Box
         component="div"
@@ -28,7 +28,7 @@ function Navbar({ setExpand }: Props) {
         <Box component="div" className="flex items-center w-full gap-6  ">
           <span
             className="text-4xl cursor-pointer"
-            onClick={() => setExpand((prev: boolean) => !prev)}
+            onClick={() => setExpand((prev) => !prev)}
           >
             <HiMenuAlt3 />
           </span>

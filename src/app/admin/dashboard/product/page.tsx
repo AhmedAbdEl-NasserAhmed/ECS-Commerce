@@ -94,7 +94,7 @@ function ProductPage() {
               boxShadow: "none",
             },
           }}
-          type="submit"
+          type="button"
           variant="contained"
           size="large"
         >
@@ -103,7 +103,7 @@ function ProductPage() {
       </Box>
       <Box
         component="div"
-        className="relative grow flex flex-col gap-8 bg-white rounded-2xl border-2 p-10 border-slate-100  shadow-md"
+        className="relative grow flex flex-col gap-8 bg-white rounded-2xl border-2 p-10 border-slate-100 shadow-md"
       >
         <Box component="div" className="mb-4">
           <h2 className="text-3xl font-semibold mb-5">Add Product</h2>
@@ -112,7 +112,10 @@ function ProductPage() {
           </span>
         </Box>
 
-        <Box component="div" className="flex gap-5 justify-between">
+        <Box
+          component="div"
+          className="flex gap-5 flex-col lg:flex-row justify-between"
+        >
           <Box component="div" className="grow-[2]">
             <Box
               component="div"
@@ -139,9 +142,30 @@ function ProductPage() {
               })}
             </Box>
           </Box>
-          <Box component="div" className=" grow-[2]">
+          <Box component="div" className=" grow-[2] text-center">
             IMAGES
           </Box>
+        </Box>
+        <Box component="div">
+          <Button
+            sx={{
+              paddingInline: "1.6rem",
+              paddingBlock: "1rem",
+              fontSize: "1.3rem",
+              borderRadius: "5px",
+              backgroundColor: "#5b93ff",
+              boxShadow: "none",
+              "&:hover": {
+                backgroundColor: "black",
+                boxShadow: "none",
+              },
+            }}
+            type="submit"
+            variant="contained"
+            size="large"
+          >
+            Add Product
+          </Button>
         </Box>
       </Box>
     </Box>

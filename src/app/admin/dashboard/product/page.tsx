@@ -4,8 +4,8 @@ import ProductFormInputsSwitch from "@/components/AdminProduct/ProductFormInputs
 import ShowUploadedImageProduct from "@/components/AdminProduct/showUploadedProductImage";
 import productFormInputs from "@/constants/productFormInputs";
 import { AdminProductProps } from "@/types/types";
+import AddProductImage from "@/ui/AddProductImage/AddProductImage";
 import CustomizedTextField from "@/ui/TextField/TextField";
-import UploadButton from "@/ui/uploadButton";
 import { Box, Button, Typography } from "@mui/material";
 
 import Image from "next/image";
@@ -58,7 +58,7 @@ function ProductPage() {
     <Box
       component="form"
       onSubmit={handleSubmit(onSubmit)}
-      className=" flex flex-col gap-8 px-[4rem] py-[1.2rem] h-screen bg-[#FDFDFD]  "
+      className=" flex flex-col gap-8 px-[4rem] py-[1.2rem] bg-[#FDFDFD]  "
     >
       <Box
         component="div"
@@ -112,9 +112,9 @@ function ProductPage() {
 
         <Box
           component="div"
-          className="flex gap-5 flex-col lg:flex-row justify-between"
+          className="flex gap-8 flex-col lg:flex-row justify-between "
         >
-          <Box component="div" className="grow-[2]">
+          <Box component="div" className="grow-[3]">
             <Box
               component="div"
               className="grid grid-cols-[1fr_1fr] items-center gap-12"
@@ -140,8 +140,8 @@ function ProductPage() {
               })}
             </Box>
           </Box>
-          <Box component="div" className=" grow-[2] text-center">
-            IMAGES
+          <Box component="div" className="w-1/4 text-center">
+            <AddProductImage />
           </Box>
         </Box>
         <Box component="div">

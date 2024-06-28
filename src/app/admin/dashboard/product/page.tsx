@@ -26,7 +26,8 @@ function ProductPage() {
   } = useForm<AdminProductProps>();
 
   function onSubmit(data: AdminProductProps) {
-    reset();
+    // reset();
+    console.log("hello");
   }
 
   const [pickedImagePaths, setPickedImagePaths] = useState<string[]>([]);
@@ -55,7 +56,8 @@ function ProductPage() {
 
   return (
     <Box
-      component="div"
+      component="form"
+      onSubmit={handleSubmit(onSubmit)}
       className=" flex flex-col gap-8 px-[4rem] py-[1.2rem] h-screen bg-[#FDFDFD]  "
     >
       <Box

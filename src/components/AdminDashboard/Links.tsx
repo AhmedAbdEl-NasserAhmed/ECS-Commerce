@@ -4,7 +4,7 @@ import Image from "next/image";
 import { HiMenuAlt3, HiOutlineViewGrid } from "react-icons/hi";
 import Accordian from "@/ui/Accordian/Accordian";
 import { HiChevronRight, HiOutlineCube } from "react-icons/hi2";
-import { usePathname } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import { useHandleWindowWidth } from "@/hooks/useHandleWindowWidth";
 
 interface Props {
@@ -14,6 +14,8 @@ interface Props {
 
 function Links({ setExpand, expand }: Props) {
   const params = usePathname();
+
+  const { locale } = useParams();
 
   const isWidthHiger = useHandleWindowWidth();
 
@@ -117,7 +119,7 @@ function Links({ setExpand, expand }: Props) {
           <li className="p-4 text-xl text-gray-700">
             <Link
               onClick={() => setExpand(true)}
-              href="/admin/dashboard/product"
+              href={`/${locale}/admin/dashboard/product`}
             >
               Add Product
             </Link>
@@ -125,7 +127,7 @@ function Links({ setExpand, expand }: Props) {
           <li className="p-4 text-xl text-gray-700">
             <Link
               onClick={() => setExpand(true)}
-              href="/admin/dashboard/productsOverview"
+              href={`/${locale}/admin/dashboard/productsOverview`}
             >
               Products OverView
             </Link>

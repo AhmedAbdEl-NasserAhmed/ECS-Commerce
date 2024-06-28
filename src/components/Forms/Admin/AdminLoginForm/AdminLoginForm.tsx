@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { Box, Button, Typography } from "@mui/material";
 import { useState } from "react";
 import CustomizedTextField from "@/ui/TextField/TextField";
@@ -12,7 +12,7 @@ import { adminLoginFormInputs } from "@/constants/adminLoginFormInputs";
 
 function AdminLoginForm() {
   const router = useRouter();
-
+  const { locale } = useParams();
   const {
     handleSubmit,
     control,
@@ -27,7 +27,7 @@ function AdminLoginForm() {
     const isAuthenticated = false;
 
     if (!isAuthenticated && data.loginEmail && data.loginPassword) {
-      router.push("/admin/dashboard/product");
+      router.push(`/${locale}/admin/dashboard/product`);
     }
   }
 

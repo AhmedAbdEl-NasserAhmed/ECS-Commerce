@@ -31,7 +31,6 @@ const toolbarOptions = [
 function BlogPage() {
   const [value, setValue] = useState<string>("");
 
-  console.log(value);
 
   return (
     <Box component="div" className=" p-[1.8rem] md:p-[4rem] ">

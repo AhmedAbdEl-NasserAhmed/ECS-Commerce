@@ -1,8 +1,18 @@
 import { configureStore } from "@reduxjs/toolkit";
+import usersSlice from "./features/users/usersSlice";
+import testApi from "./features/api";
 
 export const makeStore = () => {
   return configureStore({
-    reducer: {},
+    reducer: {
+      users: usersSlice,
+
+      [testApi.reducerPath]: testApi.reducer,
+    },
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware({ serializableCheck: false }).concat(
+        testApi.middleware
+      ),
   });
 };
 

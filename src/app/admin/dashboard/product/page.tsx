@@ -26,8 +26,6 @@ function ProductPage() {
   } = useForm<AdminProductProps>();
 
   function onSubmit(data: AdminProductProps) {
-    console.log("data", data);
-
     reset();
   }
 
@@ -54,8 +52,6 @@ function ProductPage() {
   // }
 
   const formData = watch();
-
-  console.log(formData);
 
   return (
     <Box

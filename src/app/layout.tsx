@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import StoreProvider from "./StoreProvidet";
 import { Toaster } from "react-hot-toast";
+import { useAppSelector } from "@/lib/hooks";
 
 const poppins = Poppins({
   subsets: ["latin"],

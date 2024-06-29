@@ -1,7 +1,6 @@
 import { styled } from "@mui/material";
 import { ChangeEvent } from "react";
 import Button from "@mui/material/Button";
-import { HiOutlinePlusCircle } from "react-icons/hi";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -19,11 +18,11 @@ interface Props {
   handleImagePath: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
-function UploadButton() {
+function UploadButton({ children }) {
   return (
     <Button
       sx={{
-        fontSize: "4rem",
+        width: "100%",
         color: "gray",
         transition: "background-color 0.5s ease", // Smooth transition for background change
         "&:hover": {
@@ -32,7 +31,7 @@ function UploadButton() {
       }}
       component="label"
     >
-      <HiOutlinePlusCircle />
+      {children}
       <VisuallyHiddenInput
         multiple
         accept="image/png, image/jpeg"

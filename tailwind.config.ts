@@ -33,6 +33,10 @@ const config: Config = {
         mainColor: "#4170f2",
         accentColor: "#FDFDFD",
       },
+      gridTemplateColumns: {
+        // Custom grid template columns
+        "autofill-minmax": "repeat(auto-fit, minmax(30rem, 1fr))",
+      },
     },
   },
   plugins: [],

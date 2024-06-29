@@ -117,7 +117,7 @@ function ProductPage() {
           <Box component="div" className="grow-[3]">
             <Box
               component="div"
-              className="grid grid-cols-[1fr_1fr] items-center gap-12"
+              className="grid grid-cols-autofill-minmax items-center gap-12"
             >
               {productFormInputs.map((input) => {
                 return (
@@ -140,7 +140,7 @@ function ProductPage() {
               })}
             </Box>
           </Box>
-          <Box component="div" className="w-1/4 text-center">
+          <Box component="div" className="w-1/3 text-center">
             <AddProductImage />
           </Box>
         </Box>

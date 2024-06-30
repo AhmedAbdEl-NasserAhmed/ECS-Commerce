@@ -11,6 +11,7 @@ export function adminLoginFormInputs(
       id: "1",
       name: "loginEmail",
       textlabel: "User Name",
+      textLabelClass: "text-xl",
       defaultValue: "",
       rules: {
         required: "Please Enter A Valid Email",
@@ -69,6 +70,7 @@ export function adminLoginFormInputs(
       id: "2",
       name: "loginPassword",
       textlabel: "Password",
+      textLabelClass: "text-xl",
       defaultValue: "",
       rules: {
         required: "Please Enter A Valid password",

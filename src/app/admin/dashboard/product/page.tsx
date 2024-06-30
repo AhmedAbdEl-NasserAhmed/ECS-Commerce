@@ -54,6 +54,10 @@ function ProductPage() {
 
   const formData = watch();
 
+  // console.log("errors", errors);
+
+  // console.log(formData);
+
   return (
     <Box
       component="form"
@@ -114,12 +118,12 @@ function ProductPage() {
           component="div"
           className="flex gap-8 flex-col lg:flex-row justify-between "
         >
-          <Box component="div" className="grow-[3]">
+          <Box component="div" className="grow-[4]">
             <Box
               component="div"
               className="grid grid-cols-autofill-minmax items-center gap-12"
             >
-              {productFormInputs.map((input) => {
+              {productFormInputs(formData).map((input) => {
                 return (
                   <div key={input.id} className={input.className}>
                     <Controller
@@ -140,7 +144,7 @@ function ProductPage() {
               })}
             </Box>
           </Box>
-          <Box component="div" className="w-1/3 text-center">
+          <Box component="div" className="grow-[2] text-center">
             <AddProductImage />
           </Box>
         </Box>

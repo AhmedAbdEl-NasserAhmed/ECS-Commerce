@@ -12,8 +12,8 @@ function AddProductImage() {
           cursor: "pointer",
           border: "1px",
           borderStyle: "dashed",
-          fontSize: "3rem", // Equivalent to text-4xl
-          height: "200px",
+          fontSize: "4rem", // Equivalent to text-4xl
+          height: "250px",
           width: "100%",
           borderRadius: "5px",
           backgroundColor: "#ffffff", // Equivalent to bg-red-500

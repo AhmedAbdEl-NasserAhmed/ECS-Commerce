@@ -170,6 +170,10 @@ export const productFormInputs = (
 
       rules: {
         required: "This field is required",
+        min: {
+          value: 1,
+          message: "This field should be more than 1 ",
+        },
       },
       formerHelperStyles: { style: { fontSize: "1rem" } },
       type: "number",
@@ -227,6 +231,10 @@ export const productFormInputs = (
       placeholder: "Product Discount",
       rules: {
         required: "This field is required",
+        min: {
+          value: 0,
+          message: "This field should be more than 0 ",
+        },
         max: {
           value: +formData.productPrice,
           message: "This field should  be less than Product Price ",

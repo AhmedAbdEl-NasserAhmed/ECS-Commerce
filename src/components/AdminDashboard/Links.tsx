@@ -13,10 +13,6 @@ interface Props {
 }
 
 function Links({ setExpand, expand }: Props) {
-  const params = usePathname();
-
-  const { locale } = useParams();
-
   const isWidthHiger = useHandleWindowWidth();
 
   return (
@@ -78,7 +74,7 @@ function Links({ setExpand, expand }: Props) {
           </p>
         </Link>
 
-        <Accordian.Toggle id="product">
+        {/* <Accordian.Toggle id="product">
           <Box
             component="div"
             className="flex items-center justify-between text-xl font-semibold"
@@ -132,15 +128,10 @@ function Links({ setExpand, expand }: Props) {
               Products OverView
             </Link>
           </li>
-        </Accordian.List>
+        </Accordian.List> */}
       </Box>
     </Box>
   );
 }
 
 export default Links;
-
-// className={` ${
-//   expand ? "min-[100px]:w-0 sm:w-0 md:w-0 lg:w-[5vw]" : "lg:w-[16vw]"
-// }  flex border-2 transition-all duration-500 absolute w-[30rem] top-[calc(100vh-90vh)] h-screen z-[40] lg:sticky lg:top-0 group border-gray-100 bg-[#FFFFFF] flex-col overflow-hidden shadow-lg lg:shadow-none  `}
-// >

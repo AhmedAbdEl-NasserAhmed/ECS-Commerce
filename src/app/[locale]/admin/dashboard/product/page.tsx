@@ -49,7 +49,12 @@ function ProductPage() {
 
   useEffect(() => {
     const discount: number =
+      +formData.productPrice -
       (+formData.productPrice * +formData.productDiscount) / 100;
+
+    console.log("DISCOUNT", discount);
+
+    if (discount === 0 || !discount) return;
 
     setValue("productSalePrice", discount);
 
@@ -66,7 +71,7 @@ function ProductPage() {
         className="h-[10vh] flex justify-between items-center"
       >
         <Box component="div" className="flex flex-col gap-4">
-          <h2 className="text-4xl font-semibold  text-gray-600">Add product</h2>
+          <h2 className="text-4xl font-semibold  text-gray-600">Add Product</h2>
           <Box
             component="div"
             className="flex items-center gap-4 text-[1.4rem]"
@@ -259,7 +264,7 @@ function ProductPage() {
                     message: "This field should be more than 0 ",
                   },
                   max: {
-                    value: 100,
+                    value: 99,
                     message: "This field should be less than 100 % ",
                   },
                 }}
@@ -338,7 +343,15 @@ function ProductPage() {
                       type={"text"}
                       variant={"outlined"}
                       multiline={true}
-                      rows={4}
+                      rows={6}
+                      sx={{
+                        "& .MuiInputBase-input": {
+                          fontSize: "1.4rem",
+                        },
+                        "& .MuiInputBase-inputMultiline": {
+                          fontSize: "1.4rem",
+                        },
+                      }}
                     />
                   )}
                 />

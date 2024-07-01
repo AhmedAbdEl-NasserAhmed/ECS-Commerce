@@ -11,8 +11,9 @@ export interface AdminProductProps {
   productQuantity: number;
   productPrice: number;
   productMainCategory: string;
+  productSalePrice: number;
   productSubCategory: string;
-  productDiscount: string;
+  productDiscount: number;
   productType: string;
   productColors: {
     value: string;
@@ -25,7 +26,6 @@ export interface AdminProductProps {
     color: string;
   }[];
   productDescription: string;
-  productImage: string;
 }
 
 export interface CustomizedTextFieldProps {

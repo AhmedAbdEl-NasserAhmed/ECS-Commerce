@@ -1,11 +1,16 @@
-import { AdminProductProps, CustomizedTextFieldProps } from "@/types/types";
-import { valid } from "chroma-js";
+import {
+  AdminProductProps,
+  ColourOption,
+  CustomizedTextFieldProps,
+} from "@/types/types";
 
 // : CustomizedTextFieldProps[] =
 
-export const productFormInputs = (
-  formData: AdminProductProps
-): CustomizedTextFieldProps[] => {
+export const productFormInputs = (): // formData: AdminProductProps,
+// colorsOptions
+CustomizedTextFieldProps[] => {
+  // console.log(colorsOptions);
+
   return [
     {
       id: "1",
@@ -76,10 +81,7 @@ export const productFormInputs = (
       },
       inputType: "list",
       placeholder: "Product Colors",
-      options: [
-        { value: "black", label: "Black", color: "#000000" },
-        { value: "blue", label: "Blue", color: "#0052CC" },
-      ],
+      // options: colorsOptions,
     },
     {
       id: "3",
@@ -236,7 +238,8 @@ export const productFormInputs = (
           message: "This field should be more than 0 ",
         },
         max: {
-          value: +formData.productPrice,
+          // value: +formData.productPrice,
+          value: 1,
           message: "This field should  be less than Product Price ",
         },
       },

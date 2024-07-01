@@ -1,21 +1,20 @@
 "use client";
 
 import ProductFormInputsSwitch from "@/components/AdminProduct/ProductFormInputsSwitch";
-import ShowUploadedImageProduct from "@/components/AdminProduct/showUploadedProductImage";
 import productFormInputs from "@/constants/productFormInputs";
+import { useAppSelector } from "@/lib/hooks";
 import { AdminProductProps } from "@/types/types";
 import AddProductImage from "@/ui/AddProductImage/AddProductImage";
+import ColorPickerInput from "@/ui/ColorPicketInput/ColorPickerInput";
+import MultiChoiceSelectMenu from "@/ui/MultiChoiceSelectMenu/MultiChoiceSelectMenu";
 import CustomizedTextField from "@/ui/TextField/TextField";
-import { Box, Button, Typography } from "@mui/material";
+import { DisabledByDefault } from "@mui/icons-material";
+import { Box, Button } from "@mui/material";
 import { useTranslations } from "next-intl";
-
-import Image from "next/image";
 import Link from "next/link";
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
-import toast from "react-hot-toast";
-import { HiCloudUpload } from "react-icons/hi";
-import { HiChevronRight, HiOutlinePlusCircle } from "react-icons/hi2";
+import { HiChevronRight } from "react-icons/hi2";
 
 function ProductPage() {
   const {
@@ -26,11 +25,21 @@ function ProductPage() {
     setValue,
     register,
     formState: { errors },
-  } = useForm<AdminProductProps>();
+  } = useForm<AdminProductProps>({
+    mode: "onChange",
+  });
 
   function onSubmit(data: AdminProductProps) {
     // reset();
   }
+
+  const [colorsOption, setColorOptions] = useState<
+    {
+      value: string;
+      label: string;
+      color: string;
+    }[]
+  >([{ value: "Black", label: "Black", color: "#000000" }]);
 
   const formData = watch();
 
@@ -38,9 +47,17 @@ function ProductPage() {
 
   const t = useTranslations("Dashboard");
 
+  useEffect(() => {
+    const discount: number =
+      (+formData.productPrice * +formData.productDiscount) / 100;
+
+    setValue("productSalePrice", discount);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formData.productPrice, formData.productDiscount]);
+
   return (
-    <Box
-      component="form"
+    <form
       onSubmit={handleSubmit(onSubmit)}
       className=" flex flex-col gap-8 px-[4rem] py-[1.2rem] bg-[#FDFDFD]  "
     >
@@ -101,27 +118,231 @@ function ProductPage() {
           <Box component="div" className="grow-[4]">
             <Box
               component="div"
-              className="grid grid-cols-autofill-minmax items-center gap-12"
+              className="relative grid grid-cols-autofill-minmax items-center gap-12"
             >
-              {productFormInputs(formData).map((input) => {
-                return (
-                  <div key={input.id} className={input.className}>
-                    <Controller
-                      name={input.name}
-                      control={control}
-                      defaultValue={input.defaultValue}
-                      rules={input.rules}
-                      render={({ field }) => (
-                        <ProductFormInputsSwitch
-                          errors={errors}
-                          input={input}
-                          field={field}
-                        />
-                      )}
+              <Controller
+                name={"productName"}
+                control={control}
+                defaultValue={""}
+                rules={{ required: "This field is required" }}
+                render={({ field }) => (
+                  <CustomizedTextField
+                    textLabelClass={"font-semibold text-xl"}
+                    placeholder={"Product Name"}
+                    textlabel={"Product Name"}
+                    field={field}
+                    error={!!errors["productName"]}
+                    formerHelperStyles={{ style: { fontSize: "1rem" } }}
+                    helperText={
+                      errors["productName"] ? errors["productName"].message : ""
+                    }
+                    type={"text"}
+                    variant={"outlined"}
+                    size={"small"}
+                  />
+                )}
+              />
+              <Box className="relative">
+                <Controller
+                  name={"productColors"}
+                  control={control}
+                  rules={{ required: "This field is required" }}
+                  render={({ field }) => (
+                    <MultiChoiceSelectMenu
+                      isMulti={true}
+                      textLabelClass={"font-semibold text-xl"}
+                      placeholder={"Product Colors"}
+                      textLabel={"Product Colors"}
+                      name={"productColors"}
+                      options={colorsOption}
+                      field={field}
+                      errors={errors}
                     />
-                  </div>
-                );
-              })}
+                  )}
+                />
+                <ColorPickerInput
+                  colorsOption={colorsOption}
+                  setColorOptions={setColorOptions}
+                />
+              </Box>
+              <Controller
+                name={"productSizes"}
+                control={control}
+                rules={{ required: "This field is required" }}
+                render={({ field }) => (
+                  <MultiChoiceSelectMenu
+                    isMulti={false}
+                    textLabelClass={"font-semibold text-xl"}
+                    placeholder={"Product Sizes"}
+                    textLabel={"Product Sizes"}
+                    name={"productSizes"}
+                    options={[
+                      { value: "XS", label: "XS", color: "#666666" },
+                      { value: "SM", label: "SM", color: "#666666" },
+                      { value: "L", label: "L", color: "#666666" },
+                      { value: "Xl", label: "Xl", color: "#666666" },
+                      { value: "XXl", label: "XXl", color: "#666666" },
+                      { value: "XXXl", label: "XXXl", color: "#666666" },
+                    ]}
+                    field={field}
+                    errors={errors}
+                  />
+                )}
+              />
+              <Controller
+                name={"productQuantity"}
+                control={control}
+                defaultValue={0}
+                rules={{
+                  required: "This field is required",
+                  min: {
+                    value: 1,
+                    message: "Quantity should be more than 1",
+                  },
+                }}
+                render={({ field }) => (
+                  <CustomizedTextField
+                    textLabelClass={"font-semibold text-xl"}
+                    placeholder={"Product Quantity"}
+                    textlabel={"Product Quantity"}
+                    field={field}
+                    error={!!errors["productQuantity"]}
+                    formerHelperStyles={{ style: { fontSize: "1rem" } }}
+                    helperText={
+                      errors["productQuantity"]
+                        ? errors["productQuantity"].message
+                        : ""
+                    }
+                    type={"number"}
+                    variant={"outlined"}
+                    size={"small"}
+                  />
+                )}
+              />
+              <Controller
+                name={"productPrice"}
+                control={control}
+                defaultValue={0}
+                rules={{
+                  required: "This field is required",
+                  min: {
+                    value: 1,
+                    message: "The Price should be more than 1 ",
+                  },
+                }}
+                render={({ field }) => (
+                  <CustomizedTextField
+                    textLabelClass={"font-semibold text-xl"}
+                    placeholder={"Product Price"}
+                    textlabel={"Product Price"}
+                    field={field}
+                    error={!!errors["productPrice"]}
+                    formerHelperStyles={{ style: { fontSize: "1rem" } }}
+                    helperText={
+                      errors["productPrice"]
+                        ? errors["productPrice"].message
+                        : ""
+                    }
+                    type={"number"}
+                    variant={"outlined"}
+                    size={"small"}
+                  />
+                )}
+              />
+              <Controller
+                name={"productDiscount"}
+                control={control}
+                defaultValue={0}
+                rules={{
+                  min: {
+                    value: 0,
+                    message: "This field should be more than 0 ",
+                  },
+                  max: {
+                    value: 100,
+                    message: "This field should be less than 100 % ",
+                  },
+                }}
+                render={({ field }) => (
+                  <CustomizedTextField
+                    textLabelClass={"font-semibold text-xl"}
+                    placeholder={"Product Discount %"}
+                    textlabel={"Product Discount %"}
+                    field={field}
+                    error={!!errors["productDiscount"]}
+                    formerHelperStyles={{ style: { fontSize: "1rem" } }}
+                    helperText={
+                      errors["productDiscount"]
+                        ? errors["productDiscount"].message
+                        : ""
+                    }
+                    type={"number"}
+                    variant={"outlined"}
+                    size={"small"}
+                  />
+                )}
+              />
+              <Controller
+                name={"productSalePrice"}
+                defaultValue={0}
+                control={control}
+                rules={{
+                  required: "This field is required",
+                  min: {
+                    value: 0,
+                    message: "This field should be more than 0 ",
+                  },
+                  max: {
+                    value: +formData.productPrice,
+                    message: "This field should be less than Product Price ",
+                  },
+                }}
+                render={({ field }) => (
+                  <CustomizedTextField
+                    textLabelClass={"font-semibold text-xl"}
+                    placeholder={"Product Sale Pirce"}
+                    textlabel={"Product Sale Price"}
+                    field={field}
+                    error={!!errors["productSalePrice"]}
+                    formerHelperStyles={{ style: { fontSize: "1rem" } }}
+                    helperText={
+                      errors["productSalePrice"]
+                        ? errors["productSalePrice"].message
+                        : ""
+                    }
+                    inputProps={{ readOnly: true }}
+                    type={"number"}
+                    variant={"outlined"}
+                    size={"small"}
+                  />
+                )}
+              />
+              <Box className="col-span-full">
+                <Controller
+                  name={"productDescription"}
+                  control={control}
+                  rules={{ required: "This field is required" }}
+                  render={({ field }) => (
+                    <CustomizedTextField
+                      textLabelClass={"font-semibold text-xl"}
+                      placeholder={"Product Description"}
+                      textlabel={"Product Description"}
+                      field={field}
+                      error={!!errors["productDescription"]}
+                      formerHelperStyles={{ style: { fontSize: "1rem" } }}
+                      helperText={
+                        errors["productDescription"]
+                          ? errors["productDescription"].message
+                          : ""
+                      }
+                      type={"text"}
+                      variant={"outlined"}
+                      multiline={true}
+                      rows={4}
+                    />
+                  )}
+                />
+              </Box>
             </Box>
           </Box>
           <Box component="div" className="grow-[2] text-center">
@@ -155,7 +376,7 @@ function ProductPage() {
           </Button>
         </Box>
       </Box>
-    </Box>
+    </form>
   );
 }
 

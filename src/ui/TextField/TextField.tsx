@@ -21,7 +21,7 @@ function CustomizedTextField({
   value,
   onChange,
   placeholder,
-}: CustomizedTextFieldProps) {
+}: Partial<CustomizedTextFieldProps>) {
   if (field) {
     return (
       <Box component="div" className="flex flex-col gap-4">
@@ -39,7 +39,48 @@ function CustomizedTextField({
           size={size}
           InputProps={inputProps}
           FormHelperTextProps={formerHelperStyles}
-          sx={sx}
+          sx={{
+            helperText: {
+              fontSize: "4rem",
+            },
+            input: {
+              fontSize: "1.4rem",
+            },
+
+            "& .MuiOutlinedInput-root": {
+              "& fieldset": {
+                borderRadius: "10px",
+                borderColor: "#dcdbdb",
+                backgroundColor: "#ffffff52",
+              },
+
+              "& .MuiInputBase-input": {
+                backgroundColor: "none",
+                paddingBlock: "1rem",
+                paddingInline: "1.8rem",
+                color: "#383737",
+
+                "&::placeholder": {
+                  color: "#939393",
+                  fontSize: "1.2rem",
+                  opacity: 1,
+                },
+              },
+
+              "&.Mui-error .MuiOutlinedInput-notchedOutline": {
+                borderColor: "rgb(186, 9, 9)", // Customize the border color on error here
+              },
+
+              "&:hover fieldset": {
+                borderColor: "#dcdbdb",
+              },
+
+              "&.Mui-focused fieldset": {
+                borderColor: "#dcdbdb",
+              },
+            },
+            ...sx,
+          }}
           {...field}
         />
       </Box>

@@ -1,9 +1,4 @@
-"use client";
-
 import AdminLoginForm from "@/components/Forms/Admin/AdminLoginForm/AdminLoginForm";
-import { useGetTodosQuery } from "@/lib/features/api";
-import { usersActions } from "@/lib/features/users/usersSlice";
-import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 
 function LoginPage() {
   return (

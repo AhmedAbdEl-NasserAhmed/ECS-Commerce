@@ -11,25 +11,38 @@ import ErrorMessage from "../ErrorMessage/ErrorMessage";
 function MultiChoiceSelectMenu({
   field,
   className,
-  hasError,
   options,
+  textLabelClass,
   placeholder,
+  textLabel,
   name,
+  isMulti,
   errors,
 }: SelecteMenuProps) {
   const colourStyles: StylesConfig<ColourOption, true> = {
-    control: (styles) => ({
+    control: (styles, state) => ({
       ...styles,
       backgroundColor: "white",
-      borderColor: `${hasError ? "rgb(186, 9, 9)" : "#3dbadd"}`,
-      borderRadius: "5px",
-      borderWidth: "2px",
-      ":hover": {
-        borderColor: `${hasError ? "rgb(186, 9, 9)" : "#3dbadd"}`,
+      fontSize: "1.2rem",
+
+      borderColor: `${
+        errors[name]
+          ? "rgb(186, 9, 9)"
+          : state.isFocused
+          ? "#dcdbdb"
+          : "#e7e7e7"
+      }`,
+      boxShadow: "none",
+      borderRadius: "10px",
+      "&:hover": {
+        borderColor: `${errors[name] ? "rgb(186, 9, 9)" : "#e7e7e7"}`,
       },
-      ":focus": {
-        borderColor: `${hasError ? "rgb(186, 9, 9)" : "#3dbadd"}`,
-      },
+      height: "42px",
+    }),
+    placeholder: (styles) => ({
+      ...styles,
+      color: "#b0b0b0",
+      opacity: 1,
     }),
     option: (styles, { data, isDisabled, isFocused, isSelected }) => {
       const color = chroma(data.color);
@@ -43,7 +56,7 @@ function MultiChoiceSelectMenu({
           ? color.alpha(0.1).css()
           : undefined,
         color: isDisabled
-          ? "#ccc"
+          ? ""
           : isSelected
           ? chroma.contrast(color, "white") > 2
             ? "white"
@@ -83,15 +96,16 @@ function MultiChoiceSelectMenu({
   };
 
   return (
-    <Box component="div" className="flex flex-col gap-2 ">
+    <Box component="div" className="flex flex-col gap-4 ">
+      {textLabel && <label className={textLabelClass}>{textLabel}</label>}
       <Select
         {...field}
         instanceId={useId()}
         placeholder={placeholder}
         className={className}
-        closeMenuOnSelect={false}
+        closeMenuOnSelect={true}
         menuShouldScrollIntoView={true}
-        isMulti
+        isMulti={isMulti}
         options={options}
         styles={colourStyles}
       />

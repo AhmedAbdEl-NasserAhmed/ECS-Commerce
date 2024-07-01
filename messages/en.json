@@ -1,5 +1,8 @@
 {
   "Index": {
     "title": "Hello"
+  },
+  "Dashboard": {
+    "Add Product": "Add Product"
   }
 }

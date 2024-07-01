@@ -8,8 +8,6 @@ import { Controller, useForm } from "react-hook-form";
 import { ChangeEvent, useState } from "react";
 import ShowUploadedImageProduct from "../showUploadedProductImage";
 import CustomizedTextField from "@/ui/TextField/TextField";
-import productFormInputsSelectMenus from "@/constants/productFormInputsSelectMenus";
-import SelectMenu from "@/ui/MultiChoiceSelectMenu/SelectMenu";
 import Image from "next/image";
 import productFormInputs from "@/constants/productFormInputs";
 

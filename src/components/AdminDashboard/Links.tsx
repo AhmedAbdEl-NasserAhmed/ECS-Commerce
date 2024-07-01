@@ -25,7 +25,7 @@ function Links({ setExpand, expand }: Props) {
       component="div"
       className={` ${
         expand ? "min-[100px]:w-0 sm:w-0 md:w-0 lg:w-[5vw]" : "lg:w-[16vw]"
-      }  flex border-2 transition-all duration-500 absolute w-[30rem] top-[calc(100vh-90vh)]   h-screen  z-[40] lg:sticky lg:top-0 group border-gray-100 bg-[#FFFFFF] flex-col overflow-hidden shadow-lg  lg:shadow-none  `}
+      }  flex border-2 transition-all duration-500 fixed w-[30rem] top-[calc(100vh-90vh)] h-screen z-[40] lg:sticky lg:top-0 group border-gray-100 bg-[#FFFFFF] flex-col overflow-hidden shadow-lg lg:shadow-none  `}
     >
       <Box
         component="div"
@@ -140,7 +140,7 @@ function Links({ setExpand, expand }: Props) {
 
 export default Links;
 
-// style={{
-//   transform:
-//     "currentRoute" === "product" ? "rotate(90deg)" : "rotate(0)",
-// }}
+// className={` ${
+//   expand ? "min-[100px]:w-0 sm:w-0 md:w-0 lg:w-[5vw]" : "lg:w-[16vw]"
+// }  flex border-2 transition-all duration-500 absolute w-[30rem] top-[calc(100vh-90vh)] h-screen z-[40] lg:sticky lg:top-0 group border-gray-100 bg-[#FFFFFF] flex-col overflow-hidden shadow-lg lg:shadow-none  `}
+// >

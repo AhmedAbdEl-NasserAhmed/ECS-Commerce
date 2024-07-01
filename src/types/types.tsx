@@ -52,13 +52,16 @@ export interface CustomizedTextFieldProps {
   onChange?: () => void;
   row?: number;
   placeholder?: string;
-  options?: ColourOption[];
+  options?: ColourOption[] | SizesOption[];
   textlabel?: string;
   inputType?: string;
   selectOptions?: {
     value: string;
     label: string;
   }[];
+  textLabel?: string;
+  textLabelClass?: string;
+  isMulti?: boolean;
 }
 
 export interface AdminDashboardLink {
@@ -84,9 +87,11 @@ export interface SizesOption {
 export interface SelecteMenuProps {
   field: object;
   className?: string;
-  hasError: boolean;
   placeholder: string;
   options: ColourOption[] | SizesOption[];
   errors: object;
   name: string;
+  textLabel: string;
+  textLabelClass: string;
+  isMulti: boolean;
 }

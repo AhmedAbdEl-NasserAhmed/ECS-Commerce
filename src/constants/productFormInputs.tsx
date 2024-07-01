@@ -1,341 +1,352 @@
-import { CustomizedTextFieldProps } from "@/types/types";
+import { AdminProductProps, CustomizedTextFieldProps } from "@/types/types";
+import { valid } from "chroma-js";
 
-export const productFormInputs: Partial<CustomizedTextFieldProps[]> = [
-  {
-    id: "1",
-    name: "productName",
-    inputType: "input",
-    textlabel: "Product Name",
-    defaultValue: "",
-    placeholder: "Product Name",
+// : CustomizedTextFieldProps[] =
 
-    rules: {
-      required: "This field is required",
-    },
-    formerHelperStyles: { style: { fontSize: "1rem" } },
-    type: "text",
-    variant: "outlined",
-    size: "small",
-    sx: {
-      helperText: {
-        fontSize: "4rem",
+export const productFormInputs = (
+  formData: AdminProductProps
+): CustomizedTextFieldProps[] => {
+  return [
+    {
+      id: "1",
+      name: "productName",
+      inputType: "input",
+      textlabel: "Product Name",
+      textLabelClass: "font-semibold text-xl",
+      defaultValue: "",
+      placeholder: "Product Name",
+
+      rules: {
+        required: "This field is required",
       },
-      input: {
-        fontSize: "1.4rem",
-      },
-
-      "& .MuiOutlinedInput-root": {
-        "& fieldset": {
-          borderRadius: "10px",
-          borderColor: "#dcdbdb",
-          backgroundColor: "#ffffff52",
+      formerHelperStyles: { style: { fontSize: "1rem" } },
+      type: "text",
+      variant: "outlined",
+      size: "small",
+      sx: {
+        helperText: {
+          fontSize: "4rem",
+        },
+        input: {
+          fontSize: "1.4rem",
         },
 
-        "& .MuiInputBase-input": {
-          backgroundColor: "none",
-          paddingBlock: "1rem",
-          paddingInline: "1.8rem",
-          fontSize: "1.5rem",
-          color: "#383737",
+        "& .MuiOutlinedInput-root": {
+          "& fieldset": {
+            borderRadius: "10px",
+            borderColor: "#dcdbdb",
+            backgroundColor: "#ffffff52",
+          },
 
-          "&::placeholder": {
-            color: "#939393",
-            fontSize: "1.5rem",
-            opacity: 1,
+          "& .MuiInputBase-input": {
+            backgroundColor: "none",
+            paddingBlock: "1rem",
+            paddingInline: "1.8rem",
+            color: "#383737",
+
+            "&::placeholder": {
+              color: "#939393",
+              fontSize: "1.2rem",
+              opacity: 1,
+            },
+          },
+
+          "&.Mui-error .MuiOutlinedInput-notchedOutline": {
+            borderColor: "rgb(186, 9, 9)", // Customize the border color on error here
+          },
+
+          "&:hover fieldset": {
+            borderColor: "#dcdbdb",
+          },
+
+          "&.Mui-focused fieldset": {
+            borderColor: "#dcdbdb",
           },
         },
+      },
+    },
+    {
+      id: "2",
+      name: "productColors",
+      textLabel: "Product Colors",
+      isMulti: true,
+      textLabelClass: "font-semibold text-xl",
+      rules: {
+        required: "This field is required",
+      },
+      inputType: "list",
+      placeholder: "Product Colors",
+      options: [
+        { value: "black", label: "Black", color: "#000000" },
+        { value: "blue", label: "Blue", color: "#0052CC" },
+      ],
+    },
+    {
+      id: "3",
+      name: "productSizes",
+      textLabel: "Product Sizes",
+      isMulti: false,
+      textLabelClass: "font-semibold text-xl",
+      rules: {
+        required: "This field is required",
+      },
+      inputType: "list",
+      placeholder: "Product Sizes",
+      options: [
+        { value: "XS", label: "XS", color: "#666666" },
+        { value: "SM", label: "SM", color: "#666666" },
+        { value: "L", label: "L", color: "#666666" },
+        { value: "Xl", label: "Xl", color: "#666666" },
+        { value: "XXl", label: "XXl", color: "#666666" },
+        { value: "XXXl", label: "XXXl", color: "#666666" },
+      ],
+    },
+    {
+      id: "4",
+      name: "productQuantity",
+      textLabelClass: "font-semibold text-xl",
+      inputType: "input",
+      textlabel: "Product Quantity",
+      defaultValue: "",
+      placeholder: "Product Quantity",
 
-        "&.Mui-error .MuiOutlinedInput-notchedOutline": {
-          borderColor: "rgb(186, 9, 9)", // Customize the border color on error here
+      rules: {
+        required: "This field is required",
+      },
+      formerHelperStyles: { style: { fontSize: "1rem" } },
+      type: "number",
+      variant: "outlined",
+      size: "small",
+      sx: {
+        helperText: {
+          fontSize: "4rem",
+        },
+        input: {
+          fontSize: "1.4rem",
         },
 
-        "&:hover fieldset": {
-          borderColor: "#dcdbdb",
-        },
+        "& .MuiOutlinedInput-root": {
+          "& fieldset": {
+            borderRadius: "10px",
+            borderColor: "#dcdbdb",
+            backgroundColor: "#ffffff52",
+          },
 
-        "&.Mui-focused fieldset": {
-          borderColor: "#dcdbdb",
-        },
-      },
-    },
-  },
-  {
-    id: "2",
-    name: "productType",
-    defaultValue: "T-shirt",
-    inputType: "list",
-    placeholder: "Product Type",
+          "& .MuiInputBase-input": {
+            backgroundColor: "none",
+            paddingBlock: "1rem",
+            paddingInline: "1.8rem",
+            color: "#383737",
 
-    selectOptions: [
-      { value: "T-shirt", label: "T-shirt" },
-      { value: "Dress", label: "Dress" },
-      { value: "Table", label: "Table" },
-      { value: "Sofa", label: "Sofa" },
-    ],
+            "&::placeholder": {
+              color: "#939393",
+              fontSize: "1.2rem",
+              opacity: 1,
+            },
+          },
 
-    sx: {
-      height: "4rem",
-      borderRadius: "40px",
-      fontSize: "1.2rem",
-      "&:hover .MuiOutlinedInput-notchedOutline": {
-        borderColor: "#e7e7e7",
-      },
-      "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-        borderColor: "#e7e7e7",
-      },
-      "& .MuiSelect-select": {
-        // Targeting internal elements
-        display: "flex",
-        fontSize: "1.2rem",
-        borderRadius: "40px",
-        alignItems: "center",
-      },
-    },
-  },
+          "&.Mui-error .MuiOutlinedInput-notchedOutline": {
+            borderColor: "rgb(186, 9, 9)", // Customize the border color on error here
+          },
 
-  {
-    id: "3",
-    name: "productMainCategory",
-    defaultValue: "shirt",
-    inputType: "list",
-    placeholder: "Main Category",
+          "&:hover fieldset": {
+            borderColor: "#dcdbdb",
+          },
 
-    selectOptions: [
-      { value: "shirt", label: "shirt" },
-      { value: "Dress", label: "Dress" },
-      { value: "Table", label: "Table" },
-      { value: "Sofa", label: "Sofa" },
-    ],
-
-    sx: {
-      height: "4rem",
-      borderRadius: "40px",
-      fontSize: "1.2rem",
-      "&:hover .MuiOutlinedInput-notchedOutline": {
-        borderColor: "#e7e7e7",
-      },
-      "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-        borderColor: "#e7e7e7",
-      },
-      "& .MuiSelect-select": {
-        // Targeting internal elements
-        display: "flex",
-        fontSize: "1.2rem",
-        borderRadius: "40px",
-        alignItems: "center",
-      },
-    },
-  },
-
-  {
-    id: "4",
-    name: "productSubCategory",
-    defaultValue: "Men Shirt",
-    inputType: "list",
-    placeholder: "Sub Category",
-
-    selectOptions: [
-      { value: "Men Shirt", label: "Men Shirt" },
-      { value: "Dress", label: "Dress" },
-      { value: "Table", label: "Table" },
-      { value: "Sofa", label: "Sofa" },
-    ],
-
-    sx: {
-      height: "4rem",
-      borderRadius: "40px",
-      fontSize: "1.2rem",
-      "&:hover .MuiOutlinedInput-notchedOutline": {
-        borderColor: "#e7e7e7",
-      },
-      "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-        borderColor: "#e7e7e7",
-      },
-      "& .MuiSelect-select": {
-        // Targeting internal elements
-        display: "flex",
-        fontSize: "1.2rem",
-        borderRadius: "40px",
-        alignItems: "center",
-      },
-    },
-  },
-  {
-    id: "5",
-    name: "productPrice",
-    inputType: "input",
-    textlabel: "Product Price",
-    defaultValue: "",
-    placeholder: "Product Price",
-
-    rules: {
-      required: "This field is required",
-    },
-    formerHelperStyles: { style: { fontSize: "1rem" } },
-    type: "number",
-    variant: "outlined",
-    size: "small",
-    sx: {
-      helperText: {
-        fontSize: "4rem",
-      },
-      input: {
-        fontSize: "1.4rem",
-      },
-
-      "& .MuiOutlinedInput-root": {
-        "& fieldset": {
-          borderRadius: "10px",
-          borderColor: "#dcdbdb",
-          backgroundColor: "#ffffff52",
-        },
-
-        "& .MuiInputBase-input": {
-          backgroundColor: "none",
-          paddingBlock: "1rem",
-          paddingInline: "1.8rem",
-          fontSize: "1.5rem",
-          color: "#383737",
-
-          "&::placeholder": {
-            color: "#939393",
-            fontSize: "1.5rem",
-            opacity: 1,
+          "&.Mui-focused fieldset": {
+            borderColor: "#dcdbdb",
           },
         },
-
-        "&.Mui-error .MuiOutlinedInput-notchedOutline": {
-          borderColor: "rgb(186, 9, 9)", // Customize the border color on error here
-        },
-
-        "&:hover fieldset": {
-          borderColor: "#dcdbdb",
-        },
-
-        "&.Mui-focused fieldset": {
-          borderColor: "#dcdbdb",
-        },
       },
     },
-  },
-  {
-    id: "6",
-    name: "productDiscount",
-    inputType: "input",
-    textlabel: "Product Discount",
-    defaultValue: "",
-    placeholder: "Product Discount",
+    {
+      id: "5",
+      name: "productPrice",
+      textLabelClass: "font-semibold text-xl",
+      inputType: "input",
+      textlabel: "Product Price",
+      defaultValue: "",
+      placeholder: "Product Price",
 
-    rules: {
-      required: "This field is required",
-    },
-    formerHelperStyles: { style: { fontSize: "1rem" } },
-    type: "number",
-    variant: "outlined",
-    size: "small",
-    sx: {
-      helperText: {
-        fontSize: "4rem",
+      rules: {
+        required: "This field is required",
+        min: {
+          value: 1,
+          message: "This field should be more than 1 ",
+        },
       },
-      input: {
-        fontSize: "1.4rem",
-      },
-
-      "& .MuiOutlinedInput-root": {
-        "& fieldset": {
-          borderRadius: "10px",
-          borderColor: "#dcdbdb",
-          backgroundColor: "#ffffff52",
+      formerHelperStyles: { style: { fontSize: "1rem" } },
+      type: "number",
+      variant: "outlined",
+      size: "small",
+      sx: {
+        helperText: {
+          fontSize: "4rem",
+        },
+        input: {
+          fontSize: "1.4rem",
         },
 
-        "& .MuiInputBase-input": {
-          backgroundColor: "none",
-          paddingBlock: "1rem",
-          paddingInline: "1.8rem",
-          fontSize: "1.5rem",
-          color: "#383737",
+        "& .MuiOutlinedInput-root": {
+          "& fieldset": {
+            borderRadius: "10px",
+            borderColor: "#dcdbdb",
+            backgroundColor: "#ffffff52",
+          },
 
-          "&::placeholder": {
-            color: "#939393",
-            fontSize: "1.5rem",
-            opacity: 1,
+          "& .MuiInputBase-input": {
+            backgroundColor: "none",
+            paddingBlock: "1rem",
+            paddingInline: "1.8rem",
+            color: "#383737",
+
+            "&::placeholder": {
+              color: "#939393",
+              fontSize: "1.2rem",
+              opacity: 1,
+            },
+          },
+
+          "&.Mui-error .MuiOutlinedInput-notchedOutline": {
+            borderColor: "rgb(186, 9, 9)", // Customize the border color on error here
+          },
+
+          "&:hover fieldset": {
+            borderColor: "#dcdbdb",
+          },
+
+          "&.Mui-focused fieldset": {
+            borderColor: "#dcdbdb",
           },
         },
-
-        "&.Mui-error .MuiOutlinedInput-notchedOutline": {
-          borderColor: "rgb(186, 9, 9)", // Customize the border color on error here
-        },
-
-        "&:hover fieldset": {
-          borderColor: "#dcdbdb",
-        },
-
-        "&.Mui-focused fieldset": {
-          borderColor: "#dcdbdb",
-        },
       },
     },
-  },
-  {
-    id: "7",
-    name: "productDescription",
-    inputType: "input",
-    textlabel: "Product Description",
-    defaultValue: "",
-    placeholder: "Product Description",
-    className: "col-span-full",
-    rules: {
-      required: "This field is required",
-    },
-    formerHelperStyles: { style: { fontSize: "1rem" } },
-    type: "text",
-
-    size: "small",
-    multiline: true,
-    row: 4,
-    sx: {
-      helperText: {
-        fontSize: "4rem",
+    {
+      id: "6",
+      name: "productDiscount",
+      textLabelClass: "font-semibold text-xl",
+      inputType: "input",
+      textlabel: "Product Discount",
+      defaultValue: "",
+      placeholder: "Product Discount",
+      rules: {
+        required: "This field is required",
+        min: {
+          value: 0,
+          message: "This field should be more than 0 ",
+        },
+        max: {
+          value: +formData.productPrice,
+          message: "This field should  be less than Product Price ",
+        },
       },
-      input: {
-        fontSize: "1.4rem",
-      },
-
-      "& .MuiOutlinedInput-root": {
-        "& fieldset": {
-          borderRadius: "10px",
-          borderColor: "#dcdbdb",
-          backgroundColor: "#ffffff52",
+      formerHelperStyles: { style: { fontSize: "1rem" } },
+      type: "number",
+      variant: "outlined",
+      size: "small",
+      sx: {
+        helperText: {
+          fontSize: "4rem",
+        },
+        input: {
+          fontSize: "1.4rem",
         },
 
-        "& .MuiInputBase-input": {
-          backgroundColor: "none",
-          paddingBlock: "1rem",
-          paddingInline: "0.8rem",
-          fontSize: "1.5rem",
-          color: "#383737",
+        "& .MuiOutlinedInput-root": {
+          "& fieldset": {
+            borderRadius: "10px",
+            borderColor: "#dcdbdb",
+            backgroundColor: "#ffffff52",
+          },
 
-          "&::placeholder": {
-            color: "#939393",
-            fontSize: "1.5rem",
-            opacity: 1,
+          "& .MuiInputBase-input": {
+            backgroundColor: "none",
+            paddingBlock: "1rem",
+            paddingInline: "1.8rem",
+            color: "#383737",
+
+            "&::placeholder": {
+              color: "#939393",
+              fontSize: "1.2rem",
+              opacity: 1,
+            },
+          },
+
+          "&.Mui-error .MuiOutlinedInput-notchedOutline": {
+            borderColor: "rgb(186, 9, 9)", // Customize the border color on error here
+          },
+
+          "&:hover fieldset": {
+            borderColor: "#dcdbdb",
+          },
+
+          "&.Mui-focused fieldset": {
+            borderColor: "#dcdbdb",
           },
         },
+      },
+    },
+    {
+      id: "7",
+      name: "productDescription",
+      textLabelClass: "font-semibold text-xl",
+      inputType: "input",
+      textlabel: "Product Description",
+      defaultValue: "",
+      placeholder: "Product Description",
+      className: "col-span-full",
+      rules: {
+        required: "This field is required",
+      },
+      formerHelperStyles: { style: { fontSize: "1rem" } },
+      type: "text",
 
-        "&.Mui-error .MuiOutlinedInput-notchedOutline": {
-          borderColor: "rgb(186, 9, 9)", // Customize the border color on error here
+      size: "small",
+      multiline: true,
+      row: 4,
+      sx: {
+        helperText: {
+          fontSize: "4rem",
+        },
+        input: {
+          fontSize: "1.4rem",
         },
 
-        "&:hover fieldset": {
-          borderColor: "#dcdbdb",
-        },
+        "& .MuiOutlinedInput-root": {
+          "& fieldset": {
+            borderRadius: "10px",
+            borderColor: "#dcdbdb",
+            backgroundColor: "#ffffff52",
+          },
 
-        "&.Mui-focused fieldset": {
-          borderColor: "#dcdbdb",
+          "& .MuiInputBase-input": {
+            backgroundColor: "none",
+            paddingBlock: "1rem",
+            paddingInline: "0.8rem",
+            color: "#383737",
+
+            "&::placeholder": {
+              color: "#939393",
+              fontSize: "1.2rem",
+              opacity: 1,
+            },
+          },
+
+          "&.Mui-error .MuiOutlinedInput-notchedOutline": {
+            borderColor: "rgb(186, 9, 9)", // Customize the border color on error here
+          },
+
+          "&:hover fieldset": {
+            borderColor: "#dcdbdb",
+          },
+
+          "&.Mui-focused fieldset": {
+            borderColor: "#dcdbdb",
+          },
         },
       },
     },
-  },
-];
+  ];
+};
 
 export default productFormInputs;

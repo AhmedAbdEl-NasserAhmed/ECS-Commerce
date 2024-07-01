@@ -88,10 +88,11 @@ function AdminLoginForm() {
                   key={input.id}
                   name={input.name as keyof LoginFormData}
                   control={control}
-                  defaultValue=""
+                  defaultValue={input.defaultValue}
                   rules={input.rules}
                   render={({ field }) => (
                     <CustomizedTextField
+                      textLabelClass={input.textLabelClass}
                       textlabel={input.textlabel}
                       formerHelperStyles={input.formerHelperStyles}
                       field={field}

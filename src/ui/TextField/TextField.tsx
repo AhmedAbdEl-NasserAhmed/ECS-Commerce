@@ -5,6 +5,7 @@ function CustomizedTextField({
   type,
   label,
   variant,
+  textLabelClass,
   size,
   inputProps,
   error,
@@ -24,9 +25,7 @@ function CustomizedTextField({
   if (field) {
     return (
       <Box component="div" className="flex flex-col gap-4">
-        {textlabel && (
-          <label className="font-semibold text-xl">{textlabel}</label>
-        )}
+        {textlabel && <label className={textLabelClass}>{textlabel}</label>}
         <TextField
           placeholder={placeholder}
           multiline={multiline}

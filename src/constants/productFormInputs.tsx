@@ -1,12 +1,11 @@
-import { CustomizedTextFieldProps } from "@/types/types";
+import { AdminProductProps, CustomizedTextFieldProps } from "@/types/types";
+import { valid } from "chroma-js";
 
 // : CustomizedTextFieldProps[] =
 
 export const productFormInputs = (
-  formData: object
+  formData: AdminProductProps
 ): CustomizedTextFieldProps[] => {
-  console.log(formData);
-
   return [
     {
       id: "1",
@@ -43,12 +42,11 @@ export const productFormInputs = (
             backgroundColor: "none",
             paddingBlock: "1rem",
             paddingInline: "1.8rem",
-            fontSize: "1.5rem",
             color: "#383737",
 
             "&::placeholder": {
               color: "#939393",
-              fontSize: "1.5rem",
+              fontSize: "1.2rem",
               opacity: 1,
             },
           },
@@ -79,16 +77,8 @@ export const productFormInputs = (
       inputType: "list",
       placeholder: "Product Colors",
       options: [
-        { value: "ocean", label: "Ocean", color: "#666666" },
+        { value: "black", label: "Black", color: "#000000" },
         { value: "blue", label: "Blue", color: "#0052CC" },
-        { value: "purple", label: "Purple", color: "#5243AA" },
-        { value: "red", label: "Red", color: "#FF5630" },
-        { value: "orange", label: "Orange", color: "#FF8B00" },
-        { value: "yellow", label: "Yellow", color: "#FFC400" },
-        { value: "green", label: "Green", color: "#36B37E" },
-        { value: "forest", label: "Forest", color: "#00875A" },
-        { value: "slate", label: "Slate", color: "#253858" },
-        { value: "silver", label: "Silver", color: "#666666" },
       ],
     },
     {
@@ -103,8 +93,8 @@ export const productFormInputs = (
       inputType: "list",
       placeholder: "Product Sizes",
       options: [
-        { value: "XS", label: "xs", color: "#666666" },
-        { value: "SM", label: "sm", color: "#666666" },
+        { value: "XS", label: "XS", color: "#666666" },
+        { value: "SM", label: "SM", color: "#666666" },
         { value: "L", label: "L", color: "#666666" },
         { value: "Xl", label: "Xl", color: "#666666" },
         { value: "XXl", label: "XXl", color: "#666666" },
@@ -113,6 +103,64 @@ export const productFormInputs = (
     },
     {
       id: "4",
+      name: "productQuantity",
+      textLabelClass: "font-semibold text-xl",
+      inputType: "input",
+      textlabel: "Product Quantity",
+      defaultValue: "",
+      placeholder: "Product Quantity",
+
+      rules: {
+        required: "This field is required",
+      },
+      formerHelperStyles: { style: { fontSize: "1rem" } },
+      type: "number",
+      variant: "outlined",
+      size: "small",
+      sx: {
+        helperText: {
+          fontSize: "4rem",
+        },
+        input: {
+          fontSize: "1.4rem",
+        },
+
+        "& .MuiOutlinedInput-root": {
+          "& fieldset": {
+            borderRadius: "10px",
+            borderColor: "#dcdbdb",
+            backgroundColor: "#ffffff52",
+          },
+
+          "& .MuiInputBase-input": {
+            backgroundColor: "none",
+            paddingBlock: "1rem",
+            paddingInline: "1.8rem",
+            color: "#383737",
+
+            "&::placeholder": {
+              color: "#939393",
+              fontSize: "1.2rem",
+              opacity: 1,
+            },
+          },
+
+          "&.Mui-error .MuiOutlinedInput-notchedOutline": {
+            borderColor: "rgb(186, 9, 9)", // Customize the border color on error here
+          },
+
+          "&:hover fieldset": {
+            borderColor: "#dcdbdb",
+          },
+
+          "&.Mui-focused fieldset": {
+            borderColor: "#dcdbdb",
+          },
+        },
+      },
+    },
+    {
+      id: "5",
       name: "productPrice",
       textLabelClass: "font-semibold text-xl",
       inputType: "input",
@@ -146,12 +194,11 @@ export const productFormInputs = (
             backgroundColor: "none",
             paddingBlock: "1rem",
             paddingInline: "1.8rem",
-            fontSize: "1.5rem",
             color: "#383737",
 
             "&::placeholder": {
               color: "#939393",
-              fontSize: "1.5rem",
+              fontSize: "1.2rem",
               opacity: 1,
             },
           },
@@ -171,7 +218,7 @@ export const productFormInputs = (
       },
     },
     {
-      id: "5",
+      id: "6",
       name: "productDiscount",
       textLabelClass: "font-semibold text-xl",
       inputType: "input",
@@ -180,6 +227,10 @@ export const productFormInputs = (
       placeholder: "Product Discount",
       rules: {
         required: "This field is required",
+        max: {
+          value: +formData.productPrice,
+          message: "This field should  be less than Product Price ",
+        },
       },
       formerHelperStyles: { style: { fontSize: "1rem" } },
       type: "number",
@@ -204,12 +255,11 @@ export const productFormInputs = (
             backgroundColor: "none",
             paddingBlock: "1rem",
             paddingInline: "1.8rem",
-            fontSize: "1.5rem",
             color: "#383737",
 
             "&::placeholder": {
               color: "#939393",
-              fontSize: "1.5rem",
+              fontSize: "1.2rem",
               opacity: 1,
             },
           },
@@ -229,7 +279,7 @@ export const productFormInputs = (
       },
     },
     {
-      id: "6",
+      id: "7",
       name: "productDescription",
       textLabelClass: "font-semibold text-xl",
       inputType: "input",
@@ -265,12 +315,11 @@ export const productFormInputs = (
             backgroundColor: "none",
             paddingBlock: "1rem",
             paddingInline: "0.8rem",
-            fontSize: "1.5rem",
             color: "#383737",
 
             "&::placeholder": {
               color: "#939393",
-              fontSize: "1.5rem",
+              fontSize: "1.2rem",
               opacity: 1,
             },
           },

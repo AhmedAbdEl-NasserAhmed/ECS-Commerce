@@ -44,24 +44,3 @@ function ProductFormInputsSwitch({ input, field, errors }) {
 }
 
 export default ProductFormInputsSwitch;
-// <Box component="div" className="flex flex-col gap-4">
-//   <label className=" font-semibold text-xl">{input.placeholder}</label>
-//   <Select className="w-full" {...field} sx={input.sx}>
-//     {input.selectOptions.map(
-//       (option: { value: string; label: string }) => (
-//         <MenuItem
-//           sx={{
-//             fontSize: "1rem", // Adjust font size of each option
-//           }}
-//           key={option.value}
-//           value={option.value}
-//         >
-//           {option.label}
-//         </MenuItem>
-//       )
-//     )}
-//   </Select>
-//   {errors[input.name] && (
-//     <FormHelperText>{errors[input.name]?.message}</FormHelperText>
-//   )}
-// </Box>

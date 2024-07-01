@@ -23,7 +23,8 @@ function MultiChoiceSelectMenu({
     control: (styles, state) => ({
       ...styles,
       backgroundColor: "white",
-      fontSize: "1.5rem",
+      fontSize: "1.2rem",
+
       borderColor: `${
         errors[name]
           ? "rgb(186, 9, 9)"
@@ -34,8 +35,9 @@ function MultiChoiceSelectMenu({
       boxShadow: "none",
       borderRadius: "10px",
       "&:hover": {
-        borderColor: "#e7e7e7",
+        borderColor: `${errors[name] ? "rgb(186, 9, 9)" : "#e7e7e7"}`,
       },
+      height: "42px",
     }),
     placeholder: (styles) => ({
       ...styles,

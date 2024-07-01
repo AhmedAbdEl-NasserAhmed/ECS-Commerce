@@ -1,31 +1,63 @@
-import { Box } from "@mui/material";
-import UploadButton from "../uploadButton";
-import { HiOutlinePlusCircle } from "react-icons/hi";
+"use client";
 
-function AddProductImage() {
+import { Box } from "@mui/material";
+import { useEffect, useState } from "react";
+import ProductImageItem from "./ProductImageItem";
+import { Opacity } from "@mui/icons-material";
+
+function AddProductImage({ setValue, formData, control, imagesNumber = 3 }) {
+  const [inputNumbers, setInputNumbers] = useState([]);
+
+  useEffect(() => {
+    const newInputNumbers = [];
+    for (let i = 0; i < imagesNumber; i++) {
+      newInputNumbers.push(`${i + 1}`);
+    }
+    setInputNumbers(newInputNumbers);
+  }, [imagesNumber]);
+
+  function handleDeleteImage(key: string) {
+    setValue(key, null);
+  }
+
   return (
-    <UploadButton>
+    <div>
+      <ProductImageItem
+        control={control}
+        imageUrl={formData[inputNumbers[0]]}
+        imageInputName={inputNumbers[0]}
+        onRemoveImage={handleDeleteImage}
+      />
       <Box
-        component="div"
-        className="flex items-center justify-center"
         sx={{
-          cursor: "pointer",
-          border: "1px",
-          borderStyle: "dashed",
-          fontSize: "4rem", // Equivalent to text-4xl
-          height: "250px",
+          display: "flex",
           width: "100%",
-          borderRadius: "5px",
-          backgroundColor: "#ffffff", // Equivalent to bg-red-500
-          transition: "background-color 0.5s ease", // Smooth transition for background change
-          "&:hover": {
-            backgroundColor: "#f1f1f1", // Background color when hovering
-          },
+          gap: 2,
+          flexWrap: "wrap",
+          marginTop: 2,
         }}
       >
-        <HiOutlinePlusCircle />
+        {inputNumbers.slice(1)?.map((inputName) => {
+          return (
+            <ProductImageItem
+              imageInputName={inputName}
+              imageUrl={formData[inputName]}
+              disabled={!formData[inputNumbers[0]]}
+              key={inputName}
+              control={control}
+              onRemoveImage={handleDeleteImage}
+              sx={{
+                flexGrow: 1,
+                flexShrink: 0,
+                flexBasis: "120px",
+                height: "150px",
+                opacity: !formData[inputNumbers[0]] ? 0.2 : 1,
+              }}
+            />
+          );
+        })}
       </Box>
-    </UploadButton>
+    </div>
   );
 }
 

@@ -22,15 +22,16 @@ function ProductPage() {
     control,
     reset,
     watch,
+    setValue,
+    register,
     formState: { errors },
   } = useForm<AdminProductProps>();
 
   function onSubmit(data: AdminProductProps) {
     // reset();
-    console.log("hello");
   }
 
-  const [pickedImagePaths, setPickedImagePaths] = useState<string[]>([]);
+  // const [pickedImagePaths, setPickedImagePaths] = useState<string[]>([]);
 
   // function handleImagepath(e: ChangeEvent<HTMLInputElement>) {
   //   const files = e.target.files;
@@ -41,11 +42,8 @@ function ProductPage() {
   //     URL.createObjectURL(image)
   //   );
 
-  //   const exceededImagesNumber =
-  //     pickedImagePaths.length + selectedImages.length > 8;
-
-  //   if (selectedImages.length > 8 || exceededImagesNumber) {
-  //     toast.error(" Please Do not upload more than 8 images");
+  //   if (pickedImagePaths.length === 3) {
+  //     toast.error(" Please Do not upload more than 3 images");
   //     return;
   //   }
 
@@ -54,9 +52,7 @@ function ProductPage() {
 
   const formData = watch();
 
-  // console.log("errors", errors);
-
-  // console.log(formData);
+  console.log("formData", formData);
 
   return (
     <Box
@@ -145,7 +141,12 @@ function ProductPage() {
             </Box>
           </Box>
           <Box component="div" className="grow-[2] text-center">
-            <AddProductImage />
+            <AddProductImage
+              control={control}
+              formData={formData}
+              imagesNumber={3}
+              setValue={setValue}
+            />
           </Box>
         </Box>
         <Box component="div">

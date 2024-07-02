@@ -24,7 +24,7 @@ function CustomizedTextField({
 }: Partial<CustomizedTextFieldProps>) {
   if (field) {
     return (
-      <Box component="div" className="flex flex-col gap-4">
+      <Box className="flex flex-col gap-4">
         {textlabel && <label className={textLabelClass}>{textlabel}</label>}
         <TextField
           placeholder={placeholder}

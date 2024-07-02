@@ -37,10 +37,7 @@ function AdminLoginForm() {
       onSubmit={handleSubmit(onSubmit)}
       className="relative flex w-[85vw] md:w-[70vw] flex-col lg:flex-row rounded-xl shadow-lg h-[95vh] lg:h-[65vh] overflow-hidden "
     >
-      <Box
-        component="div"
-        className="relative p-9 flex flex-col justify-between lg:w-1/2 w-full h-full bg-[url('/sign-in-img.png')] bg-no-repeat bg-cover bg-center   "
-      >
+      <Box className="relative p-9 flex flex-col justify-between lg:w-1/2 w-full h-full bg-[url('/sign-in-img.png')] bg-no-repeat bg-cover bg-center   ">
         <Image
           src="/logo-login.png"
           alt="logo image"
@@ -54,13 +51,12 @@ function AdminLoginForm() {
         </p>
       </Box>
       <Box
-        component="div"
         display="flex"
         flexDirection="column"
         gap={4}
         className=" px-12 py-10  grow bg-white rounded-xl lg:rounded-none"
       >
-        <Box component="div" className="flex flex-col gap-4">
+        <Box className="flex flex-col gap-4">
           <Typography
             variant="h2"
             component="h2"
@@ -80,7 +76,7 @@ function AdminLoginForm() {
             </Link>
           </Typography>
         </Box>
-        <Box component="div" display="flex" flexDirection="column" gap={3}>
+        <Box display="flex" flexDirection="column" gap={3}>
           {adminLoginFormInputs(showPassword, handleClickShowPassword).map(
             (input) => {
               return (
@@ -115,7 +111,7 @@ function AdminLoginForm() {
             }
           )}
         </Box>
-        <Box component="div" className="flex justify-end">
+        <Box className="flex justify-end">
           <Link
             className="text-blue-500 font-semibold sm:text-md md:text-xl "
             href=""

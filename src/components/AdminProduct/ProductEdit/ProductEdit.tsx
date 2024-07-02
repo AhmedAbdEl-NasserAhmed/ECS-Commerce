@@ -55,11 +55,11 @@ function ProductEdit({ product, setShowModal }: Props) {
   }
 
   return (
-    <Box className={styles["product-edit"]} component="div">
+    <Box className={styles["product-edit"]}>
       {/* <div className="self-end">
         <CloseButton />
       </div> */}
-      <Box component="div" className="flex justify-between items-center ">
+      <Box className="flex justify-between items-center ">
         <Typography
           className="text-cyan-500 font-semibold "
           variant="h4"
@@ -67,7 +67,7 @@ function ProductEdit({ product, setShowModal }: Props) {
         >
           EDIT PRODUCT
         </Typography>
-        {/* <Box component="div" className="md:hidden">
+        {/* <Box   className="md:hidden">
           {pickedImagePath && (
             <ShowUploadedImageProduct pickedImagePath={pickedImagePath} />
           )}
@@ -78,10 +78,7 @@ function ProductEdit({ product, setShowModal }: Props) {
         className="flex  gap-[2.2rem]   "
         onSubmit={handleSubmit(onSubmit)}
       >
-        <Box
-          component="div"
-          className="flex flex-col gap-[1.55rem] mt-0 sm:mt-10  md:gap-[2rem] w-full md:w-1/2  "
-        >
+        <Box className="flex flex-col gap-[1.55rem] mt-0 sm:mt-10  md:gap-[2rem] w-full md:w-1/2  ">
           {productFormInputs.map((input) => {
             return (
               <Controller
@@ -133,10 +130,7 @@ function ProductEdit({ product, setShowModal }: Props) {
             );
           })} */}
 
-          <Box
-            component="div"
-            className="flex items-center flex-col md:flex-row gap-6  justify-between w-full "
-          >
+          <Box className="flex items-center flex-col md:flex-row gap-6  justify-between w-full ">
             <Button
               className=" w-full md:w-max  "
               sx={{
@@ -180,12 +174,9 @@ function ProductEdit({ product, setShowModal }: Props) {
             </Button>
           </Box>
         </Box>
-        <Box
-          component="div"
-          className=" flex-col items-center justify-between gap-12 text-center w-1/2 hidden md:flex  h-[60vh] "
-        >
+        <Box className=" flex-col items-center justify-between gap-12 text-center w-1/2 hidden md:flex  h-[60vh] ">
           {pickedImagePath && (
-            <Box component="div" className="relative w-full h-full">
+            <Box className="relative w-full h-full">
               <Image
                 style={{
                   objectFit: "contain", // cover, contain, none
@@ -197,10 +188,7 @@ function ProductEdit({ product, setShowModal }: Props) {
             </Box>
           )}
           {!pickedImagePath && (
-            <Box
-              component="div"
-              className="font-semibold text-md w-full lg:w-3/4 h-full flex justify-center items-center border-2 border-gray-300"
-            >
+            <Box className="font-semibold text-md w-full lg:w-3/4 h-full flex justify-center items-center border-2 border-gray-300">
               <p> No Product Image to display (optional)</p>
             </Box>
           )}

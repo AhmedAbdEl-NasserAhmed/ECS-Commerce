@@ -1,34 +1,31 @@
-import axios from "axios";
+import axiosInstance from "@/config/axios.config";
 
-const axiosInstance = axios.create({
-  baseURL: "http://localhost:8000/api/", // Replace with your API base URL
-  headers: {
-    "Content-Type": "application/json",
-    // Add any other headers or configurations you need
-  },
-});
+interface AxiosProps {
+  url?: string;
+  method?: string;
+  data?: any;
+  params?: any;
+}
 
-// Add a request interceptor
-axiosInstance.interceptors.request.use(
-  (config) => {
-    // You can modify the request config here, e.g., add authentication headers
-    // config.headers.Authorization = `Bearer ${getToken()}`;
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
+const axiosBaseQuery = ({ baseUrl } = { baseUrl: "" }) => {
+  return async ({ url, method, body, params }) => {
+    try {
+      const result = await axiosInstance({
+        url: baseUrl + url,
+        method,
+        data: body,
+        params,
+      } as AxiosProps);
+      return { data: result.data };
+    } catch (err) {
+      return {
+        error: {
+          status: err.response?.status,
+          data: err.response?.data || err.message,
+        },
+      };
+    }
+  };
+};
 
-// Add a response interceptor
-axiosInstance.interceptors.response.use(
-  (response) => {
-    // You can modify the response data here, e.g., handling pagination
-    return response.data;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
-
-export default axiosInstance;
+export default axiosBaseQuery;

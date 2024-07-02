@@ -96,7 +96,7 @@ function MultiChoiceSelectMenu({
   };
 
   return (
-    <Box component="div" className="flex flex-col gap-4 ">
+    <Box className="flex flex-col gap-4 ">
       {textLabel && <label className={textLabelClass}>{textLabel}</label>}
       <Select
         {...field}

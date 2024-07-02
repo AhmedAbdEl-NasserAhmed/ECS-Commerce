@@ -1,10 +1,9 @@
+import axiosBaseQuery from "@/api";
 import {
   createApi,
   fakeBaseQuery,
   fetchBaseQuery,
 } from "@reduxjs/toolkit/query/react";
-// import axiosBaseQuery from "services/Api";
-// import { REACT_APP_CONTRACTOR_BASE_URL } from "utils/Env/Env";
 
 // RTK Query
 const testApi = createApi({
@@ -16,9 +15,12 @@ const testApi = createApi({
     getTodos: builder.query({
       query: () => ({ url: "todos" }),
     }),
+    addTodo: builder.mutation({
+      query: (body) => ({ url: "todos", method: "POST", body }),
+    }),
   }),
 });
 
-export const { useGetTodosQuery } = testApi;
+export const { useGetTodosQuery, useAddTodoMutation } = testApi;
 
 export default testApi;

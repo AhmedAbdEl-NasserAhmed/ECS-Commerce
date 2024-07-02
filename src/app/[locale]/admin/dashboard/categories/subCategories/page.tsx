@@ -1,8 +1,12 @@
 "use client";
 
+import { fetchUsers } from "@/helpers/usersData";
+import useDebounceHook from "@/hooks/useDebounceHook";
+import SmartSearchInput from "@/ui/SmartSearchInput/SmartSearchInput";
 import CustomizedTextField from "@/ui/TextField/TextField";
 import { Box, Button } from "@mui/material";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { HiChevronRight } from "react-icons/hi2";
 
@@ -16,6 +20,26 @@ function SubCategoryPage() {
     register,
     formState: { errors },
   } = useForm();
+
+  const formData = watch();
+
+  // console.log("Form data", formData);
+
+  const [usersData, setUsersData] = useState([]);
+
+  const [smartSeachvalue, setSmartSeachValue] = useState<string>("");
+
+  const debounceValue = useDebounceHook(smartSeachvalue);
+
+  useEffect(() => {
+    async function getUsersData() {
+      const data = fetchUsers(debounceValue);
+      const res = await data;
+      setUsersData(res);
+    }
+
+    getUsersData();
+  }, [debounceValue]);
 
   return (
     <form className=" flex flex-col gap-8 px-[4rem] py-[1.2rem] bg-[#FDFDFD] ">
@@ -61,8 +85,23 @@ function SubCategoryPage() {
             &nbsp;
           </span>
         </Box>
-        <Box className="relative flex flex-col  gap-12">
-          <div>SMART SEARCH</div>
+        <Box className="relative flex flex-col gap-12">
+          <Controller
+            name={"mainCategory"}
+            control={control}
+            defaultValue={""}
+            rules={{ required: "This field is required" }}
+            render={({ field }) => (
+              <SmartSearchInput
+                getSmartSearchValue={setSmartSeachValue}
+                textLabel="Main Category"
+                data={usersData}
+                placeholder=" Search for category"
+                name={field.name}
+                onChange={field.onChange}
+              />
+            )}
+          />
           <Controller
             name={"subCategoryName"}
             control={control}

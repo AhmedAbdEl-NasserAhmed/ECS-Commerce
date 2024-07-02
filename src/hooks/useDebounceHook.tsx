@@ -4,8 +4,8 @@ interface Props {
   value: number;
 }
 
-function useDebounceHook(value: number) {
-  const [debounceValue, setDebounceValue] = useState<number>(null);
+function useDebounceHook<T>(value: T) {
+  const [debounceValue, setDebounceValue] = useState<T>();
 
   useEffect(() => {
     const debounceCall = setTimeout(() => {

@@ -86,7 +86,11 @@ function List({ id, children }) {
     return () => window.removeEventListener("scroll", handleScrolling);
   }, [closeMenus]);
 
-  const menuRef = useClickOutside({ close: closeMenus, StopBubbling: false });
+  const menuRef = useClickOutside({
+    close: closeMenus,
+    value: "",
+    StopBubbling: false,
+  });
 
   if (openId !== id) return null;
 

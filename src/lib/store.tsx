@@ -1,16 +1,16 @@
 import { configureStore } from "@reduxjs/toolkit";
 import colorOptions from "./features/colorOptions/colorOptionsSlice";
-import testApi from "./features/api";
+import adminApi from "./features/api/adminApi";
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
       colorOptions: colorOptions,
-      [testApi.reducerPath]: testApi.reducer,
+      [adminApi.reducerPath]: adminApi.reducer,
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({ serializableCheck: false }).concat(
-        testApi.middleware
+        adminApi.middleware
       ),
   });
 };

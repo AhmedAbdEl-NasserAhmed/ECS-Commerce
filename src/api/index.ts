@@ -5,17 +5,18 @@ interface AxiosProps {
   method?: string;
   data?: any;
   params?: any;
+  body?: object;
 }
 
 const axiosBaseQuery = ({ baseUrl } = { baseUrl: "" }) => {
-  return async ({ url, method, body, params }) => {
+  return async ({ url, method, body, params }: AxiosProps) => {
     try {
       const result = await axiosInstance({
         url: baseUrl + url,
         method,
         data: body,
         params,
-      } as AxiosProps);
+      });
       return { data: result.data };
     } catch (err) {
       return {

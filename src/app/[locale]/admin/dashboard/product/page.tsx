@@ -1,6 +1,5 @@
 "use client";
 
-import { useAddTodoMutation, useGetTodosQuery } from "@/lib/features/api";
 import { AdminProductProps } from "@/types/types";
 import AddProductImage from "@/ui/AddProductImage/AddProductImage";
 import ColorPickerInput from "@/ui/ColorPicketInput/ColorPickerInput";
@@ -23,9 +22,7 @@ function ProductPage() {
     setValue,
     register,
     formState: { errors },
-  } = useForm<AdminProductProps>({
-    mode: "onChange",
-  });
+  } = useForm<AdminProductProps>();
 
   function onSubmit(data: AdminProductProps) {
     // reset();
@@ -50,18 +47,12 @@ function ProductPage() {
       +formData.productPrice -
       (+formData.productPrice * +formData.productDiscount) / 100;
 
-    console.log("DISCOUNT", discount);
-
     if (!discount) return;
 
     setValue("productSalePrice", discount);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formData.productPrice, formData.productDiscount]);
-
-  const { data, isLoading } = useGetTodosQuery("todos");
-
-  const [addTodoFn, addTodoResponse] = useAddTodoMutation();
 
   return (
     <form

@@ -9,10 +9,14 @@ import { useForm, Controller } from "react-hook-form";
 import { LoginFormData } from "@/types/types";
 import Image from "next/image";
 import { adminLoginFormInputs } from "@/constants/adminLoginFormInputs";
+import { useAdminLoginMutation } from "@/lib/features/api/adminApi";
+import toast from "react-hot-toast";
 
 function AdminLoginForm() {
   const router = useRouter();
+
   const { locale } = useParams();
+
   const {
     handleSubmit,
     control,
@@ -23,12 +27,20 @@ function AdminLoginForm() {
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
-  function onSubmit(data: LoginFormData) {
-    const isAuthenticated = false;
+  const [adminFc, adminState] = useAdminLoginMutation();
 
-    if (!isAuthenticated && data.loginEmail && data.loginPassword) {
-      router.push(`/${locale}/admin/dashboard/product`);
-    }
+  function onSubmit(data: LoginFormData) {
+    adminFc({
+      email: "admin@gmail.com",
+      password: "admin123456",
+    })
+      .unwrap()
+      .then((res) => {
+        localStorage.setItem("userToken", res.token);
+        toast.success("Welcome Back");
+        router.push(`/${locale}/admin/dashboard/product`);
+      })
+      .catch((err) => toast.error(err.data.message));
   }
 
   return (

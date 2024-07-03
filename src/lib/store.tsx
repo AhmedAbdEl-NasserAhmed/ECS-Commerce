@@ -1,11 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
-import colorOptions from "./features/colorOptions/colorOptionsSlice";
+import usersSlice from "./features/usersSlice/usersSlice";
 import adminApi from "./features/api/adminApi";
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
-      colorOptions: colorOptions,
+      usersSlice: usersSlice,
       [adminApi.reducerPath]: adminApi.reducer,
     },
     middleware: (getDefaultMiddleware) =>

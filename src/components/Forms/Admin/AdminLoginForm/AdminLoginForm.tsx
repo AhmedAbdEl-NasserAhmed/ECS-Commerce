@@ -11,12 +11,10 @@ import Image from "next/image";
 import { adminLoginFormInputs } from "@/constants/adminLoginFormInputs";
 import { useAdminLoginMutation } from "@/lib/features/api/adminApi";
 import toast from "react-hot-toast";
+import { useAppDispatch } from "@/lib/hooks";
+import { loginUser } from "@/lib/features/usersSlice/usersSlice";
 
 function AdminLoginForm() {
-  const router = useRouter();
-
-  const { locale } = useParams();
-
   const {
     handleSubmit,
     control,
@@ -29,6 +27,8 @@ function AdminLoginForm() {
 
   const [adminFc, adminState] = useAdminLoginMutation();
 
+  const dispatch = useAppDispatch();
+
   function onSubmit(data: LoginFormData) {
     adminFc({
       email: "admin@gmail.com",
@@ -36,9 +36,9 @@ function AdminLoginForm() {
     })
       .unwrap()
       .then((res) => {
-        localStorage.setItem("userToken", res.token);
         toast.success("Welcome Back");
-        router.push(`/${locale}/admin/dashboard/product`);
+        localStorage.setItem("userToken", res.token);
+        dispatch(loginUser({ user: res.data, token: res.token }));
       })
       .catch((err) => toast.error(err.data.message));
   }
@@ -100,6 +100,7 @@ function AdminLoginForm() {
                   rules={input.rules}
                   render={({ field }) => (
                     <CustomizedTextField
+                      disabled={adminState.isLoading}
                       textLabelClass={input.textLabelClass}
                       textlabel={input.textlabel}
                       formerHelperStyles={input.formerHelperStyles}
@@ -132,6 +133,7 @@ function AdminLoginForm() {
           </Link>
         </Box>
         <Button
+          disabled={adminState.isLoading}
           sx={{
             padding: "0.85rem",
             fontSize: "1.2rem",

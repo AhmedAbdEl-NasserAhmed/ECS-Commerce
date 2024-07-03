@@ -11,6 +11,7 @@ function CustomizedTextField({
   error,
   helperText,
   field,
+  disabled,
   sx,
   inputLabelProps,
   formerHelperStyles,
@@ -27,6 +28,7 @@ function CustomizedTextField({
       <Box className="flex flex-col gap-4">
         {textlabel && <label className={textLabelClass}>{textlabel}</label>}
         <TextField
+          disabled={disabled}
           placeholder={placeholder}
           multiline={multiline}
           error={error}

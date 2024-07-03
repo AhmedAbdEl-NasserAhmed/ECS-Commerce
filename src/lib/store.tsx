@@ -1,16 +1,19 @@
 import { configureStore } from "@reduxjs/toolkit";
 import usersSlice from "./features/usersSlice/usersSlice";
-import adminApi from "./features/api/adminApi";
+import usersApi from "./features/api/usersApi";
+import categoriesApi from "./features/api/categoriesApi";
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
       usersSlice: usersSlice,
-      [adminApi.reducerPath]: adminApi.reducer,
+      [usersApi.reducerPath]: usersApi.reducer,
+      [categoriesApi.reducerPath]: categoriesApi.reducer,
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({ serializableCheck: false }).concat(
-        adminApi.middleware
+        usersApi.middleware,
+        categoriesApi.middleware
       ),
   });
 };

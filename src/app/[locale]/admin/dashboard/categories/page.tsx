@@ -1,24 +1,39 @@
 "use client";
 
+import { useAddCategoryMutation } from "@/lib/features/api/categoriesApi";
+import { AdminMainCategory } from "@/types/types";
 import CustomizedTextField from "@/ui/TextField/TextField";
 import { Box, Button } from "@mui/material";
 import Link from "next/link";
 import { Controller, useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import { HiChevronRight } from "react-icons/hi2";
 
 function CategoryPage() {
   const {
     handleSubmit,
     control,
-    reset,
     watch,
-    setValue,
-    register,
+
     formState: { errors },
-  } = useForm();
+  } = useForm<AdminMainCategory>();
+
+  const formData = watch();
+
+  const [addCategory, categoryState] = useAddCategoryMutation();
+
+  function handleAddCategorySubmit() {
+    addCategory({
+      name: formData.name.toLocaleLowerCase().replace(/\s+/g, ""),
+      description: formData.description,
+    });
+  }
 
   return (
-    <form className=" flex flex-col gap-8 px-[4rem] py-[1.2rem] bg-[#FDFDFD] ">
+    <form
+      onSubmit={handleSubmit(handleAddCategorySubmit)}
+      className=" flex flex-col gap-8 px-[4rem] py-[1.2rem] bg-[#FDFDFD] "
+    >
       <Box className="h-[10vh] flex justify-between items-center">
         <Box className="flex flex-col gap-4">
           <h2 className="text-4xl font-semibold  text-gray-600">
@@ -63,21 +78,26 @@ function CategoryPage() {
         </Box>
         <Box className="relative flex flex-col  gap-12">
           <Controller
-            name={"categoryName"}
+            name={"name"}
             control={control}
             defaultValue={""}
-            rules={{ required: "This field is required" }}
+            rules={{
+              required: "This field is required",
+              minLength: {
+                value: 4,
+                message: "This field should be more than 4 characters",
+              },
+            }}
             render={({ field }) => (
               <CustomizedTextField
+                disabled={categoryState.isLoading}
                 textLabelClass={"font-semibold text-xl"}
                 placeholder={"Category Name"}
                 textlabel={"Category Name"}
                 field={field}
-                error={!!errors["categoryName"]}
+                error={!!errors["name"]}
                 formerHelperStyles={{ style: { fontSize: "1rem" } }}
-                // helperText={
-                //   errors["categoryName"] ? errors["categoryName"].message : ""
-                // }
+                helperText={errors["name"] ? errors["name"].message : ""}
                 type={"text"}
                 variant={"outlined"}
                 size={"small"}
@@ -85,22 +105,27 @@ function CategoryPage() {
             )}
           />
           <Controller
-            name={"categoryDescription"}
+            name={"description"}
+            disabled={categoryState.isLoading}
             control={control}
-            rules={{ required: "This field is required" }}
+            rules={{
+              required: "This field is required",
+              minLength: {
+                value: 4,
+                message: "This field should be more than 4 characters",
+              },
+            }}
             render={({ field }) => (
               <CustomizedTextField
                 textLabelClass={"font-semibold text-xl"}
                 placeholder={"Category Description"}
                 textlabel={"Category Description"}
                 field={field}
-                error={!!errors["categoryDescription"]}
+                error={!!errors["description"]}
                 formerHelperStyles={{ style: { fontSize: "1rem" } }}
-                // helperText={
-                //   errors["categoryDescription"]
-                //     ? errors["categoryDescription"].message
-                //     : ""
-                // }
+                helperText={
+                  errors["description"] ? errors["description"].message : ""
+                }
                 type={"text"}
                 variant={"outlined"}
                 multiline={true}
@@ -119,6 +144,7 @@ function CategoryPage() {
         </Box>
         <Box>
           <Button
+            disabled={categoryState.isLoading}
             sx={{
               paddingInline: "1.6rem",
               paddingBlock: "1rem",

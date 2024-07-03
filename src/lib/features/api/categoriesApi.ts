@@ -1,4 +1,5 @@
 import axiosBaseQuery from "@/api";
+
 import {
   createApi,
   fakeBaseQuery,
@@ -6,15 +7,15 @@ import {
 } from "@reduxjs/toolkit/query/react";
 
 // RTK Query
-const adminApi = createApi({
-  reducerPath: "adminApi",
+const categoriesApi = createApi({
+  reducerPath: "categoriesApi",
   baseQuery: axiosBaseQuery({
     baseUrl: "http://localhost:8000/api/v1/",
   }),
   endpoints: (builder) => ({
-    adminLogin: builder.mutation({
+    addCategory: builder.mutation({
       query: (body) => ({
-        url: "auth/login",
+        url: "categories",
         method: "POST",
         body,
       }),
@@ -22,6 +23,6 @@ const adminApi = createApi({
   }),
 });
 
-export const { useAdminLoginMutation } = adminApi;
+export const { useAddCategoryMutation } = categoriesApi;
 
-export default adminApi;
+export default categoriesApi;

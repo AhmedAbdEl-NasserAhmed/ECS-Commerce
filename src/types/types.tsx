@@ -1,8 +1,13 @@
 import { FieldPath } from "react-hook-form";
 
 export interface LoginFormData {
-  loginEmail: string;
-  loginPassword: string;
+  email: string;
+  password: string;
+}
+
+export interface AdminMainCategory {
+  name: string;
+  description: string;
 }
 
 export interface AdminProductProps {

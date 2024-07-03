@@ -5,7 +5,6 @@ import AddProductImage from "@/ui/AddProductImage/AddProductImage";
 import ColorPickerInput from "@/ui/ColorPicketInput/ColorPickerInput";
 import MultiChoiceSelectMenu from "@/ui/MultiChoiceSelectMenu/MultiChoiceSelectMenu";
 import CustomizedTextField from "@/ui/TextField/TextField";
-import { DisabledByDefault } from "@mui/icons-material";
 import { Box, Button } from "@mui/material";
 import { useTranslations } from "next-intl";
 import Link from "next/link";

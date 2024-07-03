@@ -54,7 +54,8 @@ export default async function LocaleLayout({
                 },
                 success: {
                   style: {
-                    background: "green",
+                    color: "green",
+                    background: "white",
                   },
                 },
                 error: {

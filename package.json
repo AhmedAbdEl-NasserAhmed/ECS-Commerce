@@ -33,6 +33,7 @@
     "sass": "^1.77.2"
   },
   "devDependencies": {
+    "@faker-js/faker": "^8.4.1",
     "@types/chroma-js": "^2.4.4",
     "@types/node": "^20",
     "@types/react": "^18",

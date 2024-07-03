@@ -9,7 +9,7 @@ export function adminLoginFormInputs(
   return [
     {
       id: "1",
-      name: "loginEmail",
+      name: "email",
       textlabel: "User Name",
       textLabelClass: "text-xl",
       defaultValue: "",
@@ -68,7 +68,7 @@ export function adminLoginFormInputs(
     },
     {
       id: "2",
-      name: "loginPassword",
+      name: "password",
       textlabel: "Password",
       textLabelClass: "text-xl",
       defaultValue: "",

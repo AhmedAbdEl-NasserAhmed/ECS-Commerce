@@ -1,0 +1,33 @@
+.smartSearchList {
+  background-color: "white";
+  border-radius: 2px;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  transition: all 0.5s;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+  & li {
+    transition: all 0.5s;
+    padding: 0.8rem;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #dddd;
+    }
+  }
+}
+
+.close-btn {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  font-size: 0.8rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  background-color: #c1c1c1dd;
+  color: black;
+}

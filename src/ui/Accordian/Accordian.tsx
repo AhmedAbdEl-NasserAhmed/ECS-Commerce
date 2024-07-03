@@ -49,7 +49,8 @@ function AccordianToggle({ id, children }) {
 
   return (
     <button
-      className="p-6 w-full relative transition-all duration-500"
+      style={{ padding: "15px" }}
+      className=" w-full relative transition-all duration-500"
       onClick={handleToggle}
     >
       {children}

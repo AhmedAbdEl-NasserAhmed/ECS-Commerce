@@ -20,9 +20,15 @@ const categoriesApi = createApi({
         body,
       }),
     }),
+    getCategory: builder.query({
+      query: (letter) => ({
+        url: `categories/filtered?letters=${letter}`,
+        method: "Get",
+      }),
+    }),
   }),
 });
 
-export const { useAddCategoryMutation } = categoriesApi;
+export const { useAddCategoryMutation, useGetCategoryQuery } = categoriesApi;
 
 export default categoriesApi;

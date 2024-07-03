@@ -10,6 +10,11 @@ export interface AdminMainCategory {
   description: string;
 }
 
+export interface AdminSubCategory {
+  name: string;
+  description: string;
+  category: string;
+}
 export interface AdminProductProps {
   productName: string;
   productCategory: string;

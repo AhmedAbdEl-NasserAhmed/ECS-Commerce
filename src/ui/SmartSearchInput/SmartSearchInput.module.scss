@@ -4,12 +4,13 @@
   overflow-y: scroll;
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 10px;
   transition: all 0.5s;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 
   & li {
     transition: all 0.5s;
+    font-size: 1.2rem;
     padding: 0.8rem;
     cursor: pointer;
 

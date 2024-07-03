@@ -3,13 +3,10 @@ import { TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 import styles from "./SmartSearchInput.module.scss";
 
-console.log(styles["smartSearchList"]);
-
 function SmartSearchInput({
   data,
   onChange,
   name,
-
   placeholder,
   textLabel,
   getSmartSearchValue,
@@ -24,7 +21,10 @@ function SmartSearchInput({
 
   useEffect(() => {
     if (getSmartSearchValue) {
-      getSmartSearchValue(inputValue);
+      getSmartSearchValue((prev) => ({
+        ...prev,
+        name: inputValue,
+      }));
     }
   }, [inputValue, getSmartSearchValue]);
 
@@ -96,6 +96,10 @@ function SmartSearchInput({
               setUserSelectedValue("");
               setInputvalue("");
               onChange("");
+              getSmartSearchValue({
+                id: "",
+                name: "",
+              });
             }}
             style={{ top: "60%", right: "15px", cursor: "pointer" }}
             className={styles["close-btn"]}
@@ -113,12 +117,15 @@ function SmartSearchInput({
         {data?.map((user) => {
           return (
             <li
-              key={user.id}
+              key={user.name}
               onClick={() => {
                 onChange(user.name);
                 setInputvalue(user.name);
                 setUserSelectedValue(user.name);
                 setOpenMenu(false);
+                if (getSmartSearchValue) {
+                  getSmartSearchValue(user);
+                }
               }}
             >
               {user.name}{" "}

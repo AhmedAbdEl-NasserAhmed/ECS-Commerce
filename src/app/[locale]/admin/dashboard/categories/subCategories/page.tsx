@@ -1,12 +1,12 @@
 "use client";
-
-import { fetchUsers } from "@/helpers/usersData";
 import useDebounceHook from "@/hooks/useDebounceHook";
+import { useGetCategoryQuery } from "@/lib/features/api/categoriesApi";
+import { AdminSubCategory } from "@/types/types";
 import SmartSearchInput from "@/ui/SmartSearchInput/SmartSearchInput";
 import CustomizedTextField from "@/ui/TextField/TextField";
 import { Box, Button } from "@mui/material";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { HiChevronRight } from "react-icons/hi2";
 
@@ -19,27 +19,20 @@ function SubCategoryPage() {
     setValue,
     register,
     formState: { errors },
-  } = useForm();
+  } = useForm<AdminSubCategory>();
 
   const formData = watch();
 
-  // console.log("Form data", formData);
+  console.log("Form data", formData);
 
-  const [usersData, setUsersData] = useState([]);
+  const [smartSeachvalue, setSmartSeachValue] = useState<{
+    id: string;
+    name: string;
+  }>({ id: "", name: "" });
 
-  const [smartSeachvalue, setSmartSeachValue] = useState<string>("");
+  const debounceValue = useDebounceHook(smartSeachvalue.name);
 
-  const debounceValue = useDebounceHook(smartSeachvalue);
-
-  useEffect(() => {
-    async function getUsersData() {
-      const data = fetchUsers(debounceValue);
-      const res = await data;
-      setUsersData(res);
-    }
-
-    getUsersData();
-  }, [debounceValue]);
+  const { data, isLoading } = useGetCategoryQuery(debounceValue);
 
   return (
     <form className=" flex flex-col gap-8 px-[4rem] py-[1.2rem] bg-[#FDFDFD] ">
@@ -87,7 +80,7 @@ function SubCategoryPage() {
         </Box>
         <Box className="relative flex flex-col gap-12">
           <Controller
-            name={"mainCategory"}
+            name={"category"}
             control={control}
             defaultValue={""}
             rules={{ required: "This field is required" }}
@@ -95,7 +88,7 @@ function SubCategoryPage() {
               <SmartSearchInput
                 getSmartSearchValue={setSmartSeachValue}
                 textLabel="Main Category"
-                data={usersData}
+                data={data?.data}
                 placeholder=" Search for category"
                 name={field.name}
                 onChange={field.onChange}
@@ -103,21 +96,24 @@ function SubCategoryPage() {
             )}
           />
           <Controller
-            name={"subCategoryName"}
+            name={"name"}
             control={control}
             defaultValue={""}
             rules={{ required: "This field is required" }}
             render={({ field }) => (
               <CustomizedTextField
+                sx={{
+                  backgroundColor:
+                    isLoading || formData.category === "" ? "#f5f5f5" : "",
+                }}
+                disabled={isLoading || formData.category === ""}
                 textLabelClass={"font-semibold text-xl"}
                 placeholder={"Sub Category Name"}
                 textlabel={"Sub Category Name"}
                 field={field}
-                error={!!errors["subCategoryName"]}
+                error={!!errors["name"]}
                 formerHelperStyles={{ style: { fontSize: "1rem" } }}
-                // helperText={
-                //   errors["categoryName"] ? errors["categoryName"].message : ""
-                // }
+                helperText={errors["name"] ? errors["name"].message : ""}
                 type={"text"}
                 variant={"outlined"}
                 size={"small"}
@@ -125,27 +121,29 @@ function SubCategoryPage() {
             )}
           />
           <Controller
-            name={"subCategoryDescription"}
+            name={"description"}
             control={control}
+            defaultValue={""}
             rules={{ required: "This field is required" }}
             render={({ field }) => (
               <CustomizedTextField
+                disabled={isLoading || formData.category === ""}
                 textLabelClass={"font-semibold text-xl"}
                 placeholder={"Sub Category Description"}
                 textlabel={"Sub Category Description"}
                 field={field}
-                error={!!errors["subCategoryDescription"]}
+                error={!!errors["description"]}
                 formerHelperStyles={{ style: { fontSize: "1rem" } }}
-                // helperText={
-                //   errors["categoryDescription"]
-                //     ? errors["categoryDescription"].message
-                //     : ""
-                // }
+                helperText={
+                  errors["description"] ? errors["description"].message : ""
+                }
                 type={"text"}
                 variant={"outlined"}
                 multiline={true}
                 rows={6}
                 sx={{
+                  backgroundColor:
+                    isLoading || formData.category === "" ? "#f5f5f5" : "",
                   "& .MuiInputBase-input": {
                     fontSize: "1.4rem",
                   },
@@ -159,6 +157,7 @@ function SubCategoryPage() {
         </Box>
         <Box>
           <Button
+            disabled={isLoading || formData.category === ""}
             sx={{
               paddingInline: "1.6rem",
               paddingBlock: "1rem",

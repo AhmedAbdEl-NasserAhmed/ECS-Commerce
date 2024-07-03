@@ -2,6 +2,7 @@
 
 import { useAddCategoryMutation } from "@/lib/features/api/categoriesApi";
 import { AdminMainCategory } from "@/types/types";
+import MiniSpinner from "@/ui/MiniSpinner/MiniSpinner";
 import CustomizedTextField from "@/ui/TextField/TextField";
 import { Box, Button } from "@mui/material";
 import Link from "next/link";
@@ -14,7 +15,7 @@ function CategoryPage() {
     handleSubmit,
     control,
     watch,
-
+    reset,
     formState: { errors },
   } = useForm<AdminMainCategory>();
 
@@ -26,7 +27,19 @@ function CategoryPage() {
     addCategory({
       name: formData.name.toLocaleLowerCase().replace(/\s+/g, ""),
       description: formData.description,
-    });
+    })
+      .unwrap()
+      .then((res) => {
+        if (res.status === "success") {
+          toast.success("A New Main Category Added");
+          reset();
+        }
+      })
+      .catch((err) => {
+        if (err) {
+          toast.error("This Category is Already Added");
+        }
+      });
   }
 
   return (
@@ -107,6 +120,7 @@ function CategoryPage() {
           <Controller
             name={"description"}
             disabled={categoryState.isLoading}
+            defaultValue={""}
             control={control}
             rules={{
               required: "This field is required",
@@ -161,7 +175,7 @@ function CategoryPage() {
             variant="contained"
             size="large"
           >
-            Add Category
+            {categoryState.isLoading ? <MiniSpinner /> : " Add Category"}
           </Button>
         </Box>
       </Box>

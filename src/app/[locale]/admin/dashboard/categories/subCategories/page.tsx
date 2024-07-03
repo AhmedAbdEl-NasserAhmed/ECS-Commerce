@@ -1,13 +1,17 @@
 "use client";
 import useDebounceHook from "@/hooks/useDebounceHook";
+import useThrottle from "@/hooks/useThrottle";
 import { useGetCategoryQuery } from "@/lib/features/api/categoriesApi";
+import { useAddSubCategoryMutation } from "@/lib/features/api/subCategoriesApi";
 import { AdminSubCategory } from "@/types/types";
+import MiniSpinner from "@/ui/MiniSpinner/MiniSpinner";
 import SmartSearchInput from "@/ui/SmartSearchInput/SmartSearchInput";
 import CustomizedTextField from "@/ui/TextField/TextField";
 import { Box, Button } from "@mui/material";
 import Link from "next/link";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import { HiChevronRight } from "react-icons/hi2";
 
 function SubCategoryPage() {
@@ -16,8 +20,6 @@ function SubCategoryPage() {
     control,
     reset,
     watch,
-    setValue,
-    register,
     formState: { errors },
   } = useForm<AdminSubCategory>();
 
@@ -31,11 +33,41 @@ function SubCategoryPage() {
   }>({ id: "", name: "" });
 
   const debounceValue = useDebounceHook(smartSeachvalue.name);
+  // const throttledValue = useThrottle(smartSeachvalue.name, 2000);
 
   const { data, isLoading } = useGetCategoryQuery(debounceValue);
 
+  const [addSubCategoryFc, subCategoryState] = useAddSubCategoryMutation();
+
+  function handleAddSubCategorySubmit() {
+    addSubCategoryFc({
+      name: formData.name.toLocaleLowerCase().replace(/\s+/g, ""),
+      description: formData.description,
+      category: smartSeachvalue["_id"],
+    })
+      .unwrap()
+      .then((res) => {
+        if (res.status === "success") {
+          toast.success("A New Sub Category Added");
+          setSmartSeachValue({
+            id: "",
+            name: "",
+          });
+          reset();
+        }
+      })
+      .catch((err) => {
+        if (err) {
+          toast.error("This Category is Already Added");
+        }
+      });
+  }
+
   return (
-    <form className=" flex flex-col gap-8 px-[4rem] py-[1.2rem] bg-[#FDFDFD] ">
+    <form
+      onSubmit={handleSubmit(handleAddSubCategorySubmit)}
+      className=" flex flex-col gap-8 px-[4rem] py-[1.2rem] bg-[#FDFDFD] "
+    >
       <Box className="h-[10vh] flex justify-between items-center">
         <Box className="flex flex-col gap-4">
           <h2 className="text-4xl font-semibold  text-gray-600">
@@ -80,12 +112,14 @@ function SubCategoryPage() {
         </Box>
         <Box className="relative flex flex-col gap-12">
           <Controller
+            disabled={subCategoryState.isLoading}
             name={"category"}
             control={control}
             defaultValue={""}
             rules={{ required: "This field is required" }}
             render={({ field }) => (
               <SmartSearchInput
+                shouldReset={subCategoryState.isSuccess}
                 getSmartSearchValue={setSmartSeachValue}
                 textLabel="Main Category"
                 data={data?.data}
@@ -96,6 +130,7 @@ function SubCategoryPage() {
             )}
           />
           <Controller
+            disabled={subCategoryState.isLoading}
             name={"name"}
             control={control}
             defaultValue={""}
@@ -121,6 +156,7 @@ function SubCategoryPage() {
             )}
           />
           <Controller
+            disabled={subCategoryState.isLoading}
             name={"description"}
             control={control}
             defaultValue={""}
@@ -157,7 +193,11 @@ function SubCategoryPage() {
         </Box>
         <Box>
           <Button
-            disabled={isLoading || formData.category === ""}
+            disabled={
+              isLoading ||
+              formData.category === "" ||
+              subCategoryState.isLoading
+            }
             sx={{
               paddingInline: "1.6rem",
               paddingBlock: "1rem",
@@ -174,7 +214,7 @@ function SubCategoryPage() {
             variant="contained"
             size="large"
           >
-            Add Sub Category
+            {subCategoryState.isLoading ? <MiniSpinner /> : " Add Sub Category"}
           </Button>
         </Box>
       </Box>

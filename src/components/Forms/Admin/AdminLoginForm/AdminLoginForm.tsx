@@ -21,6 +21,10 @@ function AdminLoginForm() {
     formState: { errors },
   } = useForm<LoginFormData>();
 
+  const router = useRouter();
+
+  const { locale } = useParams();
+
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);

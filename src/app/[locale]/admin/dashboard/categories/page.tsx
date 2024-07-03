@@ -96,10 +96,6 @@ function CategoryPage() {
             defaultValue={""}
             rules={{
               required: "This field is required",
-              minLength: {
-                value: 4,
-                message: "This field should be more than 4 characters",
-              },
             }}
             render={({ field }) => (
               <CustomizedTextField
@@ -124,10 +120,6 @@ function CategoryPage() {
             control={control}
             rules={{
               required: "This field is required",
-              minLength: {
-                value: 4,
-                message: "This field should be more than 4 characters",
-              },
             }}
             render={({ field }) => (
               <CustomizedTextField

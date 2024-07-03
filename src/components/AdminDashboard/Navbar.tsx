@@ -20,19 +20,18 @@ function Navbar({ setExpand }: Props) {
       className="h-[10vh] border-b-2 bg-[#FFFFFF] sticky top-0 z-50 border-gray-100 justify-between"
     >
       <Box
-        component="div"
         display="flex"
         alignItems="center"
         className="px-8 justify-between py-12 w-full "
       >
-        <Box component="div" className="flex items-center w-full gap-6  ">
+        <Box className="flex items-center w-full gap-6  ">
           <span
             className="text-4xl cursor-pointer"
             onClick={() => setExpand((prev) => !prev)}
           >
             <HiMenuAlt3 />
           </span>
-          <Box component="div" className="w-1/2">
+          <Box className="w-1/2">
             <CustomizedTextField
               type="text"
               size="small"

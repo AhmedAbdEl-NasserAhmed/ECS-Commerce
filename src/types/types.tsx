@@ -62,6 +62,7 @@ export interface CustomizedTextFieldProps {
   textLabel?: string;
   textLabelClass?: string;
   isMulti?: boolean;
+  disabled?: boolean;
 }
 
 export interface AdminDashboardLink {

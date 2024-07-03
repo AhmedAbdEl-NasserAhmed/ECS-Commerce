@@ -24,10 +24,7 @@ function BaseTable({ tableHeaders, content }) {
                   return (
                     <td className="relative" key={index}>
                       {header.type === "image" ? (
-                        <Box
-                          component="div"
-                          className="md:flex justify-center items-center "
-                        >
+                        <Box className="md:flex justify-center items-center ">
                           <Image
                             objectFit="cover"
                             width={55}

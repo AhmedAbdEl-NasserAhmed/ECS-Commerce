@@ -10,12 +10,12 @@ interface Props {
 
 function ProductDetails({ product, setShowModal }: Props) {
   return (
-    <Box component="div" className={styles["product-details"]}>
+    <Box className={styles["product-details"]}>
       <h2 className="text-white text-center bg-gray-600 p-2 md:p-3 lg:p-4 rounded-md font-bold  text-[1.2rem] sm:text-[1.4rem] md:text-[1.6rem] lg:text-3xl  tracking-wide ">
         Details
       </h2>
-      <Box component="div" className="flex  md:justify-center gap-2  ">
-        <Box component="div" className="w-1/2 md:flex justify-center hidden  ">
+      <Box className="flex  md:justify-center gap-2  ">
+        <Box className="w-1/2 md:flex justify-center hidden  ">
           <Image
             src={product.productImage}
             alt="product image"
@@ -69,7 +69,7 @@ function ProductDetails({ product, setShowModal }: Props) {
           </Box>
         </Box>
       </Box>
-      <Box component="div" className="flex justify-end ">
+      <Box className="flex justify-end ">
         <Button
           onClick={setShowModal}
           sx={{

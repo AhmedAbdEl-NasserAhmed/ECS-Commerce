@@ -9,9 +9,9 @@ interface Props {
 
 function DeleteWindow({ message, setShowModal }: Props) {
   return (
-    <Box component="div" className={styles["delete-item"]}>
+    <Box className={styles["delete-item"]}>
       <Box className="text-4xl font-bold ">{message}</Box>
-      <Box component="div" className="flex gap-8 justify-center w-full ">
+      <Box className="flex gap-8 justify-center w-full ">
         <Button
           onClick={setShowModal}
           sx={{

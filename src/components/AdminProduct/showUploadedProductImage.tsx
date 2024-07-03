@@ -39,7 +39,7 @@ export default function ShowUploadedImageProduct({
   const handleClose = () => setOpen(false);
 
   return (
-    <Box component="div">
+    <Box>
       <Button className="text-[2.5rem]" onClick={handleOpen}>
         <FaImages />
       </Button>
@@ -59,12 +59,11 @@ export default function ShowUploadedImageProduct({
       >
         <Fade in={open}>
           <Box sx={style}>
-            <Box component="div" className=" w-full relative h-[40vh]  ">
-              <Box component="div" className="w-full h-full  ">
+            <Box className=" w-full relative h-[40vh]  ">
+              <Box className="w-full h-full  ">
                 {selectedImagePaths.map((image, index) => {
                   return (
                     <Box
-                      component="div"
                       className={` absolute w-full h-full ${
                         index === currentIndex ? "slider-img" : ""
                       } transition-all ease-in-out duration-500 opacity-0 `}
@@ -86,7 +85,6 @@ export default function ShowUploadedImageProduct({
             <div className="flex justify-center h-[6vh]  gap-8 mt-12">
               {selectedImagePaths.map((image, index) => (
                 <Box
-                  component="div"
                   onClick={() => setCurrentIndex(index)}
                   className={`${
                     index === currentIndex ? "border-2 border-gray-600" : ""

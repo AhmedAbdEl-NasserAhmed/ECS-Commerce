@@ -52,7 +52,7 @@ function SmartSearchInput({
   }, [data?.length, smartSearchState.userSelectedValue]);
 
   return (
-    <div className="w-full">
+    <div className="relative w-full">
       <div className="relative flex flex-col gap-4">
         {<label className="font-semibold text-xl">{textLabel}</label>}
         <TextField

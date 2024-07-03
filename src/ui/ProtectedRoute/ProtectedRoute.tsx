@@ -28,7 +28,7 @@ function ProtectedRoute({ children }) {
 
       if (isAuthAdminRoute) {
         console.log("2");
-        router.back();
+        // router.back();
       } else {
         console.log("3");
       }

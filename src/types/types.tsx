@@ -16,26 +16,27 @@ export interface AdminSubCategory {
   category: string;
 }
 export interface AdminProductProps {
-  productName: string;
-  productCategory: string;
-  productQuantity: number;
-  productPrice: number;
-  productMainCategory: string;
-  productSalePrice: number;
-  productSubCategory: string;
-  productDiscount: number;
-  productType: string;
-  productColors: {
+  name: string;
+  quantity: number;
+  price: number;
+  salePrice: number;
+  subCategory: string;
+  discount: number;
+  mainCategory: string;
+  description: string;
+  colors: {
     value: string;
     label: string;
     color: string;
   }[];
-  productSizes: {
+  sizes: {
     value: string;
     label: string;
     color: string;
   }[];
-  productDescription: string;
+  // productCategory: string;
+  // productMainCategory: string;
+  // productType: string;
 }
 
 export interface CustomizedTextFieldProps {

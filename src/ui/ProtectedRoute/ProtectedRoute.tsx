@@ -1,7 +1,12 @@
 "use client";
 
 import { useAppSelector } from "@/lib/hooks";
-import { useParams, usePathname, useRouter } from "next/navigation";
+import {
+  useParams,
+  usePathname,
+  useRouter,
+  useSearchParams,
+} from "next/navigation";
 import { useEffect } from "react";
 
 function ProtectedRoute({ children }) {
@@ -9,38 +14,40 @@ function ProtectedRoute({ children }) {
 
   const { locale } = useParams();
 
+  const searchParams = useSearchParams();
+
   const user = useAppSelector((state) => state.usersSlice);
 
-  const pathName = usePathname();
+  const pathname = usePathname();
 
   const authRoutes = ["/admin"];
 
-  const isAuthAdminRoute = authRoutes.includes(
-    "/" + pathName.split("/").at(-1)
-  );
-
-  console.log("isAuthAdminRoute", isAuthAdminRoute);
-
   useEffect(() => {
-    if (user.isAuthenticated) {
-      console.log("1");
-      router.push(`/${locale}/admin/dashboard/product`);
+    const isAuthAdminRoute = authRoutes.includes(
+      "/" + pathname.split("/").at(-1)
+    );
 
-      if (isAuthAdminRoute) {
-        console.log("2");
-        router.back();
+    const params = Object.fromEntries(searchParams.entries());
+
+    if (user.isAuthenticated) {
+      if (params?.loggedIn) {
+        return;
       } else {
-        console.log("3");
+        if (isAuthAdminRoute) {
+          router.back();
+        } else {
+          return;
+        }
       }
     } else {
       if (isAuthAdminRoute) {
-        console.log("4");
+        return;
       } else {
-        console.log("5");
         router.push(`/${locale}/admin`);
+        return;
       }
     }
-  }, [router, locale, user, isAuthAdminRoute]);
+  }, [router, locale, user, pathname]);
 
   return children;
 }

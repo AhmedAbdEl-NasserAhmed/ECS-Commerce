@@ -43,7 +43,15 @@ function AdminLoginForm() {
       .unwrap()
       .then((res) => {
         toast.success("Welcome Back");
+
         localStorage.setItem("userToken", res.token);
+
+        const queryString = new URLSearchParams({
+          loggedIn: "true",
+        }).toString();
+
+        router.push(`${locale}/admin/dashboard/product/?${queryString}`);
+
         dispatch(loginUser({ user: res.data, token: res.token }));
       })
       .catch((err) => toast.error(err.data.message));

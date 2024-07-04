@@ -50,7 +50,7 @@ function SubMenuLink({
         aria-controls="panel1bh-content"
         id="panel1bh-header"
       >
-        <Box className="flex items-center justify-between text-xl font-semibold">
+        <Box className="flex items-center justify-between text-xl font-semibold w-full">
           <div className="flex items-center gap-4">
             <span className="text-4xl ">
               <SubmenuIcon />
@@ -80,7 +80,7 @@ function SubMenuLink({
       <AccordionDetails className="flex flex-col justify-center gap-7 bg-gray-200 rounded-md !pl-6">
         {menuLinks.map((link) => {
           return (
-            <div key={link.linkName} className="p-2 text-xl text-gray-700">
+            <div key={link.linkName} className="p-2 text-xl text-gray-700 ">
               <Link
                 onClick={() => {
                   setExpand(true);

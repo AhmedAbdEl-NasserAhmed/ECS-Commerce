@@ -1,52 +1,72 @@
 import useClickOutside from "@/hooks/useClickOutside";
 import { TextField } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import styles from "./SmartSearchInput.module.scss";
-
-console.log(styles["smartSearchList"]);
+import {
+  SmartSearchActions,
+  initialState,
+  reducerFn,
+} from "./smartSearchInputReducer";
 
 function SmartSearchInput({
   data,
   onChange,
   name,
-
   placeholder,
   textLabel,
   getSmartSearchValue,
+  shouldReset,
 }) {
-  const [openMenu, setOpenMenu] = useState<boolean>(false);
+  const [smartSearchState, dispatch] = useReducer(reducerFn, initialState);
 
-  const [inputValue, setInputvalue] = useState<string>("");
+  function action(type, payload = null) {
+    dispatch({ type, payload });
+  }
 
-  const [userSelectedValue, setUserSelectedValue] = useState<string>("");
+  const menuRef = useClickOutside({
+    close: (v) => action(SmartSearchActions.CLOSE_MENU),
+    value: false,
+  });
 
-  const menuRef = useClickOutside({ close: setOpenMenu, value: false });
+  useEffect(() => {
+    if (shouldReset) {
+      action(SmartSearchActions.RESET);
+    }
+  }, [shouldReset]);
 
   useEffect(() => {
     if (getSmartSearchValue) {
-      getSmartSearchValue(inputValue);
+      getSmartSearchValue((prev) => ({
+        ...prev,
+        name: smartSearchState.inputValue,
+      }));
     }
-  }, [inputValue, getSmartSearchValue]);
+  }, [smartSearchState.inputValue, getSmartSearchValue]);
 
   useEffect(() => {
-    if (data?.length > 0 && userSelectedValue === "") {
-      setOpenMenu(true);
+    if (data?.length > 0 && smartSearchState.userSelectedValue === "") {
+      action(SmartSearchActions.OPEN_MENU);
     } else {
-      setOpenMenu(false);
+      action(SmartSearchActions.CLOSE_MENU);
     }
-  }, [data?.length, userSelectedValue]);
+  }, [data?.length, smartSearchState.userSelectedValue]);
 
   return (
-    <div className="w-full">
+    <div className="relative w-full">
       <div className="relative flex flex-col gap-4">
         {<label className="font-semibold text-xl">{textLabel}</label>}
         <TextField
-          style={{ backgroundColor: userSelectedValue !== "" ? "#f5f5f5" : "" }}
+          style={{
+            backgroundColor:
+              smartSearchState.userSelectedValue !== "" ? "#f5f5f5" : "",
+          }}
           className=" w-full"
           placeholder={placeholder}
-          onChange={(e) => setInputvalue(e.target.value)}
+          onChange={(e) =>
+            action(SmartSearchActions.CHANGE_INPUT, { value: e.target.value })
+          }
           name={name}
-          value={inputValue}
+          value={smartSearchState.inputValue}
           sx={{
             helperText: {
               fontSize: "4rem",
@@ -88,14 +108,17 @@ function SmartSearchInput({
               },
             },
           }}
-          inputProps={{ readOnly: userSelectedValue !== "" }}
+          inputProps={{ readOnly: smartSearchState.userSelectedValue !== "" }}
         />
-        {userSelectedValue !== "" && (
+        {smartSearchState.userSelectedValue !== "" && (
           <span
             onClick={() => {
-              setUserSelectedValue("");
-              setInputvalue("");
               onChange("");
+              action(SmartSearchActions.RESET);
+              getSmartSearchValue({
+                id: "",
+                name: "",
+              });
             }}
             style={{ top: "60%", right: "15px", cursor: "pointer" }}
             className={styles["close-btn"]}
@@ -107,18 +130,19 @@ function SmartSearchInput({
 
       <ul
         ref={menuRef}
-        style={{ height: openMenu ? "150px" : "0" }}
+        style={{ height: smartSearchState.openMenu ? "150px" : "0" }}
         className={styles["smartSearchList"]}
       >
         {data?.map((user) => {
           return (
             <li
-              key={user.id}
+              key={user.name}
               onClick={() => {
                 onChange(user.name);
-                setInputvalue(user.name);
-                setUserSelectedValue(user.name);
-                setOpenMenu(false);
+                action(SmartSearchActions.SELECT_ITEM, { value: user.name });
+                if (getSmartSearchValue) {
+                  getSmartSearchValue(user);
+                }
               }}
             >
               {user.name}{" "}

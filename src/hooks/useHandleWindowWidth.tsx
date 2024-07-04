@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 
 export function useHandleWindowWidth() {
-  const [isWidthHiger, setIsWidthHigher] = useState<boolean>(true);
+  const [isWidthHiger, setIsWidthHigher] = useState<boolean>(
+    window.innerWidth > 1020
+  );
 
   useEffect(() => {
     const handleResize = () => {

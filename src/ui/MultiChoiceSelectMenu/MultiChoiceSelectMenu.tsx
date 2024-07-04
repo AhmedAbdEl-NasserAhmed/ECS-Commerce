@@ -24,7 +24,6 @@ function MultiChoiceSelectMenu({
       ...styles,
       backgroundColor: "white",
       fontSize: "1.2rem",
-
       borderColor: `${
         errors[name]
           ? "rgb(186, 9, 9)"

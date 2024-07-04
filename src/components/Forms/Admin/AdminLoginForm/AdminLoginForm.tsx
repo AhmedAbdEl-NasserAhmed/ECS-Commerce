@@ -9,7 +9,7 @@ import { useForm, Controller } from "react-hook-form";
 import { LoginFormData } from "@/types/types";
 import Image from "next/image";
 import { adminLoginFormInputs } from "@/constants/adminLoginFormInputs";
-import { useAdminLoginMutation } from "@/lib/features/api/adminApi";
+import { useAdminLoginMutation } from "@/lib/features/api/usersApi";
 import toast from "react-hot-toast";
 import { useAppDispatch } from "@/lib/hooks";
 import { loginUser } from "@/lib/features/usersSlice/usersSlice";
@@ -21,6 +21,10 @@ function AdminLoginForm() {
     formState: { errors },
   } = useForm<LoginFormData>();
 
+  const router = useRouter();
+
+  const { locale } = useParams();
+
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -30,17 +34,29 @@ function AdminLoginForm() {
   const dispatch = useAppDispatch();
 
   function onSubmit(data: LoginFormData) {
-    adminFc({
-      email: "admin@gmail.com",
-      password: "admin123456",
-    })
-      .unwrap()
-      .then((res) => {
-        toast.success("Welcome Back");
-        localStorage.setItem("userToken", res.token);
-        dispatch(loginUser({ user: res.data, token: res.token }));
-      })
-      .catch((err) => toast.error(err.data.message));
+    router.push(`${locale}/admin/dashboard/product`);
+
+    // adminFc({
+    //   email: data.email,
+    //   password: data.password,
+    //   // email: "admin@gmail.com",
+    //   // password: "admin123456",
+    // })
+    //   .unwrap()
+    //   .then((res) => {
+    //     toast.success("Welcome Back");
+
+    //     localStorage.setItem("userToken", res.token);
+
+    //     const queryString = new URLSearchParams({
+    //       loggedIn: "true",
+    //     }).toString();
+
+    //     router.push(`${locale}/admin/dashboard/product/?${queryString}`);
+
+    //     dispatch(loginUser({ user: res.data, token: res.token }));
+    //   })
+    //   .catch((err) => toast.error(err.data.message));
   }
 
   return (

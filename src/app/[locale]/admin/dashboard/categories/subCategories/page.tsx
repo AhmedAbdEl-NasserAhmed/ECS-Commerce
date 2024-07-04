@@ -1,13 +1,17 @@
 "use client";
-
-import { fetchUsers } from "@/helpers/usersData";
 import useDebounceHook from "@/hooks/useDebounceHook";
+import useThrottle from "@/hooks/useThrottle";
+import { useGetCategoryQuery } from "@/lib/features/api/categoriesApi";
+import { useAddSubCategoryMutation } from "@/lib/features/api/subCategoriesApi";
+import { AdminSubCategory } from "@/types/types";
+import MiniSpinner from "@/ui/MiniSpinner/MiniSpinner";
 import SmartSearchInput from "@/ui/SmartSearchInput/SmartSearchInput";
 import CustomizedTextField from "@/ui/TextField/TextField";
 import { Box, Button } from "@mui/material";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import { HiChevronRight } from "react-icons/hi2";
 
 function SubCategoryPage() {
@@ -16,33 +20,54 @@ function SubCategoryPage() {
     control,
     reset,
     watch,
-    setValue,
-    register,
     formState: { errors },
-  } = useForm();
+  } = useForm<AdminSubCategory>();
 
   const formData = watch();
 
-  // console.log("Form data", formData);
+  console.log("Form data", formData);
 
-  const [usersData, setUsersData] = useState([]);
+  const [smartSeachvalue, setSmartSeachValue] = useState<{
+    id: string;
+    name: string;
+  }>({ id: "", name: "" });
 
-  const [smartSeachvalue, setSmartSeachValue] = useState<string>("");
+  const debounceValue = useDebounceHook(smartSeachvalue.name);
+  // const throttledValue = useThrottle(smartSeachvalue.name, 2000);
 
-  const debounceValue = useDebounceHook(smartSeachvalue);
+  const { data, isLoading } = useGetCategoryQuery(debounceValue);
 
-  useEffect(() => {
-    async function getUsersData() {
-      const data = fetchUsers(debounceValue);
-      const res = await data;
-      setUsersData(res);
-    }
+  const [addSubCategoryFc, subCategoryState] = useAddSubCategoryMutation();
 
-    getUsersData();
-  }, [debounceValue]);
+  function handleAddSubCategorySubmit() {
+    addSubCategoryFc({
+      name: formData.name.toLocaleLowerCase().replace(/\s+/g, ""),
+      description: formData.description,
+      category: smartSeachvalue["_id"],
+    })
+      .unwrap()
+      .then((res) => {
+        if (res.status === "success") {
+          toast.success("A New Sub Category Added");
+          setSmartSeachValue({
+            id: "",
+            name: "",
+          });
+          reset();
+        }
+      })
+      .catch((err) => {
+        if (err) {
+          toast.error("This Category is Already Added");
+        }
+      });
+  }
 
   return (
-    <form className=" flex flex-col gap-8 px-[4rem] py-[1.2rem] bg-[#FDFDFD] ">
+    <form
+      onSubmit={handleSubmit(handleAddSubCategorySubmit)}
+      className=" flex flex-col gap-8 px-[4rem] py-[1.2rem] bg-[#FDFDFD] "
+    >
       <Box className="h-[10vh] flex justify-between items-center">
         <Box className="flex flex-col gap-4">
           <h2 className="text-4xl font-semibold  text-gray-600">
@@ -87,15 +112,17 @@ function SubCategoryPage() {
         </Box>
         <Box className="relative flex flex-col gap-12">
           <Controller
-            name={"mainCategory"}
+            disabled={subCategoryState.isLoading}
+            name={"category"}
             control={control}
             defaultValue={""}
             rules={{ required: "This field is required" }}
             render={({ field }) => (
               <SmartSearchInput
+                shouldReset={subCategoryState.isSuccess}
                 getSmartSearchValue={setSmartSeachValue}
                 textLabel="Main Category"
-                data={usersData}
+                data={data?.data}
                 placeholder=" Search for category"
                 name={field.name}
                 onChange={field.onChange}
@@ -103,21 +130,25 @@ function SubCategoryPage() {
             )}
           />
           <Controller
-            name={"subCategoryName"}
+            disabled={subCategoryState.isLoading}
+            name={"name"}
             control={control}
             defaultValue={""}
             rules={{ required: "This field is required" }}
             render={({ field }) => (
               <CustomizedTextField
+                sx={{
+                  backgroundColor:
+                    isLoading || formData.category === "" ? "#f5f5f5" : "",
+                }}
+                disabled={isLoading || formData.category === ""}
                 textLabelClass={"font-semibold text-xl"}
                 placeholder={"Sub Category Name"}
                 textlabel={"Sub Category Name"}
                 field={field}
-                error={!!errors["subCategoryName"]}
+                error={!!errors["name"]}
                 formerHelperStyles={{ style: { fontSize: "1rem" } }}
-                // helperText={
-                //   errors["categoryName"] ? errors["categoryName"].message : ""
-                // }
+                helperText={errors["name"] ? errors["name"].message : ""}
                 type={"text"}
                 variant={"outlined"}
                 size={"small"}
@@ -125,27 +156,30 @@ function SubCategoryPage() {
             )}
           />
           <Controller
-            name={"subCategoryDescription"}
+            disabled={subCategoryState.isLoading}
+            name={"description"}
             control={control}
+            defaultValue={""}
             rules={{ required: "This field is required" }}
             render={({ field }) => (
               <CustomizedTextField
+                disabled={isLoading || formData.category === ""}
                 textLabelClass={"font-semibold text-xl"}
                 placeholder={"Sub Category Description"}
                 textlabel={"Sub Category Description"}
                 field={field}
-                error={!!errors["subCategoryDescription"]}
+                error={!!errors["description"]}
                 formerHelperStyles={{ style: { fontSize: "1rem" } }}
-                // helperText={
-                //   errors["categoryDescription"]
-                //     ? errors["categoryDescription"].message
-                //     : ""
-                // }
+                helperText={
+                  errors["description"] ? errors["description"].message : ""
+                }
                 type={"text"}
                 variant={"outlined"}
                 multiline={true}
                 rows={6}
                 sx={{
+                  backgroundColor:
+                    isLoading || formData.category === "" ? "#f5f5f5" : "",
                   "& .MuiInputBase-input": {
                     fontSize: "1.4rem",
                   },
@@ -159,6 +193,11 @@ function SubCategoryPage() {
         </Box>
         <Box>
           <Button
+            disabled={
+              isLoading ||
+              formData.category === "" ||
+              subCategoryState.isLoading
+            }
             sx={{
               paddingInline: "1.6rem",
               paddingBlock: "1rem",
@@ -175,7 +214,7 @@ function SubCategoryPage() {
             variant="contained"
             size="large"
           >
-            Add Sub Category
+            {subCategoryState.isLoading ? <MiniSpinner /> : " Add Sub Category"}
           </Button>
         </Box>
       </Box>

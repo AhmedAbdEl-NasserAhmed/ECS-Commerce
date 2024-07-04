@@ -1,11 +1,18 @@
 "use client";
 
+import useDebounceHook from "@/hooks/useDebounceHook";
+import {
+  useAddCategoryMutation,
+  useGetCategoryQuery,
+} from "@/lib/features/api/categoriesApi";
+import { useAddProductMutation } from "@/lib/features/api/productsApi";
+import { useGetSubCategoryQuery } from "@/lib/features/api/subCategoriesApi";
 import { AdminProductProps } from "@/types/types";
 import AddProductImage from "@/ui/AddProductImage/AddProductImage";
 import ColorPickerInput from "@/ui/ColorPicketInput/ColorPickerInput";
 import MultiChoiceSelectMenu from "@/ui/MultiChoiceSelectMenu/MultiChoiceSelectMenu";
+import SmartSearchInput from "@/ui/SmartSearchInput/SmartSearchInput";
 import CustomizedTextField from "@/ui/TextField/TextField";
-import { DisabledByDefault } from "@mui/icons-material";
 import { Box, Button } from "@mui/material";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
@@ -24,10 +31,6 @@ function ProductPage() {
     formState: { errors },
   } = useForm<AdminProductProps>();
 
-  function onSubmit(data: AdminProductProps) {
-    // reset();
-  }
-
   const [colorsOption, setColorOptions] = useState<
     {
       value: string;
@@ -40,19 +43,82 @@ function ProductPage() {
 
   console.log("formData", formData);
 
+  const [smartSeachvalue, setSmartSeachValue] = useState<{
+    id: string;
+    name: string;
+  }>({ id: "", name: "" });
+
+  const [smartSeachSubCategoryvalue, setSmartSeachSubCategoryValue] = useState<{
+    id: string;
+    name: string;
+  }>({ id: "", name: "" });
+
+  const mainCategorydebounceValue = useDebounceHook(smartSeachvalue.name);
+
+  const subCategorydebounceValue = useDebounceHook(
+    smartSeachSubCategoryvalue.name
+  );
+
+  const { data: mainCategory } = useGetCategoryQuery(mainCategorydebounceValue);
+
+  const { data: subCategory } = useGetSubCategoryQuery(
+    subCategorydebounceValue
+  );
+
+  const [addProductFn, productResponse] = useAddProductMutation();
+
   const t = useTranslations("Dashboard");
 
   useEffect(() => {
     const discount: number =
-      +formData.productPrice -
-      (+formData.productPrice * +formData.productDiscount) / 100;
+      +formData.price - (+formData.price * +formData.discount) / 100;
 
     if (!discount) return;
 
-    setValue("productSalePrice", discount);
+    setValue("salePrice", discount);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formData.productPrice, formData.productDiscount]);
+  }, [formData.price, formData.discount]);
+
+  function onSubmit(data: AdminProductProps) {
+    console.log("DATA", data);
+
+    const serverProduct = {};
+    const images = [];
+
+    const formData = new FormData();
+
+    for (const key in data) {
+      if (key.includes("image")) {
+        if (data[key]) {
+          formData.append("images", data[key]);
+        }
+        images.push(data[key]);
+      } else {
+        if (key !== "category" && key !== "colors") {
+          formData.append(key, JSON.stringify(data[key]));
+
+          serverProduct[key] = data[key];
+        }
+      }
+    }
+
+    formData.append("colors", JSON.stringify(data.colors));
+
+    // data.colors.forEach((color) => {
+    //   console.log("COLOR", color);
+    //   if (color) {
+    //     // formData.append("colors", JSON.stringify(color));
+    //   }
+    // });
+
+    // serverProduct["category"] = smartSeachvalue["_id"];
+    formData.append("category", smartSeachvalue["_id"]);
+
+    serverProduct["images"] = images.filter(Boolean);
+
+    addProductFn(formData);
+  }
 
   return (
     <form
@@ -104,7 +170,43 @@ function ProductPage() {
           <Box className="grow-[4]">
             <Box className="relative grid grid-cols-autofill-minmax items-center gap-12">
               <Controller
-                name={"productName"}
+                // disabled={subCategoryState.isLoading}
+                name={"category"}
+                control={control}
+                defaultValue={""}
+                rules={{ required: "This field is required" }}
+                render={({ field }) => (
+                  <SmartSearchInput
+                    // shouldReset={subCategoryState.isSuccess}
+                    getSmartSearchValue={setSmartSeachValue}
+                    textLabel="Main Category"
+                    data={mainCategory?.data}
+                    placeholder=" Search for main category"
+                    name={field.name}
+                    onChange={field.onChange}
+                  />
+                )}
+              />
+              {/* <Controller
+                // disabled={subCategoryState.isLoading}
+                name={"subCategory"}
+                control={control}
+                defaultValue={""}
+                rules={{ required: "This field is required" }}
+                render={({ field }) => (
+                  <SmartSearchInput
+                    // shouldReset={subCategoryState.isSuccess}
+                    getSmartSearchValue={setSmartSeachSubCategoryValue}
+                    textLabel="Sub Category"
+                    data={subCategory?.data}
+                    placeholder=" Search for sub category"
+                    name={field.name}
+                    onChange={field.onChange}
+                  />
+                )}
+              /> */}
+              <Controller
+                name={"name"}
                 control={control}
                 defaultValue={""}
                 rules={{ required: "This field is required" }}
@@ -114,11 +216,9 @@ function ProductPage() {
                     placeholder={"Product Name"}
                     textlabel={"Product Name"}
                     field={field}
-                    error={!!errors["productName"]}
+                    error={!!errors["name"]}
                     formerHelperStyles={{ style: { fontSize: "1rem" } }}
-                    helperText={
-                      errors["productName"] ? errors["productName"].message : ""
-                    }
+                    helperText={errors["name"] ? errors["name"].message : ""}
                     type={"text"}
                     variant={"outlined"}
                     size={"small"}
@@ -127,7 +227,7 @@ function ProductPage() {
               />
               <Box className="relative">
                 <Controller
-                  name={"productColors"}
+                  name={"colors"}
                   control={control}
                   rules={{ required: "This field is required" }}
                   render={({ field }) => (
@@ -136,7 +236,7 @@ function ProductPage() {
                       textLabelClass={"font-semibold text-xl"}
                       placeholder={"Product Colors"}
                       textLabel={"Product Colors"}
-                      name={"productColors"}
+                      name={"colors"}
                       options={colorsOption}
                       field={field}
                       errors={errors}
@@ -149,7 +249,7 @@ function ProductPage() {
                 />
               </Box>
               <Controller
-                name={"productSizes"}
+                name={"size"}
                 control={control}
                 rules={{ required: "This field is required" }}
                 render={({ field }) => (
@@ -158,7 +258,7 @@ function ProductPage() {
                     textLabelClass={"font-semibold text-xl"}
                     placeholder={"Product Sizes"}
                     textLabel={"Product Sizes"}
-                    name={"productSizes"}
+                    name={"size"}
                     options={[
                       { value: "XS", label: "XS", color: "#666666" },
                       { value: "SM", label: "SM", color: "#666666" },
@@ -173,7 +273,7 @@ function ProductPage() {
                 )}
               />
               <Controller
-                name={"productQuantity"}
+                name={"quantity"}
                 control={control}
                 defaultValue={0}
                 rules={{
@@ -189,12 +289,10 @@ function ProductPage() {
                     placeholder={"Product Quantity"}
                     textlabel={"Product Quantity"}
                     field={field}
-                    error={!!errors["productQuantity"]}
+                    error={!!errors["quantity"]}
                     formerHelperStyles={{ style: { fontSize: "1rem" } }}
                     helperText={
-                      errors["productQuantity"]
-                        ? errors["productQuantity"].message
-                        : ""
+                      errors["quantity"] ? errors["quantity"].message : ""
                     }
                     type={"number"}
                     variant={"outlined"}
@@ -203,7 +301,7 @@ function ProductPage() {
                 )}
               />
               <Controller
-                name={"productPrice"}
+                name={"price"}
                 control={control}
                 defaultValue={0}
                 rules={{
@@ -219,13 +317,9 @@ function ProductPage() {
                     placeholder={"Product Price"}
                     textlabel={"Product Price"}
                     field={field}
-                    error={!!errors["productPrice"]}
+                    error={!!errors["price"]}
                     formerHelperStyles={{ style: { fontSize: "1rem" } }}
-                    helperText={
-                      errors["productPrice"]
-                        ? errors["productPrice"].message
-                        : ""
-                    }
+                    helperText={errors["price"] ? errors["price"].message : ""}
                     type={"number"}
                     variant={"outlined"}
                     size={"small"}
@@ -233,7 +327,7 @@ function ProductPage() {
                 )}
               />
               <Controller
-                name={"productDiscount"}
+                name={"discount"}
                 control={control}
                 defaultValue={0}
                 rules={{
@@ -252,12 +346,10 @@ function ProductPage() {
                     placeholder={"Product Discount %"}
                     textlabel={"Product Discount %"}
                     field={field}
-                    error={!!errors["productDiscount"]}
+                    error={!!errors["discount"]}
                     formerHelperStyles={{ style: { fontSize: "1rem" } }}
                     helperText={
-                      errors["productDiscount"]
-                        ? errors["productDiscount"].message
-                        : ""
+                      errors["discount"] ? errors["discount"].message : ""
                     }
                     type={"number"}
                     variant={"outlined"}
@@ -265,8 +357,8 @@ function ProductPage() {
                   />
                 )}
               />
-              <Controller
-                name={"productSalePrice"}
+              {/* <Controller
+                name={"salePrice"}
                 defaultValue={0}
                 control={control}
                 rules={{
@@ -276,7 +368,7 @@ function ProductPage() {
                     message: "This field should be more than 0 ",
                   },
                   max: {
-                    value: +formData.productPrice,
+                    value: +formData.price,
                     message: "This field should be less than Product Price ",
                   },
                 }}
@@ -286,12 +378,10 @@ function ProductPage() {
                     placeholder={"Product Sale Pirce"}
                     textlabel={"Product Sale Price"}
                     field={field}
-                    error={!!errors["productSalePrice"]}
+                    error={!!errors["salePrice"]}
                     formerHelperStyles={{ style: { fontSize: "1rem" } }}
                     helperText={
-                      errors["productSalePrice"]
-                        ? errors["productSalePrice"].message
-                        : ""
+                      errors["salePrice"] ? errors["salePrice"].message : ""
                     }
                     inputProps={{ readOnly: true }}
                     type={"number"}
@@ -299,10 +389,10 @@ function ProductPage() {
                     size={"small"}
                   />
                 )}
-              />
+              /> */}
               <Box className="col-span-full">
                 <Controller
-                  name={"productDescription"}
+                  name={"description"}
                   control={control}
                   rules={{ required: "This field is required" }}
                   render={({ field }) => (
@@ -311,11 +401,11 @@ function ProductPage() {
                       placeholder={"Product Description"}
                       textlabel={"Product Description"}
                       field={field}
-                      error={!!errors["productDescription"]}
+                      error={!!errors["description"]}
                       formerHelperStyles={{ style: { fontSize: "1rem" } }}
                       helperText={
-                        errors["productDescription"]
-                          ? errors["productDescription"].message
+                        errors["description"]
+                          ? errors["description"].message
                           : ""
                       }
                       type={"text"}

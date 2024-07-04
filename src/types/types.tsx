@@ -1,31 +1,42 @@
 import { FieldPath } from "react-hook-form";
 
 export interface LoginFormData {
-  loginEmail: string;
-  loginPassword: string;
+  email: string;
+  password: string;
 }
 
+export interface AdminMainCategory {
+  name: string;
+  description: string;
+}
+
+export interface AdminSubCategory {
+  name: string;
+  description: string;
+  category: string;
+}
 export interface AdminProductProps {
-  productName: string;
-  productCategory: string;
-  productQuantity: number;
-  productPrice: number;
-  productMainCategory: string;
-  productSalePrice: number;
-  productSubCategory: string;
-  productDiscount: number;
-  productType: string;
-  productColors: {
+  name: string;
+  quantity: number;
+  price: number;
+  salePrice: number;
+  subCategory: string;
+  discount: number;
+  category: string;
+  description: string;
+  colors: {
     value: string;
     label: string;
     color: string;
   }[];
-  productSizes: {
+  size: {
     value: string;
     label: string;
     color: string;
   }[];
-  productDescription: string;
+  // productCategory: string;
+  // productMainCategory: string;
+  // productType: string;
 }
 
 export interface CustomizedTextFieldProps {

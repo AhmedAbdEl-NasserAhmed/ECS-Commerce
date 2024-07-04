@@ -11,7 +11,7 @@ function AddProductImage({ setValue, formData, control, imagesNumber = 3 }) {
   useEffect(() => {
     const newInputNumbers = [];
     for (let i = 0; i < imagesNumber; i++) {
-      newInputNumbers.push(`${i + 1}`);
+      newInputNumbers.push(`image-${i + 1}`);
     }
     setInputNumbers(newInputNumbers);
   }, [imagesNumber]);

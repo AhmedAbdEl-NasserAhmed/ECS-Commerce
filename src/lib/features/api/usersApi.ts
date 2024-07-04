@@ -6,8 +6,8 @@ import {
 } from "@reduxjs/toolkit/query/react";
 
 // RTK Query
-const adminApi = createApi({
-  reducerPath: "adminApi",
+const usersApi = createApi({
+  reducerPath: "usersApi",
   baseQuery: axiosBaseQuery({
     baseUrl: "http://localhost:8000/api/v1/",
   }),
@@ -22,6 +22,6 @@ const adminApi = createApi({
   }),
 });
 
-export const { useAdminLoginMutation } = adminApi;
+export const { useAdminLoginMutation } = usersApi;
 
-export default adminApi;
+export default usersApi;

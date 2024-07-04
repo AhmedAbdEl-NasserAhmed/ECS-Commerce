@@ -9,9 +9,9 @@ function ProductsOverview() {
       <h2 className="text-xl sm:text-3xl text-cyan-500 font-semibold mb-8 ">
         PRODUCTS OVERVIEW
       </h2>
-      <Menus>
-        {/* <BaseTable tableHeaders={productTableHeaders} content={products} /> */}
-      </Menus>
+      {/* <Menus>
+        <BaseTable tableHeaders={productTableHeaders} content={products} />
+      </Menus> */}
     </Box>
   );
 }

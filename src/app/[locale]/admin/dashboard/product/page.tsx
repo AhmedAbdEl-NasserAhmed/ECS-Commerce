@@ -43,7 +43,7 @@ function ProductPage() {
 
   const formData = watch();
 
-  console.log("formData", formData);
+  console.log("FORM DATA", formData);
 
   const [smartSeachvalue, setSmartSeachValue] = useState<{
     id: string;
@@ -79,9 +79,9 @@ function ProductPage() {
   }, [formData.price, formData.discount]);
 
   function onSubmit(data: AdminProductProps) {
-    const serverData = getAddProductServerData(data);
+    const myData = { ...data, category: smartSeachvalue["_id"] };
 
-    console.log("SERVER DATA", serverData);
+    const serverData = getAddProductServerData(myData);
 
     addProductFn(serverData);
   }
@@ -133,7 +133,7 @@ function ProductPage() {
         </Box>
 
         <Box className="flex gap-8 flex-col lg:flex-row justify-between ">
-          <Box className="grow-[4]">
+          <Box className="grow-[2] basis-[350px]">
             <Box className="relative grid grid-cols-autofill-minmax gap-12">
               <Controller
                 // disabled={subCategoryState.isLoading}
@@ -391,7 +391,7 @@ function ProductPage() {
               </Box>
             </Box>
           </Box>
-          <Box className="grow-[2] text-center">
+          <Box className="grow text-center">
             <AddProductImage
               control={control}
               formData={formData}

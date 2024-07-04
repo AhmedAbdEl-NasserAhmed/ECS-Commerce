@@ -37,29 +37,21 @@ function AdminLoginForm() {
   const t = useTranslations("Index");
 
   function onSubmit(data: LoginFormData) {
-    router.push(`${locale}/admin/dashboard/product`);
+    adminFc({
+      email: data.email,
+      password: data.password,
+    })
+      .unwrap()
+      .then((res) => {
+        toast.success("Welcome Back");
 
-    // adminFc({
-    //   email: data.email,
-    //   password: data.password,
-    //   // email: "admin@gmail.com",
-    //   // password: "admin123456",
-    // })
-    //   .unwrap()
-    //   .then((res) => {
-    //     toast.success("Welcome Back");
+        localStorage.setItem("userToken", res.token);
 
-    //     localStorage.setItem("userToken", res.token);
+        // router.push(`/${locale}/admin/dashboard/product`);
 
-    //     const queryString = new URLSearchParams({
-    //       loggedIn: "true",
-    //     }).toString();
-
-    //     router.push(`${locale}/admin/dashboard/product/?${queryString}`);
-
-    //     dispatch(loginUser({ user: res.data, token: res.token }));
-    //   })
-    //   .catch((err) => toast.error(err.data.message));
+        dispatch(loginUser({ user: res.data, token: res.token }));
+      })
+      .catch((err) => toast.error(err.data.message));
   }
 
   return (

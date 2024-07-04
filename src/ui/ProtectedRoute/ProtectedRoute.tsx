@@ -47,7 +47,31 @@ function ProtectedRoute({ children }) {
   //       return;
   //     }
   //   }
-  // }, [router, locale, user, pathname]);
+  // }, [router, locale, user, pathname, searchParams, authRoutes]);
+
+  useEffect(() => {
+    if (typeof window !== undefined) {
+      const pathname = window.location.pathname;
+      const isAuthAdminRoute = authRoutes.includes(
+        "/" + pathname.split("/").at(-1)
+      );
+
+      if (user.isAuthenticated) {
+        if (isAuthAdminRoute) {
+          router.push(`/${locale}/admin/dashboard/product`);
+        } else {
+          return;
+        }
+      } else {
+        if (isAuthAdminRoute) {
+          return;
+        } else {
+          router.push(`/${locale}/admin`);
+          return;
+        }
+      }
+    }
+  }, [typeof window, router, locale, user, pathname, searchParams, authRoutes]);
 
   return children;
 }

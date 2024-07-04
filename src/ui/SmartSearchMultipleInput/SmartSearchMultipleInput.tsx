@@ -49,8 +49,6 @@ function SmartSearchMultipleInput({
     value: false,
   });
 
-  console.log(smartSearchMultipleState.multipleItems);
-
   function hanldeDelete(item) {
     action(SmartSearchActions.ADD_ITEM, {
       name: item.name,

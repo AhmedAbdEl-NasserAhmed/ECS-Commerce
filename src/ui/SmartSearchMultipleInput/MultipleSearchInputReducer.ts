@@ -47,15 +47,14 @@ export const reducerFn = function (state = initialState, action) {
   }
 
   if (action.type === SmartSearchActions.DELETE_ITEM) {
-    const updatedItems = state.multipleItems.filter(
-      (item) => item.name !== action.payload.value
-    );
-
     return {
       ...state,
-      multipleItems: updatedItems,
+      multipleItems: state.multipleItems.filter(
+        (item) => item.name !== action.payload.value
+      ),
     };
   }
+
   if (action.type === SmartSearchActions.DELETE_ID) {
     return {
       ...state,

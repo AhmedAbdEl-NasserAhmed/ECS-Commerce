@@ -22,14 +22,14 @@ export interface AdminProductProps {
   salePrice: number;
   subCategory: string;
   discount: number;
-  mainCategory: string;
+  category: string;
   description: string;
   colors: {
     value: string;
     label: string;
     color: string;
   }[];
-  sizes: {
+  size: {
     value: string;
     label: string;
     color: string;

@@ -22,7 +22,7 @@ const subCategoriesApi = createApi({
     }),
     getSubCategory: builder.query({
       query: (letter) => ({
-        url: `categories/filtered?letters=${letter}`,
+        url: `subCategories/filtered?letters=${letter}`,
         method: "Get",
       }),
     }),

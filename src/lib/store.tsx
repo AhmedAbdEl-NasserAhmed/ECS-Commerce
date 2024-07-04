@@ -3,6 +3,7 @@ import usersSlice from "./features/usersSlice/usersSlice";
 import usersApi from "./features/api/usersApi";
 import categoriesApi from "./features/api/categoriesApi";
 import subCategoriesApi from "./features/api/subCategoriesApi";
+import productsApi from "./features/api/productsApi";
 
 export const makeStore = () => {
   return configureStore({
@@ -11,12 +12,14 @@ export const makeStore = () => {
       [usersApi.reducerPath]: usersApi.reducer,
       [categoriesApi.reducerPath]: categoriesApi.reducer,
       [subCategoriesApi.reducerPath]: subCategoriesApi.reducer,
+      [productsApi.reducerPath]: productsApi.reducer,
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({ serializableCheck: false }).concat(
         usersApi.middleware,
         categoriesApi.middleware,
-        subCategoriesApi.middleware
+        subCategoriesApi.middleware,
+        productsApi.middleware
       ),
   });
 };

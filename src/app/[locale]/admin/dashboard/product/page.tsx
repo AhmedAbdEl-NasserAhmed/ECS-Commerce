@@ -1,7 +1,11 @@
 "use client";
 
 import useDebounceHook from "@/hooks/useDebounceHook";
-import { useGetCategoryQuery } from "@/lib/features/api/categoriesApi";
+import {
+  useAddCategoryMutation,
+  useGetCategoryQuery,
+} from "@/lib/features/api/categoriesApi";
+import { useAddProductMutation } from "@/lib/features/api/productsApi";
 import { useGetSubCategoryQuery } from "@/lib/features/api/subCategoriesApi";
 import { AdminProductProps } from "@/types/types";
 import AddProductImage from "@/ui/AddProductImage/AddProductImage";
@@ -26,25 +30,6 @@ function ProductPage() {
     register,
     formState: { errors },
   } = useForm<AdminProductProps>();
-
-  function onSubmit(data: AdminProductProps) {
-    const serverProduct = {};
-
-    const images = [];
-
-    Object.keys(formData).map((key) => {
-      if (key.includes("image")) {
-        images.push(formData[key]);
-      } else {
-        serverProduct[key] = formData[key];
-      }
-    });
-
-    // console.log("serverData", serverData);
-    // console.log("serverProduct", serverProduct);
-
-    // reset();
-  }
 
   const [colorsOption, setColorOptions] = useState<
     {
@@ -80,6 +65,8 @@ function ProductPage() {
     subCategorydebounceValue
   );
 
+  const [addProductFn, productResponse] = useAddProductMutation();
+
   const t = useTranslations("Dashboard");
 
   useEffect(() => {
@@ -92,6 +79,46 @@ function ProductPage() {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formData.price, formData.discount]);
+
+  function onSubmit(data: AdminProductProps) {
+    console.log("DATA", data);
+
+    const serverProduct = {};
+    const images = [];
+
+    const formData = new FormData();
+
+    for (const key in data) {
+      if (key.includes("image")) {
+        if (data[key]) {
+          formData.append("images", data[key]);
+        }
+        images.push(data[key]);
+      } else {
+        if (key !== "category" && key !== "colors") {
+          formData.append(key, JSON.stringify(data[key]));
+
+          serverProduct[key] = data[key];
+        }
+      }
+    }
+
+    formData.append("colors", JSON.stringify(data.colors));
+
+    // data.colors.forEach((color) => {
+    //   console.log("COLOR", color);
+    //   if (color) {
+    //     // formData.append("colors", JSON.stringify(color));
+    //   }
+    // });
+
+    // serverProduct["category"] = smartSeachvalue["_id"];
+    formData.append("category", smartSeachvalue["_id"]);
+
+    serverProduct["images"] = images.filter(Boolean);
+
+    addProductFn(formData);
+  }
 
   return (
     <form
@@ -142,9 +169,9 @@ function ProductPage() {
         <Box className="flex gap-8 flex-col lg:flex-row justify-between ">
           <Box className="grow-[4]">
             <Box className="relative grid grid-cols-autofill-minmax items-center gap-12">
-              {/* <Controller
+              <Controller
                 // disabled={subCategoryState.isLoading}
-                name={"mainCategory"}
+                name={"category"}
                 control={control}
                 defaultValue={""}
                 rules={{ required: "This field is required" }}
@@ -159,7 +186,7 @@ function ProductPage() {
                     onChange={field.onChange}
                   />
                 )}
-              /> */}
+              />
               {/* <Controller
                 // disabled={subCategoryState.isLoading}
                 name={"subCategory"}
@@ -222,7 +249,7 @@ function ProductPage() {
                 />
               </Box>
               <Controller
-                name={"sizes"}
+                name={"size"}
                 control={control}
                 rules={{ required: "This field is required" }}
                 render={({ field }) => (
@@ -231,7 +258,7 @@ function ProductPage() {
                     textLabelClass={"font-semibold text-xl"}
                     placeholder={"Product Sizes"}
                     textLabel={"Product Sizes"}
-                    name={"sizes"}
+                    name={"size"}
                     options={[
                       { value: "XS", label: "XS", color: "#666666" },
                       { value: "SM", label: "SM", color: "#666666" },
@@ -330,7 +357,7 @@ function ProductPage() {
                   />
                 )}
               />
-              <Controller
+              {/* <Controller
                 name={"salePrice"}
                 defaultValue={0}
                 control={control}
@@ -362,7 +389,7 @@ function ProductPage() {
                     size={"small"}
                   />
                 )}
-              />
+              /> */}
               <Box className="col-span-full">
                 <Controller
                   name={"description"}

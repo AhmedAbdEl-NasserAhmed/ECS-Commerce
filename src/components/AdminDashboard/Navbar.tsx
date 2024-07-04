@@ -1,17 +1,35 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import { FaAngleDown, FaSearch } from "react-icons/fa";
 import { HiOutlineBell } from "react-icons/hi2";
 import { Box, InputAdornment, TextField } from "@mui/material";
 import CustomizedTextField from "@/ui/TextField/TextField";
 import { HiMenuAlt3 } from "react-icons/hi";
+import { useParams, usePathname, useRouter } from "next/navigation";
 
 interface Props {
   setExpand?: (isTrue: any) => void;
 }
 
 function Navbar({ setExpand }: Props) {
+  // const { locale, toggleLocale } = useLocale();
+  const pathname = usePathname();
+
+  const router = useRouter();
+
+  const { locale } = useParams();
+
+  const [langState, setLangState] = useState(locale);
+
+  const onChangeLanguage = (value: string) => {
+    setLangState(value);
+
+    const newPath = pathname.replace(`/${locale}`, `/${value}`);
+
+    router.push(newPath);
+  };
   return (
     <Box
       component="nav"
@@ -103,6 +121,15 @@ function Navbar({ setExpand }: Props) {
           </li>
           <li>
             <HiOutlineBell />
+          </li>
+          <li>
+            <select
+              value={langState}
+              onChange={(e) => onChangeLanguage(e.target.value)}
+            >
+              <option value="en">EN</option>
+              <option value="ar">AR</option>
+            </select>
           </li>
         </ul>
       </Box>

@@ -1,4 +1,5 @@
 import { AdminProductProps } from "@/types/types";
+import { useRouter } from "next/router";
 
 export const getAddProductServerData = (data: AdminProductProps) => {
   const formData = new FormData();

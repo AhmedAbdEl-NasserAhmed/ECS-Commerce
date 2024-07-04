@@ -22,32 +22,29 @@ function ProtectedRoute({ children }) {
 
   const authRoutes = ["/admin"];
 
-  // useEffect(() => {
-  //   const isAuthAdminRoute = authRoutes.includes(
-  //     "/" + pathname.split("/").at(-1)
-  //   );
+  useEffect(() => {
+    if (typeof window !== undefined) {
+      const pathname = window.location.pathname;
+      const isAuthAdminRoute = authRoutes.includes(
+        "/" + pathname.split("/").at(-1)
+      );
 
-  //   const params = Object.fromEntries(searchParams.entries());
-
-  //   if (user.isAuthenticated) {
-  //     if (params?.loggedIn) {
-  //       return;
-  //     } else {
-  //       if (isAuthAdminRoute) {
-  //         router.back();
-  //       } else {
-  //         return;
-  //       }
-  //     }
-  //   } else {
-  //     if (isAuthAdminRoute) {
-  //       return;
-  //     } else {
-  //       router.push(`/${locale}/admin`);
-  //       return;
-  //     }
-  //   }
-  // }, [router, locale, user, pathname]);
+      if (user.isAuthenticated) {
+        if (isAuthAdminRoute) {
+          router.push(`/${locale}/admin/dashboard/product`);
+        } else {
+          return;
+        }
+      } else {
+        if (isAuthAdminRoute) {
+          return;
+        } else {
+          router.push(`/${locale}/admin`);
+          return;
+        }
+      }
+    }
+  }, [typeof window, router, locale, user, pathname, searchParams, authRoutes]);
 
   return children;
 }

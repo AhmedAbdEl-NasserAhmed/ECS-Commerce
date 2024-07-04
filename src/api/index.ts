@@ -10,7 +10,6 @@ interface AxiosProps {
 
 const axiosBaseQuery = ({ baseUrl } = { baseUrl: "" }) => {
   return async ({ url, method, body, params }: AxiosProps) => {
-    console.log("BODY", body);
     try {
       const result = await axiosInstance({
         url: baseUrl + url,

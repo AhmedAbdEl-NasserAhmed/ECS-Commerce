@@ -34,6 +34,9 @@ export interface AdminProductProps {
     label: string;
     color: string;
   }[];
+  images: {
+    [key: string]: File;
+  };
   // productCategory: string;
   // productMainCategory: string;
   // productType: string;
@@ -106,4 +109,5 @@ export interface SelecteMenuProps {
   textLabel: string;
   textLabelClass: string;
   isMulti: boolean;
+  disabled: boolean;
 }

@@ -11,6 +11,14 @@ html {
   box-sizing: border-box;
 }
 
+html[lang="en"] {
+  direction: ltr;
+}
+
+html[lang="ar"] {
+  direction: rtl;
+}
+
 ul {
   text-decoration: none;
 }

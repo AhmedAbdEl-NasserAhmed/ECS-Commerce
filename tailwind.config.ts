@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+const plugin = require("tailwindcss/plugin");
 
 const config: Config = {
   content: [
@@ -6,6 +7,7 @@ const config: Config = {
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+
   theme: {
     extend: {
       backgroundImage: {
@@ -39,6 +41,19 @@ const config: Config = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    plugin(function ({ addVariant, e }) {
+      addVariant("rtl", ({ modifySelectors, separator }) => {
+        modifySelectors(({ className }) => {
+          return `.rtl .${e(`rtl${separator}${className}`)}`;
+        });
+      });
+      addVariant("ltr", ({ modifySelectors, separator }) => {
+        modifySelectors(({ className }) => {
+          return `.ltr .${e(`ltr${separator}${className}`)}`;
+        });
+      });
+    }),
+  ],
 };
 export default config;

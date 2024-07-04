@@ -12,7 +12,10 @@ axiosInstance.defaults.headers.common["Cache-Control"] = "max-age=31536000";
 
 axiosInstance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("userToken");
+    let token = null;
+    if (typeof localStorage !== undefined) {
+      token = localStorage.getItem("userToken");
+    }
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }

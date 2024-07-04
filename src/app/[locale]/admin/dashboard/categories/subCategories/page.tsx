@@ -25,8 +25,6 @@ function SubCategoryPage() {
 
   const formData = watch();
 
-  console.log("Form data", formData);
-
   const [smartSeachvalue, setSmartSeachValue] = useState<{
     id: string;
     name: string;
@@ -112,7 +110,6 @@ function SubCategoryPage() {
         </Box>
         <Box className="relative flex flex-col gap-12">
           <Controller
-            disabled={subCategoryState.isLoading}
             name={"category"}
             control={control}
             defaultValue={""}
@@ -130,7 +127,6 @@ function SubCategoryPage() {
             )}
           />
           <Controller
-            disabled={subCategoryState.isLoading}
             name={"name"}
             control={control}
             defaultValue={""}
@@ -156,7 +152,6 @@ function SubCategoryPage() {
             )}
           />
           <Controller
-            disabled={subCategoryState.isLoading}
             name={"description"}
             control={control}
             defaultValue={""}

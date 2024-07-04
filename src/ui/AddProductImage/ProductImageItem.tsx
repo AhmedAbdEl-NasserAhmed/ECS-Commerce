@@ -2,6 +2,7 @@ import { Box } from "@mui/material";
 import ImagePreview from "./ImagePreview";
 import ImageInput from "./ImageInput";
 import { Controller } from "react-hook-form";
+import { createKey } from "next/dist/shared/lib/router/router";
 
 function ProductImageItem(props) {
   if (!props.imageInputName) return;
@@ -25,13 +26,14 @@ function ProductImageItem(props) {
     >
       {props.imageUrl ? (
         <ImagePreview
+          disabled={props.disabled}
           imageUrl={props.imageUrl}
           onRemove={props.onRemoveImage}
-          imageInputName={props.imageInputName}
+          imageInputName={`images.${props.imageInputName}`}
         />
       ) : (
         <Controller
-          name={props.imageInputName}
+          name={`images.${props.imageInputName}`}
           control={props.control}
           render={({ field }) => {
             return (

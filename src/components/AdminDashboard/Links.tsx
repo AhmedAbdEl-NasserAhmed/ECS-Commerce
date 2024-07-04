@@ -1,8 +1,9 @@
+import { useState } from "react";
 import { Box } from "@mui/material";
 import Link from "next/link";
 import Image from "next/image";
 import { HiOutlineViewGrid } from "react-icons/hi";
-import { HiOutlineCube } from "react-icons/hi2";
+import { HiCube } from "react-icons/hi2";
 import { useParams } from "next/navigation";
 import { useHandleWindowWidth } from "@/hooks/useHandleWindowWidth";
 import SubMenuLink from "./SubMenuLink";
@@ -17,6 +18,13 @@ function Links({ setExpand, expand }: Props) {
   const isWidthHiger = useHandleWindowWidth();
 
   const { locale } = useParams();
+
+  const [expanded, setExpanded] = useState<string | false>(false);
+
+  const handleChange =
+    (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
+      setExpanded(isExpanded ? panel : false);
+    };
 
   return (
     <Box
@@ -68,11 +76,13 @@ function Links({ setExpand, expand }: Props) {
         </Link>
 
         <SubMenuLink
+          expanded={expanded}
+          handleChange={handleChange}
           menuName="Products"
           id="product"
           expand={expand}
           setExpand={setExpand}
-          icon={<HiOutlineCube />}
+          icon={<HiCube />}
           menuLinks={[
             {
               href: `/${locale}/admin/dashboard/product`,
@@ -85,6 +95,8 @@ function Links({ setExpand, expand }: Props) {
           ]}
         />
         <SubMenuLink
+          expanded={expanded}
+          handleChange={handleChange}
           menuName="Categories"
           id="categories"
           expand={expand}

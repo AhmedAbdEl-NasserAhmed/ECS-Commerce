@@ -142,7 +142,7 @@ function ProductPage() {
                 rules={{ required: "This field is required" }}
                 render={({ field }) => (
                   <SmartSearchInput
-                    // shouldReset={subCategoryState.isSuccess}
+                    shouldReset={false}
                     getSmartSearchValue={setSmartSeachValue}
                     textLabel="Main Category"
                     data={mainCategory?.data}

@@ -11,7 +11,7 @@ const productsApi = createApi({
   endpoints: (builder) => ({
     addProduct: builder.mutation({
       query: (body) => ({
-        url: "products/test",
+        url: "products",
         method: "POST",
         body,
       }),

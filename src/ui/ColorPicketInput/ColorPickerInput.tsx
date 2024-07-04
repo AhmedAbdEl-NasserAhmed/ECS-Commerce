@@ -10,7 +10,7 @@ import { HiMiniPlusCircle } from "react-icons/hi2";
 
 const DEFAULT_COLOR = "#000000";
 
-function ColorPickerInput({ setColorOptions, colorsOption }) {
+function ColorPickerInput({ setColorOptions, colorsOption, disabled }) {
   const [color, setColor] = useState<string>(DEFAULT_COLOR);
 
   const nearest = nearestColor.from(colorsOptions);
@@ -43,12 +43,24 @@ function ColorPickerInput({ setColorOptions, colorsOption }) {
   }
 
   return (
-    <>
-      <div
-        style={{ right: "45px", top: "38px" }}
-        className="absolute z-10 flex flex-col gap-10 pointer cursor-pointer"
-      >
+    <div
+      style={{
+        right: "12%",
+        top: "50%",
+        transform: "translateY(35%)",
+        gap: "10px",
+      }}
+      className=" absolute flex pointer cursor-pointer items-center"
+    >
+      <div style={{ fontSize: "16px", lineHeight: "0" }}>
+        <button style={{ color: color }} onClick={handleAddColor} type="button">
+          <HiMiniPlusCircle />
+        </button>
+      </div>
+
+      <div>
         <input
+          disabled={disabled}
           type="color"
           className="absolute w-full h-full opacity-0"
           onChange={(e) => {
@@ -57,15 +69,7 @@ function ColorPickerInput({ setColorOptions, colorsOption }) {
         />
         <Image src="/color-wheel.png" alt="img" height={20} width={20} />
       </div>
-      <div
-        style={{ right: "80px", top: "38px", fontSize: "20px" }}
-        className="absolute z-10 "
-      >
-        <button style={{ color: color }} onClick={handleAddColor} type="button">
-          <HiMiniPlusCircle />
-        </button>
-      </div>
-    </>
+    </div>
   );
 }
 

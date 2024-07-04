@@ -18,6 +18,7 @@ function MultiChoiceSelectMenu({
   name,
   isMulti,
   errors,
+  disabled,
 }: SelecteMenuProps) {
   const colourStyles: StylesConfig<ColourOption, true> = {
     control: (styles, state) => ({
@@ -100,6 +101,7 @@ function MultiChoiceSelectMenu({
       <Select
         {...field}
         instanceId={useId()}
+        isDisabled={disabled}
         placeholder={placeholder}
         className={className}
         closeMenuOnSelect={true}

@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 export const getAddProductServerData = (data: AdminProductProps) => {
   const formData = new FormData();
 
-  const excludeKeys = ["images"];
+  const excludeKeys = ["images", "subCategory"];
 
   for (let key in data) {
     if (excludeKeys.includes(key)) continue;
@@ -22,6 +22,14 @@ export const getAddProductServerData = (data: AdminProductProps) => {
       formData.append("images", data["images"][imageKey]);
     }
   });
+
+  Array.from(data.subCategory).forEach((subCategory) => {
+    formData.append("subCategory", subCategory);
+  });
+
+  // Array.from(data.colors).forEach((color) => {
+  //   formData.append("colors", JSON.stringify(color));
+  // });
 
   return formData;
 };

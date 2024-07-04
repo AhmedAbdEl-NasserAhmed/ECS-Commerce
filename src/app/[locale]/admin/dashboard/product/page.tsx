@@ -11,6 +11,7 @@ import { getAddProductServerData } from "@/lib/helpers";
 import { AdminProductProps } from "@/types/types";
 import AddProductImage from "@/ui/AddProductImage/AddProductImage";
 import ColorPickerInput from "@/ui/ColorPicketInput/ColorPickerInput";
+import MiniSpinner from "@/ui/MiniSpinner/MiniSpinner";
 import MultiChoiceSelectMenu from "@/ui/MultiChoiceSelectMenu/MultiChoiceSelectMenu";
 import SmartSearchInput from "@/ui/SmartSearchInput/SmartSearchInput";
 import SmartSearchMultipleInput from "@/ui/SmartSearchMultipleInput/SmartSearchMultipleInput";
@@ -133,16 +134,16 @@ function ProductPage() {
         </Box>
 
         <Box className="flex gap-8 flex-col lg:flex-row justify-between ">
-          <Box className="grow-[2] basis-[350px]">
+          <Box className="w-full lg:w-[70%] ">
             <Box className="relative grid grid-cols-autofill-minmax gap-12">
               <Controller
-                // disabled={subCategoryState.isLoading}
                 name={"category"}
                 control={control}
                 defaultValue={""}
                 rules={{ required: "This field is required" }}
                 render={({ field }) => (
                   <SmartSearchInput
+                    disabled={productResponse.isLoading}
                     shouldReset={false}
                     getSmartSearchValue={setSmartSeachValue}
                     textLabel="Main Category"
@@ -154,13 +155,13 @@ function ProductPage() {
                 )}
               />
               <Controller
-                // disabled={subCategoryState.isLoading}
                 name={"subCategory"}
                 control={control}
                 defaultValue={""}
                 rules={{ required: "This field is required" }}
                 render={({ field }) => (
                   <SmartSearchMultipleInput
+                    disabled={productResponse.isLoading}
                     getSmartSearchValue={setSmartSeachSubCategoryValue}
                     textLabel="Sub Category"
                     data={subCategory?.data}
@@ -177,6 +178,7 @@ function ProductPage() {
                 rules={{ required: "This field is required" }}
                 render={({ field }) => (
                   <CustomizedTextField
+                    disabled={productResponse.isLoading}
                     textLabelClass={"font-semibold text-xl"}
                     placeholder={"Product Name"}
                     textlabel={"Product Name"}
@@ -197,6 +199,7 @@ function ProductPage() {
                   rules={{ required: "This field is required" }}
                   render={({ field }) => (
                     <MultiChoiceSelectMenu
+                      disabled={productResponse.isLoading}
                       isMulti={true}
                       textLabelClass={"font-semibold text-xl"}
                       placeholder={"Product Colors"}
@@ -209,6 +212,7 @@ function ProductPage() {
                   )}
                 />
                 <ColorPickerInput
+                  disabled={productResponse.isLoading}
                   colorsOption={colorsOption}
                   setColorOptions={setColorOptions}
                 />
@@ -219,6 +223,7 @@ function ProductPage() {
                 rules={{ required: "This field is required" }}
                 render={({ field }) => (
                   <MultiChoiceSelectMenu
+                    disabled={productResponse.isLoading}
                     isMulti={false}
                     textLabelClass={"font-semibold text-xl"}
                     placeholder={"Product Sizes"}
@@ -250,6 +255,7 @@ function ProductPage() {
                 }}
                 render={({ field }) => (
                   <CustomizedTextField
+                    disabled={productResponse.isLoading}
                     textLabelClass={"font-semibold text-xl"}
                     placeholder={"Product Quantity"}
                     textlabel={"Product Quantity"}
@@ -278,6 +284,7 @@ function ProductPage() {
                 }}
                 render={({ field }) => (
                   <CustomizedTextField
+                    disabled={productResponse.isLoading}
                     textLabelClass={"font-semibold text-xl"}
                     placeholder={"Product Price"}
                     textlabel={"Product Price"}
@@ -307,6 +314,7 @@ function ProductPage() {
                 }}
                 render={({ field }) => (
                   <CustomizedTextField
+                    disabled={productResponse.isLoading}
                     textLabelClass={"font-semibold text-xl"}
                     placeholder={"Product Discount %"}
                     textlabel={"Product Discount %"}
@@ -322,23 +330,16 @@ function ProductPage() {
                   />
                 )}
               />
-              {/* <Controller
+              <Controller
                 name={"salePrice"}
                 defaultValue={0}
                 control={control}
                 rules={{
                   required: "This field is required",
-                  min: {
-                    value: 0,
-                    message: "This field should be more than 0 ",
-                  },
-                  max: {
-                    value: +formData.price,
-                    message: "This field should be less than Product Price ",
-                  },
                 }}
                 render={({ field }) => (
                   <CustomizedTextField
+                    disabled={productResponse.isLoading}
                     textLabelClass={"font-semibold text-xl"}
                     placeholder={"Product Sale Pirce"}
                     textlabel={"Product Sale Price"}
@@ -354,7 +355,7 @@ function ProductPage() {
                     size={"small"}
                   />
                 )}
-              /> */}
+              />
               <Box className="col-span-full">
                 <Controller
                   name={"description"}
@@ -362,6 +363,7 @@ function ProductPage() {
                   rules={{ required: "This field is required" }}
                   render={({ field }) => (
                     <CustomizedTextField
+                      disabled={productResponse.isLoading}
                       textLabelClass={"font-semibold text-xl"}
                       placeholder={"Product Description"}
                       textlabel={"Product Description"}
@@ -393,6 +395,7 @@ function ProductPage() {
           </Box>
           <Box className="grow text-center">
             <AddProductImage
+              disabled={productResponse.isLoading}
               control={control}
               formData={formData}
               imagesNumber={3}
@@ -402,6 +405,7 @@ function ProductPage() {
         </Box>
         <Box>
           <Button
+            disabled={productResponse.isLoading}
             sx={{
               paddingInline: "1.6rem",
               paddingBlock: "1rem",
@@ -418,7 +422,7 @@ function ProductPage() {
             variant="contained"
             size="large"
           >
-            Add Product
+            {productResponse.isLoading ? <MiniSpinner /> : "Add Product"}
           </Button>
         </Box>
       </Box>

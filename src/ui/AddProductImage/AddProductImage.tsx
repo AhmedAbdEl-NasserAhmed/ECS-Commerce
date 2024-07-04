@@ -3,9 +3,14 @@
 import { Box } from "@mui/material";
 import { useEffect, useState } from "react";
 import ProductImageItem from "./ProductImageItem";
-import { Opacity } from "@mui/icons-material";
 
-function AddProductImage({ setValue, formData, control, imagesNumber = 3 }) {
+function AddProductImage({
+  setValue,
+  formData,
+  control,
+  imagesNumber = 3,
+  disabled,
+}) {
   const [inputNumbers, setInputNumbers] = useState([]);
 
   useEffect(() => {
@@ -23,6 +28,7 @@ function AddProductImage({ setValue, formData, control, imagesNumber = 3 }) {
   return (
     <div>
       <ProductImageItem
+        disabled={disabled}
         control={control}
         imageUrl={formData?.["images"]?.[inputNumbers[0]]}
         imageInputName={inputNumbers[0]}
@@ -42,7 +48,7 @@ function AddProductImage({ setValue, formData, control, imagesNumber = 3 }) {
             <ProductImageItem
               imageInputName={inputName}
               imageUrl={formData?.["images"]?.[inputName]}
-              disabled={!formData?.["images"]?.[inputNumbers[0]]}
+              disabled={!formData?.["images"]?.[inputNumbers[0]] || disabled}
               key={inputName}
               control={control}
               onRemoveImage={handleDeleteImage}

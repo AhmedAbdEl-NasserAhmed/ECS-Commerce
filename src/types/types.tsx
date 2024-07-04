@@ -109,4 +109,5 @@ export interface SelecteMenuProps {
   textLabel: string;
   textLabelClass: string;
   isMulti: boolean;
+  disabled: boolean;
 }

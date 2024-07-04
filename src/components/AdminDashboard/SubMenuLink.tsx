@@ -57,8 +57,6 @@ function SubMenuLink({
             </span>
             {!expand && (
               <p
-                //  ${expand ? "opacity-0" : "opacity-1"}
-                //  ${expand ? "translate-x-[40rem]" : "translate-x-0"}
                 className={`
           group-hover:block group-hover:opacity-100 group-hover:translate-x-0 text-gray-700 transition-opacity transition-opacity-500 transition-transform-500 ease-in-out`}
               >

@@ -4,7 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { FaAngleDown, FaSearch } from "react-icons/fa";
 import { HiOutlineBell } from "react-icons/hi2";
-import { Box, InputAdornment, TextField } from "@mui/material";
+import { Box, InputAdornment } from "@mui/material";
 import CustomizedTextField from "@/ui/TextField/TextField";
 import { HiMenuAlt3 } from "react-icons/hi";
 import { useParams, usePathname, useRouter } from "next/navigation";
@@ -14,7 +14,6 @@ interface Props {
 }
 
 function Navbar({ setExpand }: Props) {
-  // const { locale, toggleLocale } = useLocale();
   const pathname = usePathname();
 
   const router = useRouter();

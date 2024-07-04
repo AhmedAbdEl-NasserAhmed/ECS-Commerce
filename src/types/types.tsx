@@ -34,6 +34,9 @@ export interface AdminProductProps {
     label: string;
     color: string;
   }[];
+  images: {
+    [key: string]: File;
+  };
   // productCategory: string;
   // productMainCategory: string;
   // productType: string;

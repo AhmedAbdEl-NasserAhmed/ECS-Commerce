@@ -7,6 +7,7 @@ import {
 } from "@/lib/features/api/categoriesApi";
 import { useAddProductMutation } from "@/lib/features/api/productsApi";
 import { useGetSubCategoryQuery } from "@/lib/features/api/subCategoriesApi";
+import { getAddProductServerData } from "@/lib/helpers";
 import { AdminProductProps } from "@/types/types";
 import AddProductImage from "@/ui/AddProductImage/AddProductImage";
 import ColorPickerInput from "@/ui/ColorPicketInput/ColorPickerInput";
@@ -40,8 +41,6 @@ function ProductPage() {
   >([{ value: "Black", label: "Black", color: "#000000" }]);
 
   const formData = watch();
-
-  console.log("formData", formData);
 
   const [smartSeachvalue, setSmartSeachValue] = useState<{
     id: string;
@@ -81,43 +80,9 @@ function ProductPage() {
   }, [formData.price, formData.discount]);
 
   function onSubmit(data: AdminProductProps) {
-    console.log("DATA", data);
+    const serverData = getAddProductServerData(data);
 
-    const serverProduct = {};
-    const images = [];
-
-    const formData = new FormData();
-
-    for (const key in data) {
-      if (key.includes("image")) {
-        if (data[key]) {
-          formData.append("images", data[key]);
-        }
-        images.push(data[key]);
-      } else {
-        if (key !== "category" && key !== "colors") {
-          formData.append(key, JSON.stringify(data[key]));
-
-          serverProduct[key] = data[key];
-        }
-      }
-    }
-
-    formData.append("colors", JSON.stringify(data.colors));
-
-    // data.colors.forEach((color) => {
-    //   console.log("COLOR", color);
-    //   if (color) {
-    //     // formData.append("colors", JSON.stringify(color));
-    //   }
-    // });
-
-    // serverProduct["category"] = smartSeachvalue["_id"];
-    formData.append("category", smartSeachvalue["_id"]);
-
-    serverProduct["images"] = images.filter(Boolean);
-
-    addProductFn(formData);
+    addProductFn(serverData);
   }
 
   return (

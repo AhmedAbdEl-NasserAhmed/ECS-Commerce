@@ -53,7 +53,6 @@ function ColorPickerInput({ setColorOptions, colorsOption }) {
           className="absolute w-full h-full opacity-0"
           onChange={(e) => {
             setColor(e.target.value);
-            console.log("Target", e.target.value);
           }}
         />
         <Image src="/color-wheel.png" alt="img" height={20} width={20} />

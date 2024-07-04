@@ -31,7 +31,7 @@ function ProductImageItem(props) {
         />
       ) : (
         <Controller
-          name={props.imageInputName}
+          name={`images.${props.imageInputName}`}
           control={props.control}
           render={({ field }) => {
             return (

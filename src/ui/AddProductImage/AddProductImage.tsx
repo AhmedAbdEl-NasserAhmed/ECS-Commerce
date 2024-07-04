@@ -24,7 +24,7 @@ function AddProductImage({ setValue, formData, control, imagesNumber = 3 }) {
     <div>
       <ProductImageItem
         control={control}
-        imageUrl={formData[inputNumbers[0]]}
+        imageUrl={formData?.["images"]?.[inputNumbers[0]]}
         imageInputName={inputNumbers[0]}
         onRemoveImage={handleDeleteImage}
       />
@@ -41,8 +41,8 @@ function AddProductImage({ setValue, formData, control, imagesNumber = 3 }) {
           return (
             <ProductImageItem
               imageInputName={inputName}
-              imageUrl={formData[inputName]}
-              disabled={!formData[inputNumbers[0]]}
+              imageUrl={formData?.["images"]?.[inputName]}
+              disabled={!formData?.["images"]?.[inputNumbers[0]]}
               key={inputName}
               control={control}
               onRemoveImage={handleDeleteImage}
@@ -51,7 +51,7 @@ function AddProductImage({ setValue, formData, control, imagesNumber = 3 }) {
                 flexShrink: 0,
                 flexBasis: "120px",
                 height: "150px",
-                opacity: !formData[inputNumbers[0]] ? 0.2 : 1,
+                opacity: !formData?.["images"]?.[inputNumbers[0]] ? 0.2 : 1,
               }}
             />
           );

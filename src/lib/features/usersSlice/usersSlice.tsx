@@ -1,6 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const userToken = localStorage.getItem("userToken");
+let userToken = null;
+
+if (typeof localStorage !== undefined) {
+  userToken = localStorage.getItem("userToken");
+}
 
 const initialState = {
   user: null,

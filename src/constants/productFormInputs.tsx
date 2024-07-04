@@ -9,8 +9,6 @@ import {
 export const productFormInputs = (): // formData: AdminProductProps,
 // colorsOptions
 CustomizedTextFieldProps[] => {
-  // console.log(colorsOptions);
-
   return [
     {
       id: "1",

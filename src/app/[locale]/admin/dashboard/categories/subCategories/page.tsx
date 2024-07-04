@@ -25,8 +25,6 @@ function SubCategoryPage() {
 
   const formData = watch();
 
-  console.log("Form data", formData);
-
   const [smartSeachvalue, setSmartSeachValue] = useState<{
     id: string;
     name: string;

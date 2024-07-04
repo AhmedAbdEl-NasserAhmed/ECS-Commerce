@@ -13,6 +13,7 @@ import AddProductImage from "@/ui/AddProductImage/AddProductImage";
 import ColorPickerInput from "@/ui/ColorPicketInput/ColorPickerInput";
 import MultiChoiceSelectMenu from "@/ui/MultiChoiceSelectMenu/MultiChoiceSelectMenu";
 import SmartSearchInput from "@/ui/SmartSearchInput/SmartSearchInput";
+import SmartSearchMultipleInput from "@/ui/SmartSearchMultipleInput/SmartSearchMultipleInput";
 import CustomizedTextField from "@/ui/TextField/TextField";
 import { Box, Button } from "@mui/material";
 import { useTranslations } from "next-intl";
@@ -42,21 +43,19 @@ function ProductPage() {
 
   const formData = watch();
 
+  console.log("formData", formData);
+
   const [smartSeachvalue, setSmartSeachValue] = useState<{
     id: string;
     name: string;
   }>({ id: "", name: "" });
 
-  const [smartSeachSubCategoryvalue, setSmartSeachSubCategoryValue] = useState<{
-    id: string;
-    name: string;
-  }>({ id: "", name: "" });
+  const [smartSeachSubCategoryvalue, setSmartSeachSubCategoryValue] =
+    useState<string>("");
 
   const mainCategorydebounceValue = useDebounceHook(smartSeachvalue.name);
 
-  const subCategorydebounceValue = useDebounceHook(
-    smartSeachSubCategoryvalue.name
-  );
+  const subCategorydebounceValue = useDebounceHook(smartSeachSubCategoryvalue);
 
   const { data: mainCategory } = useGetCategoryQuery(mainCategorydebounceValue);
 
@@ -81,6 +80,8 @@ function ProductPage() {
 
   function onSubmit(data: AdminProductProps) {
     const serverData = getAddProductServerData(data);
+
+    console.log("SERVER DATA", serverData);
 
     addProductFn(serverData);
   }
@@ -133,7 +134,7 @@ function ProductPage() {
 
         <Box className="flex gap-8 flex-col lg:flex-row justify-between ">
           <Box className="grow-[4]">
-            <Box className="relative grid grid-cols-autofill-minmax items-center gap-12">
+            <Box className="relative grid grid-cols-autofill-minmax gap-12">
               <Controller
                 // disabled={subCategoryState.isLoading}
                 name={"category"}
@@ -152,15 +153,14 @@ function ProductPage() {
                   />
                 )}
               />
-              {/* <Controller
+              <Controller
                 // disabled={subCategoryState.isLoading}
                 name={"subCategory"}
                 control={control}
                 defaultValue={""}
                 rules={{ required: "This field is required" }}
                 render={({ field }) => (
-                  <SmartSearchInput
-                    // shouldReset={subCategoryState.isSuccess}
+                  <SmartSearchMultipleInput
                     getSmartSearchValue={setSmartSeachSubCategoryValue}
                     textLabel="Sub Category"
                     data={subCategory?.data}
@@ -169,7 +169,7 @@ function ProductPage() {
                     onChange={field.onChange}
                   />
                 )}
-              /> */}
+              />
               <Controller
                 name={"name"}
                 control={control}

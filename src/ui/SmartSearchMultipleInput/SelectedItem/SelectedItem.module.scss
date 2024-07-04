@@ -1,0 +1,22 @@
+.selected-item {
+  display: flex;
+  padding: 0.5rem;
+  background-color: #ebebeb;
+  border-radius: 5px;
+  gap: 15px;
+  box-shadow: 3px 2px 5px -1px rgba(0, 0, 0, 0.2);
+  text-transform: capitalize;
+}
+
+.close-btn {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  font-size: 0.8rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #cdcdcddd;
+  color: black;
+  cursor: pointer;
+}

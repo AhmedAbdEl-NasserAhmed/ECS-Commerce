@@ -22,6 +22,7 @@ export const reducerFn = function (state = initialState, action) {
   if (action.type === SmartSearchActions.CHANGE_INPUT) {
     return { ...state, inputValue: action.payload.value };
   }
+
   if (action.type === SmartSearchActions.SELECT_ITEM) {
     return {
       ...state,

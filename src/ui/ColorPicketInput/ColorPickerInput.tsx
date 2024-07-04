@@ -2,7 +2,7 @@
 
 import nearestColor from "nearest-color";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { colorsOptions } from "@/constants/colorOptions";
 import Image from "next/image";
 import toast from "react-hot-toast";
@@ -20,6 +20,12 @@ function ColorPickerInput({ setColorOptions, colorsOption, disabled }) {
 
     return color ? color.name : "Unknown Color";
   };
+
+  useEffect(() => {
+    if (disabled) {
+      setColor(DEFAULT_COLOR);
+    }
+  }, [disabled]);
 
   function handleAddColor() {
     if (!color) return;
@@ -40,19 +46,21 @@ function ColorPickerInput({ setColorOptions, colorsOption, disabled }) {
     setColorOptions((data) => [...data, newColor]);
 
     setColor(DEFAULT_COLOR);
+
+    toast.success("A new color is added");
   }
 
   return (
     <div
       style={{
-        right: "12%",
-        top: "50%",
+        right: "9%",
+        top: "40%",
         transform: "translateY(35%)",
         gap: "10px",
       }}
-      className=" absolute flex pointer cursor-pointer items-center"
+      className=" absolute flex pointer cursor-pointer items-center z-10"
     >
-      <div style={{ fontSize: "16px", lineHeight: "0" }}>
+      <div style={{ fontSize: "18px", lineHeight: "0" }}>
         <button style={{ color: color }} onClick={handleAddColor} type="button">
           <HiMiniPlusCircle />
         </button>
@@ -67,7 +75,7 @@ function ColorPickerInput({ setColorOptions, colorsOption, disabled }) {
             setColor(e.target.value);
           }}
         />
-        <Image src="/color-wheel.png" alt="img" height={20} width={20} />
+        <Image src="/color-wheel.png" alt="img" height={25} width={25} />
       </div>
     </div>
   );

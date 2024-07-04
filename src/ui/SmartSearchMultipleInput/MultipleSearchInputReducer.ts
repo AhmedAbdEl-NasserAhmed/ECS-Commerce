@@ -73,9 +73,7 @@ export const reducerFn = function (state = initialState, action) {
 
   if (action.type === SmartSearchActions.RESET) {
     return {
-      ...state,
-      multipleItems: [],
-      multipleItemsId: [],
+      ...initialState,
     };
   }
 };

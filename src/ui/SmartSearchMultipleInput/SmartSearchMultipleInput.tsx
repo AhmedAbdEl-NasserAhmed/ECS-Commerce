@@ -17,6 +17,7 @@ function SmartSearchMultipleInput({
   textLabel,
   getSmartSearchValue,
   disabled,
+  shouldReset,
 }) {
   const [smartSearchMultipleState, dispatch] = useReducer(
     reducerFn,
@@ -26,6 +27,12 @@ function SmartSearchMultipleInput({
   function action(type, payload = null) {
     dispatch({ type, payload });
   }
+
+  useEffect(() => {
+    if (shouldReset) {
+      action(SmartSearchActions.RESET);
+    }
+  }, [shouldReset]);
 
   useEffect(() => {
     onChange(smartSearchMultipleState.multipleItemsId);

@@ -27,9 +27,5 @@ export const getAddProductServerData = (data: AdminProductProps) => {
     formData.append("subCategory", subCategory);
   });
 
-  // Array.from(data.colors).forEach((color) => {
-  //   formData.append("colors", JSON.stringify(color));
-  // });
-
   return formData;
 };

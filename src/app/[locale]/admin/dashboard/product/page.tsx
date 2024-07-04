@@ -19,8 +19,11 @@ import CustomizedTextField from "@/ui/TextField/TextField";
 import { Box, Button } from "@mui/material";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
+import { useParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
+import toast from "react-hot-toast";
 import { HiChevronRight } from "react-icons/hi2";
 
 function ProductPage() {
@@ -30,9 +33,13 @@ function ProductPage() {
     reset,
     watch,
     setValue,
-    register,
+
     formState: { errors },
-  } = useForm<AdminProductProps>();
+  } = useForm<AdminProductProps>({ mode: "onChange" });
+
+  const router = useRouter();
+
+  const { locale } = useParams();
 
   const [colorsOption, setColorOptions] = useState<
     {
@@ -43,8 +50,6 @@ function ProductPage() {
   >([{ value: "Black", label: "Black", color: "#000000" }]);
 
   const formData = watch();
-
-  console.log("FORM DATA", formData);
 
   const [smartSeachvalue, setSmartSeachValue] = useState<{
     id: string;
@@ -84,7 +89,23 @@ function ProductPage() {
 
     const serverData = getAddProductServerData(myData);
 
-    addProductFn(serverData);
+    const formDataImagesLength = Object.values(data.images)[0];
+
+    if (!formDataImagesLength) {
+      toast.error("You Have to add The main image");
+      return;
+    }
+
+    addProductFn(serverData)
+      .unwrap()
+      .then(() => {
+        toast.success("A new Product is added");
+        router.push(`/${locale}/admin/dashboard/product/productsOverview`);
+        reset();
+      })
+      .catch((err) => {
+        toast.error(err.message);
+      });
   }
 
   return (
@@ -144,7 +165,7 @@ function ProductPage() {
                 render={({ field }) => (
                   <SmartSearchInput
                     disabled={productResponse.isLoading}
-                    shouldReset={false}
+                    shouldReset={productResponse.isSuccess}
                     getSmartSearchValue={setSmartSeachValue}
                     textLabel="Main Category"
                     data={mainCategory?.data}
@@ -161,6 +182,7 @@ function ProductPage() {
                 rules={{ required: "This field is required" }}
                 render={({ field }) => (
                   <SmartSearchMultipleInput
+                    shouldReset={productResponse.isSuccess}
                     disabled={productResponse.isLoading}
                     getSmartSearchValue={setSmartSeachSubCategoryValue}
                     textLabel="Sub Category"
@@ -361,6 +383,7 @@ function ProductPage() {
                   name={"description"}
                   control={control}
                   rules={{ required: "This field is required" }}
+                  defaultValue=""
                   render={({ field }) => (
                     <CustomizedTextField
                       disabled={productResponse.isLoading}

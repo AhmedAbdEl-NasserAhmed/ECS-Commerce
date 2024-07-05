@@ -11,16 +11,19 @@ export const productTableHeaders = [
     id: "price",
     header: () => "Product Price",
     accessorKey: "price",
+    size: 100,
   },
   {
     id: "discount",
     header: () => "Product Discount",
     accessorKey: "discount",
+    size: 100,
   },
   {
     id: "size",
     header: () => "Product Size",
     accessorKey: "size",
+    size: 100,
     cell: ({
       cell: {
         row: { original },
@@ -32,7 +35,6 @@ export const productTableHeaders = [
   {
     id: "colors",
     header: () => "Product Colors",
-    accessorKey: "colors",
     cell: ({
       cell: {
         row: { original },
@@ -58,7 +60,6 @@ export const productTableHeaders = [
   {
     id: "images",
     header: () => "Product Image",
-    accessorKey: "images",
     cell: ({
       cell: {
         row: { original },

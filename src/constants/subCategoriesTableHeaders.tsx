@@ -16,6 +16,7 @@ export const subCategoriesTableHeaders = [
   {
     id: "category",
     header: () => <div>Category</div>,
+    accessorKey: "category",
     cell: ({
       cell: {
         row: { original },

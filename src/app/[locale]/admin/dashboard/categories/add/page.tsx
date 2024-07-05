@@ -1,98 +1,76 @@
 "use client";
-import useDebounceHook from "@/hooks/useDebounceHook";
-import useThrottle from "@/hooks/useThrottle";
+
 import {
-  useGetCategoryByIdQuery,
-  useGetCategoryQuery,
+  useAddCategoryMutation,
+  useDeleteCategoryMutation,
 } from "@/lib/features/api/categoriesApi";
-import {
-  useAddSubCategoryMutation,
-  useEditSubCategoryMutation,
-  useGetSubCategoryByIdQuery,
-} from "@/lib/features/api/subCategoriesApi";
-import { AdminSubCategory } from "@/types/types";
+import { AdminMainCategory } from "@/types/types";
 import MiniSpinner from "@/ui/MiniSpinner/MiniSpinner";
-import SmartSearchInput from "@/ui/SmartSearchInput/SmartSearchInput";
 import CustomizedTextField from "@/ui/TextField/TextField";
 import { Box, Button } from "@mui/material";
 import Link from "next/link";
-import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { HiChevronRight } from "react-icons/hi2";
 
-function SubCategoryPage() {
-  const params = useParams();
-
+function CategoryPage() {
   const {
     handleSubmit,
     control,
-    reset,
     watch,
-    setValue,
+    reset,
     formState: { errors },
-  } = useForm<AdminSubCategory>();
+  } = useForm<AdminMainCategory>();
 
   const formData = watch();
 
-  const [smartSeachvalue, setSmartSeachValue] = useState<{
-    id: string;
-    name: string;
-  }>({ id: "", name: "" });
+  const [addCategory, categoryState] = useAddCategoryMutation();
 
-  const debounceValue = useDebounceHook(smartSeachvalue.name);
-
-  const [editSubCategory, editSubCategoryResponse] =
-    useEditSubCategoryMutation();
-
-  const { data: subCategoryData, isFetching: isSubCategoryFetching } =
-    useGetSubCategoryByIdQuery(params.id);
-  useEffect(() => {
-    if (subCategoryData?.data) {
-      setValue("name", subCategoryData?.data?.name);
-      setValue("description", subCategoryData?.data?.description);
-    }
-  }, [subCategoryData]);
-
-  const { data, isLoading } = useGetCategoryQuery(debounceValue);
-
-  function handleEditSubCategorySubmit() {
-    editSubCategory({
-      id: params.id,
-      data: {
-        name: formData.name.trim(),
-        description: formData.description,
-        category: smartSeachvalue["_id"],
-      },
+  function handleAddCategorySubmit() {
+    addCategory({
+      name: formData.name.toLocaleLowerCase().replace(/\s+/g, ""),
+      description: formData.description,
     })
       .unwrap()
       .then((res) => {
         if (res.status === "success") {
-          toast.success("A new sub-category updated");
-          setSmartSeachValue({
-            id: "",
-            name: "",
-          });
+          toast.success("A New Main Category Added");
           reset();
         }
       })
       .catch((err) => {
         if (err) {
-          toast.error("This sub-category is already there");
+          toast.error("This Category is Already Added");
         }
       });
   }
+  const pathname = usePathname();
 
+  const [deleteCategory, deleteCategoryResponse] = useDeleteCategoryMutation();
+
+  const deleteCategoryHandler = () => {
+    const id = "6681eeba9397b4412be678d3";
+    deleteCategory(id)
+      .unwrap()
+      .then((res) => {
+        toast.success(`Your category has been deleted!`);
+      })
+      .catch((err) => {
+        toast.error("This Category is not exists");
+      });
+  };
   return (
     <form
-      onSubmit={handleSubmit(handleEditSubCategorySubmit)}
+      onSubmit={handleSubmit(handleAddCategorySubmit)}
       className=" flex flex-col gap-8 px-[4rem] py-[1.2rem] bg-[#FDFDFD] "
     >
+      {/* <Link href={`${pathname}/edit/6681eeba9397b4412be678d3`}>Edit</Link> */}
+      {/* <button onClick={deleteCategoryHandler}>Delete</button> */}
       <Box className="h-[10vh] flex justify-between items-center">
         <Box className="flex flex-col gap-4">
           <h2 className="text-4xl font-semibold  text-gray-600">
-            Edit Sub Category
+            Add Category
           </h2>
           <Box className="flex items-center gap-4 text-[1.4rem]">
             <Link className="text-blue-400" href="/">
@@ -101,7 +79,7 @@ function SubCategoryPage() {
             <span>
               <HiChevronRight />
             </span>
-            <h4>Sub Categories</h4>
+            <h4>Categories</h4>
           </Box>
         </Box>
         <Button
@@ -126,51 +104,25 @@ function SubCategoryPage() {
       </Box>
       <Box className="relative grow flex flex-col gap-8 bg-white rounded-2xl border-2 p-10 border-slate-100 shadow-md">
         <Box className="mb-4">
-          <h2 className="text-3xl font-semibold mb-5">Edit Sub Category</h2>
+          <h2 className="text-3xl font-semibold mb-5">Add Category</h2>
           <span className=" absolute left-0 block h-[1px] w-full bg-gray-200">
             &nbsp;
           </span>
         </Box>
-        <Box className="relative flex flex-col gap-12">
+        <Box className="relative flex flex-col  gap-12">
           <Controller
-            disabled={
-              isSubCategoryFetching || editSubCategoryResponse.isLoading
-            }
-            name={"category"}
-            control={control}
-            defaultValue={""}
-            rules={{ required: "This field is required" }}
-            render={({ field }) => (
-              <SmartSearchInput
-                shouldReset={editSubCategoryResponse.isSuccess}
-                getSmartSearchValue={setSmartSeachValue}
-                textLabel="Main Category"
-                data={data?.data}
-                placeholder=" Search for category"
-                name={field.name}
-                onChange={field.onChange}
-                value={subCategoryData?.data?.category}
-              />
-            )}
-          />
-          <Controller
-            disabled={
-              isSubCategoryFetching || editSubCategoryResponse.isLoading
-            }
             name={"name"}
             control={control}
             defaultValue={""}
-            rules={{ required: "This field is required" }}
+            rules={{
+              required: "This field is required",
+            }}
             render={({ field }) => (
               <CustomizedTextField
-                sx={{
-                  backgroundColor:
-                    isLoading || formData.category === "" ? "#f5f5f5" : "",
-                }}
-                disabled={isLoading || formData.category === ""}
+                disabled={categoryState.isLoading}
                 textLabelClass={"font-semibold text-xl"}
-                placeholder={"Sub Category Name"}
-                textlabel={"Sub Category Name"}
+                placeholder={"Category Name"}
+                textlabel={"Category Name"}
                 field={field}
                 error={!!errors["name"]}
                 formerHelperStyles={{ style: { fontSize: "1rem" } }}
@@ -182,19 +134,18 @@ function SubCategoryPage() {
             )}
           />
           <Controller
-            disabled={
-              isSubCategoryFetching || editSubCategoryResponse.isLoading
-            }
             name={"description"}
-            control={control}
+            disabled={categoryState.isLoading}
             defaultValue={""}
-            rules={{ required: "This field is required" }}
+            control={control}
+            rules={{
+              required: "This field is required",
+            }}
             render={({ field }) => (
               <CustomizedTextField
-                disabled={isLoading || formData.category === ""}
                 textLabelClass={"font-semibold text-xl"}
-                placeholder={"Sub Category Description"}
-                textlabel={"Sub Category Description"}
+                placeholder={"Category Description"}
+                textlabel={"Category Description"}
                 field={field}
                 error={!!errors["description"]}
                 formerHelperStyles={{ style: { fontSize: "1rem" } }}
@@ -206,8 +157,6 @@ function SubCategoryPage() {
                 multiline={true}
                 rows={6}
                 sx={{
-                  backgroundColor:
-                    isLoading || formData.category === "" ? "#f5f5f5" : "",
                   "& .MuiInputBase-input": {
                     fontSize: "1.4rem",
                   },
@@ -221,12 +170,7 @@ function SubCategoryPage() {
         </Box>
         <Box>
           <Button
-            disabled={
-              isLoading ||
-              formData.category === "" ||
-              isSubCategoryFetching ||
-              editSubCategoryResponse.isLoading
-            }
+            disabled={categoryState.isLoading}
             sx={{
               paddingInline: "1.6rem",
               paddingBlock: "1rem",
@@ -243,11 +187,7 @@ function SubCategoryPage() {
             variant="contained"
             size="large"
           >
-            {isSubCategoryFetching || editSubCategoryResponse.isLoading ? (
-              <MiniSpinner />
-            ) : (
-              " Edit Sub Category"
-            )}
+            {categoryState.isLoading ? <MiniSpinner /> : " Add Category"}
           </Button>
         </Box>
       </Box>
@@ -255,4 +195,4 @@ function SubCategoryPage() {
   );
 }
 
-export default SubCategoryPage;
+export default CategoryPage;

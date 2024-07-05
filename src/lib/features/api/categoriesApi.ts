@@ -21,11 +21,19 @@ const categoriesApi = createApi({
         body,
       }),
     }),
+    getAllCategories: builder.query({
+      query: () => ({
+        url: `categories`,
+        method: "GET",
+      }),
+      providesTags: ["CATEGORIES"],
+    }),
     getCategory: builder.query({
       query: (letter) => ({
         url: `categories/filtered?letters=${letter}`,
         method: "GET",
       }),
+      providesTags: ["CATEGORIES"],
     }),
     getCategoryById: builder.query({
       query: (id) => ({
@@ -53,6 +61,7 @@ const categoriesApi = createApi({
 });
 
 export const {
+  useGetAllCategoriesQuery,
   useAddCategoryMutation,
   useGetCategoryQuery,
   useGetCategoryByIdQuery,

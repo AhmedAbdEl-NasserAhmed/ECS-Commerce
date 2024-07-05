@@ -27,7 +27,7 @@ import { useForm, Controller } from "react-hook-form";
 import toast from "react-hot-toast";
 import { HiChevronRight } from "react-icons/hi2";
 
-function ProductPage() {
+function AddProductPage() {
   const {
     handleSubmit,
     control,
@@ -104,8 +104,6 @@ function ProductPage() {
         toast.error(err.message);
       });
   }
-
-  console.log("errors", errors);
 
   return (
     <form
@@ -451,4 +449,4 @@ function ProductPage() {
   );
 }
 
-export default ProductPage;
+export default AddProductPage;

@@ -85,12 +85,12 @@ function Links({ setExpand, expand }: Props) {
           icon={<HiCube />}
           menuLinks={[
             {
-              href: `/${locale}/admin/dashboard/product`,
-              linkName: "Add Product",
+              href: `/${locale}/admin/dashboard/products`,
+              linkName: "All Products",
             },
             {
-              href: `/${locale}/admin/dashboard/productsOverview`,
-              linkName: "Products List",
+              href: `/${locale}/admin/dashboard/products/add`,
+              linkName: "Add Product",
             },
           ]}
         />
@@ -105,15 +105,30 @@ function Links({ setExpand, expand }: Props) {
           menuLinks={[
             {
               href: `/${locale}/admin/dashboard/categories`,
+              linkName: "All Categories",
+            },
+            {
+              href: `/${locale}/admin/dashboard/categories/add`,
               linkName: "Add Category",
             },
+          ]}
+        />
+        <SubMenuLink
+          expanded={expanded}
+          handleChange={handleChange}
+          menuName="Sub Categories"
+          id="sub-categories"
+          expand={expand}
+          setExpand={setExpand}
+          icon={<HiFolder />}
+          menuLinks={[
             {
-              href: `/${locale}/admin/dashboard/categories/subCategories`,
-              linkName: "Sub Categories",
+              href: `/${locale}/admin/dashboard/sub-categories`,
+              linkName: "All Sub Categories",
             },
             {
-              href: `/${locale}/admin/dashboard/categories/categoriesList`,
-              linkName: "Categories List",
+              href: `/${locale}/admin/dashboard/sub-categories/add`,
+              linkName: "Add Sub Category",
             },
           ]}
         />

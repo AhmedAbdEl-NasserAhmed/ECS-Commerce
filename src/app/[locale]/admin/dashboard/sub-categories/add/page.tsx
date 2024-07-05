@@ -14,7 +14,7 @@ import { Controller, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { HiChevronRight } from "react-icons/hi2";
 
-function SubCategoryPage() {
+function AddSubCategoriesPage() {
   const {
     handleSubmit,
     control,
@@ -217,4 +217,4 @@ function SubCategoryPage() {
   );
 }
 
-export default SubCategoryPage;
+export default AddSubCategoriesPage;

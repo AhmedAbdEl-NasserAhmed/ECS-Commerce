@@ -39,7 +39,7 @@ function ProductTableMenuOptions({ product }) {
 
         <Modal.Window name="delete">
           <DeleteWindow
-            product={product}
+            data={product}
             message="Are you sure that you want to delete this Product ?"
           />
         </Modal.Window>

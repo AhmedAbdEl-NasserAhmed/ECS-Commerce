@@ -1,54 +1,55 @@
-// "use client";
+"use client";
 
-// import Image from "next/image";
-// import styles from "./BaseTable.module.scss";
-// import { Box } from "@mui/material";
-// import ProductTableMenuOptions from "@/components/AdminProduct/productTableMenuOptions";
+import { useMemo } from "react";
+import { useTable } from "react-table";
+import styles from "./BaseTable.module.scss";
 
-// function BaseTable({ tableHeaders, content }) {
-//   return (
-//     <table className={styles.table}>
-//       <thead>
-//         <tr>
-//           {tableHeaders.map((header, index) => (
-//             <th key={index}>{header.name}</th>
-//           ))}
-//         </tr>
-//       </thead>
-//       <tbody>
-//         <>
-//           {content.map((product) => {
-//             return (
-//               <tr key={product.id}>
-//                 {tableHeaders.map((header, index) => {
-//                   return (
-//                     <td className="relative" key={index}>
-//                       {header.type === "image" ? (
-//                         <Box className="md:flex justify-center items-center ">
-//                           <Image
-//                             objectFit="cover"
-//                             width={55}
-//                             height={55}
-//                             src={product["productImage"]}
-//                             alt="product Image"
-//                           />
-//                         </Box>
-//                       ) : (
-//                         product[header.serverKey]
-//                       )}
-//                       {header.name === "Actions" && (
-//                         <ProductTableMenuOptions product={product} />
-//                       )}
-//                     </td>
-//                   );
-//                 })}
-//               </tr>
-//             );
-//           })}
-//         </>
-//       </tbody>
-//     </table>
-//   );
-// }
+function BaseTable({ rawData, columnsData }) {
+  const data = useMemo(() => rawData, [rawData]);
 
-// export default BaseTable;
+  const columns = useMemo(() => columnsData, [columnsData]);
+
+  const tableInstace = useTable({
+    data,
+    columns,
+  });
+
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
+    tableInstace;
+
+  console.log("headerGroups", headerGroups);
+
+  return (
+    <table className={styles["table"]} {...getTableProps()}>
+      <thead>
+        {headerGroups.map((headerGroup, index) => (
+          <tr key={data[index]["_id"]} {...headerGroup.getHeaderGroupProps()}>
+            {headerGroup.headers.map((column, index) => (
+              <th key={column.id} {...column.getHeaderProps()}>
+                {column.render("Header")}
+              </th>
+            ))}
+          </tr>
+        ))}
+      </thead>
+      <tbody {...getTableBodyProps()}>
+        {rows.map((row, index) => {
+          prepareRow(row);
+          return (
+            <tr key={data[index]["_id"]} {...row.getRowProps()}>
+              {row.cells.map((cell) => {
+                return (
+                  <td key={cell.value} {...cell.getCellProps()}>
+                    {cell.render("Cell")}
+                  </td>
+                );
+              })}
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
+  );
+}
+
+export default BaseTable;

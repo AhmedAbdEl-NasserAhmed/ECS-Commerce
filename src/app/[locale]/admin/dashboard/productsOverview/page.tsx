@@ -1,8 +1,18 @@
+"use client";
+
+import { productTableHeaders } from "@/constants/productTableHeaders";
+import { useGetAllProductsQuery } from "@/lib/features/api/productsApi";
+import BaseTable from "@/ui/BaseTable/BaseTable";
 import Menus from "@/ui/Menus/Menus";
 import { Box } from "@mui/material";
 import Link from "next/link";
+import { HiChevronRight } from "react-icons/hi2";
 
 function ProductsOverview() {
+  const { data, isFetching } = useGetAllProductsQuery("products");
+
+  console.log("data", data?.data);
+
   return (
     <Box className=" flex flex-col gap-8 px-[4rem] py-[1.2rem] bg-[#FDFDFD] ">
       <Box className="h-[10vh] flex justify-between items-center">
@@ -28,6 +38,9 @@ function ProductsOverview() {
             &nbsp;
           </span>
         </Box>
+        {!isFetching && (
+          <BaseTable rawData={data?.data} columnsData={productTableHeaders} />
+        )}
       </Box>
     </Box>
   );

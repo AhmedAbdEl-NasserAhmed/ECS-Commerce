@@ -1,22 +1,37 @@
+import { Box } from "@mui/material";
+import Image from "next/image";
+
 export const productTableHeaders = [
   {
-    name: "Product Image",
-    serverKey: "productImage",
-    type: "image",
+    Header: "Product Name",
+    accessor: "name",
   },
   {
-    name: "Product Name",
-    serverKey: "productName",
+    Header: "Product Price",
+    accessor: "price",
   },
   {
-    name: "Product Category",
-    serverKey: "productCategory",
+    Header: "Product Discount",
+    accessor: "discount",
   },
   {
-    name: "Product Price",
-    serverKey: "productPrice",
+    Header: "Product Images",
+    accessor: "images",
+    Cell: ({ cell: { value } }) => (
+      <div style={{ gap: "20px" }} className="flex justify-center ">
+        <Image
+          key={value[0].id}
+          src={value[0].url}
+          alt={`Product Image ${value[0].id}`}
+          height={50}
+          width={50}
+        />
+      </div>
+    ),
   },
   {
-    name: "Actions",
+    Header: "Product Size",
+    accessor: "size",
+    Cell: ({ cell: { value } }) => value.value, // Access the `value` property of the `size` object
   },
 ];

@@ -67,7 +67,10 @@ function AddProductPage() {
 
   const [addProductFn, productResponse] = useAddProductMutation();
 
-  const t = useTranslations("Dashboard");
+  const tIndex = useTranslations("Index");
+  const t = useTranslations("Products");
+  const tCategories = useTranslations("Categories");
+  const tSubCategories = useTranslations("SubCategories");
 
   useEffect(() => {
     const discount: number =
@@ -111,15 +114,17 @@ function AddProductPage() {
     >
       <Box className="h-[10vh] flex justify-between items-center">
         <Box className="flex flex-col gap-4">
-          <h2 className="text-4xl font-semibold  text-gray-600">Add Product</h2>
+          <h2 className="text-4xl font-semibold  text-gray-600">
+            {t("Add Product")}
+          </h2>
           <Box className="flex items-center gap-4 text-[1.4rem]">
             <Link className="text-blue-400" href="/">
-              Home
+              {tIndex("Home")}
             </Link>
             <span>
               <HiChevronRight />
             </span>
-            <h4>Product</h4>
+            <h4>{t("Products")}</h4>
           </Box>
         </Box>
         <Button
@@ -139,7 +144,7 @@ function AddProductPage() {
           variant="contained"
           size="large"
         >
-          View All
+          {tIndex("View All")}
         </Button>
       </Box>
       <Box className="relative grow flex flex-col gap-8 bg-white rounded-2xl border-2 p-10 border-slate-100 shadow-md">
@@ -167,9 +172,9 @@ function AddProductPage() {
                     disabled={productResponse.isLoading}
                     shouldReset={productResponse.isSuccess}
                     getSmartSearchValue={setSmartSeachValue}
-                    textLabel="Main Category"
+                    textLabel={tCategories("Main Category")}
                     data={mainCategory?.data}
-                    placeholder=" Search for main category"
+                    placeholder={tCategories("main category placeholder")}
                     name={field.name}
                     onChange={field.onChange}
                   />
@@ -184,9 +189,9 @@ function AddProductPage() {
                     shouldReset={productResponse.isSuccess}
                     disabled={productResponse.isLoading}
                     getSmartSearchValue={setSmartSeachSubCategoryValue}
-                    textLabel="Sub Category"
+                    textLabel={tSubCategories("Sub Category")}
                     data={subCategory?.data}
-                    placeholder=" Search for sub category"
+                    placeholder={tSubCategories("sub category placeholder")}
                     name={field.name}
                     onChange={field.onChange}
                   />
@@ -201,8 +206,8 @@ function AddProductPage() {
                   <CustomizedTextField
                     disabled={productResponse.isLoading}
                     textLabelClass={"font-semibold text-xl"}
-                    placeholder={"Product Name"}
-                    textlabel={"Product Name"}
+                    placeholder={t("Product Name")}
+                    textlabel={t("Product Name")}
                     field={field}
                     error={!!errors["name"]}
                     formerHelperStyles={{ style: { fontSize: "1rem" } }}
@@ -225,8 +230,8 @@ function AddProductPage() {
                       disabled={productResponse.isLoading}
                       isMulti={true}
                       textLabelClass={"font-semibold text-xl"}
-                      placeholder={"Product Colors"}
-                      textLabel={"Product Colors"}
+                      placeholder={t("Product Colors")}
+                      textLabel={t("Product Colors")}
                       name={"colors"}
                       field={field}
                       errors={errors}
@@ -243,8 +248,8 @@ function AddProductPage() {
                     disabled={productResponse.isLoading}
                     isMulti={false}
                     textLabelClass={"font-semibold text-xl"}
-                    placeholder={"Product Sizes"}
-                    textLabel={"Product Sizes"}
+                    placeholder={t("Product Sizes")}
+                    textLabel={t("Product Sizes")}
                     name={"size"}
                     options={[
                       { value: "XS", label: "XS", color: "#666666" },
@@ -274,8 +279,8 @@ function AddProductPage() {
                   <CustomizedTextField
                     disabled={productResponse.isLoading}
                     textLabelClass={"font-semibold text-xl"}
-                    placeholder={"Product Quantity"}
-                    textlabel={"Product Quantity"}
+                    placeholder={t("Product Quantity")}
+                    textlabel={t("Product Quantity")}
                     field={field}
                     error={!!errors["quantity"]}
                     formerHelperStyles={{ style: { fontSize: "1rem" } }}
@@ -303,8 +308,8 @@ function AddProductPage() {
                   <CustomizedTextField
                     disabled={productResponse.isLoading}
                     textLabelClass={"font-semibold text-xl"}
-                    placeholder={"Product Price"}
-                    textlabel={"Product Price"}
+                    placeholder={t("Product Price")}
+                    textlabel={t("Product Price")}
                     field={field}
                     error={!!errors["price"]}
                     formerHelperStyles={{ style: { fontSize: "1rem" } }}
@@ -333,8 +338,8 @@ function AddProductPage() {
                   <CustomizedTextField
                     disabled={productResponse.isLoading}
                     textLabelClass={"font-semibold text-xl"}
-                    placeholder={"Product Discount %"}
-                    textlabel={"Product Discount %"}
+                    placeholder={t("Product Discount %")}
+                    textlabel={t("Product Discount %")}
                     field={field}
                     error={!!errors["discount"]}
                     formerHelperStyles={{ style: { fontSize: "1rem" } }}
@@ -358,15 +363,15 @@ function AddProductPage() {
                   <CustomizedTextField
                     disabled={productResponse.isLoading}
                     textLabelClass={"font-semibold text-xl"}
-                    placeholder={"Product Sale Pirce"}
-                    textlabel={"Product Sale Price"}
+                    placeholder={t("Product Sale Price")}
+                    textlabel={t("Product Sale Price")}
                     field={field}
                     error={!!errors["salePrice"]}
                     formerHelperStyles={{ style: { fontSize: "1rem" } }}
                     helperText={
                       errors["salePrice"] ? errors["salePrice"].message : ""
                     }
-                    inputProps={{ readOnly: true }}
+                    inputProps={{ readOnly: true, disabled: true }}
                     type={"number"}
                     variant={"outlined"}
                     size={"small"}
@@ -383,8 +388,8 @@ function AddProductPage() {
                     <CustomizedTextField
                       disabled={productResponse.isLoading}
                       textLabelClass={"font-semibold text-xl"}
-                      placeholder={"Product Description"}
-                      textlabel={"Product Description"}
+                      placeholder={t("Product Description")}
+                      textlabel={t("Product Description")}
                       field={field}
                       error={!!errors["description"]}
                       formerHelperStyles={{ style: { fontSize: "1rem" } }}
@@ -440,7 +445,7 @@ function AddProductPage() {
             variant="contained"
             size="large"
           >
-            {productResponse.isLoading ? <MiniSpinner /> : "Add Product"}
+            {productResponse.isLoading ? <MiniSpinner /> : t("Add Product")}
           </Button>
         </Box>
       </Box>

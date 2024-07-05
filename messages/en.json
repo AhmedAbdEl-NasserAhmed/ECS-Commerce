@@ -1,9 +1,15 @@
 {
   "Index": {
-    "Go To Admin Page": "Go To Admin Page"
+    "Go To Admin Page": "Go To Admin Page",
+    "Home": "Home",
+    "Search": "Search",
+    "View All": "View All",
+    "Page": "Page",
+    "Go to page": "Go to page",
+    "Show": "Show"
   },
   "Dashboard": {
-    "Add Product": "Add Product"
+    "Dashboard": "Dashboard"
   },
   "Login": {
     "greeting": "Welcome to ORCA, our e-commerce website, Admin! We are thrilled to have you onboard. Here, you can manage products, track orders, and oversee the entire store efficiently. Thank you for being a crucial part of our team.",
@@ -19,5 +25,31 @@
     "password": "password",
     "Password": "Password",
     "Enter password": "Enter password"
+  },
+  "Products": {
+    "Products List": "Products List",
+    "Products": "Products",
+    "Add Product": "Add Product",
+    "product addedd successfully": "A new Product is added",
+    "Product Name": "Product Name",
+    "Product Colors": "Product Colors",
+    "Product Size": "Product Size",
+    "Product Sizes": "Product Sizes",
+    "Product Quantity": "Product Quantity",
+    "Product Price": "Product Price",
+    "Product Discount %": "Product Discount %",
+    "Product Sale Price": "Product Sale Price",
+    "Product Description": "Product Description",
+    "Product Image": "Product Image"
+  },
+  "Categories": {
+    "Categories": "Categories",
+    "Main Category": "Main Category",
+    "main category placeholder": "Search for main category"
+  },
+  "SubCategories": {
+    "Sub Categories": "Sub Categories",
+    "Sub Category": "Sub Categories",
+    "sub category placeholder": "Search for sub category"
   }
 }

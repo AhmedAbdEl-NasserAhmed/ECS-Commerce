@@ -10,6 +10,8 @@ import {
 } from "@tanstack/react-table";
 import BaseReactTableFilter from "./BaseReactTableFilter";
 import styles from "./BaseReactTable.module.scss";
+import MiniSpinner from "../MiniSpinner/MiniSpinner";
+import { useTranslations } from "next-intl";
 
 function BaseReactTable({ data, columns }: { data: any; columns: any }) {
   const [pagination, setPagination] = useState<PaginationState>({
@@ -17,6 +19,7 @@ function BaseReactTable({ data, columns }: { data: any; columns: any }) {
     pageSize: 10,
   });
 
+  const t = useTranslations("Index");
   const table = useReactTable({
     columns,
     data,
@@ -33,14 +36,14 @@ function BaseReactTable({ data, columns }: { data: any; columns: any }) {
     // autoResetPageIndex: false, // turn off page index reset when sorting or filtering
   });
 
+  if (!data) return <MiniSpinner />;
+
   const getTableHeaderColumnWidth = () => {
     if (columns.at(-1).id === "actions") {
       return `calc(100% / ${columns.length - 1})`;
     }
     return `calc(100% / ${columns.length})`;
   };
-
-  console.log("data", data);
 
   return (
     <div className="p-2">
@@ -90,7 +93,7 @@ function BaseReactTable({ data, columns }: { data: any; columns: any }) {
           ))}
         </thead>
         <tbody>
-          {data.length > 0 ? (
+          {data && data?.length > 0 ? (
             table.getRowModel().rows.map((row) => {
               return (
                 <tr key={row.id}>
@@ -116,47 +119,46 @@ function BaseReactTable({ data, columns }: { data: any; columns: any }) {
       </table>
       <div className="h-2" />
       <div className={styles.pagination}>
-        {
-          <div className={styles["pagination__controllers"]}>
-            <button
-              className="border rounded p-1"
-              onClick={() => table.firstPage()}
-              disabled={!table.getCanPreviousPage()}
-            >
-              {"<<"}
-            </button>
-            <button
-              className="border rounded p-1"
-              onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}
-            >
-              {"<"}
-            </button>
-            <button
-              className="border rounded p-1"
-              onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}
-            >
-              {">"}
-            </button>
-            <button
-              className="border rounded p-1"
-              onClick={() => table.lastPage()}
-              disabled={!table.getCanNextPage()}
-            >
-              {">>"}
-            </button>
-          </div>
-        }
+        <div className={styles["pagination__controllers"]}>
+          <button
+            className="border rounded p-1"
+            onClick={() => table.firstPage()}
+            disabled={!table.getCanPreviousPage()}
+          >
+            {"<<"}
+          </button>
+          <button
+            className="border rounded p-1"
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+          >
+            {"<"}
+          </button>
+          <button
+            className="border rounded p-1"
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+          >
+            {">"}
+          </button>
+          <button
+            className="border rounded p-1"
+            onClick={() => table.lastPage()}
+            disabled={!table.getCanNextPage()}
+          >
+            {">>"}
+          </button>
+        </div>
+
         <span className="flex items-center gap-1">
-          <div>Page </div>
+          <div>{t("Page")} </div>
           <strong>
             {table.getState().pagination.pageIndex + 1} of{" "}
             {table.getPageCount().toLocaleString()}
           </strong>
         </span>
         <span className="flex items-center gap-1">
-          | Go to page:&nbsp;
+          | {t("Go to page")}:&nbsp;
           <input
             type="number"
             defaultValue={table.getState().pagination.pageIndex + 1}
@@ -178,7 +180,7 @@ function BaseReactTable({ data, columns }: { data: any; columns: any }) {
         >
           {[5, 10, 20, 30, 40, 50].map((pageSize) => (
             <option key={pageSize} value={pageSize}>
-              Show {pageSize}
+              {t("Show")} {pageSize}
             </option>
           ))}
         </select>

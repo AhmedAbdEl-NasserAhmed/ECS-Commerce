@@ -8,6 +8,7 @@ import { useParams } from "next/navigation";
 import { useHandleWindowWidth } from "@/hooks/useHandleWindowWidth";
 import SubMenuLink from "./SubMenuLink";
 import { HiFolder } from "react-icons/hi";
+import { useTranslations } from "next-intl";
 
 interface Props {
   expand: boolean;
@@ -18,6 +19,10 @@ interface Props {
 
 function Links({ setExpand, expand, expanded, setExpanded }: Props) {
   const isWidthHiger = useHandleWindowWidth();
+  const tDashboard = useTranslations("Dashboard");
+  const tCategories = useTranslations("Categories");
+  const tSubCategories = useTranslations("SubCategories");
+  const t = useTranslations("Products");
 
   const { locale } = useParams();
 
@@ -52,10 +57,7 @@ function Links({ setExpand, expand, expanded, setExpanded }: Props) {
         </Link>
       </Box>
       <Box>
-        <Link
-          href="/"
-          className="flex items-center border-b-2 gap-4 border-gray-100 p-8 text-xl font-semibold"
-        >
+        <div className="flex items-center border-b-2 gap-4 border-gray-100 p-8 text-xl font-semibold">
           <span className="text-4xl">
             <HiOutlineViewGrid />
           </span>
@@ -65,14 +67,14 @@ function Links({ setExpand, expand, expanded, setExpanded }: Props) {
               ${expand ? "translate-x-[40rem]" : "translate-x-0"}
                 group-hover:block group-hover:opacity-100 group-hover:translate-x-0 text-gray-700 transition-opacity transition-opacity-500 transition-transform-500 ease-in-out`}
           >
-            DASHBOARD
+            {tDashboard("Dashboard")}
           </p>
-        </Link>
+        </div>
 
         <SubMenuLink
           expanded={expanded}
           handleChange={handleChange}
-          menuName="Products"
+          menuName={t("Products")}
           id="products"
           expand={expand}
           setExpand={setExpand}
@@ -91,7 +93,7 @@ function Links({ setExpand, expand, expanded, setExpanded }: Props) {
         <SubMenuLink
           expanded={expanded}
           handleChange={handleChange}
-          menuName="Categories"
+          menuName={tCategories("Categories")}
           id="categories"
           expand={expand}
           setExpand={setExpand}
@@ -110,7 +112,7 @@ function Links({ setExpand, expand, expanded, setExpanded }: Props) {
         <SubMenuLink
           expanded={expanded}
           handleChange={handleChange}
-          menuName="Sub Categories"
+          menuName={tSubCategories("Sub Categories")}
           id="sub-categories"
           expand={expand}
           setExpand={setExpand}

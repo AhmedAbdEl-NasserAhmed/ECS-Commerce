@@ -1,9 +1,15 @@
 {
   "Index": {
-    "Go To Admin Page": "الذهاب الي صفحة المدير"
+    "Go To Admin Page": "الذهاب الي صفحة المدير",
+    "Home": "الرئيسيه",
+    "Search": "بحث",
+    "View All": "View All",
+    "Page": "الصفحة",
+    "Go to page": "الذهاب الي الصفحة",
+    "Show": "عرض"
   },
   "Dashboard": {
-    "Add Product": "إضافة منتج"
+    "Dashboard": "لوحة التحكم"
   },
   "Login": {
     "greeting": "مرحبًا بك في ORCA، موقعنا للتجارة الإلكترونية، مدير النظام! نحن متحمسون لانضمامك إلينا. هنا يمكنك إدارة المنتجات، تتبع الطلبات، والإشراف على المتجر بكفاءة. شكرًا لكونك جزءًا أساسيًا من فريقنا.",
@@ -19,5 +25,31 @@
     "password": "كلمة المرور",
     "Password": "كلمة المرور",
     "Enter password": "ادخل كلمة المرور"
+  },
+  "Products": {
+    "Products List": "المنتجات",
+    "Products": "المنتجات",
+    "Add Product": "إضافة منتج",
+    "product addedd successfully": "A new Product is added",
+    "Product Name": "اسم المنتج",
+    "Product Colors": "الوان المنتج",
+    "Product Sizes": "المقاسات",
+    "Product Size": "المقاس",
+    "Product Quantity": "الكمية",
+    "Product Price": "سعر المنتج",
+    "Product Discount %": "نسبة التخفيض %",
+    "Product Sale Price": "السعر بعد التخفيض",
+    "Product Description": "وصف المنتج",
+    "Product Image": "صورة المنتج"
+  },
+  "Categories": {
+    "Categories": "الاقسام",
+    "Main Category": "القسم",
+    "main category placeholder": "ابحث عن القسم"
+  },
+  "SubCategories": {
+    "Sub Categories": "الاقسام الفرعيه",
+    "Sub Category": "القسم الفرعي",
+    "sub category placeholder": "ابحث عن القسم الفرعي"
   }
 }

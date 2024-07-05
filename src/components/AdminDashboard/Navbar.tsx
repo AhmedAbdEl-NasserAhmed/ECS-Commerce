@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import Image from "next/image";
 import { FaAngleDown, FaSearch } from "react-icons/fa";
 import { HiOutlineBell } from "react-icons/hi2";
@@ -11,9 +11,10 @@ import { useParams, usePathname, useRouter } from "next/navigation";
 
 interface Props {
   setExpand?: (isTrue: any) => void;
+  setExpanded: Dispatch<SetStateAction<string | false>>;
 }
 
-function Navbar({ setExpand }: Props) {
+function Navbar({ setExpand, setExpanded }: Props) {
   const pathname = usePathname();
 
   const router = useRouter();
@@ -44,7 +45,10 @@ function Navbar({ setExpand }: Props) {
         <Box className="flex items-center w-full gap-6  ">
           <span
             className="text-4xl cursor-pointer"
-            onClick={() => setExpand((prev) => !prev)}
+            onClick={() => {
+              setExpanded(false);
+              setExpand((prev) => !prev);
+            }}
           >
             <HiMenuAlt3 />
           </span>
@@ -104,7 +108,7 @@ function Navbar({ setExpand }: Props) {
         </Box>
 
         <ul className="flex items-center gap-3 sm:gap-5 text-3xl ">
-          <li className="flex justify-center items-center gap-2 ">
+          {/* <li className="flex justify-center items-center gap-2 ">
             <div className="  w-[2.4rem] h-[2.4rem] sm:w-[3rem]  sm:h-[3rem] relative ">
               <Image
                 className="rounded-full  "
@@ -117,10 +121,10 @@ function Navbar({ setExpand }: Props) {
             <span>
               <FaAngleDown />
             </span>
-          </li>
-          <li>
+          </li> */}
+          {/* <li>
             <HiOutlineBell />
-          </li>
+          </li> */}
           <li>
             <select
               value={langState}

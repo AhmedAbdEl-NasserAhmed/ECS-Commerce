@@ -12,16 +12,22 @@ interface Props {
 
 function AdminPage({ children }: Props) {
   const [expand, setExpand] = useState<boolean>(false);
+  const [expanded, setExpanded] = useState<string | false>(false);
 
   return (
     <div className=" h-[100vh] ">
       <ProtectedRoute>
         <div className="grid grid-cols-[max-Content_5fr]  bg-white rounded-2xl  shadow-lg ">
           <Accordian>
-            <Links setExpand={setExpand} expand={expand} />
+            <Links
+              expanded={expanded}
+              setExpanded={setExpanded}
+              setExpand={setExpand}
+              expand={expand}
+            />
           </Accordian>
           <div className="col-span-full lg:col-auto">
-            <Navbar setExpand={setExpand} />
+            <Navbar setExpand={setExpand} setExpanded={setExpanded} />
             <div>{children}</div>
           </div>
         </div>

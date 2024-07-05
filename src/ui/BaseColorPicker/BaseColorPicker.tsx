@@ -2,17 +2,17 @@
 
 import chroma from "chroma-js";
 
-import { ColourOption, SelecteMenuProps } from "../../types/types";
+import { ColourOption, BaseColorPickerProps } from "../../types/types";
 import Select, { StylesConfig } from "react-select";
-import { useId } from "react";
+import { useEffect, useId, useState } from "react";
 import { Box } from "@mui/material";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
 import ColorPickerInput from "../ColorPicketInput/ColorPickerInput";
+import { colorPickerDefaultColors } from "@/constants/colorOptions";
 
-function MultiChoiceSelectMenu({
+function BaseColorPicker({
   field,
   className,
-  options,
   textLabelClass,
   placeholder,
   textLabel,
@@ -20,7 +20,8 @@ function MultiChoiceSelectMenu({
   isMulti,
   errors,
   disabled,
-}: SelecteMenuProps) {
+  onChange,
+}: BaseColorPickerProps) {
   const colourStyles: StylesConfig<ColourOption, true> = {
     control: (styles, state) => ({
       ...styles,
@@ -39,6 +40,7 @@ function MultiChoiceSelectMenu({
         borderColor: `${errors[name] ? "rgb(186, 9, 9)" : "#e7e7e7"}`,
       },
       height: "42px",
+      width: "100%",
     }),
     placeholder: (styles) => ({
       ...styles,
@@ -64,7 +66,6 @@ function MultiChoiceSelectMenu({
             : "black"
           : data.color,
         cursor: isDisabled ? "not-allowed" : "default",
-
         ":active": {
           ...styles[":active"],
           backgroundColor: !isDisabled
@@ -96,25 +97,78 @@ function MultiChoiceSelectMenu({
     }),
   };
 
+  const [selectedColors, setSelectedColors] = useState([]);
+  const [alreadySelectedColors, setAlreadySelectedColors] = useState([
+    ...colorPickerDefaultColors,
+  ]);
+
+  useEffect(() => {
+    if (selectedColors.length > 0) {
+      onChange(selectedColors);
+    }
+  }, [selectedColors]);
+
+  const addToList = (color) => {
+    const alreadyDefaultColor = colorPickerDefaultColors.some(
+      (defaultColor) => defaultColor.value === color.value
+    );
+    setAlreadySelectedColors((state) => {
+      if (alreadyDefaultColor) return state;
+      return state.concat(color);
+    });
+  };
+
+  const onSelectColorHandler = (color, actionType) => {
+    switch (actionType) {
+      case "select-option":
+        setSelectedColors((state) => state.concat(color));
+        addToList(color);
+        break;
+      case "remove-value":
+        setSelectedColors((state) =>
+          state.filter((c) => c.value !== color.value)
+        );
+        break;
+      case "clear":
+        setSelectedColors([]);
+        setAlreadySelectedColors(colorPickerDefaultColors);
+        break;
+    }
+  };
+
   return (
-    <Box className="flex flex-col gap-4 ">
+    <Box className="flex flex-col flex-wrap gap-4">
       {textLabel && <label className={textLabelClass}>{textLabel}</label>}
-      <Select
-        {...field}
-        instanceId={useId()}
-        isDisabled={disabled}
-        placeholder={placeholder}
-        className={className}
-        closeMenuOnSelect={true}
-        menuShouldScrollIntoView={true}
-        isMulti={isMulti}
-        options={options}
-        styles={colourStyles}
-      />
-      {/* {colorsPicker && <ColorPickerInput disabled={disabled} />} */}
+      <Box className="flex gap-2">
+        <Box className="grow">
+          <Select
+            {...field}
+            onChange={(value, selectedItem) => {
+              onChange(value);
+              const lastActionOption =
+                selectedItem.removedValue || selectedItem.option;
+              onSelectColorHandler(lastActionOption, selectedItem.action);
+            }}
+            instanceId={useId()}
+            isDisabled={disabled}
+            placeholder={placeholder}
+            className={className}
+            closeMenuOnSelect={true}
+            menuShouldScrollIntoView={true}
+            isMulti={isMulti}
+            options={[...alreadySelectedColors, ...selectedColors]}
+            styles={colourStyles}
+          />
+        </Box>
+        <ColorPickerInput
+          options={alreadySelectedColors}
+          onSelectColorHandler={onSelectColorHandler}
+          disabled={disabled}
+        />
+      </Box>
       {errors[name] && <ErrorMessage message={errors[name]?.message} />}
     </Box>
   );
 }
 
-export default MultiChoiceSelectMenu;
+export default BaseColorPicker;

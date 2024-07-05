@@ -35,7 +35,7 @@ function EditCategoryPage() {
     reset,
     setValue,
     formState: { errors, dirtyFields },
-  } = useForm<AdminMainCategory>();
+  } = useForm<AdminMainCategory>({ mode: "onChange" });
 
   useEffect(() => {
     if (isSuccess) {

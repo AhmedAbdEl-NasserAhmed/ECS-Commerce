@@ -21,23 +21,17 @@ function SubMenuLink({
 }) {
   const pathname = usePathname();
 
+  const isActiveLink = pathname.includes("/" + id);
+
   const SubmenuIcon = function () {
     const _icon = React.cloneElement(icon, {
       style: {
-        color: pathname.includes(id) ? "#5b93ff" : "",
+        color: isActiveLink ? "#5b93ff" : "",
       },
     });
 
     return _icon;
   };
-
-  // useEffect(() => {
-  //   if (typeof window !== undefined) {
-  //     if (window.location.pathname.includes(menuName.toLowerCase())) {
-  //       handleChange(id)(undefined, true);
-  //     }
-  //   }
-  // }, [typeof window, handleChange, menuName]);
 
   return (
     <Accordion
@@ -73,7 +67,7 @@ function SubMenuLink({
         </Box>
 
         <span
-          style={{ opacity: pathname.includes(id) ? "1" : "0" }}
+          style={{ opacity: isActiveLink ? "1" : "0" }}
           className="w-2 h-3/4 transition-opacity duration-500 rounded-2xl absolute bg-[#5b93ff] left-0 top-4"
         ></span>
       </AccordionSummary>

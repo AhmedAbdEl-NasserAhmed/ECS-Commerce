@@ -10,6 +10,8 @@ import {
 } from "@tanstack/react-table";
 import BaseReactTableFilter from "./BaseReactTableFilter";
 import styles from "./BaseReactTable.module.scss";
+import MiniSpinner from "../MiniSpinner/MiniSpinner";
+import { useTranslations } from "next-intl";
 
 function BaseReactTable({ data, columns }: { data: any; columns: any }) {
   const [pagination, setPagination] = useState<PaginationState>({
@@ -17,6 +19,7 @@ function BaseReactTable({ data, columns }: { data: any; columns: any }) {
     pageSize: 10,
   });
 
+  const t = useTranslations("Index");
   const table = useReactTable({
     columns,
     data,
@@ -32,6 +35,8 @@ function BaseReactTable({ data, columns }: { data: any; columns: any }) {
     },
     // autoResetPageIndex: false, // turn off page index reset when sorting or filtering
   });
+
+  if (!data) return <MiniSpinner />;
 
   const getTableHeaderColumnWidth = () => {
     if (columns.at(-1).id === "actions") {
@@ -88,67 +93,72 @@ function BaseReactTable({ data, columns }: { data: any; columns: any }) {
           ))}
         </thead>
         <tbody>
-          {table.getRowModel().rows.map((row) => {
-            return (
-              <tr key={row.id}>
-                {row.getVisibleCells().map((cell) => {
-                  return (
-                    <td key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </td>
-                  );
-                })}
-              </tr>
-            );
-          })}
+          {data && data?.length > 0 ? (
+            table.getRowModel().rows.map((row) => {
+              return (
+                <tr key={row.id}>
+                  {row.getVisibleCells().map((cell) => {
+                    return (
+                      <td key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </td>
+                    );
+                  })}
+                </tr>
+              );
+            })
+          ) : (
+            <tr>
+              <td colSpan={columns.length}>{t("No data available")}</td>
+            </tr>
+          )}
         </tbody>
       </table>
       <div className="h-2" />
       <div className={styles.pagination}>
-        {
-          <div className={styles["pagination__controllers"]}>
-            <button
-              className="border rounded p-1"
-              onClick={() => table.firstPage()}
-              disabled={!table.getCanPreviousPage()}
-            >
-              {"<<"}
-            </button>
-            <button
-              className="border rounded p-1"
-              onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}
-            >
-              {"<"}
-            </button>
-            <button
-              className="border rounded p-1"
-              onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}
-            >
-              {">"}
-            </button>
-            <button
-              className="border rounded p-1"
-              onClick={() => table.lastPage()}
-              disabled={!table.getCanNextPage()}
-            >
-              {">>"}
-            </button>
-          </div>
-        }
+        <div className={styles["pagination__controllers"]}>
+          <button
+            className="border rounded p-1"
+            onClick={() => table.firstPage()}
+            disabled={!table.getCanPreviousPage()}
+          >
+            {"<<"}
+          </button>
+          <button
+            className="border rounded p-1"
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+          >
+            {"<"}
+          </button>
+          <button
+            className="border rounded p-1"
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+          >
+            {">"}
+          </button>
+          <button
+            className="border rounded p-1"
+            onClick={() => table.lastPage()}
+            disabled={!table.getCanNextPage()}
+          >
+            {">>"}
+          </button>
+        </div>
+
         <span className="flex items-center gap-1">
-          <div>Page </div>
+          <div>{t("Page")} </div>
           <strong>
-            {table.getState().pagination.pageIndex + 1} of{" "}
+            {table.getState().pagination.pageIndex + 1} {t("of")}{" "}
             {table.getPageCount().toLocaleString()}
           </strong>
         </span>
         <span className="flex items-center gap-1">
-          | Go to page:&nbsp;
+          | {t("Go to page")}:&nbsp;
           <input
             type="number"
             defaultValue={table.getState().pagination.pageIndex + 1}
@@ -170,7 +180,7 @@ function BaseReactTable({ data, columns }: { data: any; columns: any }) {
         >
           {[5, 10, 20, 30, 40, 50].map((pageSize) => (
             <option key={pageSize} value={pageSize}>
-              Show {pageSize}
+              {t("Show")} {pageSize}
             </option>
           ))}
         </select>

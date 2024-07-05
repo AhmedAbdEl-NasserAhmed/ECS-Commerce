@@ -2,7 +2,7 @@
 
 import useDebounceHook from "@/hooks/useDebounceHook";
 import {
-  useAddCategoryMutation,
+  useGetAllCategoriesQuery,
   useGetCategoryQuery,
 } from "@/lib/features/api/categoriesApi";
 import {
@@ -15,6 +15,7 @@ import { getAddProductServerData } from "@/lib/helpers";
 import { useAppSelector } from "@/lib/hooks";
 import { AdminProductProps } from "@/types/types";
 import AddProductImage from "@/ui/AddProductImage/AddProductImage";
+import BaseColorPicker from "@/ui/BaseColorPicker/BaseColorPicker";
 import MiniSpinner from "@/ui/MiniSpinner/MiniSpinner";
 import MultiChoiceSelectMenu from "@/ui/MultiChoiceSelectMenu/MultiChoiceSelectMenu";
 import SmartSearchInput from "@/ui/SmartSearchInput/SmartSearchInput";
@@ -45,10 +46,6 @@ function AddProductPage() {
 
   const { locale } = useParams();
 
-  const colorsOption = useAppSelector(
-    (state) => state.colorsOptionsSlice.colorsOptions
-  );
-
   const formData = watch();
 
   const [smartSeachvalue, setSmartSeachValue] = useState<{
@@ -63,6 +60,7 @@ function AddProductPage() {
 
   const subCategorydebounceValue = useDebounceHook(smartSeachSubCategoryvalue);
 
+  const { data: AllCategories } = useGetAllCategoriesQuery("categories");
   const { data: mainCategory } = useGetCategoryQuery(mainCategorydebounceValue);
 
   const { data: subCategory } = useGetSubCategoryQuery(
@@ -130,6 +128,12 @@ function AddProductPage() {
 
   const t = useTranslations("Dashboard");
 
+  const tIndex = useTranslations("Index");
+
+  const tCategories = useTranslations("Categories");
+
+  const tSubCategories = useTranslations("SubCategories");
+
   function onSubmit(data: AdminProductProps) {
     const myData = { ...data, category: smartSeachvalue["_id"] };
 
@@ -146,12 +150,40 @@ function AddProductPage() {
       .unwrap()
       .then(() => {
         toast.success("A new Product is added");
-        router.push(`/${locale}/admin/dashboard/products`);
+        // router.push(`/${locale}/admin/dashboard/products`);
         reset();
       })
       .catch((err) => {
         toast.error(err.message);
       });
+  }
+
+  if (!AllCategories) return <MiniSpinner />;
+
+  const noCategoriesYet = AllCategories?.data?.length === 0;
+
+  if (noCategoriesYet) {
+    return (
+      <Box
+        sx={{
+          height: "100vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          fontSize: "4rem",
+          textAlign: "center",
+          flexDirection: "column",
+        }}
+      >
+        {t("No categories yet, please add a new category")}{" "}
+        <Link
+          href={`/${locale}/admin/dashboard/categories/add`}
+          style={{ color: "#5b93ff", textDecoration: "underline" }}
+        >
+          {tCategories("Add New Category")}
+        </Link>
+      </Box>
+    );
   }
 
   return (
@@ -161,15 +193,17 @@ function AddProductPage() {
     >
       <Box className="h-[10vh] flex justify-between items-center">
         <Box className="flex flex-col gap-4">
-          <h2 className="text-4xl font-semibold  text-gray-600">Add Product</h2>
+          <h2 className="text-4xl font-semibold  text-gray-600">
+            {t("Add Product")}
+          </h2>
           <Box className="flex items-center gap-4 text-[1.4rem]">
             <Link className="text-blue-400" href="/">
-              Home
+              {tIndex("Home")}
             </Link>
             <span>
               <HiChevronRight />
             </span>
-            <h4>Product</h4>
+            <h4>{t("Products")}</h4>
           </Box>
         </Box>
         <Button
@@ -189,7 +223,7 @@ function AddProductPage() {
           variant="contained"
           size="large"
         >
-          View All
+          {tIndex("View All")}
         </Button>
       </Box>
       <Box className="relative grow flex flex-col gap-8 bg-white rounded-2xl border-2 p-10 border-slate-100 shadow-md">
@@ -217,9 +251,9 @@ function AddProductPage() {
                     disabled={productResponse.isLoading}
                     shouldReset={productResponse.isSuccess}
                     getSmartSearchValue={setSmartSeachValue}
-                    textLabel="Main Category"
+                    textLabel={tCategories("Main Category")}
                     data={mainCategory?.data}
-                    placeholder=" Search for main category"
+                    placeholder={tCategories("main category placeholder")}
                     name={field.name}
                     onChange={field.onChange}
                   />
@@ -234,50 +268,51 @@ function AddProductPage() {
                     shouldReset={productResponse.isSuccess}
                     disabled={productResponse.isLoading}
                     getSmartSearchValue={setSmartSeachSubCategoryValue}
-                    textLabel="Sub Category"
+                    textLabel={tSubCategories("Sub Category")}
                     data={subCategory?.data}
-                    placeholder=" Search for sub category"
+                    placeholder={tSubCategories("sub category placeholder")}
                     name={field.name}
                     onChange={field.onChange}
                   />
                 )}
               />
-
-              <Controller
-                name={"name"}
-                control={control}
-                defaultValue={""}
-                rules={{ required: "This field is required" }}
-                render={({ field }) => (
-                  <SmartSearchInput
-                    error={!!errors["name"]}
-                    helperText={errors["name"] ? errors["name"].message : ""}
-                    disabled={productResponse.isLoading}
-                    shouldReset={productResponse.isSuccess}
-                    getSmartSearchValue={setProductSearchName}
-                    textLabel="Product Name"
-                    data={productName?.data}
-                    placeholder=" Search for productName"
-                    name={field.name}
-                    onChange={field.onChange}
-                  />
-                )}
-              />
-              <Box className="relative">
+              <Box className="col-span-full">
+                <Controller
+                  name={"name"}
+                  control={control}
+                  defaultValue={""}
+                  rules={{ required: "This field is required" }}
+                  render={({ field }) => (
+                    <CustomizedTextField
+                      disabled={productResponse.isLoading}
+                      textLabelClass={"font-semibold text-xl"}
+                      placeholder={t("Product Name")}
+                      textlabel={t("Product Name")}
+                      field={field}
+                      error={!!errors["name"]}
+                      formerHelperStyles={{ style: { fontSize: "1rem" } }}
+                      helperText={errors["name"] ? errors["name"].message : ""}
+                      type={"text"}
+                      variant={"outlined"}
+                      size={"small"}
+                    />
+                  )}
+                />
+              </Box>
+              <Box className="relative col-span-full">
                 <Controller
                   name={"colors"}
+                  defaultValue={[]}
                   control={control}
                   rules={{ required: "This field is required" }}
-                  defaultValue={[]}
                   render={({ field }) => (
-                    <MultiChoiceSelectMenu
-                      options={colorsOption}
-                      colorsPicker={true}
+                    <BaseColorPicker
+                      onChange={field.onChange}
                       disabled={productResponse.isLoading}
                       isMulti={true}
                       textLabelClass={"font-semibold text-xl"}
-                      placeholder={"Product Colors"}
-                      textLabel={"Product Colors"}
+                      placeholder={t("Product Colors")}
+                      textLabel={t("Product Colors")}
                       name={"colors"}
                       field={field}
                       errors={errors}
@@ -288,15 +323,15 @@ function AddProductPage() {
               <Controller
                 name={"size"}
                 control={control}
-                rules={{ required: "This field is required" }}
                 defaultValue={[]}
+                rules={{ required: "This field is required" }}
                 render={({ field }) => (
                   <MultiChoiceSelectMenu
                     disabled={productResponse.isLoading}
                     isMulti={false}
                     textLabelClass={"font-semibold text-xl"}
-                    placeholder={"Product Sizes"}
-                    textLabel={"Product Sizes"}
+                    placeholder={t("Product Sizes")}
+                    textLabel={t("Product Sizes")}
                     name={"size"}
                     options={[
                       { value: "XS", label: "XS", color: "#666666" },
@@ -326,8 +361,8 @@ function AddProductPage() {
                   <CustomizedTextField
                     disabled={productResponse.isLoading}
                     textLabelClass={"font-semibold text-xl"}
-                    placeholder={"Product Quantity"}
-                    textlabel={"Product Quantity"}
+                    placeholder={t("Product Quantity")}
+                    textlabel={t("Product Quantity")}
                     field={field}
                     error={!!errors["quantity"]}
                     formerHelperStyles={{ style: { fontSize: "1rem" } }}
@@ -355,8 +390,8 @@ function AddProductPage() {
                   <CustomizedTextField
                     disabled={productResponse.isLoading}
                     textLabelClass={"font-semibold text-xl"}
-                    placeholder={"Product Price"}
-                    textlabel={"Product Price"}
+                    placeholder={t("Product Price")}
+                    textlabel={t("Product Price")}
                     field={field}
                     error={!!errors["price"]}
                     formerHelperStyles={{ style: { fontSize: "1rem" } }}
@@ -385,8 +420,8 @@ function AddProductPage() {
                   <CustomizedTextField
                     disabled={productResponse.isLoading}
                     textLabelClass={"font-semibold text-xl"}
-                    placeholder={"Product Discount %"}
-                    textlabel={"Product Discount %"}
+                    placeholder={t("Product Discount %")}
+                    textlabel={t("Product Discount %")}
                     field={field}
                     error={!!errors["discount"]}
                     formerHelperStyles={{ style: { fontSize: "1rem" } }}
@@ -410,15 +445,15 @@ function AddProductPage() {
                   <CustomizedTextField
                     disabled={productResponse.isLoading}
                     textLabelClass={"font-semibold text-xl"}
-                    placeholder={"Product Sale Pirce"}
-                    textlabel={"Product Sale Price"}
+                    placeholder={t("Product Sale Price")}
+                    textlabel={t("Product Sale Price")}
                     field={field}
                     error={!!errors["salePrice"]}
                     formerHelperStyles={{ style: { fontSize: "1rem" } }}
                     helperText={
                       errors["salePrice"] ? errors["salePrice"].message : ""
                     }
-                    inputProps={{ readOnly: true }}
+                    inputProps={{ readOnly: true, disabled: true }}
                     type={"number"}
                     variant={"outlined"}
                     size={"small"}
@@ -435,8 +470,8 @@ function AddProductPage() {
                     <CustomizedTextField
                       disabled={productResponse.isLoading}
                       textLabelClass={"font-semibold text-xl"}
-                      placeholder={"Product Description"}
-                      textlabel={"Product Description"}
+                      placeholder={t("Product Description")}
+                      textlabel={t("Product Description")}
                       field={field}
                       error={!!errors["description"]}
                       formerHelperStyles={{ style: { fontSize: "1rem" } }}
@@ -492,7 +527,7 @@ function AddProductPage() {
             variant="contained"
             size="large"
           >
-            {productResponse.isLoading ? <MiniSpinner /> : "Add Product"}
+            {productResponse.isLoading ? <MiniSpinner /> : t("Add Product")}
           </Button>
         </Box>
       </Box>

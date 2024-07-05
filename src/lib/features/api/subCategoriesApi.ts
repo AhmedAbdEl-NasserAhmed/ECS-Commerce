@@ -5,7 +5,7 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 // RTK Query
 const subCategoriesApi = createApi({
   reducerPath: "subCategoriesApi",
-  tagTypes: ["SUB-CATEGORY"],
+  tagTypes: ["SUB-CATEGORY", "CATEGORIES"],
   baseQuery: axiosBaseQuery({
     baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
   }),
@@ -16,34 +16,35 @@ const subCategoriesApi = createApi({
         method: "POST",
         body,
       }),
+      invalidatesTags: ["SUB-CATEGORY"],
     }),
     getSubCategory: builder.query({
       query: (letter) => ({
         url: `subCategories/filtered?letters=${letter}`,
         method: "GET",
       }),
-      providesTags: ["SUB-CATEGORY"],
+      providesTags: ["SUB-CATEGORY", "CATEGORIES"],
     }),
     getAllSubCategories: builder.query({
       query: () => ({
         url: `subCategories`,
         method: "GET",
       }),
-      providesTags: ["SUB-CATEGORY"],
+      providesTags: ["SUB-CATEGORY", "CATEGORIES"],
     }),
     getAllSubCategoriesByCategory: builder.query({
       query: (categoryId) => ({
         url: `subCategories?category=${categoryId}`,
         method: "GET",
       }),
-      providesTags: ["SUB-CATEGORY"],
+      providesTags: ["SUB-CATEGORY", "CATEGORIES"],
     }),
     getSubCategoryById: builder.query({
       query: (id) => ({
         url: `subCategories/${id}`,
         method: "GET",
       }),
-      providesTags: ["SUB-CATEGORY"],
+      providesTags: ["SUB-CATEGORY", "CATEGORIES"],
     }),
     editSubCategory: builder.mutation({
       query: ({ id, data }) => ({

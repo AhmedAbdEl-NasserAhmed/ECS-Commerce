@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { Box } from "@mui/material";
 import Link from "next/link";
 import Image from "next/image";
@@ -8,18 +8,24 @@ import { useParams } from "next/navigation";
 import { useHandleWindowWidth } from "@/hooks/useHandleWindowWidth";
 import SubMenuLink from "./SubMenuLink";
 import { HiFolder } from "react-icons/hi";
+import { useTranslations } from "next-intl";
+import { PiFoldersFill } from "react-icons/pi";
 
 interface Props {
   expand: boolean;
   setExpand?: (value: unknown) => void;
+  expanded: string | boolean;
+  setExpanded: Dispatch<SetStateAction<string | false>>;
 }
 
-function Links({ setExpand, expand }: Props) {
+function Links({ setExpand, expand, expanded, setExpanded }: Props) {
   const isWidthHiger = useHandleWindowWidth();
+  const tDashboard = useTranslations("Dashboard");
+  const tCategories = useTranslations("Categories");
+  const tSubCategories = useTranslations("SubCategories");
+  const t = useTranslations("Products");
 
   const { locale } = useParams();
-
-  const [expanded, setExpanded] = useState<string | false>(false);
 
   const handleChange =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
@@ -36,32 +42,23 @@ function Links({ setExpand, expand }: Props) {
       <Box className="bg-[#FFFFFF] border-b-2 border-gray-100 p-6 h-[9.8vh] flex justify-center items-center">
         <Link
           href="/"
-          className="text-md sm:text-xl md:text-3xl flex gap-5 min-w-[16vw] justify-center items-center font-bold   "
+          className="p-2 text-md sm:text-xl md:text-3xl flex gap-5 min-w-[16vw] justify-center items-center font-bold   "
         >
-          <Image
-            className={`${
-              expand ? "translate-x-[5rem]" : "translate-x-0"
-            } group-hover:translate-x-0`}
-            src="/favicon.png"
-            alt="logo "
-            width={50}
-            height={50}
-          />
-          <p
-            className={` 
+          <Image src="/favicon.png" alt="logo " width={50} height={50} />
+          {!expand && (
+            <p
+              className={` 
               ${expand ? "opacity-0" : "opacity-1"}
               ${expand ? "translate-x-[40rem]" : "translate-x-0"}
                 group-hover:block group-hover:opacity-100 group-hover:translate-x-0 text-gray-700 transition-opacity transition-opacity-500 transition-transform-500 ease-in-out`}
-          >
-            PITE TECH
-          </p>
+            >
+              ORCA
+            </p>
+          )}
         </Link>
       </Box>
       <Box>
-        <Link
-          href="/"
-          className="flex items-center border-b-2 gap-4 border-gray-100 p-8 text-xl font-semibold"
-        >
+        <div className="flex items-center border-b-2 gap-4 border-gray-100 p-8 text-xl font-semibold">
           <span className="text-4xl">
             <HiOutlineViewGrid />
           </span>
@@ -71,15 +68,15 @@ function Links({ setExpand, expand }: Props) {
               ${expand ? "translate-x-[40rem]" : "translate-x-0"}
                 group-hover:block group-hover:opacity-100 group-hover:translate-x-0 text-gray-700 transition-opacity transition-opacity-500 transition-transform-500 ease-in-out`}
           >
-            DASHBOARD
+            {tDashboard("Dashboard")}
           </p>
-        </Link>
+        </div>
 
         <SubMenuLink
           expanded={expanded}
           handleChange={handleChange}
-          menuName="Products"
-          id="product"
+          menuName={t("Products")}
+          id="products"
           expand={expand}
           setExpand={setExpand}
           icon={<HiCube />}
@@ -97,7 +94,7 @@ function Links({ setExpand, expand }: Props) {
         <SubMenuLink
           expanded={expanded}
           handleChange={handleChange}
-          menuName="Categories"
+          menuName={tCategories("Categories")}
           id="categories"
           expand={expand}
           setExpand={setExpand}
@@ -116,11 +113,11 @@ function Links({ setExpand, expand }: Props) {
         <SubMenuLink
           expanded={expanded}
           handleChange={handleChange}
-          menuName="Sub Categories"
+          menuName={tSubCategories("Sub Categories")}
           id="sub-categories"
           expand={expand}
           setExpand={setExpand}
-          icon={<HiFolder />}
+          icon={<PiFoldersFill />}
           menuLinks={[
             {
               href: `/${locale}/admin/dashboard/sub-categories`,

@@ -20,6 +20,7 @@ const categoriesApi = createApi({
         method: "POST",
         body,
       }),
+      invalidatesTags: ["CATEGORIES"],
     }),
     getAllCategories: builder.query({
       query: () => ({

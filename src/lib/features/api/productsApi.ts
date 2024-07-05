@@ -2,10 +2,9 @@ import axiosBaseQuery from "@/api";
 
 import { createApi } from "@reduxjs/toolkit/query/react";
 
-// RTK Query
 const productsApi = createApi({
   reducerPath: "productsApi",
-  tagTypes: ["PRODUCTS"],
+  tagTypes: ["PRODUCTS", "CATEGORIES", "SUB-CATEGORIES"],
   baseQuery: axiosBaseQuery({
     baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
   }),
@@ -23,38 +22,30 @@ const productsApi = createApi({
         url: "products?limit=5",
         method: "GET",
       }),
-      providesTags: ["PRODUCTS"],
-    }),
-    getSingleProduct: builder.query({
-      query: (slug) => ({
-        url: `products/${slug}`,
-        method: "GET",
-      }),
-      providesTags: ["PRODUCTS"],
+      providesTags: ["PRODUCTS", "CATEGORIES", "SUB-CATEGORIES"],
     }),
     getProductByName: builder.query({
       query: (letter) => ({
-        url: `products/filtered?letters=${letter}`,
+        url: `products/filtered/letters=${letter}`,
         method: "GET",
       }),
-      providesTags: ["PRODUCTS"],
+      providesTags: ["PRODUCTS", "CATEGORIES", "SUB-CATEGORIES"],
     }),
     deleteSingleProduct: builder.mutation({
       query: (id) => ({
         url: `products/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["PRODUCTS"],
+      invalidatesTags: ["PRODUCTS", "CATEGORIES", "SUB-CATEGORIES"],
     }),
   }),
 });
 
 export const {
+  useGetProductByNameQuery,
   useGetAllProductsQuery,
-  useGetSingleProductQuery,
   useAddProductMutation,
   useDeleteSingleProductMutation,
-  useGetProductByNameQuery,
 } = productsApi;
 
 export default productsApi;

@@ -33,6 +33,13 @@ function BaseReactTable({ data, columns }: { data: any; columns: any }) {
     // autoResetPageIndex: false, // turn off page index reset when sorting or filtering
   });
 
+  const getTableHeaderColumnWidth = () => {
+    if (columns.at(-1).id === "actions") {
+      return `calc(100% / ${columns.length - 1})`;
+    }
+    return `calc(100% / ${columns.length})`;
+  };
+
   return (
     <div className="p-2">
       <div className="h-2" />
@@ -42,7 +49,13 @@ function BaseReactTable({ data, columns }: { data: any; columns: any }) {
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
                 return (
-                  <th key={header.id} colSpan={header.colSpan}>
+                  <th
+                    key={header.id}
+                    colSpan={header.colSpan}
+                    style={{
+                      width: getTableHeaderColumnWidth(),
+                    }}
+                  >
                     <div
                       {...{
                         className: header.column.getCanSort()
@@ -60,7 +73,7 @@ function BaseReactTable({ data, columns }: { data: any; columns: any }) {
                         desc: " 🔽",
                       }[header.column.getIsSorted() as string] ?? null}
                       {header.column.getCanFilter() ? (
-                        <div>
+                        <div className={styles["filter-inputs"]}>
                           <BaseReactTableFilter
                             column={header.column}
                             table={table}
@@ -94,52 +107,59 @@ function BaseReactTable({ data, columns }: { data: any; columns: any }) {
         </tbody>
       </table>
       <div className="h-2" />
-      <div className="flex items-center gap-2">
-        <button
-          className="border rounded p-1"
-          onClick={() => table.firstPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          {"<<"}
-        </button>
-        <button
-          className="border rounded p-1"
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          {"<"}
-        </button>
-        <button
-          className="border rounded p-1"
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          {">"}
-        </button>
-        <button
-          className="border rounded p-1"
-          onClick={() => table.lastPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          {">>"}
-        </button>
+      <div className={styles.pagination}>
+        {
+          <div className={styles["pagination__controllers"]}>
+            <button
+              className="border rounded p-1"
+              onClick={() => table.firstPage()}
+              disabled={!table.getCanPreviousPage()}
+            >
+              {"<<"}
+            </button>
+            <button
+              className="border rounded p-1"
+              onClick={() => table.previousPage()}
+              disabled={!table.getCanPreviousPage()}
+            >
+              {"<"}
+            </button>
+            <button
+              className="border rounded p-1"
+              onClick={() => table.nextPage()}
+              disabled={!table.getCanNextPage()}
+            >
+              {">"}
+            </button>
+            <button
+              className="border rounded p-1"
+              onClick={() => table.lastPage()}
+              disabled={!table.getCanNextPage()}
+            >
+              {">>"}
+            </button>
+          </div>
+        }
         <span className="flex items-center gap-1">
-          <div>Page</div>
+          <div>Page </div>
           <strong>
             {table.getState().pagination.pageIndex + 1} of{" "}
             {table.getPageCount().toLocaleString()}
           </strong>
         </span>
         <span className="flex items-center gap-1">
-          | Go to page:
+          | Go to page:&nbsp;
           <input
             type="number"
             defaultValue={table.getState().pagination.pageIndex + 1}
             onChange={(e) => {
-              const page = e.target.value ? Number(e.target.value) - 1 : 0;
+              const page =
+                +e.target.value <= +table.getPageCount().toLocaleString() - 1
+                  ? Number(e.target.value) - 1
+                  : +table.getPageCount().toLocaleString() - 1;
               table.setPageIndex(page);
             }}
-            className="border p-1 rounded w-16"
+            className={`border p-1 rounded w-16 ${styles["pagination__controllers--page-input"]}`}
           />
         </span>
         <select
@@ -148,18 +168,18 @@ function BaseReactTable({ data, columns }: { data: any; columns: any }) {
             table.setPageSize(Number(e.target.value));
           }}
         >
-          {[10, 20, 30, 40, 50].map((pageSize) => (
+          {[5, 10, 20, 30, 40, 50].map((pageSize) => (
             <option key={pageSize} value={pageSize}>
               Show {pageSize}
             </option>
           ))}
         </select>
       </div>
-      <div>
+      {/* <div>
         Showing {table.getRowModel().rows.length.toLocaleString()} of{" "}
         {table.getRowCount().toLocaleString()} Rows
-      </div>
-      <pre>{JSON.stringify(table.getState().pagination, null, 2)}</pre>
+      </div> */}
+      {/* <pre>{JSON.stringify(table.getState().pagination, null, 2)}</pre> */}
     </div>
   );
 }

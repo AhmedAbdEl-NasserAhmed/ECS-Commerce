@@ -7,19 +7,25 @@ function ImagePreview(props) {
   const [imageUrl, setImageUrl] = useState(props.imageUrl);
 
   useEffect(() => {
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setImageUrl(reader.result);
-    };
-    if (props.imageUrl) {
-      reader.readAsDataURL(props.imageUrl);
+    if (props.imageUrl && props.imageUrl instanceof File) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImageUrl(reader.result);
+      };
+      if (props.imageUrl) {
+        reader.readAsDataURL(props.imageUrl);
+      }
+    } else {
+      setImageUrl(props.imageUrl.url);
     }
   }, [props.imageUrl]);
+
+  console.log("imageUrl", imageUrl);
 
   return (
     <div className="relative w-full h-full ">
       {props.imageUrl && (
-        <Image src={imageUrl} alt="img" fill objectFit="cover" />
+        <Image src={imageUrl} alt="img" fill objectFit="contain" />
       )}
       {props.disabled ? null : (
         <div

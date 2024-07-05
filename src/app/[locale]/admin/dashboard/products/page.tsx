@@ -40,10 +40,6 @@ function Products() {
           </span>
         </Box>
         <Menus>
-          {/* {isFetching ? (
-            <Spinner />
-          ) : (
-          )} */}
           {data.data.length > 0 ? (
             <BaseTable data={data?.data} columns={productTableHeaders} />
           ) : (

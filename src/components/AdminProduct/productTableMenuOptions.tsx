@@ -14,8 +14,6 @@ function ProductTableMenuOptions({ product }) {
 
   const [deleteProdcutFn, productResponse] = useDeleteSingleProductMutation();
 
-  console.log("PRODUCT", product["_id"]);
-
   function onDeleteProduct() {
     deleteProdcutFn(product["_id"]);
   }

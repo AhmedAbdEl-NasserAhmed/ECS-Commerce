@@ -25,6 +25,8 @@ function AddProductImage({
     setValue(key, null);
   }
 
+  console.log("inputNumbers", inputNumbers);
+
   return (
     <div>
       <ProductImageItem

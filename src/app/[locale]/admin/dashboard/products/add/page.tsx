@@ -5,7 +5,11 @@ import {
   useAddCategoryMutation,
   useGetCategoryQuery,
 } from "@/lib/features/api/categoriesApi";
-import { useAddProductMutation } from "@/lib/features/api/productsApi";
+import {
+  useAddProductMutation,
+  useGetAllProductsQuery,
+  useGetProductByNameQuery,
+} from "@/lib/features/api/productsApi";
 import { useGetSubCategoryQuery } from "@/lib/features/api/subCategoriesApi";
 import { getAddProductServerData } from "@/lib/helpers";
 import { useAppSelector } from "@/lib/hooks";
@@ -47,6 +51,8 @@ function AddProductPage() {
 
   const formData = watch();
 
+  console.log("FORM DATA", formData);
+
   const [smartSeachvalue, setSmartSeachValue] = useState<{
     id: string;
     name: string;
@@ -65,9 +71,53 @@ function AddProductPage() {
     subCategorydebounceValue
   );
 
+  const [productSearchName, setProductSearchName] = useState<{
+    name: string;
+  }>({ name: "" });
+
+  const productNameDebounceValue = useDebounceHook(productSearchName?.name);
+
+  const { data: productName } = useGetProductByNameQuery(
+    productNameDebounceValue
+  );
+
+  const { data: allProducts } = useGetAllProductsQuery("products");
+
   const [addProductFn, productResponse] = useAddProductMutation();
 
-  const t = useTranslations("Dashboard");
+  const [selectedProduct, setSelectedProduct] = useState({ images: [] });
+
+  useEffect(() => {
+    setSelectedProduct(
+      productName?.data.find((product) => {
+        return product.name === formData["name"];
+      })
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formData["name"], productName?.data]);
+
+  // console.log("selectedProduct", selectedProduct);
+
+  useEffect(() => {
+    if (selectedProduct?.images) {
+      const images = {};
+      if (selectedProduct.images.length >= 3) {
+        for (let i = 0; i < 3; i++) {
+          const image = selectedProduct.images[i];
+          images[`image-${i + 1}`] = {
+            url: image.url,
+          };
+        }
+      }
+      setValue("images", images);
+    }
+  }, [selectedProduct?.images, setValue]);
+
+  useEffect(() => {
+    if (allProducts?.data.length === 0) {
+      setValue("name", productSearchName.name);
+    }
+  }, [allProducts?.data.length, productSearchName.name, setValue]);
 
   useEffect(() => {
     const discount: number =
@@ -79,6 +129,8 @@ function AddProductPage() {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formData.price, formData.discount]);
+
+  const t = useTranslations("Dashboard");
 
   function onSubmit(data: AdminProductProps) {
     const myData = { ...data, category: smartSeachvalue["_id"] };
@@ -192,7 +244,8 @@ function AddProductPage() {
                   />
                 )}
               />
-              <Controller
+
+              {/* <Controller
                 name={"name"}
                 control={control}
                 defaultValue={""}
@@ -210,6 +263,26 @@ function AddProductPage() {
                     type={"text"}
                     variant={"outlined"}
                     size={"small"}
+                  />
+                )}
+              /> */}
+              <Controller
+                name={"name"}
+                control={control}
+                defaultValue={""}
+                rules={{ required: "This field is required" }}
+                render={({ field }) => (
+                  <SmartSearchInput
+                    error={!!errors["name"]}
+                    helperText={errors["name"] ? errors["name"].message : ""}
+                    disabled={productResponse.isLoading}
+                    shouldReset={productResponse.isSuccess}
+                    getSmartSearchValue={setProductSearchName}
+                    textLabel="Product Name"
+                    data={productName?.data}
+                    placeholder=" Search for productName"
+                    name={field.name}
+                    onChange={field.onChange}
                   />
                 )}
               />

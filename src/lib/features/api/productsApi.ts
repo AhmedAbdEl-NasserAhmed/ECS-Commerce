@@ -32,6 +32,13 @@ const productsApi = createApi({
       }),
       providesTags: ["PRODUCTS"],
     }),
+    getProductByName: builder.query({
+      query: (letter) => ({
+        url: `products/filtered?letters=${letter}`,
+        method: "GET",
+      }),
+      providesTags: ["PRODUCTS"],
+    }),
     deleteSingleProduct: builder.mutation({
       query: (id) => ({
         url: `products/${id}`,
@@ -47,6 +54,7 @@ export const {
   useGetSingleProductQuery,
   useAddProductMutation,
   useDeleteSingleProductMutation,
+  useGetProductByNameQuery,
 } = productsApi;
 
 export default productsApi;

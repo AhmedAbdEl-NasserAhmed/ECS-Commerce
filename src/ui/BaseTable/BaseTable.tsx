@@ -1,10 +1,15 @@
 "use client";
 
 import { useMemo } from "react";
-import { useTable, useSortBy, useGlobalFilter } from "react-table";
+import {
+  useTable,
+  useSortBy,
+  useGlobalFilter,
+  usePagination,
+} from "react-table";
 import styles from "./BaseTable.module.scss";
-import { FaSortAmountDown, FaSortAmountUp } from "react-icons/fa";
 import GlobalFilter from "./GlobalFilter/GlobalFilter";
+import { Button } from "@mui/material";
 
 function BaseTable({ rawData, columnsData }) {
   const data = useMemo(() => rawData, [rawData]);
@@ -17,7 +22,12 @@ function BaseTable({ rawData, columnsData }) {
     getTableProps,
     getTableBodyProps,
     headerGroups,
-    rows,
+    page,
+    canNextPage,
+    canPreviosPage,
+    nextPage,
+    previousPage,
+    pageOptions,
     prepareRow,
   } = useTable(
     {
@@ -25,10 +35,11 @@ function BaseTable({ rawData, columnsData }) {
       columns,
     },
     useGlobalFilter,
-    useSortBy
+    useSortBy,
+    usePagination
   );
 
-  const { globalFilter } = state;
+  const { globalFilter, pageIndex } = state;
 
   return (
     <>
@@ -49,7 +60,7 @@ function BaseTable({ rawData, columnsData }) {
           ))}
         </thead>
         <tbody {...getTableBodyProps()}>
-          {rows.map((row, index) => {
+          {page.map((row, index) => {
             prepareRow(row);
             return (
               <tr key={data[index]["_id"]} {...row.getRowProps()}>
@@ -65,6 +76,51 @@ function BaseTable({ rawData, columnsData }) {
           })}
         </tbody>
       </table>
+      <div className="flex items-center justify-between  ">
+        <span className="font-bold text-md">
+          Page {pageIndex + 1} of {pageOptions.length}
+        </span>
+        <div className="flex items-center gap-5">
+          {canPreviosPage && (
+            <Button
+              onClick={() => previousPage()}
+              disabled={!canPreviosPage}
+              sx={{
+                padding: "0.7rem",
+                fontSize: "1rem",
+                backgroundColor: "#10234a",
+                "&:hover": {
+                  backgroundColor: "#0b1b3a",
+                },
+              }}
+              type="submit"
+              variant="contained"
+              size="large"
+            >
+              Previous
+            </Button>
+          )}
+          {canNextPage && (
+            <Button
+              onClick={() => nextPage()}
+              disabled={!canNextPage}
+              sx={{
+                padding: "0.7rem",
+                fontSize: "1rem",
+                backgroundColor: "#10234a",
+                "&:hover": {
+                  backgroundColor: "#0b1b3a",
+                },
+              }}
+              type="submit"
+              variant="contained"
+              size="large"
+            >
+              Next
+            </Button>
+          )}
+        </div>
+      </div>
     </>
   );
 }

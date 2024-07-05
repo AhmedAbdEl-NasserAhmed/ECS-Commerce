@@ -1,7 +1,11 @@
-function page({ useParams }) {
-  const slug = useParams.slug;
+"use client";
 
-  return <div>hello</div>;
+import { useParams } from "next/navigation";
+
+function ProductDetails() {
+  const params = useParams();
+
+  return <div>{params.slug}</div>;
 }
 
-export default page;
+export default ProductDetails;

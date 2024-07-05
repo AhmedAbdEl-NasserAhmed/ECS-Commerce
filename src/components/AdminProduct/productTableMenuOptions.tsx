@@ -19,9 +19,8 @@ function ProductTableMenuOptions({ product }) {
         <Menus.List id={product["_id"]}>
           <Menus.Button
             onClick={() => {
-              console.log(product.slug);
               router.push(
-                `/${locale}/admin/dashboard/product/edit/${product?.slug}`
+                `/${locale}/admin/dashboard/product/details/${product?.slug}`
               );
             }}
             icon={<HiEye />}

@@ -13,6 +13,7 @@
   border: 1px solid #ddd;
   padding: 8px;
   transition: all 0.5s;
+  border-radius: 2px;
 }
 
 .table tr:nth-child(even) {
@@ -30,3 +31,12 @@
   background-color: #10234a;
   color: white;
 }
+
+// .btn {
+//   display: inline-block;
+//   background-color: #10234a;
+//   color: white;
+//   padding: 0.8rem;
+//   border-radius: 5px;
+//   cursor: pointer;
+// }

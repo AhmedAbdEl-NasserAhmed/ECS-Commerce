@@ -32,7 +32,7 @@ function EditSubCategoryPage() {
     watch,
     setValue,
     formState: { errors },
-  } = useForm<AdminSubCategory>();
+  } = useForm<AdminSubCategory>({ mode: "onChange" });
 
   const formData = watch();
 

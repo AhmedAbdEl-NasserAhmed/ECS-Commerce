@@ -21,7 +21,7 @@ function AddSubCategoriesPage() {
     reset,
     watch,
     formState: { errors },
-  } = useForm<AdminSubCategory>();
+  } = useForm<AdminSubCategory>({ mode: "onChange" });
 
   const formData = watch();
 

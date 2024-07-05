@@ -21,7 +21,7 @@ function CategoryPage() {
     watch,
     reset,
     formState: { errors },
-  } = useForm<AdminMainCategory>();
+  } = useForm<AdminMainCategory>({ mode: "onChange" });
 
   const formData = watch();
 

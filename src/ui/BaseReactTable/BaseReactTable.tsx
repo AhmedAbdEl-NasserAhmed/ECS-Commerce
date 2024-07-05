@@ -40,6 +40,8 @@ function BaseReactTable({ data, columns }: { data: any; columns: any }) {
     return `calc(100% / ${columns.length})`;
   };
 
+  console.log("data", data);
+
   return (
     <div className="p-2">
       <div className="h-2" />
@@ -88,22 +90,28 @@ function BaseReactTable({ data, columns }: { data: any; columns: any }) {
           ))}
         </thead>
         <tbody>
-          {table.getRowModel().rows.map((row) => {
-            return (
-              <tr key={row.id}>
-                {row.getVisibleCells().map((cell) => {
-                  return (
-                    <td key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </td>
-                  );
-                })}
-              </tr>
-            );
-          })}
+          {data.length > 0 ? (
+            table.getRowModel().rows.map((row) => {
+              return (
+                <tr key={row.id}>
+                  {row.getVisibleCells().map((cell) => {
+                    return (
+                      <td key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </td>
+                    );
+                  })}
+                </tr>
+              );
+            })
+          ) : (
+            <tr>
+              <td colSpan={columns.length}>No data available</td>
+            </tr>
+          )}
         </tbody>
       </table>
       <div className="h-2" />

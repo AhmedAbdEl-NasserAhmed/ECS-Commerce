@@ -10,7 +10,7 @@ export const productLinks = (locale: string): AdminDashboardLink[] => {
       icon: <FaEye />,
       headLine: "VIEW PRODUCTS",
       href: `${locale}/admin/dashboard/products`,
-      pathName: "productsOverview",
+      pathName: "products",
     },
     {
       id: 2,

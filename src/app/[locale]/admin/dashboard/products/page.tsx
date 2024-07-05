@@ -9,7 +9,7 @@ import { Box } from "@mui/material";
 import Link from "next/link";
 import { HiChevronRight } from "react-icons/hi2";
 
-function ProductsOverview() {
+function Products() {
   const { data, isFetching } = useGetAllProductsQuery("products");
 
   return (
@@ -26,13 +26,13 @@ function ProductsOverview() {
             <span>
               <HiChevronRight />
             </span>
-            <h4>Products Overview</h4>
+            <h4>Products</h4>
           </Box>
         </Box>
       </Box>
       <Box className="relative grow flex flex-col gap-8 bg-white rounded-2xl border-2 p-10 border-slate-100 shadow-md">
         <Box className="mb-4">
-          <h2 className="text-3xl font-semibold mb-5">Products Overview</h2>
+          <h2 className="text-3xl font-semibold mb-5">Products</h2>
           <span className=" absolute left-0 block h-[1px] w-full bg-gray-200">
             &nbsp;
           </span>
@@ -49,4 +49,4 @@ function ProductsOverview() {
   );
 }
 
-export default ProductsOverview;
+export default Products;

@@ -33,17 +33,6 @@ function CategoryTableMenuOptions({ category }) {
 
         <Menus.List id={category["_id"]}>
           <Menus.Button
-            onClick={() => {
-              router.push(
-                `/${locale}/admin/dashboard/category/details/${category?.slug}`
-              );
-            }}
-            icon={<HiEye />}
-          >
-            View
-          </Menus.Button>
-
-          <Menus.Button
             icon={<HiMiniPencilSquare />}
             onClick={() => {
               router.push(

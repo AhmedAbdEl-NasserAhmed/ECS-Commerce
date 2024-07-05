@@ -1,3 +1,4 @@
+import ProductTableMenuOptions from "@/components/AdminProduct/productTableMenuOptions";
 import { Box } from "@mui/material";
 import Image from "next/image";
 
@@ -33,5 +34,10 @@ export const productTableHeaders = [
     Header: "Product Size",
     accessor: "size",
     Cell: ({ cell: { value } }) => value.value, // Access the `value` property of the `size` object
+  },
+
+  {
+    Header: "Actions",
+    Cell: ({ row }) => <ProductTableMenuOptions product={row.original} />,
   },
 ];

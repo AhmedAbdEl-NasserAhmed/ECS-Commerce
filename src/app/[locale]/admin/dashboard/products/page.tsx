@@ -11,9 +11,7 @@ import Link from "next/link";
 import { HiChevronRight } from "react-icons/hi2";
 
 function Products() {
-  const { data, isFetching } = useGetAllProductsQuery("products", {
-    refetchOnMountOrArgChange: true,
-  });
+  const { data, isFetching } = useGetAllProductsQuery("products");
   const t = useTranslations("Products");
   const tIndex = useTranslations("Index");
   return (

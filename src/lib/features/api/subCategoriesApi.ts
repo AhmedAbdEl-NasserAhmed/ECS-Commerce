@@ -16,6 +16,7 @@ const subCategoriesApi = createApi({
         method: "POST",
         body,
       }),
+      invalidatesTags: ["SUB-CATEGORY"],
     }),
     getSubCategory: builder.query({
       query: (letter) => ({

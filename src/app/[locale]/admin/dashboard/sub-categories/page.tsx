@@ -14,9 +14,7 @@ import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
 
 function SubCategories() {
-  const { data, isFetching } = useGetAllSubCategoriesQuery("sub-categories", {
-    refetchOnMountOrArgChange: true,
-  });
+  const { data, isFetching } = useGetAllSubCategoriesQuery("sub-categories");
 
   return (
     <Box className=" flex flex-col gap-8 px-[4rem] py-[1.2rem] bg-[#FDFDFD] ">

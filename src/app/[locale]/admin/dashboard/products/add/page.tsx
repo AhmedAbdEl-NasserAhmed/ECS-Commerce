@@ -59,9 +59,7 @@ function AddProductPage() {
 
   const subCategorydebounceValue = useDebounceHook(smartSeachSubCategoryvalue);
 
-  const { data: AllCategories } = useGetAllCategoriesQuery("categories", {
-    refetchOnMountOrArgChange: true,
-  });
+  const { data: AllCategories } = useGetAllCategoriesQuery("categories");
   const { data: mainCategory } = useGetCategoryQuery(mainCategorydebounceValue);
 
   const { data: subCategory } = useGetSubCategoryQuery(

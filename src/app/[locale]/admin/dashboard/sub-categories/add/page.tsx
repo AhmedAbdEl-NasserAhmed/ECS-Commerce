@@ -40,9 +40,7 @@ function AddSubCategoriesPage() {
 
   const { data, isLoading } = useGetCategoryQuery(debounceValue);
 
-  const { data: AllCategories } = useGetAllCategoriesQuery("categories", {
-    refetchOnMountOrArgChange: true,
-  });
+  const { data: AllCategories } = useGetAllCategoriesQuery("categories");
   const t = useTranslations("Products");
   const tCategories = useTranslations("Categories");
 

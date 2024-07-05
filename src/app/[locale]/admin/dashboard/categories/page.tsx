@@ -10,9 +10,7 @@ import Link from "next/link";
 import { HiChevronRight } from "react-icons/hi2";
 
 function Categories() {
-  const { data, isFetching } = useGetAllCategoriesQuery("categories", {
-    refetchOnMountOrArgChange: true,
-  });
+  const { data, isFetching } = useGetAllCategoriesQuery("categories");
   // const { data: subCategories, isFetching: isSubCategoriesFetching } = useGetAllSubCategoriesByCategoryQuery(
   //   original["_id"]
   // );

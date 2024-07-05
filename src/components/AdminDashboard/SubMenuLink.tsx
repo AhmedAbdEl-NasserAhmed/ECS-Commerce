@@ -21,7 +21,7 @@ function SubMenuLink({
 }) {
   const pathname = usePathname();
 
-  const isActiveLink = pathname.split("/").at(-1) === id;
+  const isActiveLink = pathname.includes("/" + id);
 
   const SubmenuIcon = function () {
     const _icon = React.cloneElement(icon, {

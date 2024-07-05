@@ -4,9 +4,12 @@ import Menus from "@/ui/Menus/Menus";
 import Modal from "@/ui/Modal/Modal";
 import { HiEye, HiMiniPencilSquare, HiTrash } from "react-icons/hi2";
 import DeleteWindow from "@/ui/DeleteWindow/DeleteWindow";
+import { useParams, useRouter } from "next/navigation";
 
 function ProductTableMenuOptions({ product }) {
-  console.log(product);
+  const router = useRouter();
+
+  const { locale } = useParams();
 
   return (
     <Modal>
@@ -14,9 +17,17 @@ function ProductTableMenuOptions({ product }) {
         <Menus.Toggle id={product["_id"]} />
 
         <Menus.List id={product["_id"]}>
-          <Modal.Open opens="view">
-            <Menus.Button icon={<HiEye />}>View</Menus.Button>
-          </Modal.Open>
+          <Menus.Button
+            onClick={() => {
+              console.log(product.slug);
+              router.push(
+                `/${locale}/admin/dashboard/product/edit/${product?.slug}`
+              );
+            }}
+            icon={<HiEye />}
+          >
+            View
+          </Menus.Button>
 
           <Modal.Open opens="edit">
             <Menus.Button icon={<HiMiniPencilSquare />}>Edit</Menus.Button>
@@ -26,14 +37,6 @@ function ProductTableMenuOptions({ product }) {
             <Menus.Button icon={<HiTrash />}>Delete</Menus.Button>
           </Modal.Open>
         </Menus.List>
-
-        {/* <Modal.Window name="view">
-          <ProductDetails product={product} />
-        </Modal.Window> */}
-
-        {/* <Modal.Window name="edit">
-          <ProductEdit product={product} />
-        </Modal.Window> */}
 
         <Modal.Window name="delete">
           <DeleteWindow

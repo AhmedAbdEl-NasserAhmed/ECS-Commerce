@@ -9,7 +9,6 @@ interface Props {
 }
 
 function DeleteWindow({ product, message, setShowModal }: Props) {
-  console.log(product);
   return (
     <Box className={styles["delete-item"]}>
       <Box className="text-4xl font-bold ">{message}</Box>

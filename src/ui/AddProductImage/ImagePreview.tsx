@@ -20,8 +20,6 @@ function ImagePreview(props) {
     }
   }, [props.imageUrl]);
 
-  console.log("imageUrl", imageUrl);
-
   return (
     <div className="relative w-full h-full ">
       {props.imageUrl && (

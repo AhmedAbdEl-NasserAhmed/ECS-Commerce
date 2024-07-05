@@ -51,8 +51,6 @@ function AddProductPage() {
 
   const formData = watch();
 
-  console.log("FORM DATA", formData);
-
   const [smartSeachvalue, setSmartSeachValue] = useState<{
     id: string;
     name: string;
@@ -87,6 +85,8 @@ function AddProductPage() {
 
   const [selectedProduct, setSelectedProduct] = useState({ images: [] });
 
+  console.log("FORM DATA", formData);
+
   useEffect(() => {
     setSelectedProduct(
       productName?.data.find((product) => {
@@ -95,8 +95,6 @@ function AddProductPage() {
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formData["name"], productName?.data]);
-
-  // console.log("selectedProduct", selectedProduct);
 
   useEffect(() => {
     if (selectedProduct?.images) {
@@ -245,27 +243,6 @@ function AddProductPage() {
                 )}
               />
 
-              {/* <Controller
-                name={"name"}
-                control={control}
-                defaultValue={""}
-                rules={{ required: "This field is required" }}
-                render={({ field }) => (
-                  <CustomizedTextField
-                    disabled={productResponse.isLoading}
-                    textLabelClass={"font-semibold text-xl"}
-                    placeholder={"Product Name"}
-                    textlabel={"Product Name"}
-                    field={field}
-                    error={!!errors["name"]}
-                    formerHelperStyles={{ style: { fontSize: "1rem" } }}
-                    helperText={errors["name"] ? errors["name"].message : ""}
-                    type={"text"}
-                    variant={"outlined"}
-                    size={"small"}
-                  />
-                )}
-              /> */}
               <Controller
                 name={"name"}
                 control={control}

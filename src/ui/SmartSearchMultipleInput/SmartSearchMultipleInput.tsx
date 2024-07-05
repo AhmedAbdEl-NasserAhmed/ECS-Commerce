@@ -134,7 +134,7 @@ function SmartSearchMultipleInput({
               style={{
                 backgroundColor:
                   smartSearchMultipleState.multipleItemsId.includes(item["_id"])
-                    ? "#1ca56aa4 "
+                    ? "#dcdbdb "
                     : "",
                 color: smartSearchMultipleState.multipleItemsId.includes(
                   item["_id"]

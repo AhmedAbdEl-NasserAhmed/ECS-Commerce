@@ -31,7 +31,7 @@ function ProtectedRoute({ children }) {
 
       if (user.isAuthenticated) {
         if (isAuthAdminRoute) {
-          router.push(`/${locale}/admin/dashboard/product`);
+          router.push(`/${locale}/admin/dashboard/products`);
         } else {
           return;
         }

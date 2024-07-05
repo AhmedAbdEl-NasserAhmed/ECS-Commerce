@@ -5,11 +5,20 @@ import Modal from "@/ui/Modal/Modal";
 import { HiEye, HiMiniPencilSquare, HiTrash } from "react-icons/hi2";
 import DeleteWindow from "@/ui/DeleteWindow/DeleteWindow";
 import { useParams, useRouter } from "next/navigation";
+import { useDeleteSingleProductMutation } from "@/lib/features/api/productsApi";
 
 function ProductTableMenuOptions({ product }) {
   const router = useRouter();
 
   const { locale } = useParams();
+
+  const [deleteProdcutFn, productResponse] = useDeleteSingleProductMutation();
+
+  console.log("PRODUCT", product["_id"]);
+
+  function onDeleteProduct() {
+    deleteProdcutFn(product["_id"]);
+  }
 
   return (
     <Modal>
@@ -20,7 +29,7 @@ function ProductTableMenuOptions({ product }) {
           <Menus.Button
             onClick={() => {
               router.push(
-                `/${locale}/admin/dashboard/product/details/${product?.slug}`
+                `/${locale}/admin/dashboard/products/details/${product?.slug}`
               );
             }}
             icon={<HiEye />}
@@ -39,7 +48,8 @@ function ProductTableMenuOptions({ product }) {
 
         <Modal.Window name="delete">
           <DeleteWindow
-            data={product}
+            onClick={onDeleteProduct}
+            disabled={productResponse.isLoading}
             message="Are you sure that you want to delete this Product ?"
           />
         </Modal.Window>

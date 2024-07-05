@@ -12,6 +12,8 @@ import { HiChevronRight } from "react-icons/hi2";
 function ProductsOverview() {
   const { data, isFetching } = useGetAllProductsQuery("products");
 
+  if (isFetching) return <Spinner />;
+
   return (
     <Box className=" flex flex-col gap-8 px-[4rem] py-[1.2rem] bg-[#FDFDFD] ">
       <Box className="h-[10vh] flex justify-between items-center">
@@ -38,10 +40,14 @@ function ProductsOverview() {
           </span>
         </Box>
         <Menus>
-          {isFetching ? (
+          {/* {isFetching ? (
             <Spinner />
           ) : (
+          )} */}
+          {data.data.length > 0 ? (
             <BaseTable rawData={data?.data} columnsData={productTableHeaders} />
+          ) : (
+            <p className="font-bold text-xl">Start Adding Products</p>
           )}
         </Menus>
       </Box>

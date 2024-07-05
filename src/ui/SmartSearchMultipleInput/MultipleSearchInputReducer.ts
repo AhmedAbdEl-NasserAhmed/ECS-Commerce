@@ -7,6 +7,7 @@ export enum SmartSearchActions {
   DELETE_ITEM = "DELETE_ITEM",
   DELETE_ID = "DELETE_ID",
   RESET = "RESET",
+  RESET_INPUT_VALUE = "RESET_INPUT_VALUE",
 }
 
 interface State {
@@ -74,6 +75,12 @@ export const reducerFn = function (state = initialState, action) {
   if (action.type === SmartSearchActions.RESET) {
     return {
       ...initialState,
+    };
+  }
+  if (action.type === SmartSearchActions.RESET_INPUT_VALUE) {
+    return {
+      ...state,
+      inputValue: "",
     };
   }
 };

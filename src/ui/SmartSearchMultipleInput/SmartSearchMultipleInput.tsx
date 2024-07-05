@@ -57,7 +57,7 @@ function SmartSearchMultipleInput({
     value: false,
   });
 
-  function hanldeDelete(item) {
+  function hanldeAdditem(item) {
     action(SmartSearchActions.ADD_ITEM, {
       name: item.name,
       value: item["_id"],
@@ -146,7 +146,7 @@ function SmartSearchMultipleInput({
               onClick={() =>
                 smartSearchMultipleState.multipleItemsId.includes(item["_id"])
                   ? null
-                  : hanldeDelete(item)
+                  : hanldeAdditem(item)
               }
             >
               {item.name}

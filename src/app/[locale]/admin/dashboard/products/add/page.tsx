@@ -97,7 +97,6 @@ function AddProductPage() {
       .unwrap()
       .then(() => {
         toast.success("A new Product is added");
-        router.push(`/${locale}/admin/dashboard/product/productsOverview`);
         reset();
       })
       .catch((err) => {
@@ -219,6 +218,7 @@ function AddProductPage() {
                   name={"colors"}
                   control={control}
                   rules={{ required: "This field is required" }}
+                  defaultValue={[]}
                   render={({ field }) => (
                     <MultiChoiceSelectMenu
                       options={colorsOption}
@@ -239,6 +239,7 @@ function AddProductPage() {
                 name={"size"}
                 control={control}
                 rules={{ required: "This field is required" }}
+                defaultValue={[]}
                 render={({ field }) => (
                   <MultiChoiceSelectMenu
                     disabled={productResponse.isLoading}

@@ -1,20 +1,22 @@
 import { Box, Button } from "@mui/material";
 
 import styles from "./DeleteWindow.module.scss";
+import MiniSpinner from "../MiniSpinner/MiniSpinner";
 
 interface Props {
   message: string;
   setShowModal?: () => void;
-  data: object;
   onClick?: any;
+  disabled: boolean;
 }
 
-function DeleteWindow({ data, message, setShowModal, onClick }: Props) {
+function DeleteWindow({ disabled, message, setShowModal, onClick }: Props) {
   return (
     <Box className={styles["delete-item"]}>
       <Box className="text-4xl font-bold ">{message}</Box>
       <Box className="flex gap-8 justify-center w-full ">
         <Button
+          disabled={disabled}
           onClick={setShowModal}
           sx={{
             fontSize: "1rem",
@@ -26,9 +28,10 @@ function DeleteWindow({ data, message, setShowModal, onClick }: Props) {
           variant="contained"
           size="large"
         >
-          Close
+          {disabled ? <MiniSpinner /> : "Close"}
         </Button>
         <Button
+          disabled={disabled}
           onClick={() => {
             setShowModal();
             onClick();
@@ -43,7 +46,7 @@ function DeleteWindow({ data, message, setShowModal, onClick }: Props) {
           variant="contained"
           size="large"
         >
-          Delete
+          {disabled ? <MiniSpinner /> : "Delete"}
         </Button>
       </Box>
     </Box>

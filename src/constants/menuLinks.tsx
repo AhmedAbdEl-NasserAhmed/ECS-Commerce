@@ -9,14 +9,14 @@ export const productLinks = (locale: string): AdminDashboardLink[] => {
       id: 1,
       icon: <FaEye />,
       headLine: "VIEW PRODUCTS",
-      href: `${locale}/admin/dashboard/productsOverview`,
-      pathName: "productsOverview",
+      href: `${locale}/admin/dashboard/products`,
+      pathName: "products",
     },
     {
       id: 2,
       icon: <FaBox />,
       headLine: "ADD PRODUCT",
-      href: `${locale}/admin/dashboard/product`,
+      href: `${locale}/admin/dashboard/products/add`,
       pathName: "product",
     },
   ];

@@ -11,7 +11,6 @@ import { getAddProductServerData } from "@/lib/helpers";
 import { useAppSelector } from "@/lib/hooks";
 import { AdminProductProps } from "@/types/types";
 import AddProductImage from "@/ui/AddProductImage/AddProductImage";
-import ColorPickerInput from "@/ui/ColorPicketInput/ColorPickerInput";
 import MiniSpinner from "@/ui/MiniSpinner/MiniSpinner";
 import MultiChoiceSelectMenu from "@/ui/MultiChoiceSelectMenu/MultiChoiceSelectMenu";
 import SmartSearchInput from "@/ui/SmartSearchInput/SmartSearchInput";
@@ -97,6 +96,7 @@ function AddProductPage() {
       .unwrap()
       .then(() => {
         toast.success("A new Product is added");
+        router.push(`/${locale}/admin/dashboard/products`);
         reset();
       })
       .catch((err) => {

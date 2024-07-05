@@ -5,21 +5,22 @@ import Modal from "@/ui/Modal/Modal";
 import { HiEye, HiMiniPencilSquare, HiTrash } from "react-icons/hi2";
 import DeleteWindow from "@/ui/DeleteWindow/DeleteWindow";
 import { useParams, useRouter } from "next/navigation";
-import { useDeleteCategoryMutation } from "@/lib/features/api/categoriesApi";
 import toast from "react-hot-toast";
+import { useDeleteSubCategoryMutation } from "@/lib/features/api/subCategoriesApi";
 
-function CategoryTableMenuOptions({ category }) {
+function SubCategoryTableMenuOptions({ subCategory }) {
   const router = useRouter();
 
   const { locale } = useParams();
 
-  const [deleteCategory, deleteCategoryResponse] = useDeleteCategoryMutation();
+  const [deleteSubCategory, deleteSubCategoryResponse] =
+    useDeleteSubCategoryMutation();
 
-  const onDeleteCategory = () => {
-    deleteCategory(category["_id"])
+  const onDeleteSubCategory = () => {
+    deleteSubCategory(subCategory["_id"])
       .unwrap()
       .then((res) => {
-        toast.success(`Your category has been deleted!`);
+        toast.success(`Your sub category has been deleted!`);
       })
       .catch((err) => {
         toast.error("Something went wrong!");
@@ -29,14 +30,14 @@ function CategoryTableMenuOptions({ category }) {
   return (
     <Modal>
       <Menus.Menu>
-        <Menus.Toggle id={category["_id"]} />
+        <Menus.Toggle id={subCategory["_id"]} />
 
-        <Menus.List id={category["_id"]}>
+        <Menus.List id={subCategory["_id"]}>
           <Menus.Button
             icon={<HiMiniPencilSquare />}
             onClick={() => {
               router.push(
-                `/${locale}/admin/dashboard/categories/edit/${category?.["_id"]}`
+                `/${locale}/admin/dashboard/categories/edit/${subCategory?.["_id"]}`
               );
             }}
           >
@@ -50,9 +51,9 @@ function CategoryTableMenuOptions({ category }) {
 
         <Modal.Window name="delete">
           <DeleteWindow
-            data={category}
-            message="Are you sure that you want to delete this Category ?"
-            onClick={onDeleteCategory}
+            data={subCategory}
+            message="Are you sure that you want to delete this sub category ?"
+            onClick={onDeleteSubCategory}
           />
         </Modal.Window>
       </Menus.Menu>
@@ -60,4 +61,4 @@ function CategoryTableMenuOptions({ category }) {
   );
 }
 
-export default CategoryTableMenuOptions;
+export default SubCategoryTableMenuOptions;

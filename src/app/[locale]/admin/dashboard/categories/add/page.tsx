@@ -29,7 +29,7 @@ function CategoryPage() {
 
   function handleAddCategorySubmit() {
     addCategory({
-      name: formData.name.toLocaleLowerCase().replace(/\s+/g, ""),
+      name: formData.name.trim(),
       description: formData.description,
     })
       .unwrap()

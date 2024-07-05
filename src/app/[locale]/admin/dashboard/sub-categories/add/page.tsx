@@ -35,11 +35,11 @@ function AddSubCategoriesPage() {
 
   const { data, isLoading } = useGetCategoryQuery(debounceValue);
 
-  const [addSubCategoryFc, subCategoryState] = useAddSubCategoryMutation();
+  const [addSubCategoryFn, subCategoryState] = useAddSubCategoryMutation();
 
   function handleAddSubCategorySubmit() {
-    addSubCategoryFc({
-      name: formData.name.toLocaleLowerCase().replace(/\s+/g, ""),
+    addSubCategoryFn({
+      name: formData.name.trim(),
       description: formData.description,
       category: smartSeachvalue["_id"],
     })

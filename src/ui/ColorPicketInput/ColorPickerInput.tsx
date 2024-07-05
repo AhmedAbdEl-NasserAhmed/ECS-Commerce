@@ -40,7 +40,7 @@ function ColorPickerInput({ options, disabled, onSelectColorHandler }) {
 
     const newColor = { value: colorName, label: colorName, color };
 
-    onSelectColorHandler(newColor);
+    onSelectColorHandler(newColor, "select-option");
 
     setColor(DEFAULT_COLOR);
 
@@ -48,20 +48,7 @@ function ColorPickerInput({ options, disabled, onSelectColorHandler }) {
   }
 
   return (
-    <div
-      className="absolute gap-2 flex cursor-pointer items-center z-10 h-full top-1/2 -translate-y-1/2 start-0"
-      style={{
-        top: "50%",
-        transform: "translateY(-50%)",
-        insetInlineEnd: 0,
-      }}
-    >
-      <div style={{ fontSize: "18px", lineHeight: "0" }}>
-        <button style={{ color: color }} onClick={handleAddColor} type="button">
-          <HiMiniPlusCircle />
-        </button>
-      </div>
-
+    <div className="flex items-center gap-2 ">
       <div className="relative">
         <input
           disabled={disabled}
@@ -72,6 +59,12 @@ function ColorPickerInput({ options, disabled, onSelectColorHandler }) {
           }}
         />
         <Image src="/color-wheel.png" alt="img" height={25} width={25} />
+      </div>
+
+      <div style={{ fontSize: "18px", lineHeight: "0" }}>
+        <button style={{ color: color }} onClick={handleAddColor} type="button">
+          <HiMiniPlusCircle />
+        </button>
       </div>
     </div>
   );

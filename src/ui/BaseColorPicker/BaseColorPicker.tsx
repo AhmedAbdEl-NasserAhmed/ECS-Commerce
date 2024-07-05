@@ -40,7 +40,7 @@ function BaseColorPicker({
         borderColor: `${errors[name] ? "rgb(186, 9, 9)" : "#e7e7e7"}`,
       },
       height: "42px",
-      width: "85%",
+      width: "100%",
     }),
     placeholder: (styles) => ({
       ...styles,
@@ -66,7 +66,6 @@ function BaseColorPicker({
             : "black"
           : data.color,
         cursor: isDisabled ? "not-allowed" : "default",
-
         ":active": {
           ...styles[":active"],
           backgroundColor: !isDisabled
@@ -99,6 +98,9 @@ function BaseColorPicker({
   };
 
   const [selectedColors, setSelectedColors] = useState([]);
+  const [alreadySelectedColors, setAlreadySelectedColors] = useState([
+    ...colorPickerDefaultColors,
+  ]);
 
   useEffect(() => {
     if (selectedColors.length > 0) {
@@ -106,28 +108,60 @@ function BaseColorPicker({
     }
   }, [selectedColors]);
 
-  const onSelectColorHandler = (color) => {
-    setSelectedColors((state) => state.concat(color));
+  const addToList = (color) => {
+    const alreadyDefaultColor = colorPickerDefaultColors.some(
+      (defaultColor) => defaultColor.value === color.value
+    );
+    setAlreadySelectedColors((state) => {
+      if (alreadyDefaultColor) return state;
+      return state.concat(color);
+    });
+  };
+
+  const onSelectColorHandler = (color, actionType) => {
+    switch (actionType) {
+      case "select-option":
+        setSelectedColors((state) => state.concat(color));
+        addToList(color);
+        break;
+      case "remove-value":
+        setSelectedColors((state) =>
+          state.filter((c) => c.value !== color.value)
+        );
+        break;
+      case "clear":
+        setSelectedColors([]);
+        setAlreadySelectedColors(colorPickerDefaultColors);
+        break;
+    }
   };
 
   return (
-    <Box className="flex flex-col gap-4 ">
+    <Box className="flex flex-col flex-wrap gap-4">
       {textLabel && <label className={textLabelClass}>{textLabel}</label>}
-      <Box className="relative">
-        <Select
-          {...field}
-          instanceId={useId()}
-          isDisabled={disabled}
-          placeholder={placeholder}
-          className={className}
-          closeMenuOnSelect={true}
-          menuShouldScrollIntoView={true}
-          isMulti={isMulti}
-          options={[...colorPickerDefaultColors, ...selectedColors]}
-          styles={colourStyles}
-        />
+      <Box className="flex gap-2">
+        <Box className="grow">
+          <Select
+            {...field}
+            onChange={(value, selectedItem) => {
+              onChange(value);
+              const lastActionOption =
+                selectedItem.removedValue || selectedItem.option;
+              onSelectColorHandler(lastActionOption, selectedItem.action);
+            }}
+            instanceId={useId()}
+            isDisabled={disabled}
+            placeholder={placeholder}
+            className={className}
+            closeMenuOnSelect={true}
+            menuShouldScrollIntoView={true}
+            isMulti={isMulti}
+            options={[...alreadySelectedColors, ...selectedColors]}
+            styles={colourStyles}
+          />
+        </Box>
         <ColorPickerInput
-          options={colorPickerDefaultColors}
+          options={alreadySelectedColors}
           onSelectColorHandler={onSelectColorHandler}
           disabled={disabled}
         />

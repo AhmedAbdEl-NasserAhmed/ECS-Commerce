@@ -227,28 +227,30 @@ function AddProductPage() {
                   />
                 )}
               />
-              <Controller
-                name={"name"}
-                control={control}
-                defaultValue={""}
-                rules={{ required: "This field is required" }}
-                render={({ field }) => (
-                  <CustomizedTextField
-                    disabled={productResponse.isLoading}
-                    textLabelClass={"font-semibold text-xl"}
-                    placeholder={t("Product Name")}
-                    textlabel={t("Product Name")}
-                    field={field}
-                    error={!!errors["name"]}
-                    formerHelperStyles={{ style: { fontSize: "1rem" } }}
-                    helperText={errors["name"] ? errors["name"].message : ""}
-                    type={"text"}
-                    variant={"outlined"}
-                    size={"small"}
-                  />
-                )}
-              />
-              <Box className="relative">
+              <Box className="col-span-full">
+                <Controller
+                  name={"name"}
+                  control={control}
+                  defaultValue={""}
+                  rules={{ required: "This field is required" }}
+                  render={({ field }) => (
+                    <CustomizedTextField
+                      disabled={productResponse.isLoading}
+                      textLabelClass={"font-semibold text-xl"}
+                      placeholder={t("Product Name")}
+                      textlabel={t("Product Name")}
+                      field={field}
+                      error={!!errors["name"]}
+                      formerHelperStyles={{ style: { fontSize: "1rem" } }}
+                      helperText={errors["name"] ? errors["name"].message : ""}
+                      type={"text"}
+                      variant={"outlined"}
+                      size={"small"}
+                    />
+                  )}
+                />
+              </Box>
+              <Box className="relative col-span-full">
                 <Controller
                   name={"colors"}
                   defaultValue={[]}

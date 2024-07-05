@@ -7,6 +7,7 @@ import {
   useGlobalFilter,
   usePagination,
 } from "react-table";
+
 import styles from "./BaseTable.module.scss";
 import GlobalFilter from "./GlobalFilter/GlobalFilter";
 import { Button } from "@mui/material";

@@ -20,7 +20,7 @@ export const categoriesTableHeaders = [
       if (isFetching || !data || data?.data?.length === 0)
         return <div>No Sub Categories</div>;
       return (
-        <ul className="flex gap-2 items-cneter justify-center">
+        <ul className="flex gap-2 items-cneter justify-center flex-wrap">
           {data?.data?.map((subCategory) => {
             return (
               <li

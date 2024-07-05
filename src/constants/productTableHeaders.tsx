@@ -16,16 +16,17 @@ export const productTableHeaders = [
     accessor: "discount",
   },
   {
-    Header: "Product Images",
+    Header: "Product Image",
     accessor: "images",
     Cell: ({ cell: { value } }) => (
       <div style={{ gap: "20px" }} className="flex justify-center ">
         <Image
+          className="rounded-xl"
           key={value[0].id}
           src={value[0].url}
           alt={`Product Image ${value[0].id}`}
-          height={50}
-          width={50}
+          height={55}
+          width={55}
         />
       </div>
     ),

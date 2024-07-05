@@ -18,6 +18,8 @@ function SmartSearchInput({
   shouldReset,
   value = "",
   disabled,
+  helperText,
+  error,
 }) {
   const [smartSearchState, dispatch] = useReducer(reducerFn, initialState);
 
@@ -72,6 +74,9 @@ function SmartSearchInput({
       <div className="relative flex flex-col gap-4">
         {<label className="font-semibold text-xl">{textLabel}</label>}
         <TextField
+          error={error}
+          helperText={helperText}
+          FormHelperTextProps={{ style: { fontSize: "1rem" } }}
           disabled={disabled}
           style={{
             backgroundColor:
@@ -113,7 +118,7 @@ function SmartSearchInput({
               },
 
               "&.Mui-error .MuiOutlinedInput-notchedOutline": {
-                borderColor: "rgb(186, 9, 9)", // Customize the border color on error here
+                borderColor: "rgb(186, 9, 9)",
               },
 
               "&:hover fieldset": {

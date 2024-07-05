@@ -7,10 +7,18 @@ import { colorsOptions } from "@/constants/colorOptions";
 import Image from "next/image";
 import toast from "react-hot-toast";
 import { HiMiniPlusCircle } from "react-icons/hi2";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { addColor } from "@/lib/features/colorsOptionsSlice/colorsOptionsSlice";
 
 const DEFAULT_COLOR = "#000000";
 
-function ColorPickerInput({ setColorOptions, colorsOption, disabled }) {
+function ColorPickerInput({ disabled }) {
+  const dispatch = useAppDispatch();
+
+  const colorsOption = useAppSelector(
+    (state) => state.colorsOptionsSlice.colorsOptions
+  );
+
   const [color, setColor] = useState<string>(DEFAULT_COLOR);
 
   const nearest = nearestColor.from(colorsOptions);
@@ -43,7 +51,7 @@ function ColorPickerInput({ setColorOptions, colorsOption, disabled }) {
 
     const newColor = { value: colorName, label: colorName, color };
 
-    setColorOptions((data) => [...data, newColor]);
+    dispatch(addColor(newColor));
 
     setColor(DEFAULT_COLOR);
 
@@ -53,9 +61,9 @@ function ColorPickerInput({ setColorOptions, colorsOption, disabled }) {
   return (
     <div
       style={{
-        right: "9%",
-        top: "40%",
-        transform: "translateY(35%)",
+        right: "10%",
+        top: "35%",
+        transform: "translateY(40%)",
         gap: "10px",
       }}
       className=" absolute flex pointer cursor-pointer items-center z-10"

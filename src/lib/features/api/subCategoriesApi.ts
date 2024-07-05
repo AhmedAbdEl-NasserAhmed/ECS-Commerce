@@ -9,8 +9,9 @@ import {
 // RTK Query
 const subCategoriesApi = createApi({
   reducerPath: "subCategoriesApi",
+  tagTypes: ["SUB-CATEGORY"],
   baseQuery: axiosBaseQuery({
-    baseUrl: "http://localhost:8000/api/v1/",
+    baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
   }),
   endpoints: (builder) => ({
     addSubCategory: builder.mutation({
@@ -26,10 +27,37 @@ const subCategoriesApi = createApi({
         method: "Get",
       }),
     }),
+    getSubCategoryById: builder.query({
+      query: (id) => ({
+        url: `subCategories/${id}`,
+        method: "GET",
+      }),
+      providesTags: ["SUB-CATEGORY"],
+    }),
+    editSubCategory: builder.mutation({
+      query: ({ id, data }) => ({
+        url: `subCategories/${id}`,
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: ["SUB-CATEGORY"],
+    }),
+    deleteSubCategory: builder.mutation({
+      query: (id) => ({
+        url: `subCategories/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["SUB-CATEGORY"],
+    }),
   }),
 });
 
-export const { useAddSubCategoryMutation, useGetSubCategoryQuery } =
-  subCategoriesApi;
+export const {
+  useAddSubCategoryMutation,
+  useGetSubCategoryQuery,
+  useDeleteSubCategoryMutation,
+  useEditSubCategoryMutation,
+  useGetSubCategoryByIdQuery,
+} = subCategoriesApi;
 
 export default subCategoriesApi;

@@ -16,6 +16,7 @@ function SmartSearchInput({
   textLabel,
   getSmartSearchValue,
   shouldReset,
+  value = "",
   disabled,
 }) {
   const [smartSearchState, dispatch] = useReducer(reducerFn, initialState);
@@ -45,12 +46,26 @@ function SmartSearchInput({
   }, [smartSearchState.inputValue, getSmartSearchValue]);
 
   useEffect(() => {
+    if (value) {
+      onSelectItem(value);
+    }
+  }, [value]);
+
+  useEffect(() => {
     if (data?.length > 0 && smartSearchState.userSelectedValue === "") {
       action(SmartSearchActions.OPEN_MENU);
     } else {
       action(SmartSearchActions.CLOSE_MENU);
     }
   }, [data?.length, smartSearchState.userSelectedValue]);
+
+  const onSelectItem = (data) => {
+    onChange(data.name);
+    action(SmartSearchActions.SELECT_ITEM, { value: data.name });
+    if (getSmartSearchValue) {
+      getSmartSearchValue(data);
+    }
+  };
 
   return (
     <div className="relative w-full">
@@ -147,13 +162,7 @@ function SmartSearchInput({
                 disabled
                   ? null
                   : () => {
-                      onChange(user.name);
-                      action(SmartSearchActions.SELECT_ITEM, {
-                        value: user.name,
-                      });
-                      if (getSmartSearchValue) {
-                        getSmartSearchValue(user);
-                      }
+                      onSelectItem(user);
                     }
               }
             >

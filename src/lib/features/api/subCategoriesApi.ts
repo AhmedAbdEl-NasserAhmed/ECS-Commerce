@@ -1,10 +1,6 @@
 import axiosBaseQuery from "@/api";
 
-import {
-  createApi,
-  fakeBaseQuery,
-  fetchBaseQuery,
-} from "@reduxjs/toolkit/query/react";
+import { createApi } from "@reduxjs/toolkit/query/react";
 
 // RTK Query
 const subCategoriesApi = createApi({
@@ -24,8 +20,15 @@ const subCategoriesApi = createApi({
     getSubCategory: builder.query({
       query: (letter) => ({
         url: `subCategories/filtered?letters=${letter}`,
-        method: "Get",
+        method: "GET",
       }),
+    }),
+    getAllSubCategoriesByCategory: builder.query({
+      query: (categoryId) => ({
+        url: `subCategories?category=${categoryId}`,
+        method: "GET",
+      }),
+      providesTags: ["SUB-CATEGORY"],
     }),
     getSubCategoryById: builder.query({
       query: (id) => ({
@@ -58,6 +61,7 @@ export const {
   useDeleteSubCategoryMutation,
   useEditSubCategoryMutation,
   useGetSubCategoryByIdQuery,
+  useGetAllSubCategoriesByCategoryQuery
 } = subCategoriesApi;
 
 export default subCategoriesApi;

@@ -1,5 +1,4 @@
 import ProductTableMenuOptions from "@/components/AdminProduct/productTableMenuOptions";
-import { Box } from "@mui/material";
 import Image from "next/image";
 
 export const productTableHeaders = [

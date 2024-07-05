@@ -1,7 +1,6 @@
 "use client";
 
 import { categoriesTableHeaders } from "@/constants/categoriesTableHeaders";
-import { productTableHeaders } from "@/constants/productTableHeaders";
 import { useGetAllCategoriesQuery } from "@/lib/features/api/categoriesApi";
 import BaseTable from "@/ui/BaseTable/BaseTable";
 import Menus from "@/ui/Menus/Menus";

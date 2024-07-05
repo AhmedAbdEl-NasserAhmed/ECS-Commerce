@@ -39,7 +39,7 @@ function AddSubCategoriesPage() {
 
   function handleAddSubCategorySubmit() {
     addSubCategoryFc({
-      name: formData.name.toLocaleLowerCase().replace(/\s+/g, ""),
+      name: formData.name.trim(),
       description: formData.description,
       category: smartSeachvalue["_id"],
     })

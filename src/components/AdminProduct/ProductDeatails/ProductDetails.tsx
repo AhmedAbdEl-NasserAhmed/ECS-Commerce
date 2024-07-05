@@ -1,7 +1,4 @@
-import styles from "./ProductDetails.module.scss";
 import { AdminProductProps } from "@/types/types";
-import { Box, Button } from "@mui/material";
-import Image from "next/image";
 
 interface Props {
   product: AdminProductProps;

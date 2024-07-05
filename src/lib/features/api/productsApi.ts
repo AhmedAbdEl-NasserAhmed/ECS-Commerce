@@ -6,7 +6,7 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 const productsApi = createApi({
   reducerPath: "productsApi",
   baseQuery: axiosBaseQuery({
-    baseUrl: "http://localhost:8000/api/v1/",
+    baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
   }),
   endpoints: (builder) => ({
     addProduct: builder.mutation({
@@ -16,15 +16,15 @@ const productsApi = createApi({
         body,
       }),
     }),
-    // getCategory: builder.query({
-    //   query: (letter) => ({
-    //     url: `categories/filtered?letters=${letter}`,
-    //     method: "Get",
-    //   }),
-    // }),
+    getAllProducts: builder.query({
+      query: () => ({
+        url: "products?limit=5",
+        method: "GET",
+      }),
+    }),
   }),
 });
 
-export const { useAddProductMutation } = productsApi;
+export const { useGetAllProductsQuery, useAddProductMutation } = productsApi;
 
 export default productsApi;

@@ -5,9 +5,10 @@ import styles from "./DeleteWindow.module.scss";
 interface Props {
   message: string;
   setShowModal?: () => void;
+  product: object;
 }
 
-function DeleteWindow({ message, setShowModal }: Props) {
+function DeleteWindow({ product, message, setShowModal }: Props) {
   return (
     <Box className={styles["delete-item"]}>
       <Box className="text-4xl font-bold ">{message}</Box>

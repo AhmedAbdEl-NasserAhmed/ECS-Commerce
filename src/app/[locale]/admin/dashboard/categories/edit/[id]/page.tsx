@@ -2,41 +2,62 @@
 
 import {
   useAddCategoryMutation,
-  useDeleteCategoryMutation,
+  useEditCategoryMutation,
+  useGetCategoryByIdQuery,
 } from "@/lib/features/api/categoriesApi";
 import { AdminMainCategory } from "@/types/types";
 import MiniSpinner from "@/ui/MiniSpinner/MiniSpinner";
 import CustomizedTextField from "@/ui/TextField/TextField";
 import { Box, Button } from "@mui/material";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { useParams } from "next/navigation";
+import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { HiChevronRight } from "react-icons/hi2";
 
-function CategoryPage() {
+function EditCategoryPage() {
+  const params = useParams();
+
+  const {
+    data: categoryData,
+    isFetching,
+    isLoading,
+    isSuccess,
+  } = useGetCategoryByIdQuery(params.id);
+
+  const [editCategory, editCategoryResponse] = useEditCategoryMutation();
+
   const {
     handleSubmit,
     control,
     watch,
     reset,
-    formState: { errors },
+    setValue,
+    formState: { errors, dirtyFields },
   } = useForm<AdminMainCategory>();
+
+  useEffect(() => {
+    if (isSuccess) {
+      setValue("name", categoryData?.data?.name || "");
+      setValue("description", categoryData?.data?.description || "");
+    }
+  }, [categoryData, isSuccess]);
 
   const formData = watch();
 
-  const [addCategory, categoryState] = useAddCategoryMutation();
-
-  function handleAddCategorySubmit() {
-    addCategory({
-      name: formData.name.toLocaleLowerCase().replace(/\s+/g, ""),
-      description: formData.description,
+  function handleEditCategorySubmit() {
+    editCategory({
+      id: params.id,
+      data: {
+        name: formData.name.trim(),
+        description: formData.description,
+      },
     })
       .unwrap()
       .then((res) => {
         if (res.status === "success") {
-          toast.success("A New Main Category Added");
-          reset();
+          toast.success(`Your category has been updated!`);
         }
       })
       .catch((err) => {
@@ -45,32 +66,16 @@ function CategoryPage() {
         }
       });
   }
-  const pathname = usePathname();
 
-  const [deleteCategory, deleteCategoryResponse] = useDeleteCategoryMutation();
-
-  const deleteCategoryHandler = () => {
-    const id = "6681eeba9397b4412be678d3";
-    deleteCategory(id)
-      .unwrap()
-      .then((res) => {
-        toast.success(`Your category has been deleted!`);
-      })
-      .catch((err) => {
-        toast.error("This Category is not exists");
-      });
-  };
   return (
     <form
-      onSubmit={handleSubmit(handleAddCategorySubmit)}
+      onSubmit={handleSubmit(handleEditCategorySubmit)}
       className=" flex flex-col gap-8 px-[4rem] py-[1.2rem] bg-[#FDFDFD] "
     >
-      {/* <Link href={`${pathname}/edit/6681eeba9397b4412be678d3`}>Edit</Link> */}
-      {/* <button onClick={deleteCategoryHandler}>Delete</button> */}
       <Box className="h-[10vh] flex justify-between items-center">
         <Box className="flex flex-col gap-4">
           <h2 className="text-4xl font-semibold  text-gray-600">
-            Add Category
+            Edit Category
           </h2>
           <Box className="flex items-center gap-4 text-[1.4rem]">
             <Link className="text-blue-400" href="/">
@@ -82,29 +87,10 @@ function CategoryPage() {
             <h4>Categories</h4>
           </Box>
         </Box>
-        <Button
-          sx={{
-            paddingInline: "1.6rem",
-            paddingBlock: "1rem",
-            fontSize: "1.3rem",
-            borderRadius: "5px",
-            backgroundColor: "#5b93ff",
-            boxShadow: "none",
-            "&:hover": {
-              backgroundColor: "black",
-              boxShadow: "none",
-            },
-          }}
-          type="button"
-          variant="contained"
-          size="large"
-        >
-          View All
-        </Button>
       </Box>
       <Box className="relative grow flex flex-col gap-8 bg-white rounded-2xl border-2 p-10 border-slate-100 shadow-md">
         <Box className="mb-4">
-          <h2 className="text-3xl font-semibold mb-5">Add Category</h2>
+          <h2 className="text-3xl font-semibold mb-5">Edit Category</h2>
           <span className=" absolute left-0 block h-[1px] w-full bg-gray-200">
             &nbsp;
           </span>
@@ -113,30 +99,32 @@ function CategoryPage() {
           <Controller
             name={"name"}
             control={control}
-            defaultValue={""}
+            defaultValue={categoryData?.data?.name || ""}
             rules={{
               required: "This field is required",
             }}
-            render={({ field }) => (
-              <CustomizedTextField
-                disabled={categoryState.isLoading}
-                textLabelClass={"font-semibold text-xl"}
-                placeholder={"Category Name"}
-                textlabel={"Category Name"}
-                field={field}
-                error={!!errors["name"]}
-                formerHelperStyles={{ style: { fontSize: "1rem" } }}
-                helperText={errors["name"] ? errors["name"].message : ""}
-                type={"text"}
-                variant={"outlined"}
-                size={"small"}
-              />
-            )}
+            render={({ field }) => {
+              return (
+                <CustomizedTextField
+                  disabled={isLoading || editCategoryResponse.isLoading}
+                  textLabelClass={"font-semibold text-xl"}
+                  placeholder={"Category Name"}
+                  textlabel={"Category Name"}
+                  field={field}
+                  error={!!errors["name"]}
+                  formerHelperStyles={{ style: { fontSize: "1rem" } }}
+                  helperText={errors["name"] ? errors["name"].message : ""}
+                  type={"text"}
+                  variant={"outlined"}
+                  size={"small"}
+                />
+              );
+            }}
           />
           <Controller
             name={"description"}
-            disabled={categoryState.isLoading}
-            defaultValue={""}
+            disabled={isLoading || editCategoryResponse.isLoading}
+            defaultValue={categoryData?.data?.description || ""}
             control={control}
             rules={{
               required: "This field is required",
@@ -170,7 +158,7 @@ function CategoryPage() {
         </Box>
         <Box>
           <Button
-            disabled={categoryState.isLoading}
+            disabled={isLoading || editCategoryResponse.isLoading}
             sx={{
               paddingInline: "1.6rem",
               paddingBlock: "1rem",
@@ -187,7 +175,11 @@ function CategoryPage() {
             variant="contained"
             size="large"
           >
-            {categoryState.isLoading ? <MiniSpinner /> : " Add Category"}
+            {isLoading || editCategoryResponse.isLoading ? (
+              <MiniSpinner />
+            ) : (
+              "Edit Category"
+            )}
           </Button>
         </Box>
       </Box>
@@ -195,4 +187,4 @@ function CategoryPage() {
   );
 }
 
-export default CategoryPage;
+export default EditCategoryPage;

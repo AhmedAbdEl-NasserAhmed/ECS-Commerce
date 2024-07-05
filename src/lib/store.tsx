@@ -4,11 +4,14 @@ import usersApi from "./features/api/usersApi";
 import categoriesApi from "./features/api/categoriesApi";
 import subCategoriesApi from "./features/api/subCategoriesApi";
 import productsApi from "./features/api/productsApi";
+import colorsOptionsSlice from "./features/colorsOptionsSlice/colorsOptionsSlice";
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
       usersSlice: usersSlice,
+      colorsOptionsSlice: colorsOptionsSlice,
+
       [usersApi.reducerPath]: usersApi.reducer,
       [categoriesApi.reducerPath]: categoriesApi.reducer,
       [subCategoriesApi.reducerPath]: subCategoriesApi.reducer,

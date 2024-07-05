@@ -8,6 +8,7 @@ import {
 import { useAddProductMutation } from "@/lib/features/api/productsApi";
 import { useGetSubCategoryQuery } from "@/lib/features/api/subCategoriesApi";
 import { getAddProductServerData } from "@/lib/helpers";
+import { useAppSelector } from "@/lib/hooks";
 import { AdminProductProps } from "@/types/types";
 import AddProductImage from "@/ui/AddProductImage/AddProductImage";
 import ColorPickerInput from "@/ui/ColorPicketInput/ColorPickerInput";
@@ -41,13 +42,9 @@ function ProductPage() {
 
   const { locale } = useParams();
 
-  const [colorsOption, setColorOptions] = useState<
-    {
-      value: string;
-      label: string;
-      color: string;
-    }[]
-  >([{ value: "Black", label: "Black", color: "#000000" }]);
+  const colorsOption = useAppSelector(
+    (state) => state.colorsOptionsSlice.colorsOptions
+  );
 
   const formData = watch();
 
@@ -108,6 +105,8 @@ function ProductPage() {
       });
   }
 
+  console.log("errors", errors);
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
@@ -164,6 +163,10 @@ function ProductPage() {
                 rules={{ required: "This field is required" }}
                 render={({ field }) => (
                   <SmartSearchInput
+                    error={!!errors["category"]}
+                    helperText={
+                      errors["category"] ? errors["category"].message : ""
+                    }
                     disabled={productResponse.isLoading}
                     shouldReset={productResponse.isSuccess}
                     getSmartSearchValue={setSmartSeachValue}
@@ -179,7 +182,6 @@ function ProductPage() {
                 name={"subCategory"}
                 control={control}
                 defaultValue={""}
-                rules={{ required: "This field is required" }}
                 render={({ field }) => (
                   <SmartSearchMultipleInput
                     shouldReset={productResponse.isSuccess}
@@ -221,22 +223,18 @@ function ProductPage() {
                   rules={{ required: "This field is required" }}
                   render={({ field }) => (
                     <MultiChoiceSelectMenu
+                      options={colorsOption}
+                      colorsPicker={true}
                       disabled={productResponse.isLoading}
                       isMulti={true}
                       textLabelClass={"font-semibold text-xl"}
                       placeholder={"Product Colors"}
                       textLabel={"Product Colors"}
                       name={"colors"}
-                      options={colorsOption}
                       field={field}
                       errors={errors}
                     />
                   )}
-                />
-                <ColorPickerInput
-                  disabled={productResponse.isLoading}
-                  colorsOption={colorsOption}
-                  setColorOptions={setColorOptions}
                 />
               </Box>
               <Controller
@@ -454,4 +452,3 @@ function ProductPage() {
 }
 
 export default ProductPage;
-// flex flex-col gap-[1.55rem]  md:gap-[2rem] w-full md:w-1/2

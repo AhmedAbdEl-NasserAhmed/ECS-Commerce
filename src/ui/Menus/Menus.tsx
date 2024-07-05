@@ -110,7 +110,7 @@ function MenusButton({ children, onClick, icon }: MenusButton) {
   const { closeMenus } = useContext(MenusContext);
 
   function handleClick() {
-    onClick();
+    onClick?.();
     closeMenus("");
   }
 

@@ -16,7 +16,10 @@ function SmartSearchInput({
   textLabel,
   getSmartSearchValue,
   shouldReset,
+  value = "",
   disabled,
+  helperText,
+  error,
 }) {
   const [smartSearchState, dispatch] = useReducer(reducerFn, initialState);
 
@@ -45,6 +48,12 @@ function SmartSearchInput({
   }, [smartSearchState.inputValue, getSmartSearchValue]);
 
   useEffect(() => {
+    if (value) {
+      onSelectItem(value);
+    }
+  }, [value]);
+
+  useEffect(() => {
     if (data?.length > 0 && smartSearchState.userSelectedValue === "") {
       action(SmartSearchActions.OPEN_MENU);
     } else {
@@ -52,11 +61,22 @@ function SmartSearchInput({
     }
   }, [data?.length, smartSearchState.userSelectedValue]);
 
+  const onSelectItem = (data) => {
+    onChange(data.name);
+    action(SmartSearchActions.SELECT_ITEM, { value: data.name });
+    if (getSmartSearchValue) {
+      getSmartSearchValue(data);
+    }
+  };
+
   return (
     <div className="relative w-full">
       <div className="relative flex flex-col gap-4">
         {<label className="font-semibold text-xl">{textLabel}</label>}
         <TextField
+          error={error}
+          helperText={helperText}
+          FormHelperTextProps={{ style: { fontSize: "1rem" } }}
           disabled={disabled}
           style={{
             backgroundColor:
@@ -98,7 +118,7 @@ function SmartSearchInput({
               },
 
               "&.Mui-error .MuiOutlinedInput-notchedOutline": {
-                borderColor: "rgb(186, 9, 9)", // Customize the border color on error here
+                borderColor: "rgb(186, 9, 9)",
               },
 
               "&:hover fieldset": {
@@ -147,13 +167,7 @@ function SmartSearchInput({
                 disabled
                   ? null
                   : () => {
-                      onChange(user.name);
-                      action(SmartSearchActions.SELECT_ITEM, {
-                        value: user.name,
-                      });
-                      if (getSmartSearchValue) {
-                        getSmartSearchValue(user);
-                      }
+                      onSelectItem(user);
                     }
               }
             >

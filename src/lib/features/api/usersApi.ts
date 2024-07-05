@@ -9,7 +9,7 @@ import {
 const usersApi = createApi({
   reducerPath: "usersApi",
   baseQuery: axiosBaseQuery({
-    baseUrl: "http://localhost:8000/api/v1/",
+    baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
   }),
   endpoints: (builder) => ({
     adminLogin: builder.mutation({

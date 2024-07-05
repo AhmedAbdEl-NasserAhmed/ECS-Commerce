@@ -7,6 +7,7 @@ import Select, { StylesConfig } from "react-select";
 import { useId } from "react";
 import { Box } from "@mui/material";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
+import ColorPickerInput from "../ColorPicketInput/ColorPickerInput";
 
 function MultiChoiceSelectMenu({
   field,
@@ -18,6 +19,7 @@ function MultiChoiceSelectMenu({
   name,
   isMulti,
   errors,
+  colorsPicker,
   disabled,
 }: SelecteMenuProps) {
   const colourStyles: StylesConfig<ColourOption, true> = {
@@ -110,6 +112,7 @@ function MultiChoiceSelectMenu({
         options={options}
         styles={colourStyles}
       />
+      {colorsPicker && <ColorPickerInput disabled={disabled} />}
       {errors[name] && <ErrorMessage message={errors[name]?.message} />}
     </Box>
   );

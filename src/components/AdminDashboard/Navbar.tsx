@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import Image from "next/image";
 import { FaAngleDown, FaSearch } from "react-icons/fa";
 import { HiOutlineBell } from "react-icons/hi2";
@@ -11,9 +11,10 @@ import { useParams, usePathname, useRouter } from "next/navigation";
 
 interface Props {
   setExpand?: (isTrue: any) => void;
+  setExpanded: Dispatch<SetStateAction<string | false>>;
 }
 
-function Navbar({ setExpand }: Props) {
+function Navbar({ setExpand, setExpanded }: Props) {
   const pathname = usePathname();
 
   const router = useRouter();
@@ -44,7 +45,10 @@ function Navbar({ setExpand }: Props) {
         <Box className="flex items-center w-full gap-6  ">
           <span
             className="text-4xl cursor-pointer"
-            onClick={() => setExpand((prev) => !prev)}
+            onClick={() => {
+              setExpanded(false);
+              setExpand((prev) => !prev);
+            }}
           >
             <HiMenuAlt3 />
           </span>

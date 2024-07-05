@@ -95,7 +95,7 @@ function AdminLoginForm() {
           >
             Sign in to continue to{" "}
             <Link className="text-blue-400" href="/">
-              Pite Tech
+              Orca
             </Link>
           </Typography>
         </Box>

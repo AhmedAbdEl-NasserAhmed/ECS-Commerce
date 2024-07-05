@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { Box } from "@mui/material";
 import Link from "next/link";
 import Image from "next/image";
@@ -12,14 +12,14 @@ import { HiFolder } from "react-icons/hi";
 interface Props {
   expand: boolean;
   setExpand?: (value: unknown) => void;
+  expanded: string | boolean;
+  setExpanded: Dispatch<SetStateAction<string | false>>;
 }
 
-function Links({ setExpand, expand }: Props) {
+function Links({ setExpand, expand, expanded, setExpanded }: Props) {
   const isWidthHiger = useHandleWindowWidth();
 
   const { locale } = useParams();
-
-  const [expanded, setExpanded] = useState<string | false>(false);
 
   const handleChange =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
@@ -36,25 +36,19 @@ function Links({ setExpand, expand }: Props) {
       <Box className="bg-[#FFFFFF] border-b-2 border-gray-100 p-6 h-[9.8vh] flex justify-center items-center">
         <Link
           href="/"
-          className="text-md sm:text-xl md:text-3xl flex gap-5 min-w-[16vw] justify-center items-center font-bold   "
+          className="p-2 text-md sm:text-xl md:text-3xl flex gap-5 min-w-[16vw] justify-center items-center font-bold   "
         >
-          <Image
-            className={`${
-              expand ? "translate-x-[5rem]" : "translate-x-0"
-            } group-hover:translate-x-0`}
-            src="/favicon.png"
-            alt="logo "
-            width={50}
-            height={50}
-          />
-          <p
-            className={` 
+          <Image src="/favicon.png" alt="logo " width={50} height={50} />
+          {!expand && (
+            <p
+              className={` 
               ${expand ? "opacity-0" : "opacity-1"}
               ${expand ? "translate-x-[40rem]" : "translate-x-0"}
                 group-hover:block group-hover:opacity-100 group-hover:translate-x-0 text-gray-700 transition-opacity transition-opacity-500 transition-transform-500 ease-in-out`}
-          >
-            PITE TECH
-          </p>
+            >
+              ORCA
+            </p>
+          )}
         </Link>
       </Box>
       <Box>
@@ -79,7 +73,7 @@ function Links({ setExpand, expand }: Props) {
           expanded={expanded}
           handleChange={handleChange}
           menuName="Products"
-          id="product"
+          id="products"
           expand={expand}
           setExpand={setExpand}
           icon={<HiCube />}

@@ -1,7 +1,6 @@
 "use client";
+
 import SubCategoryTableMenuOptions from "@/components/AdminSubCategories/SubCategoryTableMenuOptions";
-import Link from "next/link";
-import { useParams } from "next/navigation";
 
 export const subCategoriesTableHeaders = [
   {

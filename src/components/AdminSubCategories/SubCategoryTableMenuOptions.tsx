@@ -37,7 +37,7 @@ function SubCategoryTableMenuOptions({ subCategory }) {
             icon={<HiMiniPencilSquare />}
             onClick={() => {
               router.push(
-                `/${locale}/admin/dashboard/categories/edit/${subCategory?.["_id"]}`
+                `/${locale}/admin/dashboard/sub-categories/edit/${subCategory?.["_id"]}`
               );
             }}
           >

@@ -43,8 +43,6 @@ function ProductPage() {
 
   const formData = watch();
 
-  console.log("FORM DATA", formData);
-
   const [smartSeachvalue, setSmartSeachValue] = useState<{
     id: string;
     name: string;

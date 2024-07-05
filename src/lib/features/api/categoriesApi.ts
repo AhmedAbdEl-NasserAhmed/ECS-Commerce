@@ -9,8 +9,9 @@ import {
 // RTK Query
 const categoriesApi = createApi({
   reducerPath: "categoriesApi",
+  tagTypes: ["CATEGORIES"],
   baseQuery: axiosBaseQuery({
-    baseUrl: "http://localhost:8000/api/v1/",
+    baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
   }),
   endpoints: (builder) => ({
     addCategory: builder.mutation({
@@ -23,12 +24,40 @@ const categoriesApi = createApi({
     getCategory: builder.query({
       query: (letter) => ({
         url: `categories/filtered?letters=${letter}`,
-        method: "Get",
+        method: "GET",
       }),
+    }),
+    getCategoryById: builder.query({
+      query: (id) => ({
+        url: `categories/${id}`,
+        method: "GET",
+      }),
+      providesTags: ["CATEGORIES"],
+    }),
+    editCategory: builder.mutation({
+      query: ({ id, data }) => ({
+        url: `categories/${id}`,
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: ["CATEGORIES"],
+    }),
+    deleteCategory: builder.mutation({
+      query: (id) => ({
+        url: `categories/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["CATEGORIES"],
     }),
   }),
 });
 
-export const { useAddCategoryMutation, useGetCategoryQuery } = categoriesApi;
+export const {
+  useAddCategoryMutation,
+  useGetCategoryQuery,
+  useGetCategoryByIdQuery,
+  useEditCategoryMutation,
+  useDeleteCategoryMutation,
+} = categoriesApi;
 
 export default categoriesApi;

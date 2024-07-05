@@ -6,7 +6,7 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 const productsApi = createApi({
   reducerPath: "productsApi",
   baseQuery: axiosBaseQuery({
-    baseUrl: "http://localhost:8000/api/v1/",
+    baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
   }),
   endpoints: (builder) => ({
     addProduct: builder.mutation({

@@ -108,7 +108,7 @@ function Navbar({ setExpand, setExpanded }: Props) {
         </Box>
 
         <ul className="flex items-center gap-3 sm:gap-5 text-3xl ">
-          <li className="flex justify-center items-center gap-2 ">
+          {/* <li className="flex justify-center items-center gap-2 ">
             <div className="  w-[2.4rem] h-[2.4rem] sm:w-[3rem]  sm:h-[3rem] relative ">
               <Image
                 className="rounded-full  "
@@ -121,10 +121,10 @@ function Navbar({ setExpand, setExpanded }: Props) {
             <span>
               <FaAngleDown />
             </span>
-          </li>
-          <li>
+          </li> */}
+          {/* <li>
             <HiOutlineBell />
-          </li>
+          </li> */}
           <li>
             <select
               value={langState}

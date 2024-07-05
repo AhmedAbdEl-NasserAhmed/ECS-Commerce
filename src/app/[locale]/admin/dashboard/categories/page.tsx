@@ -10,8 +10,12 @@ import Link from "next/link";
 import { HiChevronRight } from "react-icons/hi2";
 
 function Categories() {
-  const { data, isFetching } = useGetAllCategoriesQuery("categories");
-
+  const { data, isFetching } = useGetAllCategoriesQuery("categories", {
+    refetchOnMountOrArgChange: true,
+  });
+  // const { data: subCategories, isFetching: isSubCategoriesFetching } = useGetAllSubCategoriesByCategoryQuery(
+  //   original["_id"]
+  // );
   return (
     <Box className=" flex flex-col gap-8 px-[4rem] py-[1.2rem] bg-[#FDFDFD] ">
       <Box className="h-[10vh] flex justify-between items-center">
@@ -41,7 +45,7 @@ function Categories() {
           {isFetching ? (
             <Spinner />
           ) : (
-            <BaseTable data={data?.data} columns={categoriesTableHeaders} />
+            <BaseTable data={data?.data} columns={categoriesTableHeaders()} />
           )}
         </Menus>
       </Box>

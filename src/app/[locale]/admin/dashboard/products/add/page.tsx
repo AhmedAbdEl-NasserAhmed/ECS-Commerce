@@ -2,7 +2,7 @@
 
 import useDebounceHook from "@/hooks/useDebounceHook";
 import {
-  useAddCategoryMutation,
+  useGetAllCategoriesQuery,
   useGetCategoryQuery,
 } from "@/lib/features/api/categoriesApi";
 import { useAddProductMutation } from "@/lib/features/api/productsApi";
@@ -59,6 +59,9 @@ function AddProductPage() {
 
   const subCategorydebounceValue = useDebounceHook(smartSeachSubCategoryvalue);
 
+  const { data: AllCategories } = useGetAllCategoriesQuery("categories", {
+    refetchOnMountOrArgChange: true,
+  });
   const { data: mainCategory } = useGetCategoryQuery(mainCategorydebounceValue);
 
   const { data: subCategory } = useGetSubCategoryQuery(
@@ -99,12 +102,40 @@ function AddProductPage() {
       .unwrap()
       .then(() => {
         toast.success("A new Product is added");
-        router.push(`/${locale}/admin/dashboard/products`);
+        // router.push(`/${locale}/admin/dashboard/products`);
         reset();
       })
       .catch((err) => {
         toast.error(err.message);
       });
+  }
+
+  if (!AllCategories) return <MiniSpinner />;
+
+  const noCategoriesYet = AllCategories?.data?.length === 0;
+
+  if (noCategoriesYet) {
+    return (
+      <Box
+        sx={{
+          height: "100vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          fontSize: "4rem",
+          textAlign: "center",
+          flexDirection: "column",
+        }}
+      >
+        {t("No categories yet, please add a new category")}{" "}
+        <Link
+          href={`/${locale}/admin/dashboard/categories/add`}
+          style={{ color: "#5b93ff", textDecoration: "underline" }}
+        >
+          {tCategories("Add New Category")}
+        </Link>
+      </Box>
+    );
   }
 
   return (
@@ -221,6 +252,7 @@ function AddProductPage() {
               <Box className="relative">
                 <Controller
                   name={"colors"}
+                  defaultValue={[]}
                   control={control}
                   rules={{ required: "This field is required" }}
                   render={({ field }) => (
@@ -242,6 +274,7 @@ function AddProductPage() {
               <Controller
                 name={"size"}
                 control={control}
+                defaultValue={[]}
                 rules={{ required: "This field is required" }}
                 render={({ field }) => (
                   <MultiChoiceSelectMenu

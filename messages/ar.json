@@ -6,7 +6,9 @@
     "View All": "View All",
     "Page": "الصفحة",
     "Go to page": "الذهاب الي الصفحة",
-    "Show": "عرض"
+    "Show": "عرض",
+    "No data available": "لا يوجد بيانات متاحة",
+    "of": "من"
   },
   "Dashboard": {
     "Dashboard": "لوحة التحكم"
@@ -40,12 +42,14 @@
     "Product Discount %": "نسبة التخفيض %",
     "Product Sale Price": "السعر بعد التخفيض",
     "Product Description": "وصف المنتج",
-    "Product Image": "صورة المنتج"
+    "Product Image": "صورة المنتج",
+    "No categories yet, please add a new category": "لا يوجد اقسام في الموقع الرجاء اضافة قسم واحد علي الاقل"
   },
   "Categories": {
     "Categories": "الاقسام",
     "Main Category": "القسم",
-    "main category placeholder": "ابحث عن القسم"
+    "main category placeholder": "ابحث عن القسم",
+    "Add New Category": "إضافة قسم جديد"
   },
   "SubCategories": {
     "Sub Categories": "الاقسام الفرعيه",

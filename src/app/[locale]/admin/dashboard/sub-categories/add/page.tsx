@@ -1,14 +1,19 @@
 "use client";
 import useDebounceHook from "@/hooks/useDebounceHook";
 import useThrottle from "@/hooks/useThrottle";
-import { useGetCategoryQuery } from "@/lib/features/api/categoriesApi";
+import {
+  useGetAllCategoriesQuery,
+  useGetCategoryQuery,
+} from "@/lib/features/api/categoriesApi";
 import { useAddSubCategoryMutation } from "@/lib/features/api/subCategoriesApi";
 import { AdminSubCategory } from "@/types/types";
 import MiniSpinner from "@/ui/MiniSpinner/MiniSpinner";
 import SmartSearchInput from "@/ui/SmartSearchInput/SmartSearchInput";
 import CustomizedTextField from "@/ui/TextField/TextField";
 import { Box, Button } from "@mui/material";
+import { useTranslations } from "next-intl";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -35,7 +40,15 @@ function AddSubCategoriesPage() {
 
   const { data, isLoading } = useGetCategoryQuery(debounceValue);
 
-  const [addSubCategoryFn, subCategoryState] = useAddSubCategoryMutation();
+  const { data: AllCategories } = useGetAllCategoriesQuery("categories", {
+    refetchOnMountOrArgChange: true,
+  });
+  const t = useTranslations("Products");
+  const tCategories = useTranslations("Categories");
+
+  const params = useParams();
+
+  const [addSubCategoryFn, subCategoryResponse] = useAddSubCategoryMutation();
 
   function handleAddSubCategorySubmit() {
     addSubCategoryFn({
@@ -59,6 +72,33 @@ function AddSubCategoriesPage() {
           toast.error("This Category is Already Added");
         }
       });
+  }
+
+  if (!AllCategories) return <MiniSpinner />;
+  const noCategoriesYet = AllCategories?.data?.length === 0;
+
+  if (noCategoriesYet) {
+    return (
+      <Box
+        sx={{
+          height: "100vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          fontSize: "4rem",
+          textAlign: "center",
+          flexDirection: "column",
+        }}
+      >
+        {t("No categories yet, please add a new category")}{" "}
+        <Link
+          href={`/${params.locale}/admin/dashboard/categories/add`}
+          style={{ color: "#5b93ff", textDecoration: "underline" }}
+        >
+          {tCategories("Add New Category")}
+        </Link>
+      </Box>
+    );
   }
 
   return (
@@ -116,7 +156,12 @@ function AddSubCategoriesPage() {
             rules={{ required: "This field is required" }}
             render={({ field }) => (
               <SmartSearchInput
-                shouldReset={subCategoryState.isSuccess}
+                error={!!errors["category"]}
+                helperText={
+                  errors["category"] ? errors["category"].message : ""
+                }
+                disabled={subCategoryResponse.isLoading}
+                shouldReset={subCategoryResponse.isSuccess}
                 getSmartSearchValue={setSmartSeachValue}
                 textLabel="Main Category"
                 data={data?.data}
@@ -191,7 +236,7 @@ function AddSubCategoriesPage() {
             disabled={
               isLoading ||
               formData.category === "" ||
-              subCategoryState.isLoading
+              subCategoryResponse.isLoading
             }
             sx={{
               paddingInline: "1.6rem",
@@ -209,7 +254,11 @@ function AddSubCategoriesPage() {
             variant="contained"
             size="large"
           >
-            {subCategoryState.isLoading ? <MiniSpinner /> : " Add Sub Category"}
+            {subCategoryResponse.isLoading ? (
+              <MiniSpinner />
+            ) : (
+              " Add Sub Category"
+            )}
           </Button>
         </Box>
       </Box>

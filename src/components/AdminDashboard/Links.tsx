@@ -9,6 +9,7 @@ import { useHandleWindowWidth } from "@/hooks/useHandleWindowWidth";
 import SubMenuLink from "./SubMenuLink";
 import { HiFolder } from "react-icons/hi";
 import { useTranslations } from "next-intl";
+import { PiFoldersFill } from "react-icons/pi";
 
 interface Props {
   expand: boolean;
@@ -116,7 +117,7 @@ function Links({ setExpand, expand, expanded, setExpanded }: Props) {
           id="sub-categories"
           expand={expand}
           setExpand={setExpand}
-          icon={<HiFolder />}
+          icon={<PiFoldersFill />}
           menuLinks={[
             {
               href: `/${locale}/admin/dashboard/sub-categories`,

@@ -9,9 +9,14 @@ import Link from "next/link";
 import { HiChevronRight } from "react-icons/hi2";
 
 import BaseTable from "@/ui/BaseReactTable";
+import { useGetAllCategoriesQuery } from "@/lib/features/api/categoriesApi";
+import { useTranslations } from "next-intl";
+import { useParams } from "next/navigation";
 
 function SubCategories() {
-  const { data, isFetching } = useGetAllSubCategoriesQuery("sub-categories");
+  const { data, isFetching } = useGetAllSubCategoriesQuery("sub-categories", {
+    refetchOnMountOrArgChange: true,
+  });
 
   return (
     <Box className=" flex flex-col gap-8 px-[4rem] py-[1.2rem] bg-[#FDFDFD] ">

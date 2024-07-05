@@ -9,7 +9,7 @@ import {
 // RTK Query
 const categoriesApi = createApi({
   reducerPath: "categoriesApi",
-  tagTypes: ["CATEGORIES"],
+  tagTypes: ["CATEGORIES", "ADD_CATEGORIES"],
   baseQuery: axiosBaseQuery({
     baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
   }),
@@ -20,13 +20,14 @@ const categoriesApi = createApi({
         method: "POST",
         body,
       }),
+      invalidatesTags: ["ADD_CATEGORIES"],
     }),
     getAllCategories: builder.query({
       query: () => ({
         url: `categories`,
         method: "GET",
       }),
-      providesTags: ["CATEGORIES"],
+      providesTags: ["CATEGORIES", "ADD_CATEGORIES"],
     }),
     getCategory: builder.query({
       query: (letter) => ({

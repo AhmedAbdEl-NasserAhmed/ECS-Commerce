@@ -142,6 +142,11 @@ function EditSubCategoryPage() {
             rules={{ required: "This field is required" }}
             render={({ field }) => (
               <SmartSearchInput
+                error={!!errors["category"]}
+                helperText={
+                  errors["category"] ? errors["category"].message : ""
+                }
+                disabled={editSubCategoryResponse.isLoading}
                 shouldReset={editSubCategoryResponse.isSuccess}
                 getSmartSearchValue={setSmartSeachValue}
                 textLabel="Main Category"

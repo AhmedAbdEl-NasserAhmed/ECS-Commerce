@@ -6,7 +6,9 @@
     "View All": "View All",
     "Page": "Page",
     "Go to page": "Go to page",
-    "Show": "Show"
+    "Show": "Show",
+    "No data available": "No data available",
+    "of": "of"
   },
   "Dashboard": {
     "Dashboard": "Dashboard"
@@ -40,12 +42,14 @@
     "Product Discount %": "Product Discount %",
     "Product Sale Price": "Product Sale Price",
     "Product Description": "Product Description",
-    "Product Image": "Product Image"
+    "Product Image": "Product Image",
+    "No categories yet, please add a new category": "No categories yet, please add a new category"
   },
   "Categories": {
     "Categories": "Categories",
     "Main Category": "Main Category",
-    "main category placeholder": "Search for main category"
+    "main category placeholder": "Search for main category",
+    "Add New Category": "Add New Category"
   },
   "SubCategories": {
     "Sub Categories": "Sub Categories",

@@ -112,7 +112,7 @@ function BaseReactTable({ data, columns }: { data: any; columns: any }) {
             })
           ) : (
             <tr>
-              <td colSpan={columns.length}>No data available</td>
+              <td colSpan={columns.length}>{t("No data available")}</td>
             </tr>
           )}
         </tbody>
@@ -153,7 +153,7 @@ function BaseReactTable({ data, columns }: { data: any; columns: any }) {
         <span className="flex items-center gap-1">
           <div>{t("Page")} </div>
           <strong>
-            {table.getState().pagination.pageIndex + 1} of{" "}
+            {table.getState().pagination.pageIndex + 1} {t("of")}{" "}
             {table.getPageCount().toLocaleString()}
           </strong>
         </span>

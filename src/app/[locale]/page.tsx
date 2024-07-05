@@ -16,7 +16,7 @@ function HomePage({ params: { locale } }) {
           className="text-4xl text-black  flex items-center gap-4 font-semibold p-5"
           href={`/${locale}/admin`}
         >
-          Go To Admin Page {t("title")}
+          {t("Go To Admin Page")}
           <span>
             <HiArrowRightEndOnRectangle />
           </span>

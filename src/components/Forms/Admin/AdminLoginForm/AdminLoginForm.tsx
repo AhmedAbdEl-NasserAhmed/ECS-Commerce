@@ -22,32 +22,27 @@ function AdminLoginForm() {
     formState: { errors },
   } = useForm<LoginFormData>();
 
-  const router = useRouter();
-
-  const { locale } = useParams();
-
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
-  const [adminFc, adminState] = useAdminLoginMutation();
+  const [adminFn, adminState] = useAdminLoginMutation();
 
   const dispatch = useAppDispatch();
 
-  const t = useTranslations("Index");
+  const t = useTranslations("Login");
+  const formTranslation = useTranslations("Form");
 
   function onSubmit(data: LoginFormData) {
-    adminFc({
+    adminFn({
       email: data.email,
       password: data.password,
     })
       .unwrap()
       .then((res) => {
-        toast.success("Welcome Back");
+        toast.success(t("welcome"));
 
         localStorage.setItem("userToken", res.token);
-
-        // router.push(`/${locale}/admin/dashboard/product`);
 
         dispatch(loginUser({ user: res.data, token: res.token }));
       })
@@ -61,16 +56,25 @@ function AdminLoginForm() {
       className="relative flex w-[85vw] md:w-[70vw] flex-col lg:flex-row rounded-xl shadow-lg h-[95vh] lg:h-[65vh] overflow-hidden "
     >
       <Box className="relative p-9 flex flex-col justify-between lg:w-1/2 w-full h-full bg-[url('/sign-in-img.png')] bg-no-repeat bg-cover bg-center   ">
-        <Image
+        {/* <Image
           src="/logo-login.png"
           alt="logo image"
           width={250}
           height={250}
           objectFit="contain"
-        />
+        /> */}
+        <h1
+          style={{
+            fontSize: "3rem",
+            color: "white",
+            textTransform: "uppercase",
+            fontWeight: "bold",
+          }}
+        >
+          ORCA Ecommerce
+        </h1>
         <p className="text-white text-[1.67rem] font-medium text-center w-4/5 ml-auto mr-auto mb-[5rem]">
-          Nulla laborum sit voluptate anim in. Nulla ut qui ex ipsum id aliqua
-          amet exercitation. Anim ididunt anim anim voluptate enim.
+          {t("greeting")}
         </p>
       </Box>
       <Box
@@ -85,7 +89,7 @@ function AdminLoginForm() {
             component="h2"
             className=" text-[2rem] font-medium tracking-wide   "
           >
-            Welcome Back!
+            {t("welcome")}!
           </Typography>
 
           <Typography
@@ -93,10 +97,7 @@ function AdminLoginForm() {
             component="h5"
             className=" text-[1.4rem] tracking-wider "
           >
-            Sign in to continue to{" "}
-            <Link className="text-blue-400" href="/">
-              Orca
-            </Link>
+            {t("sign in description")}{" "}
           </Typography>
         </Box>
         <Box display="flex" flexDirection="column" gap={3}>
@@ -113,7 +114,7 @@ function AdminLoginForm() {
                     <CustomizedTextField
                       disabled={adminState.isLoading}
                       textLabelClass={input.textLabelClass}
-                      textlabel={input.textlabel}
+                      textlabel={formTranslation(input.textlabel)}
                       formerHelperStyles={input.formerHelperStyles}
                       field={field}
                       error={!!errors[input.name as keyof LoginFormData]}
@@ -123,7 +124,7 @@ function AdminLoginForm() {
                           : ""
                       }
                       type={input.type}
-                      placeholder={input.placeholder}
+                      placeholder={formTranslation(input.placeholder)}
                       variant="outlined"
                       size="small"
                       sx={input.sx}
@@ -157,7 +158,7 @@ function AdminLoginForm() {
           variant="contained"
           size="large"
         >
-          Login
+          {t("Login")}
         </Button>
       </Box>
     </Box>

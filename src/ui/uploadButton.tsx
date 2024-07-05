@@ -39,17 +39,6 @@ function UploadButton({ children }) {
       />
     </Button>
   );
-
-  // return (
-  //   <button type="button">
-  //     <VisuallyHiddenInput
-  //
-  //       // onChange={handleImagePath}
-  //       type="file"
-  //     />
-  //     hello
-  //   </button>
-  // );
 }
 
 export default UploadButton;

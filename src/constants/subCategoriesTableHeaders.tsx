@@ -5,18 +5,25 @@ import { useParams } from "next/navigation";
 
 export const subCategoriesTableHeaders = [
   {
-    Header: "Name",
-    accessor: "name",
+    id: "name",
+    header: () => <div>Name</div>,
+    accessorKey: "name",
   },
   {
-    Header: "Description",
-    accessor: "description",
+    id: "description",
+    header: () => <div>Description</div>,
+    accessorKey: "description",
   },
   {
-    Header: "Category",
-    Cell: ({ row }) => {
+    id: "category",
+    header: () => <div>Category</div>,
+    cell: ({
+      cell: {
+        row: { original },
+      },
+    }) => {
       // const params = useParams();
-      if (!row.original?.category) return <div>No category available</div>;
+      if (!original?.category) return <div>No category available</div>;
       return (
         <div
           style={{
@@ -25,23 +32,26 @@ export const subCategoriesTableHeaders = [
             borderRadius: "3px",
           }}
         >
-          {row.original.category.name}
+          {original.category.name}
         </div>
         // <Link
-        //   href={`/${params.locale}/admin/dashboard/categories/${row.original.category["_id"]}`}
+        //   href={`/${params.locale}/admin/dashboard/categories/${original.category["_id"]}`}
         //   className="text-[#6262ff]"
         //   style={{ color: "#6262ff", textDecoration: "underline" }}
         // >
-        //   {row.original.category.name}
+        //   {original.category.name}
         // </Link>
       );
     },
   },
 
   {
-    Header: "Actions",
-    Cell: ({ row }) => (
-      <SubCategoryTableMenuOptions subCategory={row.original} />
-    ),
+    id: "actions",
+    header: () => <div>Actions</div>,
+    cell: ({
+      cell: {
+        row: { original },
+      },
+    }) => <SubCategoryTableMenuOptions subCategory={original} />,
   },
 ];

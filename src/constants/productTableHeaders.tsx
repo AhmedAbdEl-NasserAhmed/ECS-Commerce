@@ -3,28 +3,43 @@ import Image from "next/image";
 
 export const productTableHeaders = [
   {
-    Header: "Product Name",
-    accessor: "name",
+    id: "name",
+    header: () => "Product Name",
+    accessorKey: "name",
   },
   {
-    Header: "Product Price",
-    accessor: "price",
+    id: "price",
+    header: () => "Product Price",
+    accessorKey: "price",
   },
   {
-    Header: "Product Discount",
-    accessor: "discount",
+    id: "discount",
+    header: () => "Product Discount",
+    accessorKey: "discount",
   },
   {
-    Header: "Product Size",
-    accessor: "size",
-    Cell: ({ cell: { value } }) => value.value, // Access the `value` property of the `size` object
+    id: "size",
+    header: () => "Product Size",
+    accessorKey: "size",
+    cell: ({
+      cell: {
+        row: { original },
+      },
+    }) => {
+      return original.size.value;
+    },
   },
   {
-    Header: "Product Colors",
-    accessor: "colors",
-    Cell: ({ cell: { value } }) => (
+    id: "colors",
+    header: () => "Product Colors",
+    accessorKey: "colors",
+    cell: ({
+      cell: {
+        row: { original },
+      },
+    }) => (
       <div style={{ gap: "10px" }} className="flex justify-center">
-        {value.map((color) => (
+        {original.colors.map((color) => (
           <span
             key={color.label}
             style={{
@@ -41,15 +56,20 @@ export const productTableHeaders = [
     ),
   },
   {
-    Header: "Product Image",
-    accessor: "images",
-    Cell: ({ cell: { value } }) => (
+    id: "images",
+    header: () => "Product Image",
+    accessorKey: "images",
+    cell: ({
+      cell: {
+        row: { original },
+      },
+    }) => (
       <div style={{ gap: "20px" }} className="flex justify-center ">
         <Image
           className="rounded-xl"
-          key={value[0].id}
-          src={value[0].url}
-          alt={`Product Image ${value[0].id}`}
+          key={original.images[0].id}
+          src={original.images[0].url}
+          alt={`Product Image ${original.images[0].id}`}
           height={55}
           width={55}
         />
@@ -58,7 +78,12 @@ export const productTableHeaders = [
   },
 
   {
-    Header: "Actions",
-    Cell: ({ row }) => <ProductTableMenuOptions product={row.original} />,
+    id: "actions",
+    header: () => "Actions",
+    cell: ({
+      cell: {
+        row: { original },
+      },
+    }) => <ProductTableMenuOptions product={original} />,
   },
 ];

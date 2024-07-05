@@ -2,17 +2,16 @@
 
 import { subCategoriesTableHeaders } from "@/constants/subCategoriesTableHeaders";
 import { useGetAllSubCategoriesQuery } from "@/lib/features/api/subCategoriesApi";
-import BaseTable from "@/ui/BaseTable/BaseTable";
 import Menus from "@/ui/Menus/Menus";
 import Spinner from "@/ui/Spinner/Spinner";
 import { Box } from "@mui/material";
 import Link from "next/link";
 import { HiChevronRight } from "react-icons/hi2";
 
+import BaseTable from "@/ui/BaseReactTable";
+
 function SubCategories() {
   const { data, isFetching } = useGetAllSubCategoriesQuery("sub-categories");
-
-  console.log("data", data);
 
   const _data = {
     status: "success",
@@ -509,10 +508,7 @@ function SubCategories() {
           {isFetching ? (
             <Spinner />
           ) : (
-            <BaseTable
-              rawData={_data?.data}
-              columnsData={subCategoriesTableHeaders}
-            />
+            <BaseTable data={_data?.data} columns={subCategoriesTableHeaders} />
           )}
         </Menus>
       </Box>

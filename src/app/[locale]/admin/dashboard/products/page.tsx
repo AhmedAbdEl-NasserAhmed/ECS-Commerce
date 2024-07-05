@@ -2,7 +2,7 @@
 
 import { productTableHeaders } from "@/constants/productTableHeaders";
 import { useGetAllProductsQuery } from "@/lib/features/api/productsApi";
-import BaseTable from "@/ui/BaseTable/BaseTable";
+import BaseTable from "@/ui/BaseReactTable";
 import Menus from "@/ui/Menus/Menus";
 import Spinner from "@/ui/Spinner/Spinner";
 import { Box } from "@mui/material";
@@ -41,7 +41,7 @@ function Products() {
           {isFetching ? (
             <Spinner />
           ) : (
-            <BaseTable rawData={data?.data} columnsData={productTableHeaders} />
+            <BaseTable data={data?.data} columns={productTableHeaders} />
           )}
         </Menus>
       </Box>

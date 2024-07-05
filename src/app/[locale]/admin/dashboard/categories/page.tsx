@@ -2,7 +2,7 @@
 
 import { categoriesTableHeaders } from "@/constants/categoriesTableHeaders";
 import { useGetAllCategoriesQuery } from "@/lib/features/api/categoriesApi";
-import BaseTable from "@/ui/BaseTable/BaseTable";
+import BaseTable from "@/ui/BaseReactTable";
 import Menus from "@/ui/Menus/Menus";
 import Spinner from "@/ui/Spinner/Spinner";
 import { Box } from "@mui/material";
@@ -41,10 +41,7 @@ function Categories() {
           {isFetching ? (
             <Spinner />
           ) : (
-            <BaseTable
-              rawData={data?.data}
-              columnsData={categoriesTableHeaders}
-            />
+            <BaseTable data={data?.data} columns={categoriesTableHeaders} />
           )}
         </Menus>
       </Box>

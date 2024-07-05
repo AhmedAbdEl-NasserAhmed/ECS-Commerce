@@ -4,18 +4,25 @@ import { useGetAllSubCategoriesByCategoryQuery } from "@/lib/features/api/subCat
 
 export const categoriesTableHeaders = [
   {
-    Header: "Category",
-    accessor: "name",
+    id: "name",
+    header: () => "Category",
+    accessorKey: "name",
   },
   {
-    Header: "Description",
-    accessor: "description",
+    id: "description",
+    header: () => "Description",
+    accessorKey: "description",
   },
   {
-    Header: "Sub categories",
-    Cell: ({ row }) => {
+    id: "sub-categories",
+    header: () => "Sub categories",
+    cell: ({
+      cell: {
+        row: { original },
+      },
+    }) => {
       const { data, isFetching } = useGetAllSubCategoriesByCategoryQuery(
-        row.original["_id"]
+        original["_id"]
       );
       if (isFetching || !data || data?.data?.length === 0)
         return <div>No Sub Categories</div>;
@@ -41,7 +48,12 @@ export const categoriesTableHeaders = [
     },
   },
   {
-    Header: "Actions",
-    Cell: ({ row }) => <CategoryTableMenuOptions category={row.original} />,
+    id: "actions",
+    header: () => "Actions",
+    cell: ({
+      cell: {
+        row: { original },
+      },
+    }) => <CategoryTableMenuOptions category={original} />,
   },
 ];

@@ -1,17 +1,34 @@
-import { products } from "@/DmmyData";
-import { productTableHeaders } from "@/constants/productTableHeaders";
 import Menus from "@/ui/Menus/Menus";
 import { Box } from "@mui/material";
+import Link from "next/link";
 
 function ProductsOverview() {
   return (
-    <Box className=" p-[1rem] md:p-[4rem] w-full ">
-      <h2 className="text-xl sm:text-3xl text-cyan-500 font-semibold mb-8 ">
-        PRODUCTS OVERVIEW
-      </h2>
-      {/* <Menus>
-        <BaseTable tableHeaders={productTableHeaders} content={products} />
-      </Menus> */}
+    <Box className=" flex flex-col gap-8 px-[4rem] py-[1.2rem] bg-[#FDFDFD] ">
+      <Box className="h-[10vh] flex justify-between items-center">
+        <Box className="flex flex-col gap-4">
+          <h2 className="text-4xl font-semibold  text-gray-600">
+            Product List
+          </h2>
+          <Box className="flex items-center gap-4 text-[1.4rem]">
+            <Link className="text-blue-400" href="/">
+              Home
+            </Link>
+            <span>
+              <HiChevronRight />
+            </span>
+            <h4>Products Overview</h4>
+          </Box>
+        </Box>
+      </Box>
+      <Box className="relative grow flex flex-col gap-8 bg-white rounded-2xl border-2 p-10 border-slate-100 shadow-md">
+        <Box className="mb-4">
+          <h2 className="text-3xl font-semibold mb-5">Products Overview</h2>
+          <span className=" absolute left-0 block h-[1px] w-full bg-gray-200">
+            &nbsp;
+          </span>
+        </Box>
+      </Box>
     </Box>
   );
 }

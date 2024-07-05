@@ -112,3 +112,15 @@ export interface SelecteMenuProps {
   disabled: boolean;
   colorsPicker?: boolean;
 }
+export interface BaseColorPickerProps {
+  field: object;
+  className?: string;
+  placeholder: string;
+  errors: object;
+  name: string;
+  textLabel: string;
+  textLabelClass: string;
+  isMulti: boolean;
+  disabled: boolean;
+  onChange: (v) => void;
+}

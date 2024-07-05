@@ -2,17 +2,17 @@
 
 import chroma from "chroma-js";
 
-import { ColourOption, SelecteMenuProps } from "../../types/types";
+import { ColourOption, BaseColorPickerProps } from "../../types/types";
 import Select, { StylesConfig } from "react-select";
-import { useId } from "react";
+import { useEffect, useId, useState } from "react";
 import { Box } from "@mui/material";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
 import ColorPickerInput from "../ColorPicketInput/ColorPickerInput";
+import { colorPickerDefaultColors } from "@/constants/colorOptions";
 
-function MultiChoiceSelectMenu({
+function BaseColorPicker({
   field,
   className,
-  options,
   textLabelClass,
   placeholder,
   textLabel,
@@ -20,7 +20,8 @@ function MultiChoiceSelectMenu({
   isMulti,
   errors,
   disabled,
-}: SelecteMenuProps) {
+  onChange,
+}: BaseColorPickerProps) {
   const colourStyles: StylesConfig<ColourOption, true> = {
     control: (styles, state) => ({
       ...styles,
@@ -39,6 +40,7 @@ function MultiChoiceSelectMenu({
         borderColor: `${errors[name] ? "rgb(186, 9, 9)" : "#e7e7e7"}`,
       },
       height: "42px",
+      width: "85%",
     }),
     placeholder: (styles) => ({
       ...styles,
@@ -96,25 +98,43 @@ function MultiChoiceSelectMenu({
     }),
   };
 
+  const [selectedColors, setSelectedColors] = useState([]);
+
+  useEffect(() => {
+    if (selectedColors.length > 0) {
+      onChange(selectedColors);
+    }
+  }, [selectedColors]);
+
+  const onSelectColorHandler = (color) => {
+    setSelectedColors((state) => state.concat(color));
+  };
+
   return (
     <Box className="flex flex-col gap-4 ">
       {textLabel && <label className={textLabelClass}>{textLabel}</label>}
-      <Select
-        {...field}
-        instanceId={useId()}
-        isDisabled={disabled}
-        placeholder={placeholder}
-        className={className}
-        closeMenuOnSelect={true}
-        menuShouldScrollIntoView={true}
-        isMulti={isMulti}
-        options={options}
-        styles={colourStyles}
-      />
-      {/* {colorsPicker && <ColorPickerInput disabled={disabled} />} */}
+      <Box className="relative">
+        <Select
+          {...field}
+          instanceId={useId()}
+          isDisabled={disabled}
+          placeholder={placeholder}
+          className={className}
+          closeMenuOnSelect={true}
+          menuShouldScrollIntoView={true}
+          isMulti={isMulti}
+          options={[...colorPickerDefaultColors, ...selectedColors]}
+          styles={colourStyles}
+        />
+        <ColorPickerInput
+          options={colorPickerDefaultColors}
+          onSelectColorHandler={onSelectColorHandler}
+          disabled={disabled}
+        />
+      </Box>
       {errors[name] && <ErrorMessage message={errors[name]?.message} />}
     </Box>
   );
 }
 
-export default MultiChoiceSelectMenu;
+export default BaseColorPicker;

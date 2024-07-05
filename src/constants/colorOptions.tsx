@@ -140,3 +140,7 @@ export const colorsOptions = {
   Yellow: "#FFFF00",
   YellowGreen: "#9ACD32",
 };
+export const colorPickerDefaultColors = [
+  { value: "Black", label: "Black", color: "#000000" },
+  { value: "Red", label: "Red", color: "#F00000" },
+];

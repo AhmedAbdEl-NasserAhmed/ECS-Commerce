@@ -1,24 +1,15 @@
 "use client";
 
-import nearestColor from "nearest-color";
-
 import { useEffect, useState } from "react";
+import nearestColor from "nearest-color";
 import { colorsOptions } from "@/constants/colorOptions";
 import Image from "next/image";
 import toast from "react-hot-toast";
 import { HiMiniPlusCircle } from "react-icons/hi2";
-import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { addColor } from "@/lib/features/colorsOptionsSlice/colorsOptionsSlice";
 
 const DEFAULT_COLOR = "#000000";
 
-function ColorPickerInput({ disabled }) {
-  const dispatch = useAppDispatch();
-
-  const colorsOption = useAppSelector(
-    (state) => state.colorsOptionsSlice.colorsOptions
-  );
-
+function ColorPickerInput({ options, disabled, onSelectColorHandler }) {
   const [color, setColor] = useState<string>(DEFAULT_COLOR);
 
   const nearest = nearestColor.from(colorsOptions);
@@ -40,9 +31,7 @@ function ColorPickerInput({ disabled }) {
 
     const colorName = getColorNameFromHex(color);
 
-    const existedColor = colorsOption.find(
-      (color) => color.label === colorName
-    );
+    const existedColor = options.find((color) => color.label === colorName);
 
     if (existedColor) {
       toast.error("This color is already exist");
@@ -51,7 +40,7 @@ function ColorPickerInput({ disabled }) {
 
     const newColor = { value: colorName, label: colorName, color };
 
-    dispatch(addColor(newColor));
+    onSelectColorHandler(newColor);
 
     setColor(DEFAULT_COLOR);
 
@@ -60,13 +49,12 @@ function ColorPickerInput({ disabled }) {
 
   return (
     <div
+      className="absolute gap-2 flex cursor-pointer items-center z-10 h-full top-1/2 -translate-y-1/2 start-0"
       style={{
-        right: "10%",
-        top: "35%",
-        transform: "translateY(40%)",
-        gap: "10px",
+        top: "50%",
+        transform: "translateY(-50%)",
+        insetInlineEnd: 0,
       }}
-      className=" absolute flex pointer cursor-pointer items-center z-10"
     >
       <div style={{ fontSize: "18px", lineHeight: "0" }}>
         <button style={{ color: color }} onClick={handleAddColor} type="button">
@@ -74,7 +62,7 @@ function ColorPickerInput({ disabled }) {
         </button>
       </div>
 
-      <div>
+      <div className="relative">
         <input
           disabled={disabled}
           type="color"

@@ -11,6 +11,7 @@ import { getAddProductServerData } from "@/lib/helpers";
 import { useAppSelector } from "@/lib/hooks";
 import { AdminProductProps } from "@/types/types";
 import AddProductImage from "@/ui/AddProductImage/AddProductImage";
+import BaseColorPicker from "@/ui/BaseColorPicker/BaseColorPicker";
 import MiniSpinner from "@/ui/MiniSpinner/MiniSpinner";
 import MultiChoiceSelectMenu from "@/ui/MultiChoiceSelectMenu/MultiChoiceSelectMenu";
 import SmartSearchInput from "@/ui/SmartSearchInput/SmartSearchInput";
@@ -254,9 +255,8 @@ function AddProductPage() {
                   control={control}
                   rules={{ required: "This field is required" }}
                   render={({ field }) => (
-                    <MultiChoiceSelectMenu
-                      options={colorsOption}
-                      colorsPicker={true}
+                    <BaseColorPicker
+                      onChange={field.onChange}
                       disabled={productResponse.isLoading}
                       isMulti={true}
                       textLabelClass={"font-semibold text-xl"}

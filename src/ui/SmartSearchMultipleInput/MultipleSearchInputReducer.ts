@@ -19,7 +19,7 @@ interface State {
 export const initialState: State = {
   multipleItems: [],
   multipleItemsId: [],
-  openMenu: true,
+  openMenu: false,
   inputValue: "",
 };
 
@@ -68,6 +68,12 @@ export const reducerFn = function (state = initialState, action) {
     return {
       ...state,
       multipleItemsId: [...state.multipleItemsId, action.payload.value],
+    };
+  }
+
+  if (action.type === SmartSearchActions.RESET) {
+    return {
+      ...initialState,
     };
   }
 };

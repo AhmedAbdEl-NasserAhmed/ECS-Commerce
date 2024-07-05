@@ -1,6 +1,5 @@
 import { products } from "@/DmmyData";
 import { productTableHeaders } from "@/constants/productTableHeaders";
-// import BaseTable from "@/ui/BaseTable/BaseTable";
 import Menus from "@/ui/Menus/Menus";
 import { Box } from "@mui/material";
 

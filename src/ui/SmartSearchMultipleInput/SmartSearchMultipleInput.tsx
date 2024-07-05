@@ -16,6 +16,8 @@ function SmartSearchMultipleInput({
   placeholder,
   textLabel,
   getSmartSearchValue,
+  disabled,
+  shouldReset,
 }) {
   const [smartSearchMultipleState, dispatch] = useReducer(
     reducerFn,
@@ -25,6 +27,12 @@ function SmartSearchMultipleInput({
   function action(type, payload = null) {
     dispatch({ type, payload });
   }
+
+  useEffect(() => {
+    if (shouldReset) {
+      action(SmartSearchActions.RESET);
+    }
+  }, [shouldReset]);
 
   useEffect(() => {
     onChange(smartSearchMultipleState.multipleItemsId);
@@ -63,6 +71,7 @@ function SmartSearchMultipleInput({
       <div className="relative flex flex-col gap-4">
         {<label className="font-semibold text-xl">{textLabel}</label>}
         <TextField
+          disabled={disabled}
           className=" w-full"
           placeholder={placeholder}
           onChange={(e) =>
@@ -112,22 +121,6 @@ function SmartSearchMultipleInput({
             },
           }}
         />
-        {/* {smartSearchState.userSelectedValue !== "" && (
-          <span
-            onClick={() => {
-              onChange("");
-              action(SmartSearchActions.RESET);
-              getSmartSearchValue({
-                id: "",
-                name: "",
-              });
-            }}
-            style={{ top: "60%", right: "15px", cursor: "pointer" }}
-            className={styles["close-btn"]}
-          >
-            X
-          </span>
-        )} */}
       </div>
 
       <ul
@@ -139,10 +132,14 @@ function SmartSearchMultipleInput({
           return (
             <li
               style={{
+                backgroundColor:
+                  smartSearchMultipleState.multipleItemsId.includes(item["_id"])
+                    ? "#1ca56aa4 "
+                    : "",
                 color: smartSearchMultipleState.multipleItemsId.includes(
                   item["_id"]
                 )
-                  ? "#1a9c44 "
+                  ? "white"
                   : "",
               }}
               key={item.name}
@@ -164,15 +161,31 @@ function SmartSearchMultipleInput({
         {smartSearchMultipleState.multipleItems.map((item) => {
           return (
             <SelectedItem
-              onClick={() => {
-                action(SmartSearchActions.DELETE_ITEM, { value: item.name });
-                action(SmartSearchActions.DELETE_ID, { value: item.value });
-              }}
+              onClick={
+                disabled
+                  ? null
+                  : () => {
+                      action(SmartSearchActions.DELETE_ITEM, {
+                        value: item.name,
+                      });
+                      action(SmartSearchActions.DELETE_ID, {
+                        value: item.value,
+                      });
+                    }
+              }
               key={item.name}
               item={item}
             />
           );
         })}
+        {smartSearchMultipleState.multipleItems.length > 0 && (
+          <span
+            onClick={disabled ? null : () => action(SmartSearchActions.RESET)}
+            className={styles["smartSearchList__close"]}
+          >
+            clear All
+          </span>
+        )}
       </ul>
     </div>
   );

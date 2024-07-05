@@ -17,6 +17,7 @@ function SmartSearchInput({
   getSmartSearchValue,
   shouldReset,
   value = "",
+  disabled,
 }) {
   const [smartSearchState, dispatch] = useReducer(reducerFn, initialState);
 
@@ -71,6 +72,7 @@ function SmartSearchInput({
       <div className="relative flex flex-col gap-4">
         {<label className="font-semibold text-xl">{textLabel}</label>}
         <TextField
+          disabled={disabled}
           style={{
             backgroundColor:
               smartSearchState.userSelectedValue !== "" ? "#f5f5f5" : "",
@@ -127,14 +129,18 @@ function SmartSearchInput({
         />
         {smartSearchState.userSelectedValue !== "" && (
           <span
-            onClick={() => {
-              onChange("");
-              action(SmartSearchActions.RESET);
-              getSmartSearchValue({
-                id: "",
-                name: "",
-              });
-            }}
+            onClick={
+              disabled
+                ? null
+                : () => {
+                    onChange("");
+                    action(SmartSearchActions.RESET);
+                    getSmartSearchValue({
+                      id: "",
+                      name: "",
+                    });
+                  }
+            }
             style={{ top: "60%", right: "15px", cursor: "pointer" }}
             className={styles["close-btn"]}
           >
@@ -152,9 +158,13 @@ function SmartSearchInput({
           return (
             <li
               key={user.name}
-              onClick={() => {
-                onSelectItem(user);
-              }}
+              onClick={
+                disabled
+                  ? null
+                  : () => {
+                      onSelectItem(user);
+                    }
+              }
             >
               {user.name}{" "}
             </li>

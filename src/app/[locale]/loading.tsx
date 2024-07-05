@@ -3,14 +3,9 @@ import { Box } from "@mui/material";
 
 function loading() {
   return (
-    <Box
-      className="min-h-screen  bg-gradient-to-r  from-mainColor to-cyan-500"
-      display="flex"
-      alignItems="center"
-      justifyContent="center"
-    >
+    <div className="bg-[url('/bg-gradient.png')] bg-no-repeat bg-center min-h-screen flex items-center justify-center gap-8">
       <Spinner />
-    </Box>
+    </div>
   );
 }
 

@@ -16,6 +16,32 @@ export const productTableHeaders = [
     accessor: "discount",
   },
   {
+    Header: "Product Size",
+    accessor: "size",
+    Cell: ({ cell: { value } }) => value.value, // Access the `value` property of the `size` object
+  },
+  {
+    Header: "Product Colors",
+    accessor: "colors",
+    Cell: ({ cell: { value } }) => (
+      <div style={{ gap: "10px" }} className="flex justify-center">
+        {value.map((color) => (
+          <span
+            key={color.label}
+            style={{
+              width: "12px",
+              height: "12px",
+              borderRadius: "50%",
+              backgroundColor: color.color,
+            }}
+          >
+            &nbsp;
+          </span>
+        ))}
+      </div>
+    ),
+  },
+  {
     Header: "Product Image",
     accessor: "images",
     Cell: ({ cell: { value } }) => (
@@ -30,11 +56,6 @@ export const productTableHeaders = [
         />
       </div>
     ),
-  },
-  {
-    Header: "Product Size",
-    accessor: "size",
-    Cell: ({ cell: { value } }) => value.value, // Access the `value` property of the `size` object
   },
 
   {

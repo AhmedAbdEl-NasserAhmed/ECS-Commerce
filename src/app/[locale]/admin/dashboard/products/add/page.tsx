@@ -78,11 +78,14 @@ function AddProductPage() {
     productNameDebounceValue
   );
 
-  const { data: allProducts } = useGetAllProductsQuery("products");
+  // const { data: allProducts } = useGetAllProductsQuery("products"); // ⚠️
 
   const [addProductFn, productResponse] = useAddProductMutation();
 
-  const [selectedProduct, setSelectedProduct] = useState({ images: [] });
+  const [selectedProduct, setSelectedProduct] = useState({
+    name: "",
+    images: [],
+  });
 
   console.log("FORM DATA", formData);
 
@@ -101,7 +104,7 @@ function AddProductPage() {
     if (selectedProduct?.images) {
       const images = {};
       if (selectedProduct.images.length >= 1) {
-        for (let i = 0; i < 3; i++) {
+        for (let i = 0; i < selectedProduct.images.length; i++) {
           const image = selectedProduct?.images?.[i];
           if (image) {
             images[`image-${i + 1}`] = {
@@ -120,10 +123,10 @@ function AddProductPage() {
   }, [selectedProduct?.images, setValue]);
 
   useEffect(() => {
-    if (allProducts?.data.length === 0) {
+    if (!selectedProduct?.name) {
       setValue("name", productSearchName.name);
     }
-  }, [allProducts?.data.length, productSearchName.name, setValue]);
+  }, [productSearchName.name, selectedProduct?.name, setValue]);
 
   useEffect(() => {
     const discount: number =
@@ -254,10 +257,7 @@ function AddProductPage() {
                 rules={{ required: "This field is required" }}
                 render={({ field }) => (
                   <SmartSearchInput
-                    error={!!errors["category"]}
-                    helperText={
-                      errors["category"] ? errors["category"].message : ""
-                    }
+                    errors={errors}
                     disabled={productResponse.isLoading}
                     shouldReset={productResponse.isSuccess}
                     getSmartSearchValue={setSmartSeachValue}
@@ -294,8 +294,7 @@ function AddProductPage() {
                   rules={{ required: "This field is required" }}
                   render={({ field }) => (
                     <SmartSearchInput
-                      error={!!errors["name"]}
-                      helperText={errors["name"] ? errors["name"].message : ""}
+                      errors={errors}
                       disabled={productResponse.isLoading}
                       shouldReset={productResponse.isSuccess}
                       getSmartSearchValue={setProductSearchName}
@@ -373,11 +372,8 @@ function AddProductPage() {
                     placeholder={t("Product Quantity")}
                     textlabel={t("Product Quantity")}
                     field={field}
-                    error={!!errors["quantity"]}
                     formerHelperStyles={{ style: { fontSize: "1rem" } }}
-                    helperText={
-                      errors["quantity"] ? errors["quantity"].message : ""
-                    }
+                    errors={errors}
                     type={"number"}
                     variant={"outlined"}
                     size={"small"}
@@ -402,9 +398,8 @@ function AddProductPage() {
                     placeholder={t("Product Price")}
                     textlabel={t("Product Price")}
                     field={field}
-                    error={!!errors["price"]}
                     formerHelperStyles={{ style: { fontSize: "1rem" } }}
-                    helperText={errors["price"] ? errors["price"].message : ""}
+                    errors={errors}
                     type={"number"}
                     variant={"outlined"}
                     size={"small"}
@@ -432,11 +427,8 @@ function AddProductPage() {
                     placeholder={t("Product Discount %")}
                     textlabel={t("Product Discount %")}
                     field={field}
-                    error={!!errors["discount"]}
                     formerHelperStyles={{ style: { fontSize: "1rem" } }}
-                    helperText={
-                      errors["discount"] ? errors["discount"].message : ""
-                    }
+                    errors={errors}
                     type={"number"}
                     variant={"outlined"}
                     size={"small"}
@@ -457,11 +449,8 @@ function AddProductPage() {
                     placeholder={t("Product Sale Price")}
                     textlabel={t("Product Sale Price")}
                     field={field}
-                    error={!!errors["salePrice"]}
                     formerHelperStyles={{ style: { fontSize: "1rem" } }}
-                    helperText={
-                      errors["salePrice"] ? errors["salePrice"].message : ""
-                    }
+                    errors={errors}
                     inputProps={{ readOnly: true, disabled: true }}
                     type={"number"}
                     variant={"outlined"}
@@ -482,13 +471,8 @@ function AddProductPage() {
                       placeholder={t("Product Description")}
                       textlabel={t("Product Description")}
                       field={field}
-                      error={!!errors["description"]}
                       formerHelperStyles={{ style: { fontSize: "1rem" } }}
-                      helperText={
-                        errors["description"]
-                          ? errors["description"].message
-                          : ""
-                      }
+                      errors={errors}
                       type={"text"}
                       variant={"outlined"}
                       multiline={true}

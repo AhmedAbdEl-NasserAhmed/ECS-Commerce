@@ -111,9 +111,8 @@ function EditCategoryPage() {
                   placeholder={"Category Name"}
                   textlabel={"Category Name"}
                   field={field}
-                  error={!!errors["name"]}
                   formerHelperStyles={{ style: { fontSize: "1rem" } }}
-                  helperText={errors["name"] ? errors["name"].message : ""}
+                  errors={errors}
                   type={"text"}
                   variant={"outlined"}
                   size={"small"}
@@ -135,11 +134,8 @@ function EditCategoryPage() {
                 placeholder={"Category Description"}
                 textlabel={"Category Description"}
                 field={field}
-                error={!!errors["description"]}
                 formerHelperStyles={{ style: { fontSize: "1rem" } }}
-                helperText={
-                  errors["description"] ? errors["description"].message : ""
-                }
+                errors={errors}
                 type={"text"}
                 variant={"outlined"}
                 multiline={true}

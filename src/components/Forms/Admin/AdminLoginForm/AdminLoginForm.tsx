@@ -111,18 +111,19 @@ function AdminLoginForm() {
                   defaultValue={input.defaultValue}
                   rules={input.rules}
                   render={({ field }) => (
-                    <CustomizedTextField
+                    <CustomizedTextField // ⚠️
                       disabled={adminState.isLoading}
                       textLabelClass={input.textLabelClass}
                       textlabel={formTranslation(input.textlabel)}
                       formerHelperStyles={input.formerHelperStyles}
                       field={field}
-                      error={!!errors[input.name as keyof LoginFormData]}
-                      helperText={
-                        errors[input.name as keyof LoginFormData]
-                          ? errors[input.name as keyof LoginFormData]?.message
-                          : ""
-                      }
+                      // error={!!errors[input.name as keyof LoginFormData]}
+                      // helperText={
+                      //   errors[input.name as keyof LoginFormData]
+                      //     ? errors[input.name as keyof LoginFormData]?.message
+                      //     : ""
+                      // }
+                      errors={errors}
                       type={input.type}
                       placeholder={formTranslation(input.placeholder)}
                       variant="outlined"

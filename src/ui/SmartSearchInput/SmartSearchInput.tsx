@@ -13,14 +13,17 @@ function SmartSearchInput({
   onChange,
   name,
   placeholder,
+  errors,
   textLabel,
   getSmartSearchValue,
   shouldReset,
   value = "",
   disabled,
-  helperText,
-  error,
 }) {
+  console.log("ERRORS", errors);
+  console.log("NAME", name);
+  console.log("MESSAGE", errors?.[name]);
+
   const [smartSearchState, dispatch] = useReducer(reducerFn, initialState);
 
   function action(type, payload = null) {
@@ -74,8 +77,8 @@ function SmartSearchInput({
       <div className="relative flex flex-col gap-4">
         {<label className="font-semibold text-xl">{textLabel}</label>}
         <TextField
-          error={error}
-          helperText={helperText}
+          error={!!errors?.[name]}
+          helperText={errors?.[name]?.message || ""}
           FormHelperTextProps={{ style: { fontSize: "1rem" } }}
           disabled={disabled}
           style={{

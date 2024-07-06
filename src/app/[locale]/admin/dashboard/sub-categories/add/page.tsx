@@ -154,10 +154,7 @@ function AddSubCategoriesPage() {
             rules={{ required: "This field is required" }}
             render={({ field }) => (
               <SmartSearchInput
-                error={!!errors["category"]}
-                helperText={
-                  errors["category"] ? errors["category"].message : ""
-                }
+                errors={errors}
                 disabled={subCategoryResponse.isLoading}
                 shouldReset={subCategoryResponse.isSuccess}
                 getSmartSearchValue={setSmartSeachValue}
@@ -185,9 +182,8 @@ function AddSubCategoriesPage() {
                 placeholder={"Sub Category Name"}
                 textlabel={"Sub Category Name"}
                 field={field}
-                error={!!errors["name"]}
                 formerHelperStyles={{ style: { fontSize: "1rem" } }}
-                helperText={errors["name"] ? errors["name"].message : ""}
+                errors={errors}
                 type={"text"}
                 variant={"outlined"}
                 size={"small"}
@@ -206,11 +202,8 @@ function AddSubCategoriesPage() {
                 placeholder={"Sub Category Description"}
                 textlabel={"Sub Category Description"}
                 field={field}
-                error={!!errors["description"]}
                 formerHelperStyles={{ style: { fontSize: "1rem" } }}
-                helperText={
-                  errors["description"] ? errors["description"].message : ""
-                }
+                errors={errors}
                 type={"text"}
                 variant={"outlined"}
                 multiline={true}

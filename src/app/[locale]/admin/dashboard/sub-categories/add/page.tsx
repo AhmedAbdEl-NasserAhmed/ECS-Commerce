@@ -41,8 +41,7 @@ function AddSubCategoriesPage() {
   const { data, isLoading } = useGetCategoryQuery(debounceValue);
 
   const { data: AllCategories } = useGetAllCategoriesQuery("categories");
-  const t = useTranslations("Products");
-  const tCategories = useTranslations("Categories");
+  const t = useTranslations("Dashboard");
 
   const params = useParams();
 
@@ -93,7 +92,7 @@ function AddSubCategoriesPage() {
           href={`/${params.locale}/admin/dashboard/categories/add`}
           style={{ color: "#5b93ff", textDecoration: "underline" }}
         >
-          {tCategories("Add New Category")}
+          {t("Add New Category")}
         </Link>
       </Box>
     );
@@ -107,16 +106,16 @@ function AddSubCategoriesPage() {
       <Box className="h-[10vh] flex justify-between items-center">
         <Box className="flex flex-col gap-4">
           <h2 className="text-4xl font-semibold  text-gray-600">
-            Add Sub Category
+            {t("Add Sub Category")}
           </h2>
           <Box className="flex items-center gap-4 text-[1.4rem]">
             <Link className="text-blue-400" href="/">
-              Home
+              {t("Home")}
             </Link>
             <span>
               <HiChevronRight />
             </span>
-            <h4>Sub Categories</h4>
+            <h4>{t("Sub Categories")}</h4>
           </Box>
         </Box>
         <Button
@@ -136,12 +135,14 @@ function AddSubCategoriesPage() {
           variant="contained"
           size="large"
         >
-          View All
+          {t("View All")}
         </Button>
       </Box>
       <Box className="relative grow flex flex-col gap-8 bg-white rounded-2xl border-2 p-10 border-slate-100 shadow-md">
         <Box className="mb-4">
-          <h2 className="text-3xl font-semibold mb-5">Add Sub Category</h2>
+          <h2 className="text-3xl font-semibold mb-5">
+            {t("Add Sub Category")}
+          </h2>
           <span className=" absolute left-0 block h-[1px] w-full bg-gray-200">
             &nbsp;
           </span>
@@ -158,9 +159,9 @@ function AddSubCategoriesPage() {
                 disabled={subCategoryResponse.isLoading}
                 shouldReset={subCategoryResponse.isSuccess}
                 getSmartSearchValue={setSmartSeachValue}
-                textLabel="Main Category"
+                textLabel={t("Main Category")}
                 data={data?.data}
-                placeholder=" Search for category"
+                placeholder={t("Search for category")}
                 name={field.name}
                 onChange={field.onChange}
               />
@@ -179,8 +180,8 @@ function AddSubCategoriesPage() {
                 }}
                 disabled={isLoading || formData.category === ""}
                 textLabelClass={"font-semibold text-xl"}
-                placeholder={"Sub Category Name"}
-                textlabel={"Sub Category Name"}
+                placeholder={t("Sub Category Name")}
+                textlabel={t("Sub Category Name")}
                 field={field}
                 formerHelperStyles={{ style: { fontSize: "1rem" } }}
                 errors={errors}
@@ -199,8 +200,8 @@ function AddSubCategoriesPage() {
               <CustomizedTextField
                 disabled={isLoading || formData.category === ""}
                 textLabelClass={"font-semibold text-xl"}
-                placeholder={"Sub Category Description"}
-                textlabel={"Sub Category Description"}
+                placeholder={t("Sub Category Description")}
+                textlabel={t("Sub Category Description")}
                 field={field}
                 formerHelperStyles={{ style: { fontSize: "1rem" } }}
                 errors={errors}
@@ -248,7 +249,7 @@ function AddSubCategoriesPage() {
             {subCategoryResponse.isLoading ? (
               <MiniSpinner />
             ) : (
-              " Add Sub Category"
+              t("Add Sub Category")
             )}
           </Button>
         </Box>

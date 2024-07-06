@@ -83,10 +83,6 @@ function AddProductPage() {
     { skip: !productNameDebounceValue }
   );
 
-  console.log("productNameDebounceValue", productNameDebounceValue);
-
-  console.log("productName", productName);
-
   const [addProductFn, productResponse] = useAddProductMutation();
 
   const [selectedProduct, setSelectedProduct] = useState({
@@ -145,11 +141,7 @@ function AddProductPage() {
 
   const tIndex = useTranslations("Index");
 
-  const t = useTranslations("Products");
-
-  const tCategories = useTranslations("Categories");
-
-  const tSubCategories = useTranslations("SubCategories");
+  const t = useTranslations("Dashboard");
 
   function onSubmit(data: AdminProductProps) {
     const myData = { ...data, category: smartSeachvalue["_id"] };
@@ -197,7 +189,7 @@ function AddProductPage() {
           href={`/${locale}/admin/dashboard/categories/add`}
           style={{ color: "#5b93ff", textDecoration: "underline" }}
         >
-          {tCategories("Add New Category")}
+          {t("Add New Category")}
         </Link>
       </Box>
     );
@@ -265,9 +257,9 @@ function AddProductPage() {
                     disabled={productResponse.isLoading}
                     shouldReset={productResponse.isSuccess}
                     getSmartSearchValue={setSmartSeachValue}
-                    textLabel={tCategories("Main Category")}
+                    textLabel={t("Main Category")}
                     data={mainCategory?.data}
-                    placeholder={tCategories("main category placeholder")}
+                    placeholder={t("main category placeholder")}
                     name={field.name}
                     onChange={field.onChange}
                   />
@@ -282,9 +274,9 @@ function AddProductPage() {
                     shouldReset={productResponse.isSuccess}
                     disabled={productResponse.isLoading}
                     getSmartSearchValue={setSmartSeachSubCategoryValue}
-                    textLabel={tSubCategories("Sub Category")}
+                    textLabel={t("Sub Category")}
                     data={subCategory?.data}
-                    placeholder={tSubCategories("sub category placeholder")}
+                    placeholder={t("sub category placeholder")}
                     name={field.name}
                     onChange={field.onChange}
                   />

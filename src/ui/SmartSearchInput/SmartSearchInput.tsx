@@ -26,8 +26,6 @@ function SmartSearchInput({
     dispatch({ type, payload });
   }
 
-  console.log("INPUT VALUE", smartSearchState.inputValue);
-
   const menuRef = useClickOutside({
     close: (v) => action(SmartSearchActions.CLOSE_MENU),
     value: false,
@@ -55,16 +53,25 @@ function SmartSearchInput({
   }, [value]);
 
   useEffect(() => {
-    if (data?.length > 0 && smartSearchState.inputValue === "") {
+    if (
+      data?.length > 0 &&
+      smartSearchState.inputValue !== "" &&
+      smartSearchState.userSelectedValue === ""
+    ) {
       action(SmartSearchActions.OPEN_MENU);
     } else {
       action(SmartSearchActions.CLOSE_MENU);
     }
-  }, [data?.length, smartSearchState.inputValue]);
+  }, [
+    data?.length,
+    smartSearchState.inputValue,
+    smartSearchState.userSelectedValue,
+  ]);
 
   const onSelectItem = (data) => {
     onChange(data.name);
     action(SmartSearchActions.SELECT_ITEM, { value: data.name });
+    // action(SmartSearchActions.RESET_VALUE);
     if (getSmartSearchValue) {
       getSmartSearchValue(data);
     }

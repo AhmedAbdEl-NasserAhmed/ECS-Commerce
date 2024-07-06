@@ -13,9 +13,10 @@ import { HiChevronRight } from "react-icons/hi2";
 function Products() {
   const { data, isFetching } = useGetAllProductsQuery("products");
 
-  const t = useTranslations("Products");
+  const t = useTranslations("Dashboard");
 
   const tIndex = useTranslations("Index");
+
   return (
     <Box className=" flex flex-col gap-8 px-[4rem] py-[1.2rem] bg-[#FDFDFD] ">
       <Box className="h-[10vh] flex justify-between items-center">

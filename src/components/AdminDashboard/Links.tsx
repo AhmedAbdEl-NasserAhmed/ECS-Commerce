@@ -1,15 +1,13 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { Box } from "@mui/material";
 import Link from "next/link";
 import Image from "next/image";
 import { HiOutlineViewGrid } from "react-icons/hi";
-import { HiCube } from "react-icons/hi2";
 import { useParams } from "next/navigation";
 import { useHandleWindowWidth } from "@/hooks/useHandleWindowWidth";
 import SubMenuLink from "./SubMenuLink";
-import { HiFolder } from "react-icons/hi";
 import { useTranslations } from "next-intl";
-import { PiFoldersFill } from "react-icons/pi";
+import { AdminSubmenuLinks } from "@/constants/menuLinks";
 
 interface Props {
   expand: boolean;
@@ -21,9 +19,6 @@ interface Props {
 function Links({ setExpand, expand, expanded, setExpanded }: Props) {
   const isWidthHiger = useHandleWindowWidth();
   const tDashboard = useTranslations("Dashboard");
-  const tCategories = useTranslations("Categories");
-  const tSubCategories = useTranslations("SubCategories");
-  const t = useTranslations("Products");
 
   const { locale } = useParams();
 
@@ -72,63 +67,23 @@ function Links({ setExpand, expand, expanded, setExpanded }: Props) {
           </p>
         </div>
 
-        <SubMenuLink
-          expanded={expanded}
-          handleChange={handleChange}
-          menuName={t("Products")}
-          id="products"
-          expand={expand}
-          setExpand={setExpand}
-          icon={<HiCube />}
-          menuLinks={[
-            {
-              href: `/${locale}/admin/dashboard/products`,
-              linkName: "All Products",
-            },
-            {
-              href: `/${locale}/admin/dashboard/products/add`,
-              linkName: "Add Product",
-            },
-          ]}
-        />
-        <SubMenuLink
-          expanded={expanded}
-          handleChange={handleChange}
-          menuName={tCategories("Categories")}
-          id="categories"
-          expand={expand}
-          setExpand={setExpand}
-          icon={<HiFolder />}
-          menuLinks={[
-            {
-              href: `/${locale}/admin/dashboard/categories`,
-              linkName: "All Categories",
-            },
-            {
-              href: `/${locale}/admin/dashboard/categories/add`,
-              linkName: "Add Category",
-            },
-          ]}
-        />
-        <SubMenuLink
-          expanded={expanded}
-          handleChange={handleChange}
-          menuName={tSubCategories("Sub Categories")}
-          id="sub-categories"
-          expand={expand}
-          setExpand={setExpand}
-          icon={<PiFoldersFill />}
-          menuLinks={[
-            {
-              href: `/${locale}/admin/dashboard/sub-categories`,
-              linkName: "All Sub Categories",
-            },
-            {
-              href: `/${locale}/admin/dashboard/sub-categories/add`,
-              linkName: "Add Sub Category",
-            },
-          ]}
-        />
+        {AdminSubmenuLinks(locale, {
+          tDashboard,
+        }).map((submenu) => {
+          return (
+            <SubMenuLink
+              key={submenu.id}
+              expanded={expanded}
+              handleChange={handleChange}
+              menuName={submenu.menuName}
+              id={submenu.id}
+              expand={expand}
+              setExpand={setExpand}
+              icon={submenu.icon}
+              menuLinks={submenu.children}
+            />
+          );
+        })}
       </Box>
     </Box>
   );

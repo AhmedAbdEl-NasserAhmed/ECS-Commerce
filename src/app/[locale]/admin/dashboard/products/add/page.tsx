@@ -61,6 +61,7 @@ function AddProductPage() {
   const subCategorydebounceValue = useDebounceHook(smartSeachSubCategoryvalue);
 
   const { data: AllCategories } = useGetAllCategoriesQuery("categories");
+
   const { data: mainCategory } = useGetCategoryQuery(mainCategorydebounceValue);
 
   const { data: subCategory } = useGetSubCategoryQuery(
@@ -85,6 +86,8 @@ function AddProductPage() {
 
   console.log("FORM DATA", formData);
 
+  console.log("selectedProduct", selectedProduct);
+
   useEffect(() => {
     setSelectedProduct(
       productName?.data.find((product) => {
@@ -97,16 +100,23 @@ function AddProductPage() {
   useEffect(() => {
     if (selectedProduct?.images) {
       const images = {};
-      if (selectedProduct.images.length >= 3) {
+      if (selectedProduct.images.length >= 1) {
         for (let i = 0; i < 3; i++) {
-          const image = selectedProduct.images[i];
-          images[`image-${i + 1}`] = {
-            url: image.url,
-          };
+          const image = selectedProduct?.images?.[i];
+          if (image) {
+            images[`image-${i + 1}`] = {
+              url: image?.url,
+            };
+          }
         }
       }
       setValue("images", images);
+    } else {
+      for (let image in formData["images"]) {
+        formData["images"][image] = undefined;
+      }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedProduct?.images, setValue]);
 
   useEffect(() => {
@@ -126,9 +136,9 @@ function AddProductPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formData.price, formData.discount]);
 
-  const t = useTranslations("Dashboard");
-
   const tIndex = useTranslations("Index");
+
+  const t = useTranslations("Products");
 
   const tCategories = useTranslations("Categories");
 
@@ -283,18 +293,17 @@ function AddProductPage() {
                   defaultValue={""}
                   rules={{ required: "This field is required" }}
                   render={({ field }) => (
-                    <CustomizedTextField
-                      disabled={productResponse.isLoading}
-                      textLabelClass={"font-semibold text-xl"}
-                      placeholder={t("Product Name")}
-                      textlabel={t("Product Name")}
-                      field={field}
+                    <SmartSearchInput
                       error={!!errors["name"]}
-                      formerHelperStyles={{ style: { fontSize: "1rem" } }}
                       helperText={errors["name"] ? errors["name"].message : ""}
-                      type={"text"}
-                      variant={"outlined"}
-                      size={"small"}
+                      disabled={productResponse.isLoading}
+                      shouldReset={productResponse.isSuccess}
+                      getSmartSearchValue={setProductSearchName}
+                      textLabel={t("Product Name")}
+                      data={productName?.data}
+                      placeholder={t("Product Name")}
+                      name={field.name}
+                      onChange={field.onChange}
                     />
                   )}
                 />

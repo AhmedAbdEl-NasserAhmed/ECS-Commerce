@@ -26,7 +26,7 @@ const productsApi = createApi({
     }),
     getProductByName: builder.query({
       query: (letter) => ({
-        url: `products/filtered/letters=${letter}`,
+        url: `products/filtered?letters=${letter}`,
         method: "GET",
       }),
       providesTags: ["PRODUCTS", "CATEGORIES", "SUB-CATEGORIES"],

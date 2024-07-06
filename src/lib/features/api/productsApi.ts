@@ -18,6 +18,7 @@ const productsApi = createApi({
       }),
       invalidatesTags: ["PRODUCTS"],
     }),
+
     getAllProducts: builder.query({
       query: () => ({
         url: "products?limit=5",
@@ -25,6 +26,7 @@ const productsApi = createApi({
       }),
       providesTags: ["PRODUCTS", "CATEGORIES", "SUB-CATEGORIES"],
     }),
+
     getProductByName: builder.query({
       query: (letter) => ({
         url: `products/filtered?letters=${letter}`,
@@ -37,6 +39,15 @@ const productsApi = createApi({
         return data;
       },
     }),
+
+    getSingleProduct: builder.query({
+      query: (slug) => ({
+        url: `products/${slug}`,
+        method: "GET",
+      }),
+      providesTags: ["PRODUCTS", "CATEGORIES", "SUB-CATEGORIES"],
+    }),
+
     deleteSingleProduct: builder.mutation({
       query: (id) => ({
         url: `products/${id}`,
@@ -52,6 +63,7 @@ export const {
   useGetAllProductsQuery,
   useAddProductMutation,
   useDeleteSingleProductMutation,
+  useGetSingleProductQuery,
 } = productsApi;
 
 export default productsApi;

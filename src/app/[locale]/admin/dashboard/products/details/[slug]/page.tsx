@@ -11,6 +11,8 @@ function ProductDetails() {
 
   if (isLoading) return <Spinner />;
 
+  console.log("data", data);
+
   return <div>{params.slug}</div>;
 }
 

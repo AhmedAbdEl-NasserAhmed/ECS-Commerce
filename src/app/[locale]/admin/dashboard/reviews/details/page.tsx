@@ -40,7 +40,7 @@ function ViewReviewPage() {
     );
   }
 
-  return <Box>Orders</Box>;
+  return <Box>{t("Reviews")}</Box>;
 }
 
 export default ViewReviewPage;

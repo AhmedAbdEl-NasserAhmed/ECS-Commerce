@@ -40,7 +40,7 @@ function ViewOrderPage() {
     );
   }
 
-  return <Box>Orders</Box>;
+  return <Box>(t{"Orders"})</Box>;
 }
 
 export default ViewOrderPage;

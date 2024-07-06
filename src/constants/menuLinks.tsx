@@ -67,11 +67,11 @@ export const AdminSubmenuLinks = (locale, { tDashboard }) => [
     children: [
       {
         href: `/${locale}/admin/dashboard/products`,
-        linkName: "All Products",
+        linkName: tDashboard("All Products"),
       },
       {
         href: `/${locale}/admin/dashboard/products/add`,
-        linkName: "Add Product",
+        linkName: tDashboard("Add Product"),
       },
     ],
   },
@@ -82,11 +82,11 @@ export const AdminSubmenuLinks = (locale, { tDashboard }) => [
     children: [
       {
         href: `/${locale}/admin/dashboard/categories`,
-        linkName: "All Categories",
+        linkName: tDashboard("All Categories"),
       },
       {
         href: `/${locale}/admin/dashboard/categories/add`,
-        linkName: "Add Category",
+        linkName: tDashboard("Add Category"),
       },
     ],
   },
@@ -97,11 +97,11 @@ export const AdminSubmenuLinks = (locale, { tDashboard }) => [
     children: [
       {
         href: `/${locale}/admin/dashboard/sub-categories`,
-        linkName: "All Sub Categories",
+        linkName: tDashboard("All Sub Categories"),
       },
       {
         href: `/${locale}/admin/dashboard/sub-categories/add`,
-        linkName: "Add Sub Category",
+        linkName: tDashboard("Add Sub Category"),
       },
     ],
   },
@@ -112,7 +112,7 @@ export const AdminSubmenuLinks = (locale, { tDashboard }) => [
     children: [
       {
         href: `/${locale}/admin/dashboard/orders`,
-        linkName: "All Orders",
+        linkName: tDashboard("All Orders"),
       },
     ],
   },
@@ -123,7 +123,7 @@ export const AdminSubmenuLinks = (locale, { tDashboard }) => [
     children: [
       {
         href: `/${locale}/admin/dashboard/reviews`,
-        linkName: "All Reviews",
+        linkName: tDashboard("All Reviews"),
       },
     ],
   },

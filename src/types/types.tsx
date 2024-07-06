@@ -44,14 +44,14 @@ export interface AdminProductProps {
 
 export interface CustomizedTextFieldProps {
   type?: string;
-  name?: FieldPath<AdminProductProps>;
+  name: FieldPath<AdminProductProps>;
   label?: string;
   variant?: "filled" | "outlined" | "standard";
   size?: "small" | "medium";
   rules?: object;
   id?: string;
   defaultValue?: string | ColourOption[] | SizesOption[];
-  field?: object;
+  field?: { name: string };
   inputProps?: object;
   borderColor?: string;
   error?: boolean;
@@ -77,6 +77,7 @@ export interface CustomizedTextFieldProps {
   textLabelClass?: string;
   isMulti?: boolean;
   disabled?: boolean;
+  errors: object;
 }
 
 export interface AdminDashboardLink {

@@ -4,12 +4,12 @@ import { Box, TextField } from "@mui/material";
 function CustomizedTextField({
   type,
   label,
+  name,
   variant,
   textLabelClass,
   size,
   inputProps,
-  error,
-  helperText,
+  errors,
   field,
   disabled,
   sx,
@@ -31,10 +31,10 @@ function CustomizedTextField({
           disabled={disabled}
           placeholder={placeholder}
           multiline={multiline}
-          error={error}
+          error={!!errors?.[field.name]}
+          helperText={errors?.[field.name]?.message || ""}
           rows={rows}
           className={className}
-          helperText={helperText}
           type={type}
           label={label}
           variant={variant}
@@ -90,6 +90,8 @@ function CustomizedTextField({
   } else {
     return (
       <TextField
+        error={!!errors?.[name]}
+        helperText={errors?.[name]?.message || ""}
         placeholder={placeholder}
         className={className}
         onChange={onChange}

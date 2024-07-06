@@ -62,10 +62,14 @@ function AddProductPage() {
 
   const { data: AllCategories } = useGetAllCategoriesQuery("categories");
 
-  const { data: mainCategory } = useGetCategoryQuery(mainCategorydebounceValue);
+  const { data: mainCategory } = useGetCategoryQuery(
+    mainCategorydebounceValue,
+    { skip: !mainCategorydebounceValue }
+  );
 
   const { data: subCategory } = useGetSubCategoryQuery(
-    subCategorydebounceValue
+    subCategorydebounceValue,
+    { skip: !subCategorydebounceValue }
   );
 
   const [productSearchName, setProductSearchName] = useState<{
@@ -75,10 +79,13 @@ function AddProductPage() {
   const productNameDebounceValue = useDebounceHook(productSearchName?.name);
 
   const { data: productName } = useGetProductByNameQuery(
-    productNameDebounceValue
+    productNameDebounceValue,
+    { skip: !productNameDebounceValue }
   );
 
-  // const { data: allProducts } = useGetAllProductsQuery("products"); // ⚠️
+  console.log("productNameDebounceValue", productNameDebounceValue);
+
+  console.log("productName", productName);
 
   const [addProductFn, productResponse] = useAddProductMutation();
 
@@ -87,18 +94,14 @@ function AddProductPage() {
     images: [],
   });
 
-  console.log("FORM DATA", formData);
-
-  console.log("selectedProduct", selectedProduct);
-
   useEffect(() => {
     setSelectedProduct(
-      productName?.data.find((product) => {
+      productName?.find((product) => {
         return product.name === formData["name"];
       })
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formData["name"], productName?.data]);
+  }, [formData["name"], productName]);
 
   useEffect(() => {
     if (selectedProduct?.images) {
@@ -109,6 +112,7 @@ function AddProductPage() {
           if (image) {
             images[`image-${i + 1}`] = {
               url: image?.url,
+              id: image?.id,
             };
           }
         }
@@ -299,7 +303,7 @@ function AddProductPage() {
                       shouldReset={productResponse.isSuccess}
                       getSmartSearchValue={setProductSearchName}
                       textLabel={t("Product Name")}
-                      data={productName?.data}
+                      data={productName}
                       placeholder={t("Product Name")}
                       name={field.name}
                       onChange={field.onChange}

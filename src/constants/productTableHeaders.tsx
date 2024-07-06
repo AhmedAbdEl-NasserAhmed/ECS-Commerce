@@ -69,9 +69,9 @@ export const productTableHeaders = (translate) => {
         <div style={{ gap: "20px" }} className="flex justify-center ">
           <Image
             className="rounded-xl"
-            key={original.images[0].id}
-            src={original.images[0].url}
-            alt={`Product Image ${original.images[0].id}`}
+            key={original?.images[0]?.id}
+            src={original?.images[0]?.url}
+            alt={`Product Image ${original?.images[0]?.id}`}
             height={55}
             width={55}
           />

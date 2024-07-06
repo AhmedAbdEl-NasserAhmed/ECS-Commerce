@@ -19,7 +19,11 @@ export const getAddProductServerData = (data: AdminProductProps) => {
 
   Object.keys(data.images).forEach((imageKey) => {
     if (data["images"]?.[imageKey]) {
-      formData.append("images", data["images"][imageKey]);
+      if (data["images"][imageKey] instanceof File) {
+        formData.append("images", data["images"][imageKey]);
+      } else {
+        formData.append("images", JSON.stringify(data["images"][imageKey]));
+      }
     }
   });
 
@@ -29,3 +33,17 @@ export const getAddProductServerData = (data: AdminProductProps) => {
 
   return formData;
 };
+
+export function getUniqueValues(arr, value) {
+  const uniqueItems = new Set();
+
+  return arr?.filter((item) => {
+    const duplicatedValue = item[value];
+    if (uniqueItems.has(duplicatedValue)) {
+      return false;
+    } else {
+      uniqueItems.add(duplicatedValue);
+      return true;
+    }
+  });
+}

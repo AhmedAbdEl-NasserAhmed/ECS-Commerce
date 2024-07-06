@@ -1,4 +1,5 @@
 import axiosBaseQuery from "@/api";
+import { getUniqueValues } from "@/lib/helpers";
 
 import { createApi } from "@reduxjs/toolkit/query/react";
 
@@ -30,6 +31,11 @@ const productsApi = createApi({
         method: "GET",
       }),
       providesTags: ["PRODUCTS", "CATEGORIES", "SUB-CATEGORIES"],
+      transformResponse: (response) => {
+        const data = getUniqueValues(response.data, "name");
+
+        return data;
+      },
     }),
     deleteSingleProduct: builder.mutation({
       query: (id) => ({

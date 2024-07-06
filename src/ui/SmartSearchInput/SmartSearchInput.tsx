@@ -20,15 +20,13 @@ function SmartSearchInput({
   value = "",
   disabled,
 }) {
-  console.log("ERRORS", errors);
-  console.log("NAME", name);
-  console.log("MESSAGE", errors?.[name]);
-
   const [smartSearchState, dispatch] = useReducer(reducerFn, initialState);
 
   function action(type, payload = null) {
     dispatch({ type, payload });
   }
+
+  console.log("INPUT VALUE", smartSearchState.inputValue);
 
   const menuRef = useClickOutside({
     close: (v) => action(SmartSearchActions.CLOSE_MENU),
@@ -57,12 +55,12 @@ function SmartSearchInput({
   }, [value]);
 
   useEffect(() => {
-    if (data?.length > 0 && smartSearchState.userSelectedValue === "") {
+    if (data?.length > 0 && smartSearchState.inputValue === "") {
       action(SmartSearchActions.OPEN_MENU);
     } else {
       action(SmartSearchActions.CLOSE_MENU);
     }
-  }, [data?.length, smartSearchState.userSelectedValue]);
+  }, [data?.length, smartSearchState.inputValue]);
 
   const onSelectItem = (data) => {
     onChange(data.name);

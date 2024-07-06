@@ -20,7 +20,7 @@ function ProductTableMenuOptions({ product }) {
           <Menus.Button
             onClick={() => {
               router.push(
-                `/${locale}/admin/dashboard/product/details/${product?.slug}`
+                `/${locale}/admin/dashboard/products/details/${product?.slug}`
               );
             }}
             icon={<HiEye />}

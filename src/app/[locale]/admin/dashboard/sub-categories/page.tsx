@@ -10,7 +10,6 @@ import { HiChevronRight } from "react-icons/hi2";
 
 import BaseTable from "@/ui/BaseReactTable";
 import { useGetAllCategoriesQuery } from "@/lib/features/api/categoriesApi";
-import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
 
 function SubCategories() {

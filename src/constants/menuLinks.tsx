@@ -7,6 +7,7 @@ import { HiCube } from "react-icons/hi2";
 import { HiFolder } from "react-icons/hi";
 import { PiFoldersFill } from "react-icons/pi";
 import { BsFillCartCheckFill } from "react-icons/bs";
+import { MdReviews } from "react-icons/md";
 
 export const productLinks = (locale: string): AdminDashboardLink[] => {
   return [
@@ -112,6 +113,17 @@ export const AdminSubmenuLinks = (locale, { tDashboard }) => [
       {
         href: `/${locale}/admin/dashboard/orders`,
         linkName: "All Orders",
+      },
+    ],
+  },
+  {
+    menuName: tDashboard("Reviews"),
+    id: "reviews",
+    icon: <MdReviews />,
+    children: [
+      {
+        href: `/${locale}/admin/dashboard/reviews`,
+        linkName: "All Reviews",
       },
     ],
   },

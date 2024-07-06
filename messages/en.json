@@ -39,7 +39,11 @@
     "mobile": "Mobile",
     "order price": "Order price",
     "order status": "Order Status",
-    "Email": "Email"
+    "Email": "Email",
+    "Reviews": "Reviews",
+    "Product name": "Product name",
+    "review": "Review",
+    "stars": "Stars"
   },
   "Login": {
     "greeting": "Welcome to ORCA, our e-commerce website, Admin! We are thrilled to have you onboard. Here, you can manage products, track orders, and oversee the entire store efficiently. Thank you for being a crucial part of our team.",

@@ -22,7 +22,7 @@ import { Controller, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { HiChevronRight } from "react-icons/hi2";
 
-function EditSubCategoryPage() {
+function EditOrderPage() {
   const params = useParams();
 
   const {
@@ -260,4 +260,4 @@ function EditSubCategoryPage() {
   );
 }
 
-export default EditSubCategoryPage;
+export default EditOrderPage;

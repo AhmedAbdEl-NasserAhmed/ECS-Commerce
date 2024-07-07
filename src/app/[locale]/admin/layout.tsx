@@ -17,7 +17,7 @@ function AdminPage({ children }: Props) {
   return (
     <div className=" h-[100vh]">
       <ProtectedRoute>
-        <div className="grid grid-cols-[max-Content_5fr] bg-[#F5F5F5] rounded-2xl">
+        <div className="grid grid-cols-[max-Content_5fr] bg-white rounded-2xl">
           <Accordian>
             <Links
               expanded={expanded}

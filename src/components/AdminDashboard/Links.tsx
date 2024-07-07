@@ -36,9 +36,9 @@ function Links({ setExpand, expand, expanded, setExpanded }: Props) {
       onMouseEnter={isWidthHiger ? () => setExpand(false) : null}
       className={` ${
         expand ? "min-[100px]:w-0 sm:w-0 md:w-0 lg:w-[5vw]" : "lg:w-[16vw]"
-      }  flex border-2 transition-all duration-500 fixed w-[30rem] top-[calc(100vh-90vh)] h-screen z-[40] lg:sticky lg:top-0 group border-gray-100 bg-[#FFFFFF] flex-col overflow-hidden shadow-lg lg:shadow-none  `}
+      }  flex border-2 transition-all duration-500 fixed w-[30rem] top-[calc(100vh-90vh)] h-screen z-[40] lg:sticky lg:top-0 group border-gray-100 bg-white flex-col overflow-hidden shadow-lg lg:shadow-none  `}
     >
-      <Box className="bg-[#FFFFFF] border-b-2 border-gray-100 p-6 h-[9.8vh] flex justify-center items-center">
+      <Box className="bg-white border-b-2 border-gray-100 p-6 h-[9.8vh] flex justify-center items-center">
         <Link
           href="/"
           className="p-2 text-md sm:text-xl md:text-3xl flex gap-5 min-w-[16vw] justify-center items-center font-bold"
@@ -58,9 +58,9 @@ function Links({ setExpand, expand, expanded, setExpanded }: Props) {
       </Box>
       <Box>
         <div
-          className="flex items-center border-b-2 gap-4 border-gray-100 p-8 text-xl font-semibold"
+          className="flex items-center border-b-2 gap-4 border-gray-100 p-8 text-xl font-semibold "
           style={{
-            color: isDashboardActiveLink ? "#5b93ff" : "",
+            color: isDashboardActiveLink ? "#ed0534" : "",
           }}
         >
           <span className="text-4xl">

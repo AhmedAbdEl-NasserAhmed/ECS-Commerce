@@ -20,14 +20,12 @@ function Products() {
   if (isFetching) return <Spinner />;
 
   return (
-    <Box className=" flex flex-col gap-8 px-[4rem] py-[1.2rem] bg-[#FDFDFD] ">
+    <Box className=" flex flex-col gap-8 px-[4rem] py-[1.2rem] bg-white ">
       <Box className="h-[10vh] flex justify-between items-center">
         <Box className="flex flex-col gap-4">
-          <h2 className="text-4xl font-semibold  text-gray-600">
-            {t("Products List")}
-          </h2>
+          <h2 className="text-4xl font-semibold ">{t("Products List")}</h2>
           <Box className="flex items-center gap-4 text-[1.4rem]">
-            <Link className="text-blue-400" href="/">
+            <Link className="text-[#ed0534]" href="/">
               {tIndex("Home")}
             </Link>
             <span>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useGetSingleProductQuery } from "@/lib/features/api/productsApi";
+import { useGetSingleProductBySlugQuery } from "@/lib/features/api/productsApi";
 import { AdminProductProps } from "@/types/types";
 import Spinner from "@/ui/Spinner/Spinner";
 import { Box } from "@mui/material";
@@ -14,7 +14,7 @@ import { useGetCategoryByIdQuery } from "@/lib/features/api/categoriesApi";
 function ProductDetails() {
   const params = useParams();
 
-  const { data, isLoading } = useGetSingleProductQuery(params.slug);
+  const { data, isLoading } = useGetSingleProductBySlugQuery(params.slug);
 
   const [selectedProuct, setSelectedProduct] = useState<AdminProductProps>();
 
@@ -47,7 +47,7 @@ function ProductDetails() {
   return (
     <Box className="flex p-[4rem] flex-col gap-16 lg:flex-row ">
       <Box className="flex flex-col md:flex-row gap-10 h-[500px] w-full ">
-        <Box className="flex md:flex-col flex-row w-full md:w-1/4 h-1/2  gap-10 ">
+        <Box className="flex md:flex-col flex-row w-full md:w-1/4 h-1/2  gap-10 md:order-none order-1 ">
           {data?.data?.images.map((image, index) => {
             return (
               <Box

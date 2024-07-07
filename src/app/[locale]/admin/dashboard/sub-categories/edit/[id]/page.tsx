@@ -51,6 +51,7 @@ function EditSubCategoryPage() {
 
   const { data: subCategoryData, isFetching: isSubCategoryFetching } =
     useGetSubCategoryByIdQuery(params.id);
+
   useEffect(() => {
     if (subCategoryData?.data) {
       setValue("name", subCategoryData?.data?.name);

@@ -18,6 +18,7 @@ function BaseColorPicker({
   textLabel,
   name,
   isMulti,
+  existedColors,
   errors,
   disabled,
   onChange,
@@ -97,7 +98,8 @@ function BaseColorPicker({
     }),
   };
 
-  const [selectedColors, setSelectedColors] = useState([]);
+  const [selectedColors, setSelectedColors] = useState([...existedColors]);
+
   const [alreadySelectedColors, setAlreadySelectedColors] = useState([
     ...colorPickerDefaultColors,
   ]);
@@ -118,6 +120,9 @@ function BaseColorPicker({
     const alreadyDefaultColor = colorPickerDefaultColors.some(
       (defaultColor) => defaultColor.value === color.value
     );
+
+    console.log("alreadyDefaultColor", alreadyDefaultColor);
+
     setAlreadySelectedColors((state) => {
       if (alreadyDefaultColor) return state;
       return state.concat(color);

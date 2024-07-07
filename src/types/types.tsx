@@ -122,4 +122,9 @@ export interface BaseColorPickerProps {
   isMulti: boolean;
   disabled: boolean;
   onChange: (v) => void;
+  existedColors: {
+    value: string;
+    label: string;
+    color: string;
+  }[];
 }

@@ -1,6 +1,7 @@
 "use client";
 import { useGetAllCategoriesQuery } from "@/lib/features/api/categoriesApi";
 import MiniSpinner from "@/ui/MiniSpinner/MiniSpinner";
+import Spinner from "@/ui/Spinner/Spinner";
 import { Box } from "@mui/material";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
@@ -13,7 +14,7 @@ function ViewOrderPage() {
 
   const { data: AllCategories } = useGetAllCategoriesQuery("categories");
 
-  if (!AllCategories) return <MiniSpinner />;
+  if (!AllCategories) return <Spinner />;
   const noCategoriesYet = AllCategories?.data?.length === 0;
 
   if (noCategoriesYet) {

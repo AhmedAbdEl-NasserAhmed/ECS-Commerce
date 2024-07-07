@@ -9,6 +9,7 @@ import { useAddSubCategoryMutation } from "@/lib/features/api/subCategoriesApi";
 import { AdminSubCategory } from "@/types/types";
 import MiniSpinner from "@/ui/MiniSpinner/MiniSpinner";
 import SmartSearchInput from "@/ui/SmartSearchInput/SmartSearchInput";
+import Spinner from "@/ui/Spinner/Spinner";
 import CustomizedTextField from "@/ui/TextField/TextField";
 import { Box, Button } from "@mui/material";
 import { useTranslations } from "next-intl";
@@ -71,7 +72,7 @@ function AddSubCategoriesPage() {
       });
   }
 
-  if (!AllCategories) return <MiniSpinner />;
+  if (!AllCategories) return <Spinner />;
   const noCategoriesYet = AllCategories?.data?.length === 0;
 
   if (noCategoriesYet) {

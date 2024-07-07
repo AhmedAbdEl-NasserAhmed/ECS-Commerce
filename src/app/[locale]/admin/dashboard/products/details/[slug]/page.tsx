@@ -8,6 +8,8 @@ import Image from "next/image";
 import { useParams } from "next/navigation";
 import { ChangeEvent, useEffect, useState } from "react";
 import DropdownSizeOptions from "./DropdownSizeOptions";
+import { useGetAllSubCategoriesByCategoryQuery } from "@/lib/features/api/subCategoriesApi";
+import { useGetCategoryByIdQuery } from "@/lib/features/api/categoriesApi";
 
 function ProductDetails() {
   const params = useParams();
@@ -20,17 +22,27 @@ function ProductDetails() {
 
   const [imageIndex, setCurrentImageIndex] = useState<number>(0);
 
+  const { data: subCategories, isLoading: subCategoriesLoading } =
+    useGetAllSubCategoriesByCategoryQuery(selectedProuct?.category, {
+      skip: !selectedProuct?.category,
+    });
+
+  const { data: mainCategory, isLoading: mainCategoryLoading } =
+    useGetCategoryByIdQuery(selectedProuct?.category, {
+      skip: !selectedProuct?.category,
+    });
+
   useEffect(() => {
     setSelectedProduct(data?.data?.products[currentProductIndex]);
   }, [data?.data?.products, currentProductIndex]);
 
-  if (isLoading) return <Spinner />;
+  if (isLoading || subCategoriesLoading || mainCategoryLoading)
+    return <Spinner />;
 
   const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
     const selectedIndex = event.target.selectedIndex;
     setCurrentProductIndex(selectedIndex);
   };
-
 
   return (
     <Box className="flex p-[4rem] flex-col gap-16 lg:flex-row ">
@@ -68,6 +80,22 @@ function ProductDetails() {
       </Box>
       <Box className="flex flex-col gap-10 w-full ">
         <h2 className="text-4xl font-semibold">{selectedProuct?.name}</h2>
+        <Box className="flex items-center gap-4">
+          <Box>
+            <h2 className="font-semibold text-xl">
+              {mainCategory?.data?.name}
+            </h2>
+          </Box>
+          <Box className="flex items-center gap-4">
+            {subCategories?.data?.map((subCategory) => {
+              return (
+                <h2 key={subCategory["_id"]} className="font-medium text-xl">
+                  {subCategory.name}
+                </h2>
+              );
+            })}
+          </Box>
+        </Box>
         <q className="text-2xl text-gray-400 capitalize">
           {selectedProuct?.description}
         </q>

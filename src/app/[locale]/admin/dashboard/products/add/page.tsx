@@ -20,6 +20,7 @@ import MiniSpinner from "@/ui/MiniSpinner/MiniSpinner";
 import MultiChoiceSelectMenu from "@/ui/MultiChoiceSelectMenu/MultiChoiceSelectMenu";
 import SmartSearchInput from "@/ui/SmartSearchInput/SmartSearchInput";
 import SmartSearchMultipleInput from "@/ui/SmartSearchMultipleInput/SmartSearchMultipleInput";
+import Spinner from "@/ui/Spinner/Spinner";
 import CustomizedTextField from "@/ui/TextField/TextField";
 import { Box, Button } from "@mui/material";
 import { useTranslations } from "next-intl";
@@ -47,7 +48,6 @@ function AddProductPage() {
   const { locale } = useParams();
 
   const formData = watch();
-
 
   const [smartSeachvalue, setSmartSeachValue] = useState<{
     id: string;
@@ -167,7 +167,7 @@ function AddProductPage() {
       });
   }
 
-  if (!AllCategories) return <MiniSpinner />;
+  if (!AllCategories) return <Spinner />;
 
   const noCategoriesYet = AllCategories?.data?.length === 0;
 

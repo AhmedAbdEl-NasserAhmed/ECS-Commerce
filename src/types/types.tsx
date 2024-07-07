@@ -112,7 +112,7 @@ export interface SelecteMenuProps {
   colorsPicker?: boolean;
 }
 export interface BaseColorPickerProps {
-  field: object;
+  field: any;
   className?: string;
   placeholder: string;
   errors: object;

@@ -161,7 +161,6 @@ function AddProductPage() {
       .unwrap()
       .then(() => {
         toast.success("A new Product is added");
-        // router.push(`/${locale}/admin/dashboard/products`);
         reset();
       })
       .catch((err) => {

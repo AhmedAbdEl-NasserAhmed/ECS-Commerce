@@ -36,7 +36,7 @@ function ProductDetails() {
   return (
     <Box className="flex p-[4rem] flex-col gap-16 lg:flex-row ">
       <Box className="flex flex-col md:flex-row gap-10 h-[500px] w-full ">
-        <Box className="flex md:flex-col flex-row w-full md:w-1/4 h-3/5  gap-10 ">
+        <Box className="flex md:flex-col flex-row w-full md:w-1/4 h-1/2  gap-10 ">
           {data?.data?.images.map((image, index) => {
             return (
               <Box
@@ -48,7 +48,7 @@ function ProductDetails() {
                   src={image.url}
                   alt="img"
                   fill
-                  className="object-cover rounded-2xl opacity-40"
+                  className="object-contain rounded-2xl opacity-40"
                 />
               </Box>
             );
@@ -59,7 +59,7 @@ function ProductDetails() {
             src={data?.data?.images?.[imageIndex].url}
             alt="img"
             fill
-            className="object-cover rounded-2xl"
+            className="object-contain rounded-2xl"
           />
         </Box>
       </Box>
@@ -85,12 +85,12 @@ function ProductDetails() {
         </Box>
         <Box>
           <h2 className="text-2xl mb-5">Available Colors:</h2>
-          <div className="flex gap-8">
+          <div className="flex gap-4">
             {selectedProuct?.colors?.map((color) => {
               return (
                 <div
                   key={color.value}
-                  className="w-10 h-10"
+                  className="w-10 h-10 rounded"
                   style={{ backgroundColor: color.value }}
                 >
                   &nbsp;
@@ -105,7 +105,7 @@ function ProductDetails() {
             disabled
             className="w-full text-xl inline-block bg-white  p-4 border-2 border-gray-200"
             type="number"
-            value={selectedProuct?.quantity}
+            value={selectedProuct?.quantity || 0}
           />
         </Box>
       </Box>

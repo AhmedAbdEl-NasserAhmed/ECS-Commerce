@@ -103,6 +103,12 @@ function BaseColorPicker({
   ]);
 
   useEffect(() => {
+    if (field.value.length === 0) {
+      onSelectColorHandler(undefined, "clear");
+    }
+  }, [field.value]);
+
+  useEffect(() => {
     if (selectedColors.length > 0) {
       onChange(selectedColors);
     }

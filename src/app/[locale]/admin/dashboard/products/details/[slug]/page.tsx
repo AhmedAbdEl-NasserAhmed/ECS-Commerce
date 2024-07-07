@@ -16,19 +16,19 @@ function ProductDetails() {
 
   const [selectedProuct, setSelectedProduct] = useState<AdminProductProps>();
 
-  const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const [currentProductIndex, setCurrentProductIndex] = useState<number>(0);
 
   const [imageIndex, setCurrentImageIndex] = useState<number>(0);
 
   useEffect(() => {
-    setSelectedProduct(data?.data?.products[currentIndex]);
-  }, [data?.data?.products, currentIndex]);
+    setSelectedProduct(data?.data?.products[currentProductIndex]);
+  }, [data?.data?.products, currentProductIndex]);
 
   if (isLoading) return <Spinner />;
 
   const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
     const selectedIndex = event.target.selectedIndex;
-    setCurrentIndex(selectedIndex);
+    setCurrentProductIndex(selectedIndex);
   };
 
   console.log("selectedProuct", selectedProuct);
@@ -41,14 +41,18 @@ function ProductDetails() {
             return (
               <Box
                 onClick={() => setCurrentImageIndex(index)}
-                className="relative w-full h-full border-2 border-[#dcdbdb] cursor-pointer rounded-2xl transition-all duration-500"
+                className={`${
+                  index === imageIndex ? "opacity-70" : "opacity-40"
+                } ${
+                  index === imageIndex ? "border-slate-400" : ""
+                } relative w-full h-full border-2 border-[#dcdbdb] cursor-pointer rounded-2xl transition-all duration-500`}
                 key={image.id}
               >
                 <Image
                   src={image.url}
                   alt="img"
                   fill
-                  className="object-contain rounded-2xl opacity-40"
+                  className="object-contain rounded-2xl "
                 />
               </Box>
             );

@@ -10,10 +10,17 @@ import {
 } from "@tanstack/react-table";
 import BaseReactTableFilter from "./BaseReactTableFilter";
 import styles from "./BaseReactTable.module.scss";
-import MiniSpinner from "../MiniSpinner/MiniSpinner";
 import { useTranslations } from "next-intl";
 
-function BaseReactTable({ data, columns }: { data: any; columns: any }) {
+function BaseReactTable({
+  data,
+  columns,
+  enablePagination,
+}: {
+  data: any;
+  columns: any;
+  enablePagination: boolean;
+}) {
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,
@@ -119,7 +126,7 @@ function BaseReactTable({ data, columns }: { data: any; columns: any }) {
         </tbody>
       </table>
       <div className="h-2" />
-      {isValidData && (
+      {isValidData && enablePagination && (
         <div className={styles.pagination}>
           <div className={styles["pagination__controllers"]}>
             <button

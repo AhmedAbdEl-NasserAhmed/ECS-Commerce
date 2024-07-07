@@ -38,7 +38,7 @@ function Orders() {
           </h2>
           <Box className="flex items-center gap-4 text-[1.4rem]">
             <Link className="text-blue-400" href="/">
-            {t("Home")}
+              {t("Home")}
             </Link>
             <span>
               <HiChevronRight />

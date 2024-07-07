@@ -1,0 +1,26 @@
+.custom-select {
+  padding: 10px;
+  border: 2px solid #dcdbdb;
+  border-radius: 8px;
+  font-size: 16px;
+  background-color: white;
+  color: #333;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  width: 50%;
+}
+
+.custom-select:hover {
+  border-color: #b8b8b8;
+  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1); /* Subtle shadow on hover */
+}
+
+.custom-select:focus {
+  border-color: #b8b8b8;
+  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1); /* Subtle shadow on hover */
+}
+
+.custom-option {
+  padding: 1rem;
+  font-size: 1.2rem;
+  cursor: pointer;
+}

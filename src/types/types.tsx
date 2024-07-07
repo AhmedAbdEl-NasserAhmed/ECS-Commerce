@@ -37,9 +37,7 @@ export interface AdminProductProps {
   images: {
     [key: string]: File;
   };
-  // productCategory: string;
-  // productMainCategory: string;
-  // productType: string;
+  saleProduct?: number;
 }
 
 export interface CustomizedTextFieldProps {

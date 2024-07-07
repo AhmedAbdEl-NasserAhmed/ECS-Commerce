@@ -17,6 +17,8 @@ function Products() {
 
   const tIndex = useTranslations("Index");
 
+  if (isFetching) return <Spinner />;
+
   return (
     <Box className=" flex flex-col gap-8 px-[4rem] py-[1.2rem] bg-[#FDFDFD] ">
       <Box className="h-[10vh] flex justify-between items-center">

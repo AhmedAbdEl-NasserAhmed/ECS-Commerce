@@ -48,6 +48,8 @@ function AddProductPage() {
 
   const formData = watch();
 
+  console.log("form Data", formData);
+
   const [smartSeachvalue, setSmartSeachValue] = useState<{
     id: string;
     name: string;

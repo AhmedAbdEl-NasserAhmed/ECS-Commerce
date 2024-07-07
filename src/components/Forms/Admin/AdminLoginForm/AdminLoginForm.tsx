@@ -117,12 +117,6 @@ function AdminLoginForm() {
                       textlabel={formTranslation(input.textlabel)}
                       formerHelperStyles={input.formerHelperStyles}
                       field={field}
-                      // error={!!errors[input.name as keyof LoginFormData]}
-                      // helperText={
-                      //   errors[input.name as keyof LoginFormData]
-                      //     ? errors[input.name as keyof LoginFormData]?.message
-                      //     : ""
-                      // }
                       errors={errors}
                       type={input.type}
                       placeholder={formTranslation(input.placeholder)}

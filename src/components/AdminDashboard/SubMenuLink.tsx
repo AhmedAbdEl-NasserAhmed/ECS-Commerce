@@ -40,7 +40,7 @@ function SubMenuLink({
       sx={{ border: "none", boxShadow: "none" }}
     >
       <AccordionSummary
-        className="flex items-center justify-between text-xl font-semibold"
+        className="flex items-center justify-between text-xl font-semibold "
         aria-controls="panel1bh-content"
         id="panel1bh-header"
       >
@@ -71,7 +71,7 @@ function SubMenuLink({
           className="w-2 h-3/4 transition-opacity duration-500 rounded-2xl absolute bg-[#5b93ff] left-0 top-4"
         ></span>
       </AccordionSummary>
-      <AccordionDetails className="flex flex-col justify-center gap-7 bg-gray-200 rounded-md !pl-6">
+      <AccordionDetails className="flex flex-col justify-center gap-7 bg-gray-200 rounded-md pl-6 text-center">
         {menuLinks.map((link) => {
           return (
             <div key={link.linkName} className="p-2 text-xl text-gray-700 ">

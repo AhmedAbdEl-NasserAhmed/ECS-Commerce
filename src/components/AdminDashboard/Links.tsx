@@ -57,14 +57,15 @@ function Links({ setExpand, expand, expanded, setExpanded }: Props) {
           <span className="text-4xl">
             <HiOutlineViewGrid />
           </span>
-          <p
+          <Link
+            href={`/${locale}/admin/dashboard`}
             className={` 
               ${expand ? "opacity-0" : "opacity-1"}
               ${expand ? "translate-x-[40rem]" : "translate-x-0"}
                 group-hover:block group-hover:opacity-100 group-hover:translate-x-0 text-gray-700 transition-opacity transition-opacity-500 transition-transform-500 ease-in-out`}
           >
             {tDashboard("Dashboard")}
-          </p>
+          </Link>
         </div>
 
         {AdminSubmenuLinks(locale, {

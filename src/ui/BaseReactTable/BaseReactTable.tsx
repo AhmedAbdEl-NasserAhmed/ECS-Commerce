@@ -23,8 +23,6 @@ function BaseReactTable({ data, columns }: { data: any; columns: any }) {
 
   const isValidData = data && data?.length > 0;
 
-  console.log("isValidData", isValidData);
-
   const table = useReactTable({
     columns,
     data,

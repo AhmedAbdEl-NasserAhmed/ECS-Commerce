@@ -31,7 +31,6 @@ function ProductDetails() {
     setCurrentIndex(selectedIndex);
   };
 
-  console.log("selectedProuct", selectedProuct);
 
   return (
     <Box className="flex p-[4rem] flex-col gap-16 lg:flex-row ">

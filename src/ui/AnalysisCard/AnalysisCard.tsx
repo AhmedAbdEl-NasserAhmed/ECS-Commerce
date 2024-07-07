@@ -10,7 +10,9 @@ const AnalysisCard = (props) => {
         {props.applyDateFilter && <div>DATE FILTER</div>}
       </header>
       <hr />
-      <div className="p-6">{props.children}</div>
+      <div className="p-6" style={{ overflowX: "scroll" }}>
+        {props.children}
+      </div>
     </div>
   );
 };

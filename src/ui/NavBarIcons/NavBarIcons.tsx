@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Cart from "../Cart/Cart";
 import ProfileMenu from "../ProfileMenu/ProfileMenu";
+import useClickOutside from "@/hooks/useClickOutside";
 
 function NavIcons() {
   const router = useRouter();
@@ -12,6 +13,8 @@ function NavIcons() {
   const [isProfileOpen, setIsProfileOpen] = useState<boolean>(false);
 
   const [isCartOpen, setIsCartOpen] = useState<boolean>(false);
+
+  const ref = useClickOutside({ close: setIsCartOpen, value: false });
 
   const isLoggedIn = false;
 
@@ -23,7 +26,7 @@ function NavIcons() {
   }
 
   return (
-    <ul className=" relative flex items-center justify-between gap-4 xl:gap-6">
+    <ul className=" relative flex items-center justify-between gap-4 xl:gap-6 ">
       <li onClick={handleLoginClick}>
         <Image
           src="/profile.png"
@@ -43,7 +46,11 @@ function NavIcons() {
           className="cursor-pointer"
         />
       </li>
-      <li className="relative" onClick={() => setIsCartOpen((open) => !open)}>
+      <li
+        ref={ref}
+        className="relative"
+        onClick={() => setIsCartOpen((open) => !open)}
+      >
         <Image
           src="/cart.png"
           alt="cart"
@@ -51,7 +58,7 @@ function NavIcons() {
           height={22}
           className="cursor-pointer"
         />
-        <span className="absolute bg-lama top-[-16px] w-5 h-5 flex justify-center items-center rounded-full text-white text-[12px] left-4">
+        <span className="absolute w-6 h-6  rounded-full text-sm bg-red-500 -top-3 z-10 flex items-center justify-center text-white  -right-3">
           2
         </span>
       </li>

@@ -18,7 +18,7 @@ function LandingPageMenu() {
         className="cursor-pointer"
       />
       {opens && (
-        <ul className="fixed h-screen w-full gap-8 bg-black z-10 text-white text-3xl flex flex-col items-center justify-center left-0 top-0 ">
+        <ul className="fixed h-screen w-full gap-8 bg-black z-[1000] text-white text-3xl flex flex-col items-center justify-center left-0 top-0 ">
           <li>
             <Link href="">Home Page</Link>
           </li>

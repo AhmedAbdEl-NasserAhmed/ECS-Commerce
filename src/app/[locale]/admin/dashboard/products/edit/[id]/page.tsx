@@ -10,6 +10,7 @@ import {
   useGetSingleProductByIDQuery,
   useGetProductByNameQuery,
   useGetSingleProductBySlugQuery,
+  useUpdateSingleProductMutation,
 } from "@/lib/features/api/productsApi";
 import { useGetSubCategoryQuery } from "@/lib/features/api/subCategoriesApi";
 import { getAddProductServerData } from "@/lib/helpers";
@@ -27,25 +28,17 @@ import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import toast from "react-hot-toast";
 import { HiChevronRight } from "react-icons/hi2";
 
 function EditProduct() {
-  const {
-    handleSubmit,
-    control,
-    reset,
-    watch,
-    setValue,
-
-    formState: { errors },
-  } = useForm<AdminProductProps>({
-    mode: "onChange",
-  });
-
   const params = useParams();
+
+  const { locale } = useParams();
+
+  const router = useRouter();
 
   const { data: productDetails, isLoading } = useGetSingleProductByIDQuery(
     params.id
@@ -53,13 +46,34 @@ function EditProduct() {
 
   const currentProduct = productDetails?.data;
 
-  console.log("currentProduct", currentProduct);
-
-  const { locale } = useParams();
+  const {
+    handleSubmit,
+    control,
+    reset,
+    watch,
+    setValue,
+    formState: { errors },
+  } = useForm<AdminProductProps>({
+    mode: "onChange",
+    defaultValues: {
+      quantity: currentProduct?.quantity,
+    },
+  });
 
   const formData = watch();
 
   console.log("Form Data", formData);
+
+  const [updateProductFn, updateProductResponse] =
+    useUpdateSingleProductMutation();
+
+  const productNameDefaultValue: {
+    name: string;
+  } = useMemo(() => {
+    return {
+      name: currentProduct ? currentProduct?.name : "",
+    };
+  }, [currentProduct]);
 
   const [smartSeachvalue, setSmartSeachValue] = useState<{
     id: string;
@@ -96,28 +110,12 @@ function EditProduct() {
     { skip: !productNameDebounceValue }
   );
 
-  const [addProductFn, productResponse] = useAddProductMutation();
-
-  const [selectedProduct, setSelectedProduct] = useState({
-    name: "",
-    images: [],
-  });
-
   useEffect(() => {
-    setSelectedProduct(
-      productName?.find((product) => {
-        return product.name === formData["name"];
-      })
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formData["name"], productName]);
-
-  useEffect(() => {
-    if (selectedProduct?.images) {
+    if (currentProduct?.images) {
       const images = {};
-      if (selectedProduct.images.length >= 1) {
-        for (let i = 0; i < selectedProduct.images.length; i++) {
-          const image = selectedProduct?.images?.[i];
+      if (currentProduct.images.length >= 1) {
+        for (let i = 0; i < currentProduct.images.length; i++) {
+          const image = currentProduct?.images?.[i];
           if (image) {
             images[`image-${i + 1}`] = {
               url: image?.url,
@@ -133,13 +131,13 @@ function EditProduct() {
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedProduct?.images, setValue]);
+  }, [currentProduct?.images, setValue]);
 
-  useEffect(() => {
-    if (!selectedProduct?.name) {
-      setValue("name", productSearchName.name);
-    }
-  }, [productSearchName.name, selectedProduct?.name, setValue]);
+  // useEffect(() => {
+  //   if (productSearchName?.name !== "" && productSearchName?.name.length > 4) {
+  //     setValue("name", productSearchName.name);
+  //   }
+  // }, [productSearchName.name, setValue]);
 
   useEffect(() => {
     const discount: number =
@@ -157,29 +155,44 @@ function EditProduct() {
   const t = useTranslations("Dashboard");
 
   function onSubmit(data: AdminProductProps) {
-    const myData = { ...data, category: smartSeachvalue["_id"] };
+    const myData = { ...data, category: currentProduct?.category["_id"] };
+
+    console.log("myData", myData);
 
     const serverData = getAddProductServerData(myData);
 
-    const formDataImagesLength = Object.values(data.images)[0];
+    // const formDataImagesLength = Object.values(data.images)[0];
 
-    if (!formDataImagesLength) {
-      toast.error("You Have to add The main image");
-      return;
-    }
+    // if (!formDataImagesLength) {
+    //   toast.error("You Have to add The main image");
+    //   return;
+    // }
 
-    addProductFn(serverData)
+    updateProductFn({ id: currentProduct?.["_id"], data: serverData })
       .unwrap()
       .then(() => {
-        toast.success("A new Product is added");
-        reset();
+        toast.success("Product is updated");
+        router.push(`/${locale}/admin/dashboard/products`);
+
+        reset({
+          name: "",
+          price: 0,
+          description: "",
+          colors: [],
+          images: {},
+          subCategory: "",
+          quantity: 0,
+          size: [],
+          discount: 0,
+        });
       })
       .catch((err) => {
         toast.error(err.message);
       });
   }
 
-  if (!AllCategories) return <Spinner />;
+  if (!AllCategories || !productDetails || !currentProduct.colors)
+    return <Spinner />;
 
   const noCategoriesYet = AllCategories?.data?.length === 0;
 
@@ -266,13 +279,14 @@ function EditProduct() {
                 render={({ field }) => (
                   <SmartSearchInput
                     errors={errors}
-                    disabled={productResponse.isLoading}
-                    shouldReset={productResponse.isSuccess}
+                    disabled={updateProductResponse.isLoading}
+                    shouldReset={updateProductResponse.isSuccess}
                     getSmartSearchValue={setSmartSeachValue}
                     textLabel={t("Main Category")}
                     data={mainCategory?.data}
                     placeholder={t("main category placeholder")}
                     name={field.name}
+                    value={currentProduct?.category}
                     onChange={field.onChange}
                   />
                 )}
@@ -283,8 +297,9 @@ function EditProduct() {
                 defaultValue={""}
                 render={({ field }) => (
                   <SmartSearchMultipleInput
-                    shouldReset={productResponse.isSuccess}
-                    disabled={productResponse.isLoading}
+                    existedItems={currentProduct?.subCategory}
+                    shouldReset={updateProductResponse.isSuccess}
+                    disabled={updateProductResponse.isLoading}
                     getSmartSearchValue={setSmartSeachSubCategoryValue}
                     textLabel={t("Sub Category")}
                     data={subCategory?.data}
@@ -298,50 +313,47 @@ function EditProduct() {
                 <Controller
                   name={"name"}
                   control={control}
-                  defaultValue={""}
-                  rules={{ required: "This field is required" }}
+                  defaultValue={currentProduct?.name}
                   render={({ field }) => (
-                    <SmartSearchInput
-                      errors={errors}
-                      disabled={productResponse.isLoading}
-                      shouldReset={productResponse.isSuccess}
-                      getSmartSearchValue={setProductSearchName}
-                      textLabel={t("Product Name")}
-                      data={productName}
+                    <CustomizedTextField
+                      inputProps={{ readOnly: true }}
+                      disabled={updateProductResponse.isLoading}
+                      textLabelClass={"font-semibold text-xl"}
                       placeholder={t("Product Name")}
-                      name={field.name}
-                      onChange={field.onChange}
+                      textlabel={t("Product Name")}
+                      field={field}
+                      formerHelperStyles={{ style: { fontSize: "1rem" } }}
+                      errors={errors}
+                      type={"text"}
+                      variant={"outlined"}
+                      size={"small"}
                     />
+                    // <SmartSearchInput
+                    //   errors={errors}
+                    //   disabled={updateProductResponse.isLoading}
+                    //   shouldReset={updateProductResponse.isSuccess}
+                    //   getSmartSearchValue={setProductSearchName}
+                    //   textLabel={t("Product Name")}
+                    //   data={[]}
+                    //   placeholder={t("Product Name")}
+                    //   name={field.name}
+                    //   onChange={field.onChange}
+                    //   value={productNameDefaultValue}
+                    // />
                   )}
                 />
               </Box>
               <Box className="relative col-span-full">
                 <Controller
                   name={"colors"}
-                  defaultValue={[
-                    {
-                      value: "YellowGreen",
-                      label: "YellowGreen",
-                      color: "#9ACD32",
-                    },
-                    { value: "Yellow", label: "Yellow", color: "#FFFF00" },
-                    { value: "Black", label: "Black", color: "#000000" },
-                  ]}
+                  defaultValue={currentProduct?.colors}
                   control={control}
                   rules={{ required: "This field is required" }}
                   render={({ field }) => (
                     <BaseColorPicker
-                      existedColors={[
-                        {
-                          value: "YellowGreen",
-                          label: "YellowGreen",
-                          color: "#9ACD32",
-                        },
-                        { value: "Yellow", label: "Yellow", color: "#FFFF00" },
-                        { value: "Black", label: "Black", color: "#000000" },
-                      ]}
+                      existedColors={currentProduct?.colors}
                       onChange={field.onChange}
-                      disabled={productResponse.isLoading}
+                      disabled={updateProductResponse.isLoading}
                       isMulti={true}
                       textLabelClass={"font-semibold text-xl"}
                       placeholder={t("Product Colors")}
@@ -356,11 +368,12 @@ function EditProduct() {
               <Controller
                 name={"size"}
                 control={control}
-                defaultValue={[]}
+                defaultValue={currentProduct?.size}
                 rules={{ required: "This field is required" }}
                 render={({ field }) => (
                   <MultiChoiceSelectMenu
-                    disabled={productResponse.isLoading}
+                    disabled={updateProductResponse.isLoading}
+                    readOnly={!!currentProduct?.size}
                     isMulti={false}
                     textLabelClass={"font-semibold text-xl"}
                     placeholder={t("Product Sizes")}
@@ -382,7 +395,7 @@ function EditProduct() {
               <Controller
                 name={"quantity"}
                 control={control}
-                defaultValue={0}
+                defaultValue={currentProduct?.quantity}
                 rules={{
                   required: "This field is required",
                   min: {
@@ -392,7 +405,7 @@ function EditProduct() {
                 }}
                 render={({ field }) => (
                   <CustomizedTextField
-                    disabled={productResponse.isLoading}
+                    disabled={updateProductResponse.isLoading}
                     textLabelClass={"font-semibold text-xl"}
                     placeholder={t("Product Quantity")}
                     textlabel={t("Product Quantity")}
@@ -408,7 +421,7 @@ function EditProduct() {
               <Controller
                 name={"price"}
                 control={control}
-                defaultValue={0}
+                defaultValue={currentProduct?.price}
                 rules={{
                   required: "This field is required",
                   min: {
@@ -418,7 +431,7 @@ function EditProduct() {
                 }}
                 render={({ field }) => (
                   <CustomizedTextField
-                    disabled={productResponse.isLoading}
+                    disabled={updateProductResponse.isLoading}
                     textLabelClass={"font-semibold text-xl"}
                     placeholder={t("Product Price")}
                     textlabel={t("Product Price")}
@@ -434,7 +447,7 @@ function EditProduct() {
               <Controller
                 name={"discount"}
                 control={control}
-                defaultValue={0}
+                defaultValue={currentProduct?.discount}
                 rules={{
                   min: {
                     value: 0,
@@ -447,7 +460,7 @@ function EditProduct() {
                 }}
                 render={({ field }) => (
                   <CustomizedTextField
-                    disabled={productResponse.isLoading}
+                    disabled={updateProductResponse.isLoading}
                     textLabelClass={"font-semibold text-xl"}
                     placeholder={t("Product Discount %")}
                     textlabel={t("Product Discount %")}
@@ -469,7 +482,7 @@ function EditProduct() {
                 }}
                 render={({ field }) => (
                   <CustomizedTextField
-                    disabled={productResponse.isLoading}
+                    disabled={updateProductResponse.isLoading}
                     textLabelClass={"font-semibold text-xl"}
                     placeholder={t("Product Sale Price")}
                     textlabel={t("Product Sale Price")}
@@ -488,10 +501,10 @@ function EditProduct() {
                   name={"description"}
                   control={control}
                   rules={{ required: "This field is required" }}
-                  defaultValue=""
+                  defaultValue={currentProduct?.description}
                   render={({ field }) => (
                     <CustomizedTextField
-                      disabled={productResponse.isLoading}
+                      disabled={updateProductResponse.isLoading}
                       textLabelClass={"font-semibold text-xl"}
                       placeholder={t("Product Description")}
                       textlabel={t("Product Description")}
@@ -518,7 +531,7 @@ function EditProduct() {
           </Box>
           <Box className="grow text-center">
             <AddProductImage
-              disabled={productResponse.isLoading}
+              disabled={updateProductResponse.isLoading}
               control={control}
               formData={formData}
               imagesNumber={3}
@@ -528,7 +541,7 @@ function EditProduct() {
         </Box>
         <Box>
           <Button
-            disabled={productResponse.isLoading}
+            disabled={updateProductResponse.isLoading}
             sx={{
               paddingInline: "1.6rem",
               paddingBlock: "1rem",
@@ -545,7 +558,11 @@ function EditProduct() {
             variant="contained"
             size="large"
           >
-            {productResponse.isLoading ? <MiniSpinner /> : t("Edit Product")}
+            {updateProductResponse.isLoading ? (
+              <MiniSpinner />
+            ) : (
+              t("Edit Product")
+            )}
           </Button>
         </Box>
       </Box>

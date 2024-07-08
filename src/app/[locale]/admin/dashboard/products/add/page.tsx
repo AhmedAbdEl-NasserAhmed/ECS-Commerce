@@ -271,6 +271,7 @@ function AddProductPage() {
                 defaultValue={""}
                 render={({ field }) => (
                   <SmartSearchMultipleInput
+                    existedItems={[]}
                     shouldReset={productResponse.isSuccess}
                     disabled={productResponse.isLoading}
                     getSmartSearchValue={setSmartSeachSubCategoryValue}
@@ -311,6 +312,7 @@ function AddProductPage() {
                   rules={{ required: "This field is required" }}
                   render={({ field }) => (
                     <BaseColorPicker
+                      existedColors={[]}
                       onChange={field.onChange}
                       disabled={productResponse.isLoading}
                       isMulti={true}

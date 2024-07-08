@@ -121,8 +121,6 @@ function BaseColorPicker({
       (defaultColor) => defaultColor.value === color.value
     );
 
-    console.log("alreadyDefaultColor", alreadyDefaultColor);
-
     setAlreadySelectedColors((state) => {
       if (alreadyDefaultColor) return state;
       return state.concat(color);

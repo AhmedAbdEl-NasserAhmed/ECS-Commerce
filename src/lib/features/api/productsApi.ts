@@ -56,6 +56,15 @@ const productsApi = createApi({
       providesTags: ["PRODUCTS", "CATEGORIES", "SUB-CATEGORIES"],
     }),
 
+    updateSingleProduct: builder.mutation({
+      query: ({ id, data }) => ({
+        url: `products/${id}`,
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: ["PRODUCTS", "CATEGORIES", "SUB-CATEGORIES"],
+    }),
+
     deleteSingleProduct: builder.mutation({
       query: (id) => ({
         url: `products/${id}`,
@@ -73,6 +82,7 @@ export const {
   useDeleteSingleProductMutation,
   useGetSingleProductBySlugQuery,
   useGetSingleProductByIDQuery,
+  useUpdateSingleProductMutation,
 } = productsApi;
 
 export default productsApi;

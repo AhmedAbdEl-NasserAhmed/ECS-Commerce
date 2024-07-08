@@ -8,6 +8,8 @@ export enum SmartSearchActions {
   DELETE_ID = "DELETE_ID",
   RESET = "RESET",
   RESET_INPUT_VALUE = "RESET_INPUT_VALUE",
+  DEFAULT_VALUE = "DEFAULT_VALUE",
+  DEFAULT_IDS_VALUE = "DEFAULT_IDS_VALUE",
 }
 
 interface State {
@@ -42,7 +44,7 @@ export const reducerFn = function (state = initialState, action) {
       ...state,
       multipleItems: [
         ...state.multipleItems,
-        { name: action.payload.name, value: action.payload.value },
+        { name: action.payload.name, ["_id"]: action.payload.value },
       ],
     };
   }
@@ -62,6 +64,20 @@ export const reducerFn = function (state = initialState, action) {
       multipleItemsId: state.multipleItemsId.filter(
         (item) => item !== action.payload.value
       ),
+    };
+  }
+
+  if (action.type === SmartSearchActions.DEFAULT_VALUE) {
+    return {
+      ...state,
+      multipleItems: [...action.payload.value],
+    };
+  }
+
+  if (action.type === SmartSearchActions.DEFAULT_IDS_VALUE) {
+    return {
+      ...state,
+      multipleItemsId: action.payload.value,
     };
   }
 

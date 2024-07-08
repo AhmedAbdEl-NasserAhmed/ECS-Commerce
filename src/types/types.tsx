@@ -110,6 +110,7 @@ export interface SelecteMenuProps {
   isMulti: boolean;
   disabled: boolean;
   colorsPicker?: boolean;
+  readOnly?: boolean;
 }
 export interface BaseColorPickerProps {
   field: any;

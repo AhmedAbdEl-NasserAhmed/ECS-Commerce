@@ -42,8 +42,6 @@ function AddProductPage() {
     formState: { errors },
   } = useForm<AdminProductProps>({ mode: "onChange" });
 
-  const router = useRouter();
-
   const { locale } = useParams();
 
   const formData = watch();
@@ -205,7 +203,7 @@ function AddProductPage() {
             {t("Add Product")}
           </h2>
           <Box className="flex items-center gap-4 text-[1.4rem]">
-            <Link className="text-blue-400" href="/">
+            <Link className="text-[#ed0534]" href="/">
               {tIndex("Home")}
             </Link>
             <span>
@@ -220,7 +218,7 @@ function AddProductPage() {
             paddingBlock: "1rem",
             fontSize: "1.3rem",
             borderRadius: "5px",
-            backgroundColor: "#5b93ff",
+            backgroundColor: "#ed0534",
             boxShadow: "none",
             "&:hover": {
               backgroundColor: "black",
@@ -511,7 +509,7 @@ function AddProductPage() {
               paddingBlock: "1rem",
               fontSize: "1.3rem",
               borderRadius: "5px",
-              backgroundColor: "#5b93ff",
+              backgroundColor: "#ed0534",
               boxShadow: "none",
               "&:hover": {
                 backgroundColor: "black",

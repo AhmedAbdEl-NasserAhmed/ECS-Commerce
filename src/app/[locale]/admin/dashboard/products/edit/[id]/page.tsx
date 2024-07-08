@@ -6,10 +6,7 @@ import {
   useGetCategoryQuery,
 } from "@/lib/features/api/categoriesApi";
 import {
-  useAddProductMutation,
   useGetSingleProductByIDQuery,
-  useGetProductByNameQuery,
-  useGetSingleProductBySlugQuery,
   useUpdateSingleProductMutation,
 } from "@/lib/features/api/productsApi";
 import { useGetSubCategoryQuery } from "@/lib/features/api/subCategoriesApi";
@@ -55,12 +52,11 @@ function EditProduct() {
     formState: { errors },
   } = useForm<AdminProductProps>({
     mode: "onChange",
-    defaultValues: {
-      quantity: currentProduct?.quantity,
-    },
   });
 
   const formData = watch();
+
+  console.log("formData", formData);
 
   const [updateProductFn, updateProductResponse] =
     useUpdateSingleProductMutation();
@@ -322,10 +318,10 @@ function EditProduct() {
                 <Controller
                   name={"name"}
                   control={control}
+                  rules={{ required: "This field is required" }}
                   defaultValue={currentProduct?.name}
                   render={({ field }) => (
                     <CustomizedTextField
-                      inputProps={{ readOnly: true }}
                       disabled={updateProductResponse.isLoading}
                       textLabelClass={"font-semibold text-xl"}
                       placeholder={t("Product Name")}

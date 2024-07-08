@@ -13,6 +13,7 @@ import {
   useGetSubCategoryByIdQuery,
 } from "@/lib/features/api/subCategoriesApi";
 import { useGetCategoryByIdQuery } from "@/lib/features/api/categoriesApi";
+import SubCategoriesList from "./SubCategoriesList";
 
 function ProductDetails() {
   const params = useParams();
@@ -25,12 +26,12 @@ function ProductDetails() {
 
   const [imageIndex, setCurrentImageIndex] = useState<number>(0);
 
-  const [subCategoriesData, setSubCategoriesData] = useState([]);
+  // const { data: subCategories, isLoading: subCategoriesLoading } =
+  //   useGetSubCategoryByIdQuery(selectedProduct?.category, {
+  //     skip: !selectedProduct?.category,
+  //   });
 
-  const { data: subCategories, isLoading: subCategoriesLoading } =
-    useGetSubCategoryByIdQuery(selectedProduct?.category, {
-      skip: !selectedProduct?.category,
-    });
+  // console.log("selectedProduct", selectedProduct);
 
   const { data: mainCategory, isLoading: mainCategoryLoading } =
     useGetCategoryByIdQuery(selectedProduct?.category, {
@@ -41,8 +42,7 @@ function ProductDetails() {
     setSelectedProduct(data?.data?.products[currentProductIndex]);
   }, [data?.data?.products, currentProductIndex]);
 
-  if (isLoading || subCategoriesLoading || mainCategoryLoading)
-    return <Spinner />;
+  if (isLoading || mainCategoryLoading) return <Spinner />;
 
   const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
     const selectedIndex = event.target.selectedIndex;
@@ -92,13 +92,9 @@ function ProductDetails() {
             </h2>
           </Box>
           <Box className="flex items-center gap-4">
-            {subCategories?.data?.map((subCategory) => {
-              return (
-                <h2 key={subCategory["_id"]} className="font-medium text-xl">
-                  {subCategory.name}
-                </h2>
-              );
-            })}
+            <SubCategoriesList
+              subCategoriesIds={selectedProduct?.subCategory}
+            />
           </Box>
         </Box>
         <q className="text-2xl text-gray-400 capitalize">

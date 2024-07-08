@@ -60,7 +60,7 @@ function DashBoardPageg() {
 
   return (
     <div className="px-[4rem] py-[1.2rem] mt-5">
-      <FlexWrapper className="gap-9 h-44">
+      <FlexWrapper className="gap-9">
         {data.map((dataItem) => {
           return (
             <Box
@@ -92,6 +92,12 @@ function DashBoardPageg() {
         </AnalysisCard>
         <AnalysisCard title="Products">
           <PieChart
+            sx={{
+              width: "100%",
+              ".MuiChart-root": {
+                width: "100%",
+              },
+            }}
             series={[
               {
                 data: [

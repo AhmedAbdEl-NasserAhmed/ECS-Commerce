@@ -1,5 +1,4 @@
 import Spinner from "@/ui/Spinner/Spinner";
-import { Box } from "@mui/material";
 
 function loading() {
   return (

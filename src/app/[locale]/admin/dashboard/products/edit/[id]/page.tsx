@@ -62,18 +62,16 @@ function EditProduct() {
 
   const formData = watch();
 
-  console.log("Form Data", formData);
-
   const [updateProductFn, updateProductResponse] =
     useUpdateSingleProductMutation();
 
-  const productNameDefaultValue: {
-    name: string;
-  } = useMemo(() => {
-    return {
-      name: currentProduct ? currentProduct?.name : "",
-    };
-  }, [currentProduct]);
+  // const productNameDefaultValue: {
+  //   name: string;
+  // } = useMemo(() => {
+  //   return {
+  //     name: currentProduct ? currentProduct?.name : "",
+  //   };
+  // }, [currentProduct]);
 
   const [smartSeachvalue, setSmartSeachValue] = useState<{
     id: string;
@@ -95,20 +93,28 @@ function EditProduct() {
   );
 
   const { data: subCategory } = useGetSubCategoryQuery(
-    subCategorydebounceValue,
+    {
+      letter: subCategorydebounceValue,
+      categoryId: smartSeachvalue["_id"],
+    },
     { skip: !subCategorydebounceValue }
   );
 
-  const [productSearchName, setProductSearchName] = useState<{
-    name: string;
-  }>({ name: "" });
+  // const { data: subCategory } = useGetSubCategoryQuery(
+  //   subCategorydebounceValue,
+  //   { skip: !subCategorydebounceValue }
+  // );
 
-  const productNameDebounceValue = useDebounceHook(productSearchName?.name);
+  // const [productSearchName, setProductSearchName] = useState<{
+  //   name: string;
+  // }>({ name: "" });
 
-  const { data: productName } = useGetProductByNameQuery(
-    productNameDebounceValue,
-    { skip: !productNameDebounceValue }
-  );
+  // const productNameDebounceValue = useDebounceHook(productSearchName?.name);
+
+  // const { data: productName } = useGetProductByNameQuery(
+  //   productNameDebounceValue,
+  //   { skip: !productNameDebounceValue }
+  // );
 
   useEffect(() => {
     if (currentProduct?.images) {
@@ -155,25 +161,22 @@ function EditProduct() {
   const t = useTranslations("Dashboard");
 
   function onSubmit(data: AdminProductProps) {
-    const myData = { ...data, category: currentProduct?.category["_id"] };
-
-    console.log("myData", myData);
+    const myData = { ...data, category: smartSeachvalue["_id"] };
 
     const serverData = getAddProductServerData(myData);
 
-    // const formDataImagesLength = Object.values(data.images)[0];
+    const formDataImagesLength = Object.values(data.images)[0];
 
-    // if (!formDataImagesLength) {
-    //   toast.error("You Have to add The main image");
-    //   return;
-    // }
+    if (!formDataImagesLength) {
+      toast.error("You Have to add The main image");
+      return;
+    }
 
     updateProductFn({ id: currentProduct?.["_id"], data: serverData })
       .unwrap()
       .then(() => {
         toast.success("Product is updated");
         router.push(`/${locale}/admin/dashboard/products`);
-
         reset({
           name: "",
           price: 0,
@@ -298,8 +301,14 @@ function EditProduct() {
                 render={({ field }) => (
                   <SmartSearchMultipleInput
                     existedItems={currentProduct?.subCategory}
-                    shouldReset={updateProductResponse.isSuccess}
-                    disabled={updateProductResponse.isLoading}
+                    shouldReset={
+                      updateProductResponse.isSuccess ||
+                      (formData.category === "" && smartSeachvalue.name === "")
+                    }
+                    disabled={
+                      updateProductResponse.isLoading ||
+                      smartSeachvalue.name === ""
+                    }
                     getSmartSearchValue={setSmartSeachSubCategoryValue}
                     textLabel={t("Sub Category")}
                     data={subCategory?.data}

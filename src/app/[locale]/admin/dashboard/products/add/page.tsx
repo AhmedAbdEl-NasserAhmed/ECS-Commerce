@@ -12,7 +12,6 @@ import {
 } from "@/lib/features/api/productsApi";
 import { useGetSubCategoryQuery } from "@/lib/features/api/subCategoriesApi";
 import { getAddProductServerData } from "@/lib/helpers";
-import { useAppSelector } from "@/lib/hooks";
 import { AdminProductProps } from "@/types/types";
 import AddProductImage from "@/ui/AddProductImage/AddProductImage";
 import BaseColorPicker from "@/ui/BaseColorPicker/BaseColorPicker";
@@ -69,8 +68,8 @@ function AddProductPage() {
   );
 
   const { data: subCategory } = useGetSubCategoryQuery(
-    subCategorydebounceValue,
-    { skip: !subCategorydebounceValue }
+    { letter: subCategorydebounceValue, categoryId: smartSeachvalue["_id"] },
+    { skip: !subCategorydebounceValue || !smartSeachvalue["_id"] }
   );
 
   const [productSearchName, setProductSearchName] = useState<{
@@ -272,8 +271,13 @@ function AddProductPage() {
                 render={({ field }) => (
                   <SmartSearchMultipleInput
                     existedItems={[]}
-                    shouldReset={productResponse.isSuccess}
-                    disabled={productResponse.isLoading}
+                    disabled={
+                      productResponse.isLoading || !smartSeachvalue["_id"]
+                    }
+                    shouldReset={
+                      productResponse.isSuccess ||
+                      (formData.category === "" && smartSeachvalue.name === "")
+                    }
                     getSmartSearchValue={setSmartSeachSubCategoryValue}
                     textLabel={t("Sub Category")}
                     data={subCategory?.data}

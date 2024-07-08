@@ -8,7 +8,10 @@ import Image from "next/image";
 import { useParams } from "next/navigation";
 import { ChangeEvent, useEffect, useState } from "react";
 import DropdownSizeOptions from "./DropdownSizeOptions";
-import { useGetAllSubCategoriesByCategoryQuery } from "@/lib/features/api/subCategoriesApi";
+import {
+  useGetAllSubCategoriesByCategoryQuery,
+  useGetSubCategoryByIdQuery,
+} from "@/lib/features/api/subCategoriesApi";
 import { useGetCategoryByIdQuery } from "@/lib/features/api/categoriesApi";
 
 function ProductDetails() {
@@ -16,20 +19,22 @@ function ProductDetails() {
 
   const { data, isLoading } = useGetSingleProductBySlugQuery(params.slug);
 
-  const [selectedProuct, setSelectedProduct] = useState<AdminProductProps>();
+  const [selectedProduct, setSelectedProduct] = useState<AdminProductProps>();
 
   const [currentProductIndex, setCurrentProductIndex] = useState<number>(0);
 
   const [imageIndex, setCurrentImageIndex] = useState<number>(0);
 
+  const [subCategoriesData, setSubCategoriesData] = useState([]);
+
   const { data: subCategories, isLoading: subCategoriesLoading } =
-    useGetAllSubCategoriesByCategoryQuery(selectedProuct?.category, {
-      skip: !selectedProuct?.category,
+    useGetSubCategoryByIdQuery(selectedProduct?.category, {
+      skip: !selectedProduct?.category,
     });
 
   const { data: mainCategory, isLoading: mainCategoryLoading } =
-    useGetCategoryByIdQuery(selectedProuct?.category, {
-      skip: !selectedProuct?.category,
+    useGetCategoryByIdQuery(selectedProduct?.category, {
+      skip: !selectedProduct?.category,
     });
 
   useEffect(() => {
@@ -79,7 +84,7 @@ function ProductDetails() {
         </Box>
       </Box>
       <Box className="flex flex-col gap-10 w-full ">
-        <h2 className="text-4xl font-semibold">{selectedProuct?.name}</h2>
+        <h2 className="text-4xl font-semibold">{selectedProduct?.name}</h2>
         <Box className="flex items-center gap-4">
           <Box>
             <h2 className="font-semibold text-xl">
@@ -97,14 +102,14 @@ function ProductDetails() {
           </Box>
         </Box>
         <q className="text-2xl text-gray-400 capitalize">
-          {selectedProuct?.description}
+          {selectedProduct?.description}
         </q>
         <Box className="flex items-center gap-5">
           <h2 className="text-3xl font-semibold ">
-            {selectedProuct?.saleProduct} EGP
+            {selectedProduct?.saleProduct} EGP
           </h2>
           <h2 className="text-3xl font-semibold text-gray-400 line-through">
-            {selectedProuct?.price} EGP
+            {selectedProduct?.price} EGP
           </h2>
         </Box>
         <Box className="w-full">
@@ -117,7 +122,7 @@ function ProductDetails() {
         <Box>
           <h2 className="text-2xl mb-5">Available Colors:</h2>
           <div className="flex gap-4">
-            {selectedProuct?.colors?.map((color) => {
+            {selectedProduct?.colors?.map((color) => {
               return (
                 <div
                   key={color.value}
@@ -136,7 +141,7 @@ function ProductDetails() {
             disabled
             className="w-full text-xl inline-block bg-white  p-4 border-2 border-gray-200"
             type="number"
-            value={selectedProuct?.quantity || 0}
+            value={selectedProduct?.quantity || 0}
           />
         </Box>
       </Box>

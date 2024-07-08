@@ -18,13 +18,17 @@ const subCategoriesApi = createApi({
       }),
       invalidatesTags: ["SUB-CATEGORY"],
     }),
+
     getSubCategory: builder.query({
-      query: (letter) => ({
-        url: `subCategories/filtered?letters=${letter}`,
+      query: ({ letter, categoryId }) => ({
+        url: `subCategories/filtered?letters=${letter}&category=${categoryId}`,
         method: "GET",
       }),
       providesTags: ["SUB-CATEGORY", "CATEGORIES"],
     }),
+
+    // url: `subCategories/filtered?letters=${letter}&category=${categoryId}`,
+
     getAllSubCategories: builder.query({
       query: () => ({
         url: `subCategories`,
@@ -32,6 +36,7 @@ const subCategoriesApi = createApi({
       }),
       providesTags: ["SUB-CATEGORY", "CATEGORIES"],
     }),
+
     getAllSubCategoriesByCategory: builder.query({
       query: (categoryId) => ({
         url: `subCategories?category=${categoryId}`,
@@ -39,6 +44,7 @@ const subCategoriesApi = createApi({
       }),
       providesTags: ["SUB-CATEGORY", "CATEGORIES"],
     }),
+
     getSubCategoryById: builder.query({
       query: (id) => ({
         url: `subCategories/${id}`,
@@ -46,6 +52,7 @@ const subCategoriesApi = createApi({
       }),
       providesTags: ["SUB-CATEGORY", "CATEGORIES"],
     }),
+
     editSubCategory: builder.mutation({
       query: ({ id, data }) => ({
         url: `subCategories/${id}`,
@@ -54,6 +61,7 @@ const subCategoriesApi = createApi({
       }),
       invalidatesTags: ["SUB-CATEGORY"],
     }),
+
     deleteSubCategory: builder.mutation({
       query: (id) => ({
         url: `subCategories/${id}`,

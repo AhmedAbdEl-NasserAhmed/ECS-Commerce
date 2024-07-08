@@ -20,7 +20,7 @@ export interface AdminProductProps {
   quantity: number;
   price: number;
   salePrice: number;
-  subCategory: string;
+  subCategory: string[] | string;
   discount: number;
   category: string;
   description: string;

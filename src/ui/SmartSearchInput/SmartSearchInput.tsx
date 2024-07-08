@@ -47,12 +47,6 @@ function SmartSearchInput({
   }, [smartSearchState.inputValue, getSmartSearchValue]);
 
   useEffect(() => {
-    if (value) {
-      onSelectItem(value);
-    }
-  }, [value]);
-
-  useEffect(() => {
     if (
       data?.length > 0 &&
       smartSearchState.inputValue !== "" &&
@@ -71,11 +65,16 @@ function SmartSearchInput({
   const onSelectItem = (data) => {
     onChange(data.name);
     action(SmartSearchActions.SELECT_ITEM, { value: data.name });
-    // action(SmartSearchActions.RESET_VALUE);
     if (getSmartSearchValue) {
       getSmartSearchValue(data);
     }
   };
+
+  useEffect(() => {
+    if (value) {
+      onSelectItem(value);
+    }
+  }, [value]);
 
   return (
     <div className="relative w-full">

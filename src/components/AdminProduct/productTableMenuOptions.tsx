@@ -6,6 +6,7 @@ import { HiEye, HiMiniPencilSquare, HiTrash } from "react-icons/hi2";
 import DeleteWindow from "@/ui/DeleteWindow/DeleteWindow";
 import { useParams, useRouter } from "next/navigation";
 import { useDeleteSingleProductMutation } from "@/lib/features/api/productsApi";
+import ProductEdit from "@/app/[locale]/admin/dashboard/products/edit/[id]/page";
 
 function ProductTableMenuOptions({ product }) {
   const router = useRouter();
@@ -35,9 +36,16 @@ function ProductTableMenuOptions({ product }) {
             View
           </Menus.Button>
 
-          <Modal.Open opens="edit">
-            <Menus.Button icon={<HiMiniPencilSquare />}>Edit</Menus.Button>
-          </Modal.Open>
+          <Menus.Button
+            onClick={() => {
+              router.push(
+                `/${locale}/admin/dashboard/products/edit/${product["_id"]}`
+              );
+            }}
+            icon={<HiMiniPencilSquare />}
+          >
+            Edit
+          </Menus.Button>
 
           <Modal.Open opens="delete">
             <Menus.Button icon={<HiTrash />}>Delete</Menus.Button>

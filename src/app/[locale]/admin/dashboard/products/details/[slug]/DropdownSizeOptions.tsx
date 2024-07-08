@@ -4,7 +4,7 @@ import styles from "./DropdownSizeOptions.module.scss";
 function DropdownSizeOptions({ handleChange, data }) {
   return (
     <select onChange={handleChange} className={styles["custom-select"]}>
-      {data.map((product, index) => {
+      {data?.map((product, index) => {
         return (
           <option
             className={styles["custom-option"]}

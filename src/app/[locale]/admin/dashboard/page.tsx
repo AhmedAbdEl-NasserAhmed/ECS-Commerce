@@ -55,8 +55,9 @@ const _data = {
 
 const isFetching = false;
 
-function page() {
+function DashBoardPageg() {
   const t = useTranslations("Dashboard");
+
   return (
     <div className="px-[4rem] py-[1.2rem] mt-5">
       <FlexWrapper className="gap-9">
@@ -169,4 +170,4 @@ function page() {
   );
 }
 
-export default page;
+export default DashBoardPageg;

@@ -6,9 +6,8 @@ import {
   useGetCategoryQuery,
 } from "@/lib/features/api/categoriesApi";
 import {
-  useAddProductMutation,
-  useGetAllProductsQuery,
-  useGetProductByNameQuery,
+  useGetSingleProductByIDQuery,
+  useUpdateSingleProductMutation,
 } from "@/lib/features/api/productsApi";
 import { useGetSubCategoryQuery } from "@/lib/features/api/subCategoriesApi";
 import { getAddProductServerData } from "@/lib/helpers";
@@ -26,25 +25,49 @@ import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import toast from "react-hot-toast";
 import { HiChevronRight } from "react-icons/hi2";
 
-function AddProductPage() {
+function EditProduct() {
+  const params = useParams();
+
+  const { locale } = useParams();
+
+  const router = useRouter();
+
+  const { data: productDetails, isLoading } = useGetSingleProductByIDQuery(
+    params.id
+  );
+
+  const currentProduct = productDetails?.data;
+
   const {
     handleSubmit,
     control,
     reset,
     watch,
     setValue,
-
     formState: { errors },
-  } = useForm<AdminProductProps>({ mode: "onChange" });
-
-  const { locale } = useParams();
+  } = useForm<AdminProductProps>({
+    mode: "onChange",
+  });
 
   const formData = watch();
+
+  console.log("formData", formData);
+
+  const [updateProductFn, updateProductResponse] =
+    useUpdateSingleProductMutation();
+
+  // const productNameDefaultValue: {
+  //   name: string;
+  // } = useMemo(() => {
+  //   return {
+  //     name: currentProduct ? currentProduct?.name : "",
+  //   };
+  // }, [currentProduct]);
 
   const [smartSeachvalue, setSmartSeachValue] = useState<{
     id: string;
@@ -66,43 +89,35 @@ function AddProductPage() {
   );
 
   const { data: subCategory } = useGetSubCategoryQuery(
-    { letter: subCategorydebounceValue, categoryId: smartSeachvalue["_id"] },
-    { skip: !subCategorydebounceValue || !smartSeachvalue["_id"] }
+    {
+      letter: subCategorydebounceValue,
+      categoryId: smartSeachvalue["_id"],
+    },
+    { skip: !subCategorydebounceValue }
   );
 
-  const [productSearchName, setProductSearchName] = useState<{
-    name: string;
-  }>({ name: "" });
+  // const { data: subCategory } = useGetSubCategoryQuery(
+  //   subCategorydebounceValue,
+  //   { skip: !subCategorydebounceValue }
+  // );
 
-  const productNameDebounceValue = useDebounceHook(productSearchName?.name);
+  // const [productSearchName, setProductSearchName] = useState<{
+  //   name: string;
+  // }>({ name: "" });
 
-  const { data: productName } = useGetProductByNameQuery(
-    productNameDebounceValue,
-    { skip: !productNameDebounceValue }
-  );
+  // const productNameDebounceValue = useDebounceHook(productSearchName?.name);
 
-  const [addProductFn, productResponse] = useAddProductMutation();
-
-  const [selectedProduct, setSelectedProduct] = useState({
-    name: "",
-    images: [],
-  });
+  // const { data: productName } = useGetProductByNameQuery(
+  //   productNameDebounceValue,
+  //   { skip: !productNameDebounceValue }
+  // );
 
   useEffect(() => {
-    setSelectedProduct(
-      productName?.find((product) => {
-        return product.name === formData["name"];
-      })
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formData["name"], productName]);
-
-  useEffect(() => {
-    if (selectedProduct?.images) {
+    if (currentProduct?.images) {
       const images = {};
-      if (selectedProduct.images.length >= 1) {
-        for (let i = 0; i < selectedProduct.images.length; i++) {
-          const image = selectedProduct?.images?.[i];
+      if (currentProduct.images.length >= 1) {
+        for (let i = 0; i < currentProduct.images.length; i++) {
+          const image = currentProduct?.images?.[i];
           if (image) {
             images[`image-${i + 1}`] = {
               url: image?.url,
@@ -118,13 +133,13 @@ function AddProductPage() {
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedProduct?.images, setValue]);
+  }, [currentProduct?.images, setValue]);
 
-  useEffect(() => {
-    if (!selectedProduct?.name) {
-      setValue("name", productSearchName.name);
-    }
-  }, [productSearchName.name, selectedProduct?.name, setValue]);
+  // useEffect(() => {
+  //   if (productSearchName?.name !== "" && productSearchName?.name.length > 4) {
+  //     setValue("name", productSearchName.name);
+  //   }
+  // }, [productSearchName.name, setValue]);
 
   useEffect(() => {
     const discount: number =
@@ -153,18 +168,30 @@ function AddProductPage() {
       return;
     }
 
-    addProductFn(serverData)
+    updateProductFn({ id: currentProduct?.["_id"], data: serverData })
       .unwrap()
       .then(() => {
-        toast.success("A new Product is added");
-        reset();
+        toast.success("Product is updated");
+        router.push(`/${locale}/admin/dashboard/products`);
+        reset({
+          name: "",
+          price: 0,
+          description: "",
+          colors: [],
+          images: {},
+          subCategory: "",
+          quantity: 0,
+          size: [],
+          discount: 0,
+        });
       })
       .catch((err) => {
         toast.error(err.message);
       });
   }
 
-  if (!AllCategories) return <Spinner />;
+  if (!AllCategories || !productDetails || !currentProduct.colors)
+    return <Spinner />;
 
   const noCategoriesYet = AllCategories?.data?.length === 0;
 
@@ -200,7 +227,7 @@ function AddProductPage() {
       <Box className="h-[10vh] flex justify-between items-center">
         <Box className="flex flex-col gap-4">
           <h2 className="text-4xl font-semibold  text-gray-600">
-            {t("Add Product")}
+            {t("Edit Product")}
           </h2>
           <Box className="flex items-center gap-4 text-[1.4rem]">
             <Link className="text-[#ed0534]" href="/">
@@ -221,7 +248,7 @@ function AddProductPage() {
             backgroundColor: "#ed0534",
             boxShadow: "none",
             "&:hover": {
-              backgroundColor: "black",
+              backgroundColor: "gray",
               boxShadow: "none",
             },
           }}
@@ -234,7 +261,7 @@ function AddProductPage() {
       </Box>
       <Box className="relative grow flex flex-col gap-8 bg-white rounded-2xl border-2 p-10 border-slate-100 shadow-md">
         <Box className="mb-4">
-          <h2 className="text-3xl font-semibold mb-5">{t("Add Product")}</h2>
+          <h2 className="text-3xl font-semibold mb-5">{t("Edit Product")}</h2>
           <span className=" absolute left-0 block h-[1px] w-full bg-gray-200">
             &nbsp;
           </span>
@@ -251,13 +278,14 @@ function AddProductPage() {
                 render={({ field }) => (
                   <SmartSearchInput
                     errors={errors}
-                    disabled={productResponse.isLoading}
-                    shouldReset={productResponse.isSuccess}
+                    disabled={updateProductResponse.isLoading}
+                    shouldReset={updateProductResponse.isSuccess}
                     getSmartSearchValue={setSmartSeachValue}
                     textLabel={t("Main Category")}
                     data={mainCategory?.data}
                     placeholder={t("main category placeholder")}
                     name={field.name}
+                    value={currentProduct?.category}
                     onChange={field.onChange}
                   />
                 )}
@@ -268,13 +296,14 @@ function AddProductPage() {
                 defaultValue={""}
                 render={({ field }) => (
                   <SmartSearchMultipleInput
-                    existedItems={[]}
-                    disabled={
-                      productResponse.isLoading || !smartSeachvalue["_id"]
-                    }
+                    existedItems={currentProduct?.subCategory}
                     shouldReset={
-                      productResponse.isSuccess ||
+                      updateProductResponse.isSuccess ||
                       (formData.category === "" && smartSeachvalue.name === "")
+                    }
+                    disabled={
+                      updateProductResponse.isLoading ||
+                      smartSeachvalue.name === ""
                     }
                     getSmartSearchValue={setSmartSeachSubCategoryValue}
                     textLabel={t("Sub Category")}
@@ -289,34 +318,47 @@ function AddProductPage() {
                 <Controller
                   name={"name"}
                   control={control}
-                  defaultValue={""}
                   rules={{ required: "This field is required" }}
+                  defaultValue={currentProduct?.name}
                   render={({ field }) => (
-                    <SmartSearchInput
-                      errors={errors}
-                      disabled={productResponse.isLoading}
-                      shouldReset={productResponse.isSuccess}
-                      getSmartSearchValue={setProductSearchName}
-                      textLabel={t("Product Name")}
-                      data={productName}
+                    <CustomizedTextField
+                      disabled={updateProductResponse.isLoading}
+                      textLabelClass={"font-semibold text-xl"}
                       placeholder={t("Product Name")}
-                      name={field.name}
-                      onChange={field.onChange}
+                      textlabel={t("Product Name")}
+                      field={field}
+                      formerHelperStyles={{ style: { fontSize: "1rem" } }}
+                      errors={errors}
+                      type={"text"}
+                      variant={"outlined"}
+                      size={"small"}
                     />
+                    // <SmartSearchInput
+                    //   errors={errors}
+                    //   disabled={updateProductResponse.isLoading}
+                    //   shouldReset={updateProductResponse.isSuccess}
+                    //   getSmartSearchValue={setProductSearchName}
+                    //   textLabel={t("Product Name")}
+                    //   data={[]}
+                    //   placeholder={t("Product Name")}
+                    //   name={field.name}
+                    //   onChange={field.onChange}
+                    //   value={productNameDefaultValue}
+                    // />
                   )}
                 />
               </Box>
               <Box className="relative col-span-full">
                 <Controller
                   name={"colors"}
-                  defaultValue={[]}
+                  defaultValue={currentProduct?.colors}
                   control={control}
                   rules={{ required: "This field is required" }}
                   render={({ field }) => (
                     <BaseColorPicker
-                      existedColors={[]}
+                      existedColors={currentProduct?.colors}
                       onChange={field.onChange}
-                      disabled={productResponse.isLoading}
+                      disabled={updateProductResponse.isLoading}
                       isMulti={true}
                       textLabelClass={"font-semibold text-xl"}
                       placeholder={t("Product Colors")}
@@ -331,11 +373,12 @@ function AddProductPage() {
               <Controller
                 name={"size"}
                 control={control}
-                defaultValue={[]}
+                defaultValue={currentProduct?.size}
                 rules={{ required: "This field is required" }}
                 render={({ field }) => (
                   <MultiChoiceSelectMenu
-                    disabled={productResponse.isLoading}
+                    disabled={updateProductResponse.isLoading}
+                    readOnly={!!currentProduct?.size}
                     isMulti={false}
                     textLabelClass={"font-semibold text-xl"}
                     placeholder={t("Product Sizes")}
@@ -357,7 +400,7 @@ function AddProductPage() {
               <Controller
                 name={"quantity"}
                 control={control}
-                defaultValue={0}
+                defaultValue={currentProduct?.quantity}
                 rules={{
                   required: "This field is required",
                   min: {
@@ -367,7 +410,7 @@ function AddProductPage() {
                 }}
                 render={({ field }) => (
                   <CustomizedTextField
-                    disabled={productResponse.isLoading}
+                    disabled={updateProductResponse.isLoading}
                     textLabelClass={"font-semibold text-xl"}
                     placeholder={t("Product Quantity")}
                     textlabel={t("Product Quantity")}
@@ -383,7 +426,7 @@ function AddProductPage() {
               <Controller
                 name={"price"}
                 control={control}
-                defaultValue={0}
+                defaultValue={currentProduct?.price}
                 rules={{
                   required: "This field is required",
                   min: {
@@ -393,7 +436,7 @@ function AddProductPage() {
                 }}
                 render={({ field }) => (
                   <CustomizedTextField
-                    disabled={productResponse.isLoading}
+                    disabled={updateProductResponse.isLoading}
                     textLabelClass={"font-semibold text-xl"}
                     placeholder={t("Product Price")}
                     textlabel={t("Product Price")}
@@ -409,7 +452,7 @@ function AddProductPage() {
               <Controller
                 name={"discount"}
                 control={control}
-                defaultValue={0}
+                defaultValue={currentProduct?.discount}
                 rules={{
                   min: {
                     value: 0,
@@ -422,7 +465,7 @@ function AddProductPage() {
                 }}
                 render={({ field }) => (
                   <CustomizedTextField
-                    disabled={productResponse.isLoading}
+                    disabled={updateProductResponse.isLoading}
                     textLabelClass={"font-semibold text-xl"}
                     placeholder={t("Product Discount %")}
                     textlabel={t("Product Discount %")}
@@ -444,7 +487,7 @@ function AddProductPage() {
                 }}
                 render={({ field }) => (
                   <CustomizedTextField
-                    disabled={productResponse.isLoading}
+                    disabled={updateProductResponse.isLoading}
                     textLabelClass={"font-semibold text-xl"}
                     placeholder={t("Product Sale Price")}
                     textlabel={t("Product Sale Price")}
@@ -463,10 +506,10 @@ function AddProductPage() {
                   name={"description"}
                   control={control}
                   rules={{ required: "This field is required" }}
-                  defaultValue=""
+                  defaultValue={currentProduct?.description}
                   render={({ field }) => (
                     <CustomizedTextField
-                      disabled={productResponse.isLoading}
+                      disabled={updateProductResponse.isLoading}
                       textLabelClass={"font-semibold text-xl"}
                       placeholder={t("Product Description")}
                       textlabel={t("Product Description")}
@@ -493,7 +536,7 @@ function AddProductPage() {
           </Box>
           <Box className="grow text-center">
             <AddProductImage
-              disabled={productResponse.isLoading}
+              disabled={updateProductResponse.isLoading}
               control={control}
               formData={formData}
               imagesNumber={3}
@@ -503,7 +546,7 @@ function AddProductPage() {
         </Box>
         <Box>
           <Button
-            disabled={productResponse.isLoading}
+            disabled={updateProductResponse.isLoading}
             sx={{
               paddingInline: "1.6rem",
               paddingBlock: "1rem",
@@ -520,7 +563,11 @@ function AddProductPage() {
             variant="contained"
             size="large"
           >
-            {productResponse.isLoading ? <MiniSpinner /> : t("Add Product")}
+            {updateProductResponse.isLoading ? (
+              <MiniSpinner />
+            ) : (
+              t("Edit Product")
+            )}
           </Button>
         </Box>
       </Box>
@@ -528,4 +575,4 @@ function AddProductPage() {
   );
 }
 
-export default AddProductPage;
+export default EditProduct;

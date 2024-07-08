@@ -20,7 +20,7 @@ export interface AdminProductProps {
   quantity: number;
   price: number;
   salePrice: number;
-  subCategory: string;
+  subCategory: string[] | string;
   discount: number;
   category: string;
   description: string;
@@ -110,6 +110,7 @@ export interface SelecteMenuProps {
   isMulti: boolean;
   disabled: boolean;
   colorsPicker?: boolean;
+  readOnly?: boolean;
 }
 export interface BaseColorPickerProps {
   field: any;
@@ -122,4 +123,9 @@ export interface BaseColorPickerProps {
   isMulti: boolean;
   disabled: boolean;
   onChange: (v) => void;
+  existedColors: {
+    value: string;
+    label: string;
+    color: string;
+  }[];
 }

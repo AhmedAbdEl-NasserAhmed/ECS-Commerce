@@ -40,12 +40,29 @@ const productsApi = createApi({
       },
     }),
 
-    getSingleProduct: builder.query({
+    getSingleProductBySlug: builder.query({
       query: (slug) => ({
-        url: `products/${slug}`,
+        url: `products/slug/${slug}`,
         method: "GET",
       }),
       providesTags: ["PRODUCTS", "CATEGORIES", "SUB-CATEGORIES"],
+    }),
+
+    getSingleProductByID: builder.query({
+      query: (id) => ({
+        url: `products/id/${id}`,
+        method: "GET",
+      }),
+      providesTags: ["PRODUCTS", "CATEGORIES", "SUB-CATEGORIES"],
+    }),
+
+    updateSingleProduct: builder.mutation({
+      query: ({ id, data }) => ({
+        url: `products/${id}`,
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: ["PRODUCTS", "CATEGORIES", "SUB-CATEGORIES"],
     }),
 
     deleteSingleProduct: builder.mutation({
@@ -63,7 +80,9 @@ export const {
   useGetAllProductsQuery,
   useAddProductMutation,
   useDeleteSingleProductMutation,
-  useGetSingleProductQuery,
+  useGetSingleProductBySlugQuery,
+  useGetSingleProductByIDQuery,
+  useUpdateSingleProductMutation,
 } = productsApi;
 
 export default productsApi;

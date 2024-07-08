@@ -1,6 +1,6 @@
 import { TextField } from "@mui/material";
 import styles from "./SmartSearchMultipleInput.module.scss";
-import { useEffect, useReducer } from "react";
+import { useEffect, useReducer, useState } from "react";
 import {
   initialState,
   reducerFn,
@@ -18,6 +18,7 @@ function SmartSearchMultipleInput({
   getSmartSearchValue,
   disabled,
   shouldReset,
+  existedItems,
 }) {
   const [smartSearchMultipleState, dispatch] = useReducer(
     reducerFn,
@@ -27,6 +28,17 @@ function SmartSearchMultipleInput({
   function action(type, payload = null) {
     dispatch({ type, payload });
   }
+
+  useEffect(() => {
+    if (existedItems?.length > 0) {
+      action(SmartSearchActions.DEFAULT_VALUE, { value: existedItems });
+      action(SmartSearchActions.DEFAULT_IDS_VALUE, {
+        value: existedItems
+          .filter((item) => item["_id"])
+          .map((item) => item["_id"]),
+      });
+    }
+  }, [existedItems]);
 
   useEffect(() => {
     if (shouldReset) {
@@ -133,10 +145,12 @@ function SmartSearchMultipleInput({
             <li
               style={{
                 backgroundColor:
-                  smartSearchMultipleState.multipleItemsId.includes(item["_id"])
+                  smartSearchMultipleState.multipleItemsId?.includes(
+                    item["_id"]
+                  )
                     ? "#dcdbdb "
                     : "",
-                color: smartSearchMultipleState.multipleItemsId.includes(
+                color: smartSearchMultipleState.multipleItemsId?.includes(
                   item["_id"]
                 )
                   ? "white"
@@ -144,7 +158,7 @@ function SmartSearchMultipleInput({
               }}
               key={item.name}
               onClick={() =>
-                smartSearchMultipleState.multipleItemsId.includes(item["_id"])
+                smartSearchMultipleState.multipleItemsId?.includes(item["_id"])
                   ? null
                   : hanldeAdditem(item)
               }
@@ -169,7 +183,7 @@ function SmartSearchMultipleInput({
                         value: item.name,
                       });
                       action(SmartSearchActions.DELETE_ID, {
-                        value: item.value,
+                        value: item["_id"],
                       });
                     }
               }

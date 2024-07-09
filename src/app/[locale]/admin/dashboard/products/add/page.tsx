@@ -11,7 +11,7 @@ import {
   useGetProductByNameQuery,
 } from "@/lib/features/api/productsApi";
 import { useGetSubCategoryQuery } from "@/lib/features/api/subCategoriesApi";
-import { getAddProductServerData } from "@/lib/helpers";
+import { getAddProductServerData, getSumFrom } from "@/lib/helpers";
 import { AdminProductProps } from "@/types/types";
 import AddProductImage from "@/ui/AddProductImage/AddProductImage";
 import BaseColorPicker from "@/ui/BaseColorPicker/BaseColorPicker";
@@ -21,7 +21,7 @@ import SmartSearchInput from "@/ui/SmartSearchInput/SmartSearchInput";
 import SmartSearchMultipleInput from "@/ui/SmartSearchMultipleInput/SmartSearchMultipleInput";
 import Spinner from "@/ui/Spinner/Spinner";
 import CustomizedTextField from "@/ui/TextField/TextField";
-import { Box, Button } from "@mui/material";
+import { Box, Button, Stack } from "@mui/material";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -40,11 +40,13 @@ function AddProductPage() {
     setValue,
 
     formState: { errors },
-  } = useForm<AdminProductProps>({ mode: "onChange" });
+  } = useForm<AdminProductProps>({ mode: "onChange", shouldUnregister: true });
 
   const { locale } = useParams();
 
   const formData = watch();
+
+  console.log("formData", formData);
 
   const [smartSeachvalue, setSmartSeachValue] = useState<{
     id: string;
@@ -146,6 +148,8 @@ function AddProductPage() {
 
     const serverData = getAddProductServerData(myData);
 
+    console.log("serverData", serverData);
+
     const formDataImagesLength = Object.values(data.images)[0];
 
     if (!formDataImagesLength) {
@@ -153,15 +157,15 @@ function AddProductPage() {
       return;
     }
 
-    addProductFn(serverData)
-      .unwrap()
-      .then(() => {
-        toast.success("A new Product is added");
-        reset();
-      })
-      .catch((err) => {
-        toast.error(err.message);
-      });
+    // addProductFn(serverData)
+    //   .unwrap()
+    //   .then(() => {
+    //     toast.success("A new Product is added");
+    //     reset();
+    //   })
+    //   .catch((err) => {
+    //     toast.error(err.message);
+    //   });
   }
 
   if (!AllCategories) return <Spinner />;
@@ -191,6 +195,13 @@ function AddProductPage() {
       </Box>
     );
   }
+
+  const getDynamicColorsValue = () => {
+    if (!formData[`colors-quantity`]) return 0;
+    return formData[`colors-quantity`]
+      ? getSumFrom(formData[`colors-quantity`])
+      : 0;
+  };
 
   return (
     <form
@@ -328,6 +339,57 @@ function AddProductPage() {
                   )}
                 />
               </Box>
+              {/* // */}
+              {/* <Box className="relative col-span-full flex gap-2 items-center">
+                {formData.colors?.map((color) => {
+                  return (
+                    <Stack
+                      direction={"row"}
+                      alignItems={"center"}
+                      gap={1}
+                      key={color.label}
+                    >
+                      <Box
+                        sx={{
+                          width: "30px",
+                          height: "30px",
+                          background: color.value,
+                          borderRadius: "50%",
+                          border: "1px solid #000",
+                        }}
+                      ></Box>
+                      <Controller
+                        name={`colors-quantity.${color.label}`}
+                        control={control}
+                        defaultValue={0}
+                        rules={{
+                          required: "This field is required",
+                          min: {
+                            value: 1,
+                            message: "",
+                          },
+                        }}
+                        render={({ field }) => (
+                          <CustomizedTextField
+                            disabled={productResponse.isLoading}
+                            textLabelClass={"font-semibold text-xl"}
+                            placeholder={t("quantity")}
+                            field={field}
+                            formerHelperStyles={{ style: { fontSize: "1rem" } }}
+                            errors={errors}
+                            type={"number"}
+                            variant={"outlined"}
+                            size={"small"}
+                            mainContainerSx={{
+                              width: "8rem",
+                            }}
+                          />
+                        )}
+                      />
+                    </Stack>
+                  );
+                })}
+              </Box> */}
               <Controller
                 name={"size"}
                 control={control}
@@ -354,31 +416,19 @@ function AddProductPage() {
                   />
                 )}
               />
-              <Controller
+              <CustomizedTextField
                 name={"quantity"}
-                control={control}
-                defaultValue={0}
-                rules={{
-                  required: "This field is required",
-                  min: {
-                    value: 1,
-                    message: "Quantity should be more than 1",
-                  },
-                }}
-                render={({ field }) => (
-                  <CustomizedTextField
-                    disabled={productResponse.isLoading}
-                    textLabelClass={"font-semibold text-xl"}
-                    placeholder={t("Product Quantity")}
-                    textlabel={t("Product Quantity")}
-                    field={field}
-                    formerHelperStyles={{ style: { fontSize: "1rem" } }}
-                    errors={errors}
-                    type={"number"}
-                    variant={"outlined"}
-                    size={"small"}
-                  />
-                )}
+                disabled={true}
+                inputProps={{ readOnly: true, disabled: true }}
+                textLabelClass={"font-semibold text-xl"}
+                placeholder={t("Product Quantity")}
+                textlabel={t("Product Quantity")}
+                value={getDynamicColorsValue()}
+                formerHelperStyles={{ style: { fontSize: "1rem" } }}
+                errors={errors}
+                type={"number"}
+                variant={"outlined"}
+                size={"small"}
               />
               <Controller
                 name={"price"}

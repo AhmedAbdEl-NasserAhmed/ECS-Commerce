@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 export const getAddProductServerData = (data: AdminProductProps) => {
   const formData = new FormData();
 
-  const excludeKeys = ["images", "subCategory"];
+  const excludeKeys = ["images", "subCategory", "colors"];
 
   for (let key in data) {
     if (excludeKeys.includes(key)) continue;
@@ -16,6 +16,21 @@ export const getAddProductServerData = (data: AdminProductProps) => {
       formData.append(key, JSON.stringify(data[key]));
     }
   }
+
+  data.colors.forEach((color) => {
+    formData.append(
+      "colors",
+      JSON.stringify({
+        ...color,
+        quantity: `colors-quantity.${color.label}`,
+      })
+    );
+  });
+
+  formData.append(
+    "quantity",
+    JSON.stringify(getSumFrom(data[`colors-quantity`]))
+  );
 
   Object.keys(data.images).forEach((imageKey) => {
     if (data["images"]?.[imageKey]) {
@@ -33,6 +48,12 @@ export const getAddProductServerData = (data: AdminProductProps) => {
 
   return formData;
 };
+
+export function getSumFrom(objectData) {
+  return Object.keys(objectData)
+    .map((key) => +objectData[key])
+    .reduce((acc, cur) => acc + cur, 0);
+}
 
 export function getUniqueValues(arr, value) {
   const uniqueItems = new Set();

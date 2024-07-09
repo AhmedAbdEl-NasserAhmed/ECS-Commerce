@@ -15,6 +15,8 @@ export interface AdminSubCategory {
   description: string;
   category: string;
 }
+
+export type extraKey = { [key: string]: string };
 export interface AdminProductProps {
   name: string;
   quantity: number;
@@ -38,6 +40,7 @@ export interface AdminProductProps {
     [key: string]: File;
   };
   saleProduct?: number;
+  [key: string]: any;
 }
 
 export interface CustomizedTextFieldProps {
@@ -58,6 +61,7 @@ export interface CustomizedTextFieldProps {
   inputLabelProps?: object;
   formerHelperStyles?: object;
   className?: string;
+  mainContainerSx?: object;
   multiline?: boolean;
   rows?: number;
   value?: React.ReactNode;

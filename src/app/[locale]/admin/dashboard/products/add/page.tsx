@@ -26,7 +26,7 @@ import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import toast from "react-hot-toast";
 import { HiChevronRight } from "react-icons/hi2";
@@ -196,12 +196,12 @@ function AddProductPage() {
     );
   }
 
-  const getDynamicColorsValue = () => {
-    if (!formData[`colors-quantity`]) return 0;
-    return formData[`colors-quantity`]
-      ? getSumFrom(formData[`colors-quantity`])
-      : 0;
-  };
+  // const getDynamicColorsValue = useCallback(() => {
+  //   if (!formData[`colors-quantity`]) return 0;
+  //   return formData[`colors-quantity`]
+  //     ? getSumFrom(formData[`colors-quantity`])
+  //     : 0;
+  // }, []);
 
   return (
     <form
@@ -423,7 +423,7 @@ function AddProductPage() {
                 textLabelClass={"font-semibold text-xl"}
                 placeholder={t("Product Quantity")}
                 textlabel={t("Product Quantity")}
-                value={getDynamicColorsValue()}
+                value={0}
                 formerHelperStyles={{ style: { fontSize: "1rem" } }}
                 errors={errors}
                 type={"number"}

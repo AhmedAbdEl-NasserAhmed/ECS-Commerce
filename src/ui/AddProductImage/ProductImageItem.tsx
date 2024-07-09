@@ -6,8 +6,6 @@ import { Controller } from "react-hook-form";
 function ProductImageItem(props) {
   if (!props.imageInputName) return;
 
-  console.log("props.imageInputName", props.imageInputName);
-
   return (
     <Box
       className="relative flex items-center justify-center"

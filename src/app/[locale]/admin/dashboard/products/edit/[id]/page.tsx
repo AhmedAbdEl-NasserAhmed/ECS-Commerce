@@ -10,7 +10,7 @@ import {
   useUpdateSingleProductMutation,
 } from "@/lib/features/api/productsApi";
 import { useGetSubCategoryQuery } from "@/lib/features/api/subCategoriesApi";
-import { getAddProductServerData } from "@/lib/helpers";
+import { getAddProductServerData, getSumFrom } from "@/lib/helpers";
 import { AdminProductProps } from "@/types/types";
 import AddProductImage from "@/ui/AddProductImage/AddProductImage";
 import BaseColorPicker from "@/ui/BaseColorPicker/BaseColorPicker";
@@ -20,7 +20,7 @@ import SmartSearchInput from "@/ui/SmartSearchInput/SmartSearchInput";
 import SmartSearchMultipleInput from "@/ui/SmartSearchMultipleInput/SmartSearchMultipleInput";
 import Spinner from "@/ui/Spinner/Spinner";
 import CustomizedTextField from "@/ui/TextField/TextField";
-import { Box, Button } from "@mui/material";
+import { Box, Button, Stack } from "@mui/material";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -37,9 +37,7 @@ function EditProduct() {
 
   const router = useRouter();
 
-  const { data: productDetails, isLoading } = useGetSingleProductByIDQuery(
-    params.id
-  );
+  const { data: productDetails } = useGetSingleProductByIDQuery(params.id);
 
   const currentProduct = productDetails?.data;
 
@@ -60,14 +58,6 @@ function EditProduct() {
 
   const [updateProductFn, updateProductResponse] =
     useUpdateSingleProductMutation();
-
-  // const productNameDefaultValue: {
-  //   name: string;
-  // } = useMemo(() => {
-  //   return {
-  //     name: currentProduct ? currentProduct?.name : "",
-  //   };
-  // }, [currentProduct]);
 
   const [smartSeachvalue, setSmartSeachValue] = useState<{
     id: string;
@@ -96,22 +86,6 @@ function EditProduct() {
     { skip: !subCategorydebounceValue }
   );
 
-  // const { data: subCategory } = useGetSubCategoryQuery(
-  //   subCategorydebounceValue,
-  //   { skip: !subCategorydebounceValue }
-  // );
-
-  // const [productSearchName, setProductSearchName] = useState<{
-  //   name: string;
-  // }>({ name: "" });
-
-  // const productNameDebounceValue = useDebounceHook(productSearchName?.name);
-
-  // const { data: productName } = useGetProductByNameQuery(
-  //   productNameDebounceValue,
-  //   { skip: !productNameDebounceValue }
-  // );
-
   useEffect(() => {
     if (currentProduct?.images) {
       const images = {};
@@ -134,12 +108,6 @@ function EditProduct() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentProduct?.images, setValue]);
-
-  // useEffect(() => {
-  //   if (productSearchName?.name !== "" && productSearchName?.name.length > 4) {
-  //     setValue("name", productSearchName.name);
-  //   }
-  // }, [productSearchName.name, setValue]);
 
   useEffect(() => {
     const discount: number =
@@ -218,6 +186,11 @@ function EditProduct() {
       </Box>
     );
   }
+
+  const getQuantityValue = () => {
+    if (!formData[`colors-quantity`]) return 0;
+    return getSumFrom(formData["colors"], formData["colors-quantity"]);
+  };
 
   return (
     <form
@@ -333,18 +306,6 @@ function EditProduct() {
                       variant={"outlined"}
                       size={"small"}
                     />
-                    // <SmartSearchInput
-                    //   errors={errors}
-                    //   disabled={updateProductResponse.isLoading}
-                    //   shouldReset={updateProductResponse.isSuccess}
-                    //   getSmartSearchValue={setProductSearchName}
-                    //   textLabel={t("Product Name")}
-                    //   data={[]}
-                    //   placeholder={t("Product Name")}
-                    //   name={field.name}
-                    //   onChange={field.onChange}
-                    //   value={productNameDefaultValue}
-                    // />
                   )}
                 />
               </Box>
@@ -369,6 +330,56 @@ function EditProduct() {
                     />
                   )}
                 />
+              </Box>
+              <Box className="relative col-span-full flex gap-2 items-center">
+                {formData.colors?.map((color) => {
+                  return (
+                    <Stack
+                      direction={"row"}
+                      alignItems={"center"}
+                      gap={1}
+                      key={color.label}
+                    >
+                      <Box
+                        sx={{
+                          width: "30px",
+                          height: "30px",
+                          background: color.value,
+                          borderRadius: "50%",
+                          border: "1px solid #000",
+                        }}
+                      ></Box>
+                      <Controller
+                        name={`colors-quantity.${color.label}`}
+                        control={control}
+                        defaultValue={20}
+                        rules={{
+                          required: "This field is required",
+                          min: {
+                            value: 1,
+                            message: "",
+                          },
+                        }}
+                        render={({ field }) => (
+                          <CustomizedTextField
+                            // disabled={productResponse.isLoading}
+                            textLabelClass={"font-semibold text-xl"}
+                            placeholder={t("quantity")}
+                            field={field}
+                            formerHelperStyles={{ style: { fontSize: "1rem" } }}
+                            errors={errors}
+                            type={"number"}
+                            variant={"outlined"}
+                            size={"small"}
+                            mainContainerSx={{
+                              width: "8rem",
+                            }}
+                          />
+                        )}
+                      />
+                    </Stack>
+                  );
+                })}
               </Box>
               <Controller
                 name={"size"}
@@ -410,11 +421,12 @@ function EditProduct() {
                 }}
                 render={({ field }) => (
                   <CustomizedTextField
+                    inputProps={{ readOnly: true, disabled: true }}
                     disabled={updateProductResponse.isLoading}
                     textLabelClass={"font-semibold text-xl"}
                     placeholder={t("Product Quantity")}
                     textlabel={t("Product Quantity")}
-                    field={field}
+                    value={getQuantityValue()}
                     formerHelperStyles={{ style: { fontSize: "1rem" } }}
                     errors={errors}
                     type={"number"}

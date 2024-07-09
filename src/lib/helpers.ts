@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 export const getAddProductServerData = (data: AdminProductProps) => {
   const formData = new FormData();
 
-  const excludeKeys = ["images", "subCategory", "colors"];
+  const excludeKeys = ["images", "subCategory", "colors", "colors-quantity"];
 
   for (let key in data) {
     if (excludeKeys.includes(key)) continue;
@@ -22,14 +22,14 @@ export const getAddProductServerData = (data: AdminProductProps) => {
       "colors",
       JSON.stringify({
         ...color,
-        quantity: `colors-quantity.${color.label}`,
+        quantity: +data[`colors-quantity`][color.label],
       })
     );
   });
 
   formData.append(
     "quantity",
-    JSON.stringify(getSumFrom(data[`colors-quantity`]))
+    JSON.stringify(getSumFrom(data["colors"], data[`colors-quantity`]))
   );
 
   Object.keys(data.images).forEach((imageKey) => {
@@ -49,9 +49,12 @@ export const getAddProductServerData = (data: AdminProductProps) => {
   return formData;
 };
 
-export function getSumFrom(objectData) {
-  return Object.keys(objectData)
-    .map((key) => +objectData[key])
+export function getSumFrom(list, matchedList, matchedKey = "label") {
+  return list
+    .map((item) => {
+      if (!matchedList?.[item[matchedKey || "label"]]) return 0;
+      return +matchedList?.[item[matchedKey || "label"]];
+    })
     .reduce((acc, cur) => acc + cur, 0);
 }
 

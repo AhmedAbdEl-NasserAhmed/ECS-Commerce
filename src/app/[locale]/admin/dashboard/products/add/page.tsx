@@ -40,7 +40,7 @@ function AddProductPage() {
     setValue,
 
     formState: { errors },
-  } = useForm<AdminProductProps>({ mode: "onChange", shouldUnregister: true });
+  } = useForm<AdminProductProps>({ mode: "onChange" });
 
   const { locale } = useParams();
 
@@ -148,8 +148,6 @@ function AddProductPage() {
 
     const serverData = getAddProductServerData(myData);
 
-    console.log("serverData", serverData);
-
     const formDataImagesLength = Object.values(data.images)[0];
 
     if (!formDataImagesLength) {
@@ -157,15 +155,15 @@ function AddProductPage() {
       return;
     }
 
-    // addProductFn(serverData)
-    //   .unwrap()
-    //   .then(() => {
-    //     toast.success("A new Product is added");
-    //     reset();
-    //   })
-    //   .catch((err) => {
-    //     toast.error(err.message);
-    //   });
+    addProductFn(serverData)
+      .unwrap()
+      .then(() => {
+        toast.success("A new Product is added");
+        reset();
+      })
+      .catch((err) => {
+        toast.error(err.message);
+      });
   }
 
   if (!AllCategories) return <Spinner />;
@@ -196,12 +194,10 @@ function AddProductPage() {
     );
   }
 
-  // const getDynamicColorsValue = useCallback(() => {
-  //   if (!formData[`colors-quantity`]) return 0;
-  //   return formData[`colors-quantity`]
-  //     ? getSumFrom(formData[`colors-quantity`])
-  //     : 0;
-  // }, []);
+  const getQuantityValue = () => {
+    if (!formData[`colors-quantity`]) return 0;
+    return getSumFrom(formData["colors"], formData["colors-quantity"]);
+  };
 
   return (
     <form
@@ -339,8 +335,8 @@ function AddProductPage() {
                   )}
                 />
               </Box>
-              {/* // */}
-              {/* <Box className="relative col-span-full flex gap-2 items-center">
+
+              <Box className="relative col-span-full flex gap-2 items-center">
                 {formData.colors?.map((color) => {
                   return (
                     <Stack
@@ -389,7 +385,7 @@ function AddProductPage() {
                     </Stack>
                   );
                 })}
-              </Box> */}
+              </Box>
               <Controller
                 name={"size"}
                 control={control}
@@ -423,7 +419,7 @@ function AddProductPage() {
                 textLabelClass={"font-semibold text-xl"}
                 placeholder={t("Product Quantity")}
                 textlabel={t("Product Quantity")}
-                value={0}
+                value={getQuantityValue()}
                 formerHelperStyles={{ style: { fontSize: "1rem" } }}
                 errors={errors}
                 type={"number"}

@@ -1,22 +1,28 @@
-import { HiViewGrid } from "react-icons/hi";
+"use client";
+
+import { useParams } from "next/navigation";
+import { useRouter } from "next/navigation";
+
 import { HiEye, HiOutlineHeart } from "react-icons/hi2";
 
 function ProductListOptions({ className }) {
+  const router = useRouter();
+
+  const { locale } = useParams();
+
   return (
     <ul className={className}>
-      <li className="flex items-center gap-7 group overflow-hidden ">
-        <span className="text-2xl bg-white flex items-center justify-center w-11  h-11 rounded-full ">
+      <li
+        onClick={() => router.push(`/${locale}/product`)}
+        className="flex items-center gap-7 group overflow-hidden "
+      >
+        <span className="text-2xl hover:bg-[#ed0534] transition-all duration-300 hover:text-white bg-white flex items-center justify-center w-11  h-11 rounded-full ">
           <HiEye />
         </span>
       </li>
       <li className="flex items-center gap-7 ">
-        <span className="text-2xl bg-white flex items-center justify-center w-11 h-11 rounded-full">
+        <span className="text-2xl bg-white hover:bg-[#ed0534] transition-all duration-300 hover:text-white flex items-center justify-center w-11 h-11 rounded-full">
           <HiOutlineHeart />
-        </span>
-      </li>
-      <li className="flex items-center gap-7 ">
-        <span className="text-2xl bg-white flex items-center justify-center w-11 h-11 rounded-full">
-          <HiViewGrid />
         </span>
       </li>
     </ul>

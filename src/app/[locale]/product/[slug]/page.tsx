@@ -22,6 +22,10 @@ function ProductDetails() {
 
   const { data, isLoading } = useGetSingleProductBySlugQuery(params.slug);
 
+  const dispatch = useAppDispatch();
+
+  const state = useAppSelector((state) => state.cartSlice.cartItems);
+
   const [selectedProduct, setSelectedProduct] = useState<AdminProductProps>();
 
   const [currentProductIndex, setCurrentProductIndex] = useState<number>(0);
@@ -35,7 +39,13 @@ function ProductDetails() {
     quantity: number;
   }>({ color: "", value: "", label: "", quantity: 0 });
 
+  useEffect(() => {
+    setSelectedColor(selectedProduct?.colors[0]);
+  }, [selectedProduct?.colors]);
+
   const [productQuantity, setProductQuantity] = useState<number>(0);
+
+  const [isColorExisted, setIsColorExisted] = useState<boolean>(true);
 
   const { data: mainCategory, isLoading: mainCategoryLoading } =
     useGetCategoryByIdQuery(selectedProduct?.category, {
@@ -46,16 +56,10 @@ function ProductDetails() {
     setSelectedProduct(data?.data?.products[currentProductIndex]);
   }, [data?.data?.products, currentProductIndex]);
 
-  const dispatch = useAppDispatch();
-
-  const state = useAppSelector((state) => state.cartSlice.cartItems);
-
-  const [isColorExisted, setIsColorExisted] = useState<boolean>(true);
-
   useEffect(() => {
     const colorExists = state.some(
       (product) =>
-        product.color === selectedColor.color &&
+        product.color === selectedColor?.color &&
         product.size === selectedProduct.size
     );
 
@@ -86,6 +90,7 @@ function ProductDetails() {
         image: data?.data?.images[0].url,
         color: selectedColor.color,
         price: selectedProduct.saleProduct,
+        maxQuantity: selectedColor.quantity,
       })
     );
   }
@@ -154,20 +159,20 @@ function ProductDetails() {
           </Box>
           <Box className="flex flex-col gap-10 w-full ">
             <Box className="flex justify-between items-center ">
-              <h2 className="text-4xl font-semibold">
+              <h2 className="text-4xl font-semibold capitalize">
                 {selectedProduct?.name}
               </h2>
               <span className="text-4xl cursor-pointer">
                 <HiOutlineHeart />
               </span>
             </Box>
-            <Box className="flex items-center gap-4">
+            <Box className="flex items-center gap-4 flex-wrap">
               <Box>
                 <h2 className="font-semibold text-xl">
                   {mainCategory?.data?.name}
                 </h2>
               </Box>
-              <Box className="flex items-center gap-4">
+              <Box className="flex items-center gap-4 flex-wrap">
                 <SubCategoriesList
                   subCategoriesIds={selectedProduct?.subCategory}
                 />
@@ -208,7 +213,7 @@ function ProductDetails() {
                       className={`w-10 h-10 rounded ${
                         selectedColor?.value === color.value
                           ? "ring-offset-2 ring-2 ring-black "
-                          : "opacity-50"
+                          : ""
                       } `}
                       style={{ backgroundColor: color.value }}
                     >
@@ -239,18 +244,23 @@ function ProductDetails() {
                 +
               </button>
             </Box>
-            {productQuantity === selectedColor.quantity &&
-              selectedColor.value && (
+            {productQuantity === selectedColor?.quantity &&
+              selectedColor?.value && (
                 <p className="text-2xl text-red-600">
                   This is maximum Quantity for this product Color
                 </p>
               )}
-            <button
-              onClick={handleAddCartItem}
-              className="bg-[#ed0534] hover:bg-black transition duration-500 text-white p-4 text-2xl rounded-lg"
-            >
-              Add To Cart
-            </button>
+            <Box className="w-1/2">
+              <button
+                onClick={() => {
+                  handleAddCartItem();
+                  setProductQuantity(0);
+                }}
+                className="bg-[#ed0534] hover:bg-black transition duration-500 text-white p-4 text-2xl rounded-lg w-full"
+              >
+                Add To Cart
+              </button>
+            </Box>
           </Box>
         </Box>
       </Box>

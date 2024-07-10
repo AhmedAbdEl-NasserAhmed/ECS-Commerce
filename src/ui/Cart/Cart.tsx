@@ -1,11 +1,16 @@
 "use client";
 
-import { removeItem } from "@/lib/features/cartSlice/cartSlice";
+import {
+  decrementProductItem,
+  incrementProductItem,
+  removeItem,
+} from "@/lib/features/cartSlice/cartSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import useClickOutside from "@/hooks/useClickOutside";
 
 import { CartItem } from "@/types/types";
 import Image from "next/image";
+import toast from "react-hot-toast";
 
 const Cart = ({ setIsCartOpen }) => {
   const cart = useAppSelector((state) => state.cartSlice.cartItems);
@@ -18,7 +23,9 @@ const Cart = ({ setIsCartOpen }) => {
     dispatch(removeItem(color));
   }
 
-  console.log("CART", cart);
+  const totalCartItems = cart.reduce((acc, cur) => {
+    return acc + cur.quantity * cur.price;
+  }, 0);
 
   return (
     <div
@@ -49,7 +56,9 @@ const Cart = ({ setIsCartOpen }) => {
                     <div className="text-xl">
                       {/* TITLE */}
                       <div className="flex items-center justify-between gap-8">
-                        <h3 className="font-semibold">{product.name}</h3>
+                        <h3 className="font-semibold capitalize">
+                          {product.name}
+                        </h3>
                         <div className="p-1 bg-gray-50 rounded-xl flex items-center gap-2">
                           {true && (
                             <div className="text-sm font-semibold text-green-500">
@@ -76,10 +85,45 @@ const Cart = ({ setIsCartOpen }) => {
                       </div>
                     </div>
                     {/* BOTTOM */}
-                    <div className="flex justify-between text-xl">
+                    <div className="flex justify-between items-center text-xl">
                       <span className="text-gray-500">
                         Qty. {product.quantity}
                       </span>
+
+                      <div className="flex items-center gap-5">
+                        <button
+                          className={` ${
+                            product.quantity === product.maxQuantity
+                              ? "bg-red-500"
+                              : ""
+                          } w-7 h-7 bg-black rounded-full text-white flex items-center justify-center`}
+                          onClick={() => {
+                            if (product.quantity !== product.maxQuantity) {
+                              dispatch(
+                                incrementProductItem({
+                                  id: product.id,
+                                  maxQuantity: product.maxQuantity,
+                                })
+                              );
+                            } else {
+                              toast.error(
+                                " This is maximum Quantity for this product Color"
+                              );
+                            }
+                          }}
+                        >
+                          +
+                        </button>
+                        <button
+                          className="w-7 h-7 bg-black rounded-full text-white flex items-center justify-center"
+                          onClick={() =>
+                            dispatch(decrementProductItem(product.id))
+                          }
+                        >
+                          -
+                        </button>
+                      </div>
+
                       <span
                         className="text-blue-500 cursor-pointer"
                         onClick={() => handleDeleteProduct(product.id)}
@@ -95,10 +139,9 @@ const Cart = ({ setIsCartOpen }) => {
 
           {/* BOTTOM */}
           <div className="">
-            <div className="flex items-center justify-between font-semibold">
-              <span className="">Subtotal</span>
-              <span className="">Subtotal</span>
-              {/* <span className="">${cart.subtotal.amount}</span> */}
+            <div className="flex items-center justify-between font-bold text-xl">
+              <span className="">Total</span>
+              <span className="">{totalCartItems} EGP</span>
             </div>
             <p className="text-gray-500 text-xl mt-2 mb-4">
               Shipping and taxes calculated at checkout.

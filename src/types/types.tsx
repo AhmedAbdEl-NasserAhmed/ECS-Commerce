@@ -32,11 +32,13 @@ export interface AdminProductProps {
     color: string;
     quantity: number;
   }[];
-  size: {
-    value: string;
-    label: string;
-    color: string;
-  }[];
+  size:
+    | {
+        value: string;
+        label: string;
+        color: string;
+      }[]
+    | string;
   images: {
     [key: string]: File;
   };
@@ -144,4 +146,5 @@ export interface CartItem {
   image: string;
   color: string;
   price: number;
+  maxQuantity: number;
 }

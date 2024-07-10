@@ -13,6 +13,8 @@ import { HiChevronRight } from "react-icons/hi2";
 function Products() {
   const { data, isFetching } = useGetAllProductsQuery("products");
 
+  console.log("DATA", data);
+
   const t = useTranslations("Dashboard");
 
   const tIndex = useTranslations("Index");

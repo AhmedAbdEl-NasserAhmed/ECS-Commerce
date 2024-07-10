@@ -17,7 +17,7 @@ function ProductList() {
 
   return (
     <div className="mt-12 flex gap-x-8 gap-y-16 justify-between flex-wrap">
-      {uniqueItems.map((product) => {
+      {uniqueItems?.map((product) => {
         return (
           <div
             key={product["_id"]}

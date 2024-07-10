@@ -6,7 +6,7 @@ import Spinner from "@/ui/Spinner/Spinner";
 import { Box } from "@mui/material";
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useReducer, useState } from "react";
 import { useGetCategoryByIdQuery } from "@/lib/features/api/categoriesApi";
 import SubCategoriesList from "../../admin/dashboard/products/details/[slug]/SubCategoriesList";
 import DropdownSizeOptions from "../../admin/dashboard/products/details/[slug]/DropdownSizeOptions";
@@ -16,17 +16,29 @@ import { HiOutlineHeart } from "react-icons/hi2";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { addItem } from "@/lib/features/cartSlice/cartSlice";
 import toast from "react-hot-toast";
+import { initialState, reducerFn } from "./productDetailsReducer";
 
 function ProductDetails() {
   const params = useParams();
 
   const { data, isLoading } = useGetSingleProductBySlugQuery(params.slug);
 
-  const dispatch = useAppDispatch();
+  const dispatchRedux = useAppDispatch();
 
   const state = useAppSelector((state) => state.cartSlice.cartItems);
 
+  const [productDetailsState, dispatch] = useReducer(reducerFn, initialState);
+
+  function action(type, payload = null) {
+    dispatch(type, payload);
+  }
+
   const [selectedProduct, setSelectedProduct] = useState<AdminProductProps>();
+
+  const { data: mainCategory, isLoading: mainCategoryLoading } =
+    useGetCategoryByIdQuery(selectedProduct?.category, {
+      skip: !selectedProduct?.category,
+    });
 
   const [currentProductIndex, setCurrentProductIndex] = useState<number>(0);
 
@@ -39,18 +51,13 @@ function ProductDetails() {
     quantity: number;
   }>({ color: "", value: "", label: "", quantity: 0 });
 
-  useEffect(() => {
-    setSelectedColor(selectedProduct?.colors[0]);
-  }, [selectedProduct?.colors]);
-
   const [productQuantity, setProductQuantity] = useState<number>(0);
 
   const [isColorExisted, setIsColorExisted] = useState<boolean>(true);
 
-  const { data: mainCategory, isLoading: mainCategoryLoading } =
-    useGetCategoryByIdQuery(selectedProduct?.category, {
-      skip: !selectedProduct?.category,
-    });
+  useEffect(() => {
+    setSelectedColor(selectedProduct?.colors[0]);
+  }, [selectedProduct?.colors]);
 
   useEffect(() => {
     setSelectedProduct(data?.data?.products[currentProductIndex]);
@@ -65,6 +72,8 @@ function ProductDetails() {
 
     setIsColorExisted(colorExists);
   }, [selectedColor, state, selectedProduct]);
+
+  if (isLoading || mainCategoryLoading) return <Spinner />;
 
   function handleAddCartItem() {
     if (!selectedColor.value) {
@@ -81,7 +90,7 @@ function ProductDetails() {
       return;
     }
     toast.success("An item added to your cart");
-    dispatch(
+    dispatchRedux(
       addItem({
         id: crypto.randomUUID().substring(0, 5),
         name: selectedProduct.name,
@@ -94,8 +103,6 @@ function ProductDetails() {
       })
     );
   }
-
-  if (isLoading || mainCategoryLoading) return <Spinner />;
 
   const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
     const selectedIndex = event.target.selectedIndex;

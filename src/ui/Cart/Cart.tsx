@@ -23,6 +23,23 @@ const Cart = ({ setIsCartOpen }) => {
     dispatch(removeItem(color));
   }
 
+  function handleIncrementProductQuantity(product) {
+    if (product.quantity !== product.maxQuantity) {
+      dispatch(
+        incrementProductItem({
+          id: product.id,
+          maxQuantity: product.maxQuantity,
+        })
+      );
+    } else {
+      toast.error(" This is maximum Quantity for this product Color");
+    }
+  }
+
+  function handleDecrementProductQuantity(product) {
+    dispatch(decrementProductItem(product.id));
+  }
+
   const totalCartItems = cart.reduce((acc, cur) => {
     return acc + cur.quantity * cur.price;
   }, 0);
@@ -97,27 +114,16 @@ const Cart = ({ setIsCartOpen }) => {
                               ? "bg-red-500"
                               : ""
                           } w-7 h-7 bg-black rounded-full text-white flex items-center justify-center`}
-                          onClick={() => {
-                            if (product.quantity !== product.maxQuantity) {
-                              dispatch(
-                                incrementProductItem({
-                                  id: product.id,
-                                  maxQuantity: product.maxQuantity,
-                                })
-                              );
-                            } else {
-                              toast.error(
-                                " This is maximum Quantity for this product Color"
-                              );
-                            }
-                          }}
+                          onClick={() =>
+                            handleIncrementProductQuantity(product)
+                          }
                         >
                           +
                         </button>
                         <button
                           className="w-7 h-7 bg-black rounded-full text-white flex items-center justify-center"
                           onClick={() =>
-                            dispatch(decrementProductItem(product.id))
+                            handleDecrementProductQuantity(product)
                           }
                         >
                           -

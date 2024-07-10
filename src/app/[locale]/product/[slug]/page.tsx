@@ -13,6 +13,9 @@ import DropdownSizeOptions from "../../admin/dashboard/products/details/[slug]/D
 import NavBar from "@/ui/NavBar/NavBar";
 import Footer from "@/ui/Footer/Footer";
 import { HiOutlineHeart } from "react-icons/hi2";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { addItem } from "@/lib/features/cartSlice/cartSlice";
+import toast from "react-hot-toast";
 
 function ProductDetails() {
   const params = useParams();
@@ -29,7 +32,8 @@ function ProductDetails() {
     value: string;
     color: string;
     label: string;
-  }>({ color: "", value: "", label: "" });
+    quantity: number;
+  }>({ color: "", value: "", label: "", quantity: 0 });
 
   const [productQuantity, setProductQuantity] = useState<number>(0);
 
@@ -42,6 +46,50 @@ function ProductDetails() {
     setSelectedProduct(data?.data?.products[currentProductIndex]);
   }, [data?.data?.products, currentProductIndex]);
 
+  const dispatch = useAppDispatch();
+
+  const state = useAppSelector((state) => state.cartSlice.cartItems);
+
+  const [isColorExisted, setIsColorExisted] = useState<boolean>(true);
+
+  useEffect(() => {
+    const colorExists = state.some(
+      (product) =>
+        product.color === selectedColor.color &&
+        product.size === selectedProduct.size
+    );
+
+    setIsColorExisted(colorExists);
+  }, [selectedColor, state, selectedProduct]);
+
+  function handleAddCartItem() {
+    if (!selectedColor.value) {
+      toast.error("Please select color");
+      return;
+    } else if (
+      productQuantity === 0 ||
+      productQuantity > selectedProduct.quantity
+    ) {
+      toast.error("Quanity must be more than 0");
+      return;
+    } else if (isColorExisted) {
+      toast.error("This Color and Size are Already Existed");
+      return;
+    }
+    toast.success("An item added to your cart");
+    dispatch(
+      addItem({
+        id: crypto.randomUUID().substring(0, 5),
+        name: selectedProduct.name,
+        size: selectedProduct.size,
+        quantity: productQuantity,
+        image: data?.data?.images[0].url,
+        color: selectedColor.color,
+        price: selectedProduct.saleProduct,
+      })
+    );
+  }
+
   if (isLoading || mainCategoryLoading) return <Spinner />;
 
   const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
@@ -51,21 +99,21 @@ function ProductDetails() {
       color: "",
       label: "",
       value: "",
+      quantity: 0,
     });
     setProductQuantity(0);
   };
 
   function handleIncrementQuantity() {
-    if (productQuantity === 5) return;
+    if (productQuantity === selectedColor.quantity || !selectedColor.label)
+      return;
     setProductQuantity((cur) => cur + 1);
   }
 
   function handleDecrementQuantity() {
-    if (productQuantity === 0) return;
+    if (productQuantity === 0 || !selectedColor.label) return;
     setProductQuantity((cur) => cur - 1);
   }
-
-  console.log("selectedColor", selectedColor);
 
   return (
     <>
@@ -191,12 +239,16 @@ function ProductDetails() {
                 +
               </button>
             </Box>
-            {productQuantity === 5 && (
-              <p className="text-2xl text-red-600">
-                This is maximum Quantity for this product Color
-              </p>
-            )}
-            <button className="bg-[#ed0534] hover:bg-black transition duration-500 text-white p-4 text-2xl rounded-lg">
+            {productQuantity === selectedColor.quantity &&
+              selectedColor.value && (
+                <p className="text-2xl text-red-600">
+                  This is maximum Quantity for this product Color
+                </p>
+              )}
+            <button
+              onClick={handleAddCartItem}
+              className="bg-[#ed0534] hover:bg-black transition duration-500 text-white p-4 text-2xl rounded-lg"
+            >
               Add To Cart
             </button>
           </Box>

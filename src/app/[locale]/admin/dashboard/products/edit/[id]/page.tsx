@@ -352,7 +352,7 @@ function EditProduct() {
                       <Controller
                         name={`colors-quantity.${color.label}`}
                         control={control}
-                        defaultValue={20}
+                        defaultValue={color.quantity}
                         rules={{
                           required: "This field is required",
                           min: {

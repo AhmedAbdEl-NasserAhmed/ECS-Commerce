@@ -7,8 +7,6 @@ function SubCategoriesItem({ id }) {
 
   if (isLoading || !data) return <MiniSpinner />;
 
-  console.log("DATA", data);
-
   return (
     <div>
       <h2 className="text-lg font-semibold text-gray-400">

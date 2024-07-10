@@ -30,6 +30,7 @@ export interface AdminProductProps {
     value: string;
     label: string;
     color: string;
+    quantity: number;
   }[];
   size: {
     value: string;
@@ -94,6 +95,7 @@ export interface ColourOption {
   value: string;
   label: string;
   color: string;
+  quantity: number;
 }
 
 export interface SizesOption {
@@ -132,4 +134,14 @@ export interface BaseColorPickerProps {
     label: string;
     color: string;
   }[];
+}
+
+export interface CartItem {
+  id: string;
+  name: string;
+  size: string;
+  quantity: number;
+  image: string;
+  color: string;
+  price: number;
 }

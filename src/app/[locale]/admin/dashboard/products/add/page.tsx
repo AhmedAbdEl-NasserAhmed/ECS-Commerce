@@ -99,6 +99,8 @@ function AddProductPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formData["name"], productName]);
 
+  console.log("selectedProduct", selectedProduct);
+
   useEffect(() => {
     if (selectedProduct?.images) {
       const images = {};

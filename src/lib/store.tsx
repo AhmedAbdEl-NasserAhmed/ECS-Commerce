@@ -4,11 +4,13 @@ import usersApi from "./features/api/usersApi";
 import categoriesApi from "./features/api/categoriesApi";
 import subCategoriesApi from "./features/api/subCategoriesApi";
 import productsApi from "./features/api/productsApi";
+import cartSlice from "./features/cartSlice/cartSlice";
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
       usersSlice: usersSlice,
+      cartSlice: cartSlice,
       [usersApi.reducerPath]: usersApi.reducer,
       [categoriesApi.reducerPath]: categoriesApi.reducer,
       [subCategoriesApi.reducerPath]: subCategoriesApi.reducer,

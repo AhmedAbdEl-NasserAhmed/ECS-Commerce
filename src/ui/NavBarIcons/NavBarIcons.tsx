@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Cart from "../Cart/Cart";
 import ProfileMenu from "../ProfileMenu/ProfileMenu";
-import useClickOutside from "@/hooks/useClickOutside";
+import { useAppSelector } from "@/lib/hooks";
 
 function NavIcons() {
   const router = useRouter();
@@ -14,9 +14,9 @@ function NavIcons() {
 
   const [isCartOpen, setIsCartOpen] = useState<boolean>(false);
 
-  const ref = useClickOutside({ close: setIsCartOpen, value: false });
-
   const isLoggedIn = false;
+
+  const cart = useAppSelector((state) => state.cartSlice.cartItems);
 
   function handleLoginClick() {
     if (!isLoggedIn) {
@@ -46,11 +46,7 @@ function NavIcons() {
           className="cursor-pointer"
         />
       </li>
-      <li
-        ref={ref}
-        className="relative"
-        onClick={() => setIsCartOpen((open) => !open)}
-      >
+      <li className="relative" onClick={() => setIsCartOpen((open) => !open)}>
         <Image
           src="/cart.png"
           alt="cart"
@@ -59,7 +55,7 @@ function NavIcons() {
           className="cursor-pointer"
         />
         <span className="absolute w-6 h-6  rounded-full text-sm bg-red-500 -top-3 z-10 flex items-center justify-center text-white  -right-3">
-          2
+          {cart.length}
         </span>
       </li>
 

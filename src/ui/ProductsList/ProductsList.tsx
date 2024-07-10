@@ -6,15 +6,18 @@ import Link from "next/link";
 import Spinner from "../Spinner/Spinner";
 import { HiOutlineHeart } from "react-icons/hi2";
 import ProductListOptions from "./ProductListOptions";
+import { getUniqueValues } from "@/lib/helpers";
 
 function ProductList() {
   const { data, isLoading } = useGetAllProductsQuery("products");
+
+  const uniqueItems = getUniqueValues(data?.data, "name");
 
   if (isLoading) return <Spinner />;
 
   return (
     <div className="mt-12 flex gap-x-8 gap-y-16 justify-between flex-wrap">
-      {data?.data?.slice(0, 4).map((product) => {
+      {uniqueItems.map((product) => {
         return (
           <div
             key={product["_id"]}
@@ -30,7 +33,10 @@ function ProductList() {
                   product?.images[1] ? "hover:opacity-0" : ""
                 }  easy transition-opacity duration-500 object-cover rounded-md `}
               />
-              <ProductListOptions className="absolute  top-4 -right-36 group-hover:right-8  group-hover:z-20 transition-all duration-700  flex flex-col gap-7" />
+              <ProductListOptions
+                product={product}
+                className="absolute  top-4 -right-36 group-hover:right-8  group-hover:z-20 transition-all duration-700  flex flex-col gap-7"
+              />
               {product?.images[1] && (
                 <Image
                   src={product?.images[1]?.url}
@@ -57,9 +63,6 @@ function ProductList() {
             <h2 className="text-xl text-ellipsis overflow-hidden whitespace-nowrap">
               {product?.description}
             </h2>
-            <button className="border-2 bg-[#ed0534]  text-white  rounded-2xl w-max px-6 py-4 text-md hover:bg-lama hover:text-white">
-              Add to Cart
-            </button>
           </div>
         );
       })}

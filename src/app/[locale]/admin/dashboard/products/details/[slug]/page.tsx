@@ -26,13 +26,6 @@ function ProductDetails() {
 
   const [imageIndex, setCurrentImageIndex] = useState<number>(0);
 
-  // const { data: subCategories, isLoading: subCategoriesLoading } =
-  //   useGetSubCategoryByIdQuery(selectedProduct?.category, {
-  //     skip: !selectedProduct?.category,
-  //   });
-
-  // console.log("selectedProduct", selectedProduct);
-
   const { data: mainCategory, isLoading: mainCategoryLoading } =
     useGetCategoryByIdQuery(selectedProduct?.category, {
       skip: !selectedProduct?.category,
@@ -104,11 +97,13 @@ function ProductDetails() {
           <h2 className="text-3xl font-semibold ">
             {selectedProduct?.saleProduct} EGP
           </h2>
-          <h2 className="text-3xl font-semibold text-gray-400 line-through">
-            {selectedProduct?.price} EGP
-          </h2>
+          {selectedProduct?.discount > 0 && (
+            <h2 className="text-3xl font-semibold text-gray-400 line-through">
+              {selectedProduct?.price} EGP
+            </h2>
+          )}
         </Box>
-        <Box className="w-full">
+        <Box className="w-1/2">
           <h2 className="text-2xl mb-5">Select Your Size</h2>
           <DropdownSizeOptions
             handleChange={handleChange}

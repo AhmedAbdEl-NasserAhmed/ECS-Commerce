@@ -1,11 +1,17 @@
 "use client";
 
+import { useAppSelector } from "@/lib/hooks";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import CartSideMenu from "../CartSideMenu/CartSideMenu";
 
 function LandingPageMenu() {
   const [opens, setOpens] = useState<boolean>(false);
+
+  const [openSideMenu, setOpenSideMenu] = useState<boolean>(false);
+
+  const cart = useAppSelector((state) => state.cartSlice.cartItems);
 
   return (
     <div className="md:hidden">
@@ -37,8 +43,8 @@ function LandingPageMenu() {
           <li>
             <Link href="">Logout</Link>
           </li>
-          <li>
-            <Link href="">Cart(1)</Link>
+          <li onClick={() => setOpenSideMenu(true)}>
+            <Link href="">Cart ({cart.length})</Link>
           </li>
           <span
             onClick={() => setOpens(false)}
@@ -46,6 +52,10 @@ function LandingPageMenu() {
           >
             &times;
           </span>
+          <CartSideMenu
+            setOpenSideMenu={setOpenSideMenu}
+            openSideMenu={openSideMenu}
+          />
         </ul>
       )}
     </div>

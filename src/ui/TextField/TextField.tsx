@@ -25,7 +25,6 @@ function CustomizedTextField({
   mainContainerSx,
 }: Partial<CustomizedTextFieldProps>) {
   if (field) {
-    console.log("field.name", errors?.[field.name]);
     return (
       <Box className={`flex flex-col gap-4`} sx={mainContainerSx}>
         {textlabel && <label className={textLabelClass}>{textlabel}</label>}

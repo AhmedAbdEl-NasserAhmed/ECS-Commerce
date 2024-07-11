@@ -16,7 +16,11 @@ import { HiOutlineHeart } from "react-icons/hi2";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { addItem } from "@/lib/features/cartSlice/cartSlice";
 import toast from "react-hot-toast";
-import { initialState, reducerFn } from "./productDetailsReducer";
+import {
+  initialState,
+  ProductDetailsAction,
+  reducerFn,
+} from "./productDetailsReducer";
 
 function ProductDetails() {
   const params = useParams();
@@ -30,62 +34,55 @@ function ProductDetails() {
   const [productDetailsState, dispatch] = useReducer(reducerFn, initialState);
 
   function action(type, payload = null) {
-    dispatch(type, payload);
+    dispatch({ type, payload });
   }
 
-  const [selectedProduct, setSelectedProduct] = useState<AdminProductProps>();
-
   const { data: mainCategory, isLoading: mainCategoryLoading } =
-    useGetCategoryByIdQuery(selectedProduct?.category, {
-      skip: !selectedProduct?.category,
+    useGetCategoryByIdQuery(productDetailsState.selectedProduct?.category, {
+      skip: !productDetailsState.selectedProduct?.category,
     });
 
-  const [currentProductIndex, setCurrentProductIndex] = useState<number>(0);
-
-  const [imageIndex, setCurrentImageIndex] = useState<number>(0);
-
-  const [selectedColor, setSelectedColor] = useState<{
-    value: string;
-    color: string;
-    label: string;
-    quantity: number;
-  }>({ color: "", value: "", label: "", quantity: 0 });
-
-  const [productQuantity, setProductQuantity] = useState<number>(0);
-
-  const [isColorExisted, setIsColorExisted] = useState<boolean>(true);
+  useEffect(() => {
+    action(ProductDetailsAction.SET_SELECTED_PRODUCT, {
+      value: data?.data?.products[productDetailsState.currentProductIndex],
+    });
+    // setSelectedProduct(data?.data?.products[productDetailsState.currentProductIndex]);
+  }, [data?.data?.products, productDetailsState.currentProductIndex]);
 
   useEffect(() => {
-    setSelectedColor(selectedProduct?.colors[0]);
-  }, [selectedProduct?.colors]);
-
-  useEffect(() => {
-    setSelectedProduct(data?.data?.products[currentProductIndex]);
-  }, [data?.data?.products, currentProductIndex]);
+    action(ProductDetailsAction.SET_SELECTED_COLOR, {
+      value: productDetailsState.selectedProduct?.colors?.[0],
+    });
+  }, [productDetailsState.selectedProduct?.colors]);
 
   useEffect(() => {
     const colorExists = state.some(
       (product) =>
-        product.color === selectedColor?.color &&
-        product.size === selectedProduct.size
+        product.color === productDetailsState.selectedColor?.color &&
+        product.size === productDetailsState.selectedProduct.size
     );
 
-    setIsColorExisted(colorExists);
-  }, [selectedColor, state, selectedProduct]);
+    action(ProductDetailsAction.SET_COLOR_EXISTED, { value: colorExists });
+  }, [
+    productDetailsState.selectedColor,
+    state,
+    productDetailsState.selectedProduct,
+  ]);
 
   if (isLoading || mainCategoryLoading) return <Spinner />;
 
   function handleAddCartItem() {
-    if (!selectedColor.value) {
+    if (!productDetailsState.selectedColor.value) {
       toast.error("Please select color");
       return;
     } else if (
-      productQuantity === 0 ||
-      productQuantity > selectedProduct.quantity
+      productDetailsState.productQuantity === 0 ||
+      productDetailsState.productQuantity >
+        productDetailsState.selectedProduct.quantity
     ) {
       toast.error("Quanity must be more than 0");
       return;
-    } else if (isColorExisted) {
+    } else if (productDetailsState.isColorExisted) {
       toast.error("This Color and Size are Already Existed");
       return;
     }
@@ -93,38 +90,57 @@ function ProductDetails() {
     dispatchRedux(
       addItem({
         id: crypto.randomUUID().substring(0, 5),
-        name: selectedProduct.name,
-        size: selectedProduct.size,
-        quantity: productQuantity,
+        name: productDetailsState.selectedProduct.name,
+        size: productDetailsState.selectedProduct.size,
+        quantity: productDetailsState.productQuantity,
         image: data?.data?.images[0].url,
-        color: selectedColor.color,
-        price: selectedProduct.saleProduct,
-        maxQuantity: selectedColor.quantity,
+        color: productDetailsState.selectedColor.color,
+        price: productDetailsState.selectedProduct.saleProduct,
+        maxQuantity: productDetailsState.selectedColor.quantity,
       })
     );
   }
 
   const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
     const selectedIndex = event.target.selectedIndex;
-    setCurrentProductIndex(selectedIndex);
-    setSelectedColor({
-      color: "",
-      label: "",
-      value: "",
-      quantity: 0,
+    action(ProductDetailsAction.SET_CURRENT_PRODUCT_INDEX, {
+      value: selectedIndex,
     });
-    setProductQuantity(0);
+
+    action(ProductDetailsAction.SET_SELECTED_COLOR, {
+      value: {
+        color: "",
+        label: "",
+        value: "",
+        quantity: 0,
+      },
+    });
+
+    action(ProductDetailsAction.SET_PRODUCT_QUANTITY, { value: 0 });
   };
 
   function handleIncrementQuantity() {
-    if (productQuantity === selectedColor.quantity || !selectedColor.label)
+    if (
+      productDetailsState.productQuantity ===
+        productDetailsState.selectedColor.quantity ||
+      !productDetailsState.selectedColor.label
+    )
       return;
-    setProductQuantity((cur) => cur + 1);
+
+    action(ProductDetailsAction.SET_PRODUCT_QUANTITY, {
+      value: productDetailsState.productQuantity + 1,
+    });
   }
 
   function handleDecrementQuantity() {
-    if (productQuantity === 0 || !selectedColor.label) return;
-    setProductQuantity((cur) => cur - 1);
+    if (
+      productDetailsState.productQuantity === 0 ||
+      !productDetailsState.selectedColor.label
+    )
+      return;
+    action(ProductDetailsAction.SET_PRODUCT_QUANTITY, {
+      value: productDetailsState.productQuantity - 1,
+    });
   }
 
   return (
@@ -137,11 +153,19 @@ function ProductDetails() {
               {data?.data?.images.map((image, index) => {
                 return (
                   <Box
-                    onClick={() => setCurrentImageIndex(index)}
+                    onClick={() =>
+                      action(ProductDetailsAction.SET_IMAGE_INDEX, {
+                        value: index,
+                      })
+                    }
                     className={`${
-                      index === imageIndex ? "opacity-70" : "opacity-40"
+                      index === productDetailsState.imageIndex
+                        ? "opacity-70"
+                        : "opacity-40"
                     } ${
-                      index === imageIndex ? "border-slate-400" : ""
+                      index === productDetailsState.imageIndex
+                        ? "border-slate-400"
+                        : ""
                     } relative w-full h-full border-2 border-[#dcdbdb] cursor-pointer rounded-2xl transition-all duration-500`}
                     key={image.id}
                   >
@@ -157,7 +181,7 @@ function ProductDetails() {
             </Box>
             <Box className="relative h-full w-full border-2 border-[#dcdbdb] rounded-2xl transition-all duration-500 ">
               <Image
-                src={data?.data?.images?.[imageIndex].url}
+                src={data?.data?.images?.[productDetailsState.imageIndex].url}
                 alt="img"
                 fill
                 className="object-contain rounded-2xl"
@@ -167,7 +191,7 @@ function ProductDetails() {
           <Box className="flex flex-col gap-10 w-full ">
             <Box className="flex justify-between items-center ">
               <h2 className="text-4xl font-semibold capitalize">
-                {selectedProduct?.name}
+                {productDetailsState.selectedProduct?.name}
               </h2>
               <span className="text-4xl cursor-pointer">
                 <HiOutlineHeart />
@@ -181,20 +205,22 @@ function ProductDetails() {
               </Box>
               <Box className="flex items-center gap-4 flex-wrap">
                 <SubCategoriesList
-                  subCategoriesIds={selectedProduct?.subCategory}
+                  subCategoriesIds={
+                    productDetailsState.selectedProduct?.subCategory
+                  }
                 />
               </Box>
             </Box>
             <q className="text-2xl text-gray-400 capitalize">
-              {selectedProduct?.description}
+              {productDetailsState.selectedProduct?.description}
             </q>
             <Box className="flex items-center gap-5">
               <h2 className="text-3xl font-semibold ">
-                {selectedProduct?.saleProduct} EGP
+                {productDetailsState.selectedProduct?.saleProduct} EGP
               </h2>
-              {selectedProduct?.discount > 0 && (
+              {productDetailsState.selectedProduct?.discount > 0 && (
                 <h2 className="text-3xl font-semibold text-gray-400 line-through">
-                  {selectedProduct?.price} EGP
+                  {productDetailsState.selectedProduct?.price} EGP
                 </h2>
               )}
             </Box>
@@ -209,16 +235,20 @@ function ProductDetails() {
             <Box>
               <h2 className="text-2xl mb-5">Available Colors:</h2>
               <div className="flex gap-4">
-                {selectedProduct?.colors?.map((color) => {
+                {productDetailsState.selectedProduct?.colors?.map((color) => {
                   return (
                     <div
                       onClick={() => {
-                        setSelectedColor(color);
-                        setProductQuantity(0);
+                        action(ProductDetailsAction.SET_SELECTED_COLOR, {
+                          value: color,
+                        });
+                        action(ProductDetailsAction.SET_PRODUCT_QUANTITY, {
+                          value: 0,
+                        });
                       }}
                       key={color.value}
                       className={`w-10 h-10 rounded ${
-                        selectedColor?.value === color.value
+                        productDetailsState.selectedColor?.value === color.value
                           ? "ring-offset-2 ring-2 ring-black "
                           : ""
                       } `}
@@ -240,7 +270,7 @@ function ProductDetails() {
               <input
                 className="text-center p-4 rounded-xl text-2xl w-[15%] border-2 border-gray-200"
                 type="number"
-                value={productQuantity}
+                value={productDetailsState.productQuantity}
                 readOnly
               />
 
@@ -251,8 +281,9 @@ function ProductDetails() {
                 +
               </button>
             </Box>
-            {productQuantity === selectedColor?.quantity &&
-              selectedColor?.value && (
+            {productDetailsState.productQuantity ===
+              productDetailsState.selectedColor?.quantity &&
+              productDetailsState.selectedColor?.value && (
                 <p className="text-2xl text-red-600">
                   This is maximum Quantity for this product Color
                 </p>
@@ -261,7 +292,9 @@ function ProductDetails() {
               <button
                 onClick={() => {
                   handleAddCartItem();
-                  setProductQuantity(0);
+                  action(ProductDetailsAction.SET_PRODUCT_QUANTITY, {
+                    value: 0,
+                  });
                 }}
                 className="bg-[#ed0534] hover:bg-black transition duration-500 text-white p-4 text-2xl rounded-lg w-full"
               >

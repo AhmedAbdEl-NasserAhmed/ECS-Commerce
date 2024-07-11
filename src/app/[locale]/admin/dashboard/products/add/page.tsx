@@ -46,8 +46,6 @@ function AddProductPage() {
 
   const formData = watch();
 
-  console.log("formData", formData);
-
   const [smartSeachvalue, setSmartSeachValue] = useState<{
     id: string;
     name: string;
@@ -98,8 +96,6 @@ function AddProductPage() {
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formData["name"], productName]);
-
-  console.log("selectedProduct", selectedProduct);
 
   useEffect(() => {
     if (selectedProduct?.images) {

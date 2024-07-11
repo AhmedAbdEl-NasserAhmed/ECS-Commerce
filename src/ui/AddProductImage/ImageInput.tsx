@@ -7,7 +7,6 @@ function ImageInput(props) {
       <input
         disabled={props.disabled}
         onChange={(e) => {
-          console.log("CHANGED", e.target.files[0]);
           props.onChange(e.target.files[0]);
         }}
         name={props.name}

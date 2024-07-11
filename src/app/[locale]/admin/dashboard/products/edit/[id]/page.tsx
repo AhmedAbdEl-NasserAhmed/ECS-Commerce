@@ -54,8 +54,6 @@ function EditProduct() {
 
   const formData = watch();
 
-  console.log("formData", formData);
-
   const [updateProductFn, updateProductResponse] =
     useUpdateSingleProductMutation();
 

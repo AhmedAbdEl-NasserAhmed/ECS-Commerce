@@ -1,7 +1,6 @@
 "use client";
 
 import { useGetSingleProductBySlugQuery } from "@/lib/features/api/productsApi";
-import { AdminProductProps } from "@/types/types";
 import Spinner from "@/ui/Spinner/Spinner";
 import { Box } from "@mui/material";
 import Image from "next/image";

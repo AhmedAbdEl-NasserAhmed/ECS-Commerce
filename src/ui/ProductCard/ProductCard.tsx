@@ -40,7 +40,7 @@ const ProductCard = ({ product }) => {
           {product?.category?.name}
         </div>
         <div
-          className="absolute z-20 transition-all duration-500 -bottom-[5rem] group-hover:bottom-[2rem] bg-white w-[75%] text-center p-[1.2rem] text-[1.5rem] font-medium rounded"
+          className="absolute z-20 transition-all duration-500 -bottom-[5rem] group-hover:bottom-[2rem] bg-white w-[75%] text-center p-[1.2rem] text-[1.5rem] font-medium rounded hover:bg-[#ed0534] hover:text-white"
           style={{
             left: "50%",
             transform: "translateX(-50%)",

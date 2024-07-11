@@ -16,7 +16,7 @@ function ProductListOptions({ product }) {
       <ProductActionItem icon={<HiOutlineHeart />} />{" "}
       <ProductActionItem
         icon={<HiEye />}
-        onClick={() => router.push(`/${locale}/product/${product?.slug}`)}
+        onClick={() => router.push(`/${locale}/user/product/${product?.slug}`)}
       />
     </ul>
   );

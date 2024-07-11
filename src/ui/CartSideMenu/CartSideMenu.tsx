@@ -38,7 +38,7 @@ function CartSideMenu({ setOpenSideMenu, openSideMenu }) {
   }
 
   const totalCartItems = cart.reduce((acc, cur) => {
-    return acc + cur.quantity * cur.price;
+    return acc + +cur.quantity * +cur.price;
   }, 0);
 
   return (
@@ -103,12 +103,12 @@ function CartSideMenu({ setOpenSideMenu, openSideMenu }) {
                         </div>
                       </div>
                       {/* BOTTOM */}
-                      <div className="flex justify-between items-center text-xl">
+                      <div className="flex justify-between items-center text-xl gap-8">
                         <span className="text-gray-500">
                           Qty. {product.quantity}
                         </span>
 
-                        <div className="flex items-center gap-5 flex-col min-[370px]:flex-row ">
+                        <div className="flex items-center gap-5 flex-row mr-auto ">
                           <button
                             className={` ${
                               product.quantity === product.maxQuantity

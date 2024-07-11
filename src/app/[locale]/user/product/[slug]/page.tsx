@@ -7,10 +7,6 @@ import Image from "next/image";
 import { useParams } from "next/navigation";
 import { ChangeEvent, useEffect, useReducer, useState } from "react";
 import { useGetCategoryByIdQuery } from "@/lib/features/api/categoriesApi";
-import SubCategoriesList from "../../admin/dashboard/products/details/[slug]/SubCategoriesList";
-import DropdownSizeOptions from "../../admin/dashboard/products/details/[slug]/DropdownSizeOptions";
-import NavBar from "@/ui/NavBar/NavBar";
-import Footer from "@/ui/Footer/Footer";
 import { HiOutlineHeart } from "react-icons/hi2";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { addItem } from "@/lib/features/cartSlice/cartSlice";
@@ -20,6 +16,8 @@ import {
   ProductDetailsAction,
   reducerFn,
 } from "./productDetailsReducer";
+import SubCategoriesList from "@/app/[locale]/admin/dashboard/products/details/[slug]/SubCategoriesList";
+import DropdownSizeOptions from "@/app/[locale]/admin/dashboard/products/details/[slug]/DropdownSizeOptions";
 
 function ProductDetails() {
   const params = useParams();
@@ -145,7 +143,6 @@ function ProductDetails() {
   return (
     <>
       <Box className="px-4 md:px-8 lg:px-16 xl:px-32 2xl:px-64">
-        <NavBar />
         <Box className="flex p-[4rem] flex-col gap-16 lg:flex-row ">
           <Box className="flex flex-col md:flex-row gap-10 h-[500px] w-full ">
             <Box className="flex md:flex-col flex-row w-full md:w-1/4 h-1/2  gap-10 md:order-none order-1 ">
@@ -303,7 +300,6 @@ function ProductDetails() {
           </Box>
         </Box>
       </Box>
-      <Footer />
     </>
   );
 }

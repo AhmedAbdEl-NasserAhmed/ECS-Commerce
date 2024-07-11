@@ -11,8 +11,13 @@ import useClickOutside from "@/hooks/useClickOutside";
 import { CartItem } from "@/types/types";
 import Image from "next/image";
 import toast from "react-hot-toast";
+import { useParams, useRouter } from "next/navigation";
 
 const Cart = ({ setIsCartOpen }) => {
+  const { locale } = useParams();
+
+  const router = useRouter();
+
   const cart = useAppSelector((state) => state.cartSlice.cartItems);
 
   const ref = useClickOutside({ close: setIsCartOpen, value: false });
@@ -152,14 +157,13 @@ const Cart = ({ setIsCartOpen }) => {
             <p className="text-gray-500 text-xl mt-2 mb-4">
               Shipping and taxes calculated at checkout.
             </p>
-            <div className="flex justify-between text-xl">
-              <button className="rounded-xl py-3 px-4 ring-1 ring-gray-300">
-                View Cart
-              </button>
+            <div className="flex justify-end  text-xl">
               <button
+                onClick={() => {
+                  setIsCartOpen(false);
+                  router.push(`/${locale}/user/checkout`);
+                }}
                 className="rounded-xl py-3 px-4 bg-black text-white disabled:cursor-not-allowed disabled:opacity-75"
-                // disabled={isLoading}
-                // onClick={handleCheckout}
               >
                 Checkout
               </button>

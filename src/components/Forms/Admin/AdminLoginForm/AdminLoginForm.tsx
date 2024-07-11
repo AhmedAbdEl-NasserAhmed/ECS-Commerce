@@ -56,13 +56,6 @@ function AdminLoginForm() {
       className="relative flex w-[85vw] md:w-[70vw] flex-col lg:flex-row rounded-xl shadow-lg h-[95vh] lg:h-[65vh] overflow-hidden "
     >
       <Box className="relative p-9 flex flex-col justify-between lg:w-1/2 w-full h-full bg-[url('/sign-in-img.png')] bg-no-repeat bg-cover bg-center   ">
-        {/* <Image
-          src="/logo-login.png"
-          alt="logo image"
-          width={250}
-          height={250}
-          objectFit="contain"
-        /> */}
         <h1
           style={{
             fontSize: "3rem",

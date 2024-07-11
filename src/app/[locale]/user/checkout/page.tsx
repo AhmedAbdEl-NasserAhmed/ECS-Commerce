@@ -1,5 +1,7 @@
+import UserCheckout from "@/components/UserCheckout/UserCheckout";
+
 function Checkout() {
-  return <div>cart</div>;
+  return <UserCheckout />;
 }
 
 export default Checkout;

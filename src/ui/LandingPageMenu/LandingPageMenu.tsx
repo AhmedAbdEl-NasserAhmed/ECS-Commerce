@@ -53,6 +53,7 @@ function LandingPageMenu() {
             &times;
           </span>
           <CartSideMenu
+            setOpens={setOpens}
             setOpenSideMenu={setOpenSideMenu}
             openSideMenu={openSideMenu}
           />

@@ -7,9 +7,14 @@ import {
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { CartItem } from "@/types/types";
 import Image from "next/image";
+import { useParams, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
-function CartSideMenu({ setOpenSideMenu, openSideMenu }) {
+function CartSideMenu({ setOpenSideMenu, openSideMenu, setOpens }) {
+  const { locale } = useParams();
+
+  const router = useRouter();
+
   const cart = useAppSelector((state) => state.cartSlice.cartItems);
 
   const ref = useClickOutside({ close: setOpenSideMenu, value: false });
@@ -153,11 +158,15 @@ function CartSideMenu({ setOpenSideMenu, openSideMenu }) {
               <p className="text-gray-500 text-xl mt-2 mb-4">
                 Shipping and taxes calculated at checkout.
               </p>
-              <div className="flex justify-between text-xl">
-                <button className="rounded-xl py-3 px-4 ring-1 ring-gray-300 text-black">
-                  View Cart
-                </button>
-                <button className="rounded-xl py-3 px-4 bg-black text-white disabled:cursor-not-allowed disabled:opacity-75">
+              <div className="flex justify-end text-xl">
+                <button
+                  onClick={() => {
+                    router.push(`/${locale}/user/checkout`);
+                    setOpenSideMenu(false);
+                    setOpens(false);
+                  }}
+                  className="rounded-xl py-3 px-4 bg-black text-white disabled:cursor-not-allowed disabled:opacity-75"
+                >
                   Checkout
                 </button>
               </div>

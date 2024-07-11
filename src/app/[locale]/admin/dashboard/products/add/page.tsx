@@ -38,7 +38,6 @@ function AddProductPage() {
     reset,
     watch,
     setValue,
-
     formState: { errors },
   } = useForm<AdminProductProps>({ mode: "onChange" });
 

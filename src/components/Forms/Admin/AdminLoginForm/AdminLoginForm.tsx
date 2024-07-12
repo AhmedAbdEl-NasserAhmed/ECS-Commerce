@@ -104,7 +104,7 @@ function AdminLoginForm() {
                   defaultValue={input.defaultValue}
                   rules={input.rules}
                   render={({ field }) => (
-                    <CustomizedTextField // ⚠️
+                    <CustomizedTextField
                       disabled={adminState.isLoading}
                       textLabelClass={input.textLabelClass}
                       textlabel={formTranslation(input.textlabel)}

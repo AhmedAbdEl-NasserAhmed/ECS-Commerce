@@ -54,7 +54,7 @@ function CartSideMenu({ setOpenSideMenu, openSideMenu, setOpens }) {
     >
       <div ref={ref} className="bg-white w-[70vw] h-full p-6 overflow-y-scroll">
         {cart.length === 0 ? (
-          <div className="text-black">Cart is Empty</div>
+          <div className="text-black  font-bold text-4xl">Cart is Empty</div>
         ) : (
           <>
             <h2 className="text-2xl font-semibold text-black capitalize mb-10">

@@ -6,6 +6,8 @@ function ProductDetailsTable({ cart, totalCartItems }) {
       <thead>
         <tr>
           <th>PRODUCT</th>
+          <th>Size</th>
+          <th>Color</th>
           <th>TOTAL</th>
         </tr>
       </thead>
@@ -17,6 +19,13 @@ function ProductDetailsTable({ cart, totalCartItems }) {
                 {" "}
                 {product.name} * {product.quantity}
               </td>
+              <td>{product.size}</td>
+              <td>
+                <span
+                  className="w-5 h-5 inline-block rounded-full"
+                  style={{ backgroundColor: product.color }}
+                ></span>
+              </td>
               <td>{product.quantity * product.price} EGP</td>
             </tr>
           );
@@ -25,6 +34,8 @@ function ProductDetailsTable({ cart, totalCartItems }) {
       <tfoot>
         <tr>
           <td>TOTAL</td>
+          <td></td>
+          <td></td>
           <td>{totalCartItems} EGP</td>
         </tr>
       </tfoot>

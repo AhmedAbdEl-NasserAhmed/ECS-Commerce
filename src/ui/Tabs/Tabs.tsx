@@ -8,22 +8,28 @@ interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
   value: number;
+  sx: object;
 }
 
 interface Tab {
   label: string;
   content: React.ReactNode;
+  sx?: object;
 }
 
 interface BaseTabsProps {
   tabs: Tab[];
+  orientation: "horizontal" | "vertical";
+  parentStyle?: object;
+  childStyle?: object;
 }
 
 function CustomTabPanel(props: TabPanelProps) {
-  const { children, value, index, ...other } = props;
+  const { children, value, index, sx, ...other } = props;
 
   return (
     <div
+      style={{ ...sx }}
       role="tabpanel"
       hidden={value !== index}
       id={`simple-tabpanel-${index}`}
@@ -46,14 +52,16 @@ export default function BaseTabs(props: BaseTabsProps) {
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    console.log("newV", newValue);
     setValue(newValue);
   };
 
   return (
-    <Box sx={{ width: "100%" }}>
-      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+    <Box sx={{ width: "100%", ...props.parentStyle }}>
+      <Box
+        sx={{ borderBottom: 1, borderColor: "divider", ...props.childStyle }}
+      >
         <Tabs
+          orientation={props.orientation}
           value={value}
           onChange={handleChange}
           aria-label="basic tabs example"
@@ -64,7 +72,10 @@ export default function BaseTabs(props: BaseTabsProps) {
                 key={tab.label}
                 label={tab.label}
                 {...a11yProps(index)}
-                sx={{ fontSize: "1.6rem", color: "#ED0534 !important" }}
+                sx={{
+                  fontSize: "1.6rem",
+                  color: "#ED0534 !important",
+                }}
               />
             );
           })}
@@ -73,7 +84,7 @@ export default function BaseTabs(props: BaseTabsProps) {
 
       {props.tabs.map((tab: Tab, index: number) => {
         return (
-          <CustomTabPanel value={value} index={index}>
+          <CustomTabPanel key={index} value={value} index={index} sx={tab.sx}>
             {tab.content}
           </CustomTabPanel>
         );

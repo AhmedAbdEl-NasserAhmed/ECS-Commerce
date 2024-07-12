@@ -326,6 +326,7 @@ function ProductDetails() {
           </Box>
         </Box>
         <BaseTabs
+          orientation="horizontal"
           tabs={[
             { label: "Reviews", content: <Reviews reviews={dummyReviews} /> },
           ]}

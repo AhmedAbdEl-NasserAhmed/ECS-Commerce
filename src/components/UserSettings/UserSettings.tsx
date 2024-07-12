@@ -1,15 +1,11 @@
-"use client";
-
 import { emailRegex, passwordRegex } from "@/constants/regx";
 import CustomizedTextField from "@/ui/TextField/TextField";
 import { Button, IconButton, InputAdornment } from "@mui/material";
-
-import { useParams } from "next/navigation";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 
-function RegisterPage() {
+function UserSettings() {
   const {
     control,
     watch,
@@ -20,24 +16,19 @@ function RegisterPage() {
   const formData = watch();
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [showConfirmPassword, setShowConfirmPassword] =
-    useState<boolean>(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
-
-  const handleClickShowConfirmPassword = () =>
-    setShowConfirmPassword((show) => !show);
 
   function onSubmit() {}
 
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className=" mt-44 bg-white shadow-[0px_0px_7px_5px_#0000000a] max-w-[80rem] m-auto  "
+      className="bg-white shadow-[0px_0px_7px_5px_#0000000a] w-full  "
     >
-      <div className="p-8 flex flex-col gap-12 ">
+      <div className="p-8 flex flex-col gap-12 grow ">
         <h2 className="text-3xl text-black font-bold flex justify-center">
-          REGISTER
+          ACCOUNT DETAILS
         </h2>
         <Controller
           name={"firstName"}
@@ -129,7 +120,7 @@ function RegisterPage() {
           render={({ field }) => (
             <CustomizedTextField
               textLabelClass={"font-semibold text-xl"}
-              placeholder={"Passwprd "}
+              placeholder={"Password "}
               textlabel={"Password "}
               field={field}
               formerHelperStyles={{ style: { fontSize: "1rem" } }}
@@ -153,47 +144,6 @@ function RegisterPage() {
             />
           )}
         />
-        <Controller
-          name={"confirmPassword"}
-          control={control}
-          defaultValue={""}
-          rules={{
-            required: "This field is required",
-            validate: (value) => {
-              if (value !== formData.password) return "Password does not match";
-            },
-          }}
-          render={({ field }) => (
-            <CustomizedTextField
-              textLabelClass={"font-semibold text-xl"}
-              placeholder={"Confirm Password "}
-              textlabel={"Confirm Password "}
-              field={field}
-              formerHelperStyles={{ style: { fontSize: "1rem" } }}
-              errors={errors}
-              type={showConfirmPassword ? "text" : "password"}
-              variant={"outlined"}
-              inputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={handleClickShowConfirmPassword}
-                      edge="end"
-                    >
-                      {showConfirmPassword ? (
-                        <MdVisibility />
-                      ) : (
-                        <MdVisibilityOff />
-                      )}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-              size={"small"}
-            />
-          )}
-        />
 
         <Button
           sx={{
@@ -208,11 +158,11 @@ function RegisterPage() {
           variant="contained"
           size="large"
         >
-          Register
+          Update
         </Button>
       </div>
     </form>
   );
 }
 
-export default RegisterPage;
+export default UserSettings;

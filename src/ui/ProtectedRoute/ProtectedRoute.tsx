@@ -9,6 +9,11 @@ import {
 } from "next/navigation";
 import { useEffect } from "react";
 
+enum UserType {
+  ADMIN = "ADMIN",
+  USER = "USER",
+}
+
 function ProtectedRoute({ children }) {
   const router = useRouter();
 
@@ -21,6 +26,8 @@ function ProtectedRoute({ children }) {
   const pathname = usePathname();
 
   const authRoutes = ["/admin"];
+
+  console.log("USER", user);
 
   useEffect(() => {
     if (typeof window !== undefined) {

@@ -6,6 +6,8 @@ import { Button, IconButton, InputAdornment } from "@mui/material";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
+import Link from "next/link";
+import { useParams } from "next/navigation";
 
 function LoginPage() {
   const {
@@ -16,6 +18,8 @@ function LoginPage() {
   } = useForm({ mode: "onChange" });
 
   const formData = watch();
+
+  const { locale } = useParams();
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
@@ -67,8 +71,8 @@ function LoginPage() {
           render={({ field }) => (
             <CustomizedTextField
               textLabelClass={"font-semibold text-xl"}
-              placeholder={"Passwprd "}
-              textlabel={"Passwprd "}
+              placeholder={"Password "}
+              textlabel={"Password "}
               field={field}
               formerHelperStyles={{ style: { fontSize: "1rem" } }}
               errors={errors}
@@ -91,7 +95,17 @@ function LoginPage() {
             />
           )}
         />
-
+        <div className="flex justify-between">
+          <Link className="text-xl font-bold" href={`/${locale}/user/register`}>
+            Craete a new account ?
+          </Link>
+          <Link
+            className="text-[#141414] font-semibold sm:text-md md:text-xl "
+            href=""
+          >
+            Forget My Password ?
+          </Link>
+        </div>
         <Button
           sx={{
             padding: "0.85rem",

@@ -18,6 +18,8 @@ import {
 } from "./productDetailsReducer";
 import SubCategoriesList from "@/app/[locale]/admin/dashboard/products/details/[slug]/SubCategoriesList";
 import DropdownSizeOptions from "@/app/[locale]/admin/dashboard/products/details/[slug]/DropdownSizeOptions";
+import BaseTabs from "@/ui/Tabs/Tabs";
+import Reviews from "@/components/UserReviews/Reviews";
 
 function ProductDetails() {
   const params = useParams();
@@ -139,6 +141,30 @@ function ProductDetails() {
       value: productDetailsState.productQuantity - 1,
     });
   }
+
+  const dummyReviews = [
+    {
+      _id: "123",
+      username: "Khaled",
+      stars: 3,
+      review:
+        "Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Cras ultricies ligula sed magna dictum porta. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Vivamus magna justo.",
+    },
+    {
+      _id: "1234",
+      username: "Ahmed",
+      stars: 2,
+      review:
+        "Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Cras ultricies ligula sed magna dictum porta. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Vivamus magna justo.",
+    },
+    {
+      _id: "32",
+      username: "Mostafa",
+      stars: 5,
+      review:
+        "Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Cras ultricies ligula sed magna dictum porta. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Vivamus magna justo.",
+    },
+  ];
 
   return (
     <>
@@ -299,6 +325,11 @@ function ProductDetails() {
             </Box>
           </Box>
         </Box>
+        <BaseTabs
+          tabs={[
+            { label: "Reviews", content: <Reviews reviews={dummyReviews} /> },
+          ]}
+        />
       </Box>
     </>
   );

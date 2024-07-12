@@ -1,4 +1,3 @@
-import { CartItem } from "@/types/types";
 import { createSlice } from "@reduxjs/toolkit";
 
 interface CartSlice {
@@ -6,52 +5,7 @@ interface CartSlice {
 }
 
 const initialState: CartSlice = {
-  cartItems: [
-    {
-      color: "#ff00f7",
-      id: "148f7",
-      image:
-        "http://res.cloudinary.com/dtvumfiux/image/upload/v1720649658/u6tkjxaxvukhoohoapov.jpg",
-      maxQuantity: 20,
-      name: "Blue-Jeans",
-      price: 225,
-      quantity: 3,
-      size: "XS",
-    },
-    {
-      color: "#ff00f7",
-      id: "148f7",
-      image:
-        "http://res.cloudinary.com/dtvumfiux/image/upload/v1720649658/u6tkjxaxvukhoohoapov.jpg",
-      maxQuantity: 20,
-      name: "Blue-Jeans",
-      price: 225,
-      quantity: 3,
-      size: "XS",
-    },
-    {
-      color: "#ff00f7",
-      id: "148f7",
-      image:
-        "http://res.cloudinary.com/dtvumfiux/image/upload/v1720649658/u6tkjxaxvukhoohoapov.jpg",
-      maxQuantity: 20,
-      name: "Blue-Jeans",
-      price: 225,
-      quantity: 3,
-      size: "XS",
-    },
-    {
-      color: "#ff00f7",
-      id: "148f7",
-      image:
-        "http://res.cloudinary.com/dtvumfiux/image/upload/v1720649658/u6tkjxaxvukhoohoapov.jpg",
-      maxQuantity: 20,
-      name: "Blue-Jeans",
-      price: 225,
-      quantity: 3,
-      size: "XS",
-    },
-  ],
+  cartItems: [],
 };
 
 const cartSlice = createSlice({

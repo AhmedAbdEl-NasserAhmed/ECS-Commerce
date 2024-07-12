@@ -246,7 +246,7 @@ function BillingInformation() {
         sx={{
           padding: "0.85rem",
           fontSize: "1.2rem",
-          backgroundColor: "#141414",
+          backgroundColor: "#ed0534",
           "&:hover": {
             backgroundColor: "#141414",
           },

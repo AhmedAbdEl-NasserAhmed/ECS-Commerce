@@ -5,12 +5,20 @@ import MultiChoiceSelectMenu from "@/ui/MultiChoiceSelectMenu/MultiChoiceSelectM
 import CustomizedTextField from "@/ui/TextField/TextField";
 import { Controller, useForm } from "react-hook-form";
 import { getNames } from "country-list";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
+import { Button } from "@mui/material";
+import ErrorMessage from "@/ui/ErrorMessage/ErrorMessage";
 
 function BillingInformation() {
   const {
     control,
+    watch,
+    handleSubmit,
     formState: { errors },
   } = useForm({ mode: "onChange" });
+
+  const formData = watch();
 
   const countries = getNames().map((country) => ({
     label: country,
@@ -18,8 +26,19 @@ function BillingInformation() {
     color: "#666666",
   }));
 
+  console.log("formData", formData);
+
+  function onSubmit() {
+    console.log("hello");
+  }
+
+  console.log(errors["phoneNumber"]?.message);
+
   return (
-    <form className="p-6 bg-white shadow-md w-full md:w-1/2 rounded-md  flex flex-col gap-8">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="p-6 bg-white shadow-md w-full md:w-1/2 rounded-md  flex flex-col gap-8"
+    >
       <div>
         <h2 className="text-4xl font-semibold mb-5">Billings Information</h2>
         <span className="w-full h-1 block bg-[#ed0534] ">&nbsp;</span>
@@ -107,33 +126,137 @@ function BillingInformation() {
           )}
         />
       </div>
-      <div>
-        <Controller
-          name={"country"}
-          control={control}
-          defaultValue={[
-            {
-              label: "Egypt",
-              value: "Egypt",
-              color: "#666666",
-            },
-          ]}
-          rules={{ required: "This field is required" }}
-          render={({ field }) => (
-            <MultiChoiceSelectMenu
-              disabled={false}
-              isMulti={false}
-              textLabelClass={"font-semibold text-xl"}
-              placeholder={"Country Name "}
-              textLabel={"Country Name"}
-              name={"country"}
-              options={countries}
-              field={field}
-              errors={errors}
-            />
+
+      <div className="flex items-center flex-wrap md:flex-nowrap gap-8 ">
+        <div className="w-full ">
+          <Controller
+            name={"country"}
+            control={control}
+            defaultValue={{ label: "Egypt", value: "Egypt", color: "#666666" }}
+            rules={{ required: "This field is required" }}
+            render={({ field }) => (
+              <MultiChoiceSelectMenu
+                disabled={false}
+                isMulti={false}
+                textLabelClass={"font-semibold text-xl"}
+                placeholder={"Select a Country "}
+                textLabel={"Country Name"}
+                name={"country"}
+                options={countries}
+                field={field}
+                errors={errors}
+              />
+            )}
+          />
+        </div>
+        <div className="w-full flex flex-col gap-4">
+          <label className="font-semibold text-xl">Phone Number</label>
+          <Controller
+            name={"phoneNumber"}
+            control={control}
+            defaultValue={""}
+            rules={{ required: "This field is required" }}
+            render={({ field }) => (
+              <PhoneInput
+                country={"eg"}
+                value={field.value}
+                onChange={field.onChange}
+                inputStyle={{
+                  width: "100%",
+                }}
+                inputProps={{
+                  name: "phoneNumber",
+                  required: true,
+                  autoFocus: true,
+                }}
+              />
+            )}
+          />
+          {errors["phoneNumber"] && (
+            <ErrorMessage message={errors["phoneNumber"]?.message} />
           )}
-        />
+        </div>
       </div>
+      <div className="flex items-center flex-wrap md:flex-nowrap gap-8 ">
+        <div className="w-full ">
+          <Controller
+            name={"buidling"}
+            control={control}
+            defaultValue={""}
+            rules={{ required: "This field is required" }}
+            render={({ field }) => (
+              <CustomizedTextField
+                textLabelClass={"font-semibold text-xl"}
+                placeholder={"Building"}
+                textlabel={"Building"}
+                field={field}
+                formerHelperStyles={{ style: { fontSize: "1rem" } }}
+                errors={errors}
+                type={"text"}
+                variant={"outlined"}
+                size={"small"}
+              />
+            )}
+          />
+        </div>
+        <div className="w-full ">
+          <Controller
+            name={"street"}
+            control={control}
+            defaultValue={""}
+            rules={{ required: "This field is required" }}
+            render={({ field }) => (
+              <CustomizedTextField
+                textLabelClass={"font-semibold text-xl"}
+                placeholder={"Street"}
+                textlabel={"Street"}
+                field={field}
+                formerHelperStyles={{ style: { fontSize: "1rem" } }}
+                errors={errors}
+                type={"text"}
+                variant={"outlined"}
+                size={"small"}
+              />
+            )}
+          />
+        </div>
+        <div className="w-full ">
+          <Controller
+            name={"floor"}
+            control={control}
+            defaultValue={""}
+            rules={{ required: "This field is required" }}
+            render={({ field }) => (
+              <CustomizedTextField
+                textLabelClass={"font-semibold text-xl"}
+                placeholder={"Floor"}
+                textlabel={"Floor"}
+                field={field}
+                formerHelperStyles={{ style: { fontSize: "1rem" } }}
+                errors={errors}
+                type={"text"}
+                variant={"outlined"}
+                size={"small"}
+              />
+            )}
+          />
+        </div>
+      </div>
+      <Button
+        sx={{
+          padding: "0.85rem",
+          fontSize: "1.2rem",
+          backgroundColor: "#141414",
+          "&:hover": {
+            backgroundColor: "#141414",
+          },
+        }}
+        type="submit"
+        variant="contained"
+        size="large"
+      >
+        Place Order
+      </Button>
     </form>
   );
 }

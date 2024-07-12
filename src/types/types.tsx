@@ -10,6 +10,11 @@ export interface AdminMainCategory {
   description: string;
 }
 
+export interface UserReviewForm {
+  review: string;
+  stars: string;
+}
+
 export interface AdminSubCategory {
   name: string;
   description: string;

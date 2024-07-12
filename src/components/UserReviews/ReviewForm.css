@@ -1,0 +1,7 @@
+.review-form-stars {
+  position: absolute !important;
+  bottom: 1rem;
+  right: 2rem;
+  display: flex;
+  gap: 5px;
+}

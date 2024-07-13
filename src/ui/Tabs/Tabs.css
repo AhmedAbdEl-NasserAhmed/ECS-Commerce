@@ -1,3 +1,13 @@
-/* .css-1aquho2-MuiTabs-indicator {
+.css-10d9dml-MuiTabs-indicator {
   background-color: #ed0534 !important;
-} */
+}
+
+.css-lfwcke-MuiTabs-flexContainer {
+  display: flex;
+  flex-direction: row !important;
+}
+@media (min-width: 900px) {
+  .css-lfwcke-MuiTabs-flexContainer {
+    flex-direction: column !important;
+  }
+}

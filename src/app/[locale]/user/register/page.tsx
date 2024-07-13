@@ -1,12 +1,19 @@
 "use client";
 
 import { emailRegex, passwordRegex } from "@/constants/regx";
+import {
+  useUserloginMutation,
+  useUserSignupMutation,
+} from "@/lib/features/api/usersApi";
+
+import MiniSpinner from "@/ui/MiniSpinner/MiniSpinner";
 import CustomizedTextField from "@/ui/TextField/TextField";
 import { Button, IconButton, InputAdornment } from "@mui/material";
+import { useParams, useRouter } from "next/navigation";
 
-import { useParams } from "next/navigation";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 
 function RegisterPage() {
@@ -14,8 +21,15 @@ function RegisterPage() {
     control,
     watch,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({ mode: "onChange" });
+
+  const { locale } = useParams();
+
+  const router = useRouter();
+
+  const [signupFn, signupResponse] = useUserSignupMutation();
 
   const formData = watch();
 
@@ -28,7 +42,21 @@ function RegisterPage() {
   const handleClickShowConfirmPassword = () =>
     setShowConfirmPassword((show) => !show);
 
-  function onSubmit() {}
+  function onSubmit(data) {
+    signupFn({
+      name: data.name,
+      email: data.email,
+      password: data.password,
+      confirmPassword: data.confirmPassword,
+    })
+      .unwrap()
+      .then(() => {
+        reset();
+        toast.success("You have create a new email");
+        router.push(`/${locale}/user/login`);
+      })
+      .catch((err) => toast.error(err.data.message));
+  }
 
   return (
     <form
@@ -40,7 +68,7 @@ function RegisterPage() {
           REGISTER
         </h2>
         <Controller
-          name={"firstName"}
+          name={"name"}
           control={control}
           defaultValue={""}
           rules={{
@@ -52,34 +80,10 @@ function RegisterPage() {
           }}
           render={({ field }) => (
             <CustomizedTextField
+              disabled={signupResponse.isLoading}
               textLabelClass={"font-semibold text-xl"}
               placeholder={"First Name"}
               textlabel={"First Name"}
-              field={field}
-              formerHelperStyles={{ style: { fontSize: "1rem" } }}
-              errors={errors}
-              type={"text"}
-              variant={"outlined"}
-              size={"small"}
-            />
-          )}
-        />
-        <Controller
-          name={"lastName"}
-          control={control}
-          defaultValue={""}
-          rules={{
-            required: "This field is required",
-            minLength: {
-              value: 4,
-              message: "The name should be more than 4 characters ",
-            },
-          }}
-          render={({ field }) => (
-            <CustomizedTextField
-              textLabelClass={"font-semibold text-xl"}
-              placeholder={"Last Name"}
-              textlabel={"Last Name"}
               field={field}
               formerHelperStyles={{ style: { fontSize: "1rem" } }}
               errors={errors}
@@ -102,6 +106,7 @@ function RegisterPage() {
           }}
           render={({ field }) => (
             <CustomizedTextField
+              disabled={signupResponse.isLoading}
               textLabelClass={"font-semibold text-xl"}
               placeholder={"Email Address"}
               textlabel={"Email Address"}
@@ -128,6 +133,7 @@ function RegisterPage() {
           }}
           render={({ field }) => (
             <CustomizedTextField
+              disabled={signupResponse.isLoading}
               textLabelClass={"font-semibold text-xl"}
               placeholder={"Passwprd "}
               textlabel={"Password "}
@@ -165,6 +171,7 @@ function RegisterPage() {
           }}
           render={({ field }) => (
             <CustomizedTextField
+              disabled={signupResponse.isLoading}
               textLabelClass={"font-semibold text-xl"}
               placeholder={"Confirm Password "}
               textlabel={"Confirm Password "}
@@ -196,6 +203,7 @@ function RegisterPage() {
         />
 
         <Button
+          disabled={signupResponse.isLoading}
           sx={{
             padding: "0.85rem",
             fontSize: "1.2rem",
@@ -208,7 +216,7 @@ function RegisterPage() {
           variant="contained"
           size="large"
         >
-          Register
+          {signupResponse.isLoading ? <MiniSpinner /> : "Register"}
         </Button>
       </div>
     </form>

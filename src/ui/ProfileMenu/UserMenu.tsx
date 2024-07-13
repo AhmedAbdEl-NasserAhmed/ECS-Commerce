@@ -1,4 +1,6 @@
 import useClickOutside from "@/hooks/useClickOutside";
+import { logoutUser } from "@/lib/features/usersSlice/usersSlice";
+import { useAppDispatch } from "@/lib/hooks";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 
@@ -6,6 +8,8 @@ function UserMenu({ setIsProfileOpen }) {
   const { locale } = useParams();
 
   const ref = useClickOutside({ close: setIsProfileOpen, value: false });
+
+  const dispatch = useAppDispatch();
 
   return (
     <ul
@@ -20,7 +24,16 @@ function UserMenu({ setIsProfileOpen }) {
           Profile
         </Link>
       </li>
-      <li onClick={() => setIsProfileOpen(false)}>Logout</li>
+      <li
+        className="cursor-pointer"
+        onClick={() => {
+          dispatch(logoutUser());
+          localStorage.removeItem("userToken");
+          setIsProfileOpen(false);
+        }}
+      >
+        Logout
+      </li>
     </ul>
   );
 }

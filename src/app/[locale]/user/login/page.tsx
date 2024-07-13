@@ -7,7 +7,12 @@ import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
+import { useUserloginMutation } from "@/lib/features/api/usersApi";
+import { loginUser } from "@/lib/features/usersSlice/usersSlice";
+import { useAppDispatch } from "@/lib/hooks";
+import toast from "react-hot-toast";
+import MiniSpinner from "@/ui/MiniSpinner/MiniSpinner";
 
 function LoginPage() {
   const {
@@ -17,15 +22,37 @@ function LoginPage() {
     formState: { errors },
   } = useForm({ mode: "onChange" });
 
-  const formData = watch();
+  const [loginFn, loginState] = useUserloginMutation();
+
+  const dispatch = useAppDispatch();
 
   const { locale } = useParams();
+
+  const router = useRouter();
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
-  function onSubmit() {}
+  function onSubmit(data) {
+    console.log(data);
+
+    loginFn({ email: data.email, password: data.password })
+      .unwrap()
+      .then((res) => {
+        toast.success("Welcome Back");
+        dispatch(
+          loginUser({
+            user: res.data,
+            isAuthenticated: res.token,
+            token: res.token,
+          })
+        );
+        localStorage.setItem("userToken", res.token);
+        router.push(`/${locale}`);
+      })
+      .catch((err) => toast.error(err.data.message));
+  }
 
   return (
     <form
@@ -49,6 +76,7 @@ function LoginPage() {
           }}
           render={({ field }) => (
             <CustomizedTextField
+              disabled={loginState.isLoading}
               textLabelClass={"font-semibold text-xl"}
               placeholder={"Email Address"}
               textlabel={"Email Address"}
@@ -70,6 +98,7 @@ function LoginPage() {
           }}
           render={({ field }) => (
             <CustomizedTextField
+              disabled={loginState.isLoading}
               textLabelClass={"font-semibold text-xl"}
               placeholder={"Password "}
               textlabel={"Password "}
@@ -107,6 +136,7 @@ function LoginPage() {
           </Link>
         </div>
         <Button
+          disabled={loginState.isLoading}
           sx={{
             padding: "0.85rem",
             fontSize: "1.2rem",
@@ -119,7 +149,7 @@ function LoginPage() {
           variant="contained"
           size="large"
         >
-          Log In
+          {loginState.isLoading ? <MiniSpinner /> : " Log In"}
         </Button>
       </div>
     </form>

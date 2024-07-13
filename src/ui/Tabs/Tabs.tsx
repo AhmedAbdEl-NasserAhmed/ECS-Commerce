@@ -58,7 +58,11 @@ export default function BaseTabs(props: BaseTabsProps) {
   return (
     <Box sx={{ width: "100%", ...props.parentStyle }}>
       <Box
-        sx={{ borderBottom: 1, borderColor: "divider", ...props.childStyle }}
+        sx={{
+          borderBottom: 1,
+          borderColor: "divider",
+          ...props.childStyle,
+        }}
       >
         <Tabs
           orientation={props.orientation}

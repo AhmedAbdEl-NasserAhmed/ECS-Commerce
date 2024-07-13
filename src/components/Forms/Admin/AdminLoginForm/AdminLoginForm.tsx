@@ -9,7 +9,7 @@ import { useForm, Controller } from "react-hook-form";
 import { LoginFormData } from "@/types/types";
 import Image from "next/image";
 import { adminLoginFormInputs } from "@/constants/adminLoginFormInputs";
-import { useAdminLoginMutation } from "@/lib/features/api/usersApi";
+import { useUserloginMutation } from "@/lib/features/api/usersApi";
 import toast from "react-hot-toast";
 import { useAppDispatch } from "@/lib/hooks";
 import { loginUser } from "@/lib/features/usersSlice/usersSlice";
@@ -26,7 +26,7 @@ function AdminLoginForm() {
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
-  const [adminFn, adminState] = useAdminLoginMutation();
+  const [adminFn, adminState] = useUserloginMutation();
 
   const dispatch = useAppDispatch();
 

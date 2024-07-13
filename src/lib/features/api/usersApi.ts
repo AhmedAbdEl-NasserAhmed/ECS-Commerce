@@ -12,9 +12,16 @@ const usersApi = createApi({
     baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
   }),
   endpoints: (builder) => ({
-    adminLogin: builder.mutation({
+    userlogin: builder.mutation({
       query: (body) => ({
         url: "auth/login",
+        method: "POST",
+        body,
+      }),
+    }),
+    userSignup: builder.mutation({
+      query: (body) => ({
+        url: "auth/signup",
         method: "POST",
         body,
       }),
@@ -22,6 +29,6 @@ const usersApi = createApi({
   }),
 });
 
-export const { useAdminLoginMutation } = usersApi;
+export const { useUserloginMutation, useUserSignupMutation } = usersApi;
 
 export default usersApi;

@@ -12,12 +12,7 @@ function ProfilePage() {
           display: "flex",
           flexDirection: {
             xs: "column",
-            sm: "row",
-          },
-          alignItems: { xs: "center", sm: "flex-start" },
-          backgrounColor: "black",
-          ".MuiTabs-indicator": {
-            backgroundColor: "#141414",
+            md: "row",
           },
         }}
         childStyle={{ border: "none" }}

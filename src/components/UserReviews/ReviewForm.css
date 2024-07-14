@@ -5,3 +5,7 @@
   display: flex;
   gap: 5px;
 }
+
+.review-stars-gap {
+  gap: 10px;
+}

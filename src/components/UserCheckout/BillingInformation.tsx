@@ -26,13 +26,7 @@ function BillingInformation() {
     color: "#666666",
   }));
 
-  console.log("formData", formData);
-
-  function onSubmit() {
-    console.log("hello");
-  }
-
-  console.log(errors["phoneNumber"]?.message);
+  function onSubmit() {}
 
   return (
     <form

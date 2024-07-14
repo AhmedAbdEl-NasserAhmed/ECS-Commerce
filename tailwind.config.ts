@@ -36,6 +36,12 @@ const config: Config = {
       colors: {
         mainColor: "#4170f2",
         accentColor: "#FDFDFD",
+        heading: {
+          color1: "#0a0d14",
+        },
+        paragraph: {
+          color1: "#777c87",
+        },
       },
       gridTemplateColumns: {
         // Custom grid template columns

@@ -1,9 +1,9 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { slides } from "@/constants/slides";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 
 function Slider() {
   const [currentSlide, setCurrentSlide] = useState<number>(0);

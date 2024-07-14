@@ -36,7 +36,7 @@ const ProductCard = ({ product }) => {
         )}
 
         <ProductListOptions product={product} />
-        <div className="absolute top-[1.5rem] left-[1.5rem] text-white z-20 bg-[green] py-[.3rem] px-[.8rem] rounded">
+        <div className="absolute font-bold top-[1.5rem] left-[1.5rem] text-white z-20 bg-[green] py-[.3rem] px-[.8rem] text-base rounded">
           {product?.category?.name}
         </div>
         <div

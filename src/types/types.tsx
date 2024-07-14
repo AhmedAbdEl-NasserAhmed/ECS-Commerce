@@ -153,4 +153,5 @@ export interface CartItem {
   price: number;
   maxQuantity: number;
   cartItemId: string;
+  colorId: string;
 }

@@ -12,7 +12,7 @@ function Layout({ children }) {
 
   return (
     <div>
-      {!user?.isAcive && user && <NotActiveMessage />}
+      {!user?.isActive && user && <NotActiveMessage />}
       <NavBar />
       <BreadCrumpet />
       {children}

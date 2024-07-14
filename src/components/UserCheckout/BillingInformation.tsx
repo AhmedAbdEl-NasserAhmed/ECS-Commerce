@@ -26,6 +26,8 @@ function BillingInformation() {
     color: "#666666",
   }));
 
+  console.log("formData", formData);
+
   function onSubmit() {}
 
   return (
@@ -196,15 +198,15 @@ function BillingInformation() {
         </div>
         <div className="w-full ">
           <Controller
-            name={"appartment"}
+            name={"apartment"}
             control={control}
             defaultValue={""}
             rules={{ required: "This field is required" }}
             render={({ field }) => (
               <CustomizedTextField
                 textLabelClass={"font-semibold text-xl"}
-                placeholder={"Appartment"}
-                textlabel={"Appartment"}
+                placeholder={"Apartment"}
+                textlabel={"Apartment"}
                 field={field}
                 formerHelperStyles={{ style: { fontSize: "1rem" } }}
                 errors={errors}

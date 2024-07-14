@@ -44,10 +44,6 @@ function UserSettings() {
 
   const user = useAppSelector((state) => state.usersSlice.user);
 
-  // const token = useAppSelector((state) => state.usersSlice.token);
-
-  console.log(formData);
-
   function onSubmit(data) {
     updatePasswordFm({
       oldPassword: data.oldPassword,

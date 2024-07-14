@@ -90,7 +90,7 @@ function ProductDetails() {
     toast.success("An item added to your cart");
     dispatchRedux(
       addItem({
-        productID: productDetailsState.selectedProduct.productId,
+        product: productDetailsState.selectedProduct.productId,
         cartItemId: crypto.randomUUID().substring(0, 5),
         name: productDetailsState.selectedProduct.name,
         size: productDetailsState.selectedProduct.size,
@@ -99,7 +99,8 @@ function ProductDetails() {
         color: productDetailsState.selectedColor.color,
         price: productDetailsState.selectedProduct.saleProduct,
         maxQuantity: productDetailsState.selectedColor.quantity,
-        cartID: user.cart["_id"],
+        cart: user?.cart?.["_id"],
+        colorId: productDetailsState.selectedColor["_id"],
       })
     );
   }

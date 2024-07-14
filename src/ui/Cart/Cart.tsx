@@ -4,6 +4,7 @@ import {
   decrementProductItem,
   incrementProductItem,
   removeItem,
+  assignCartId,
 } from "@/lib/features/cartSlice/cartSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import useClickOutside from "@/hooks/useClickOutside";
@@ -24,8 +25,16 @@ const Cart = ({ setIsCartOpen }) => {
 
   const dispatch = useAppDispatch();
 
+  const user = useAppSelector((state) => state.usersSlice.user);
+
+  const token = useAppSelector((state) => state.usersSlice.token);
+
   function handleDeleteProduct(color) {
     dispatch(removeItem(color));
+  }
+
+  function addCartId() {
+    dispatch(assignCartId(user.cart["_id"]));
   }
 
   function handleIncrementProductQuantity(product) {
@@ -48,6 +57,8 @@ const Cart = ({ setIsCartOpen }) => {
   const totalCartItems = cart.reduce((acc, cur) => {
     return acc + cur.quantity * cur.price;
   }, 0);
+
+  console.log("cart", cart);
 
   return (
     <div
@@ -160,8 +171,13 @@ const Cart = ({ setIsCartOpen }) => {
             <div className="flex justify-end  text-xl">
               <button
                 onClick={() => {
-                  setIsCartOpen(false);
-                  router.push(`/${locale}/user/checkout`);
+                  if (token) {
+                    setIsCartOpen(false);
+                    addCartId();
+                    router.push(`/${locale}/user/checkout`);
+                  } else {
+                    toast.error("Please Log in First");
+                  }
                 }}
                 className="rounded-xl py-3 px-4 bg-black text-white disabled:cursor-not-allowed disabled:opacity-75"
               >

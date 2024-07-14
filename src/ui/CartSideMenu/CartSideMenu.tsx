@@ -1,5 +1,6 @@
 import useClickOutside from "@/hooks/useClickOutside";
 import {
+  assignCartId,
   decrementProductItem,
   incrementProductItem,
   removeItem,
@@ -21,6 +22,10 @@ function CartSideMenu({ setOpenSideMenu, openSideMenu, setOpens }) {
 
   const dispatch = useAppDispatch();
 
+  const user = useAppSelector((state) => state.usersSlice.user);
+
+  const token = useAppSelector((state) => state.usersSlice.token);
+
   function handleDeleteProduct(color) {
     dispatch(removeItem(color));
   }
@@ -40,6 +45,10 @@ function CartSideMenu({ setOpenSideMenu, openSideMenu, setOpens }) {
 
   function handleDecrementProductQuantity(product) {
     dispatch(decrementProductItem(product.id));
+  }
+
+  function addCartId() {
+    dispatch(assignCartId(user.cart["_id"]));
   }
 
   const totalCartItems = cart.reduce((acc, cur) => {
@@ -161,9 +170,13 @@ function CartSideMenu({ setOpenSideMenu, openSideMenu, setOpens }) {
               <div className="flex justify-end text-xl">
                 <button
                   onClick={() => {
-                    router.push(`/${locale}/user/checkout`);
-                    setOpenSideMenu(false);
-                    setOpens(false);
+                    if (token) {
+                      setOpenSideMenu(false);
+                      addCartId();
+                      router.push(`/${locale}/user/checkout`);
+                    } else {
+                      toast.error("Please Log in First");
+                    }
                   }}
                   className="rounded-xl py-3 px-4 bg-black text-white disabled:cursor-not-allowed disabled:opacity-75"
                 >

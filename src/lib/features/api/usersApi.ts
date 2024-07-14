@@ -33,6 +33,13 @@ const usersApi = createApi({
         body,
       }),
     }),
+    activateEmail: builder.mutation({
+      query: (body) => ({
+        url: "auth/activate",
+        method: "PATCH",
+        body,
+      }),
+    }),
   }),
 });
 
@@ -40,6 +47,7 @@ export const {
   useUserloginMutation,
   useUserSignupMutation,
   useUpdatePasswordMutation,
+  useActivateEmailMutation,
 } = usersApi;
 
 export default usersApi;

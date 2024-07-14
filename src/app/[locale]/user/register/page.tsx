@@ -5,6 +5,8 @@ import {
   useUserloginMutation,
   useUserSignupMutation,
 } from "@/lib/features/api/usersApi";
+import { loginUser } from "@/lib/features/usersSlice/usersSlice";
+import { useAppDispatch } from "@/lib/hooks";
 
 import MiniSpinner from "@/ui/MiniSpinner/MiniSpinner";
 import CustomizedTextField from "@/ui/TextField/TextField";
@@ -31,6 +33,8 @@ function RegisterPage() {
 
   const [signupFn, signupResponse] = useUserSignupMutation();
 
+  const dispatch = useAppDispatch();
+
   const formData = watch();
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -50,10 +54,12 @@ function RegisterPage() {
       confirmPassword: data.confirmPassword,
     })
       .unwrap()
-      .then(() => {
-        reset();
-        toast.success("You have create a new email");
+      .then((res) => {
+        dispatch(loginUser({ user: res.data }));
+        localStorage.setItem("user", JSON.stringify(res.data));
+        toast.success("You have created a new email");
         router.push(`/${locale}/user/login`);
+        reset();
       })
       .catch((err) => toast.error(err.data.message));
   }

@@ -48,6 +48,11 @@ const cartSlice = createSlice({
           : product;
       });
     },
+    assignCartId(state, action) {
+      state.cartItems = state.cartItems.map((product) => {
+        return !product.cart ? { ...product, cart: action.payload } : product;
+      });
+    },
   },
 });
 
@@ -56,6 +61,7 @@ export const {
   removeItem,
   incrementProductItem,
   decrementProductItem,
+  assignCartId,
 } = cartSlice.actions;
 
 export default cartSlice.reducer;

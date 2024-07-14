@@ -35,8 +35,6 @@ function LoginPage() {
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   function onSubmit(data) {
-    console.log(data);
-
     loginFn({ email: data.email, password: data.password })
       .unwrap()
       .then((res) => {

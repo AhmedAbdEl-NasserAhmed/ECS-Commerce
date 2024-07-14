@@ -73,7 +73,7 @@ export interface CustomizedTextFieldProps {
   multiline?: boolean;
   rows?: number;
   value?: React.ReactNode;
-  onChange?: () => void;
+  onChange?: (value) => void;
   row?: number;
   placeholder?: string;
   options?: ColourOption[] | SizesOption[];

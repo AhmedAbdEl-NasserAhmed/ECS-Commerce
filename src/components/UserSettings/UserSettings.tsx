@@ -1,9 +1,14 @@
 import { emailRegex, passwordRegex } from "@/constants/regx";
-import { useAppSelector } from "@/lib/hooks";
+import { useUpdatePasswordMutation } from "@/lib/features/api/usersApi";
+import { logoutUser } from "@/lib/features/usersSlice/usersSlice";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import MiniSpinner from "@/ui/MiniSpinner/MiniSpinner";
 import CustomizedTextField from "@/ui/TextField/TextField";
 import { Button, IconButton, InputAdornment } from "@mui/material";
+import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 
 function UserSettings() {
@@ -16,15 +21,51 @@ function UserSettings() {
 
   const formData = watch();
 
-  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [updatePasswordFm, updatePasswordResponse] =
+    useUpdatePasswordMutation();
 
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const dispatch = useAppDispatch();
+
+  const { locale } = useParams();
+
+  const router = useRouter();
+
+  const [showOldPassword, setShowOldPassword] = useState<boolean>(false);
+
+  const [showNewPassword, setShowNewPassword] = useState<boolean>(false);
+
+  const [showConfirmNewPassword, setShowConfirmNewPassword] =
+    useState<boolean>(false);
+
+  const handleClickShowOldPassword = () => setShowOldPassword((show) => !show);
+  const handleClickShowNewPassword = () => setShowNewPassword((show) => !show);
+  const handleClickShowConfirmNewPassword = () =>
+    setShowConfirmNewPassword((show) => !show);
 
   const user = useAppSelector((state) => state.usersSlice.user);
 
-  const token = useAppSelector((state) => state.usersSlice.token);
+  // const token = useAppSelector((state) => state.usersSlice.token);
 
-  function onSubmit() {}
+  console.log(formData);
+
+  function onSubmit(data) {
+    updatePasswordFm({
+      oldPassword: data.oldPassword,
+      newPassword: data.newPassword,
+    })
+      .unwrap()
+      .then(() => {
+        toast.success("Your Password changed successfully");
+        dispatch(logoutUser());
+        localStorage.removeItem("userToken");
+        localStorage.removeItem("user");
+        router.push(`/${locale}`);
+      })
+      .catch((err) => {
+        console.log("err", err);
+        toast.error(err.data.message);
+      });
+  }
 
   return (
     <form
@@ -48,6 +89,7 @@ function UserSettings() {
           }}
           render={({ field }) => (
             <CustomizedTextField
+              disabled={updatePasswordResponse.isLoading}
               textLabelClass={"font-semibold text-xl"}
               placeholder={"First Name"}
               textlabel={"First Name"}
@@ -73,6 +115,7 @@ function UserSettings() {
           }}
           render={({ field }) => (
             <CustomizedTextField
+              disabled={updatePasswordResponse.isLoading}
               textLabelClass={"font-semibold text-xl"}
               placeholder={"Email Address"}
               textlabel={"Email Address"}
@@ -86,7 +129,42 @@ function UserSettings() {
           )}
         />
         <Controller
-          name={"password"}
+          name={"oldPassword"}
+          control={control}
+          defaultValue={""}
+          rules={{
+            required: "This Field is required",
+          }}
+          render={({ field }) => (
+            <CustomizedTextField
+              disabled={updatePasswordResponse.isLoading}
+              textLabelClass={"font-semibold text-xl"}
+              placeholder={" Old Password "}
+              textlabel={" Old Password "}
+              field={field}
+              formerHelperStyles={{ style: { fontSize: "1rem" } }}
+              errors={errors}
+              type={showOldPassword ? "text" : "password"}
+              variant={"outlined"}
+              inputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowOldPassword}
+                      edge="end"
+                    >
+                      {showOldPassword ? <MdVisibility /> : <MdVisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+              size={"small"}
+            />
+          )}
+        />
+        <Controller
+          name={"newPassword"}
           control={control}
           defaultValue={""}
           rules={{
@@ -99,23 +177,67 @@ function UserSettings() {
           }}
           render={({ field }) => (
             <CustomizedTextField
+              disabled={updatePasswordResponse.isLoading}
               textLabelClass={"font-semibold text-xl"}
-              placeholder={"Password "}
-              textlabel={"Password "}
+              placeholder={"New Password "}
+              textlabel={"New Password "}
               field={field}
               formerHelperStyles={{ style: { fontSize: "1rem" } }}
               errors={errors}
-              type={showPassword ? "text" : "password"}
+              type={showNewPassword ? "text" : "password"}
               variant={"outlined"}
               inputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
                     <IconButton
                       aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
+                      onClick={handleClickShowNewPassword}
                       edge="end"
                     >
-                      {showPassword ? <MdVisibility /> : <MdVisibilityOff />}
+                      {showNewPassword ? <MdVisibility /> : <MdVisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+              size={"small"}
+            />
+          )}
+        />
+        <Controller
+          name={"confirmNewPassword"}
+          control={control}
+          defaultValue={""}
+          rules={{
+            required: "This Field is required",
+            validate(value) {
+              if (value !== formData.newPassword)
+                return "Password does not match";
+            },
+          }}
+          render={({ field }) => (
+            <CustomizedTextField
+              disabled={updatePasswordResponse.isLoading}
+              textLabelClass={"font-semibold text-xl"}
+              placeholder={"Confirm New Password "}
+              textlabel={"Confirm New Password "}
+              field={field}
+              formerHelperStyles={{ style: { fontSize: "1rem" } }}
+              errors={errors}
+              type={showConfirmNewPassword ? "text" : "password"}
+              variant={"outlined"}
+              inputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowConfirmNewPassword}
+                      edge="end"
+                    >
+                      {showConfirmNewPassword ? (
+                        <MdVisibility />
+                      ) : (
+                        <MdVisibilityOff />
+                      )}
                     </IconButton>
                   </InputAdornment>
                 ),
@@ -126,6 +248,7 @@ function UserSettings() {
         />
 
         <Button
+          disabled={updatePasswordResponse.isLoading}
           sx={{
             padding: "0.85rem",
             fontSize: "1.2rem",
@@ -138,7 +261,7 @@ function UserSettings() {
           variant="contained"
           size="large"
         >
-          Update
+          {updatePasswordResponse.isLoading ? <MiniSpinner /> : "Update"}
         </Button>
       </div>
     </form>

@@ -171,6 +171,52 @@ function BillingInformation() {
           )}
         </div>
       </div>
+
+      <div className="flex items-center flex-wrap md:flex-nowrap gap-8 ">
+        <div className="w-full ">
+          <Controller
+            name={"city"}
+            control={control}
+            defaultValue={""}
+            rules={{ required: "This field is required" }}
+            render={({ field }) => (
+              <CustomizedTextField
+                textLabelClass={"font-semibold text-xl"}
+                placeholder={"City"}
+                textlabel={"City"}
+                field={field}
+                formerHelperStyles={{ style: { fontSize: "1rem" } }}
+                errors={errors}
+                type={"text"}
+                variant={"outlined"}
+                size={"small"}
+              />
+            )}
+          />
+        </div>
+        <div className="w-full ">
+          <Controller
+            name={"appartment"}
+            control={control}
+            defaultValue={""}
+            rules={{ required: "This field is required" }}
+            render={({ field }) => (
+              <CustomizedTextField
+                textLabelClass={"font-semibold text-xl"}
+                placeholder={"Appartment"}
+                textlabel={"Appartment"}
+                field={field}
+                formerHelperStyles={{ style: { fontSize: "1rem" } }}
+                errors={errors}
+                type={"text"}
+                variant={"outlined"}
+                size={"small"}
+              />
+            )}
+          />
+        </div>
+      </div>
+
       <div className="flex items-center flex-wrap md:flex-nowrap gap-8 ">
         <div className="w-full ">
           <Controller
@@ -236,6 +282,7 @@ function BillingInformation() {
           />
         </div>
       </div>
+
       <Button
         sx={{
           padding: "0.85rem",

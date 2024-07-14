@@ -26,9 +26,20 @@ const usersApi = createApi({
         body,
       }),
     }),
+    updatePassword: builder.mutation({
+      query: (body) => ({
+        url: "auth/updatePassword",
+        method: "PATCH",
+        body,
+      }),
+    }),
   }),
 });
 
-export const { useUserloginMutation, useUserSignupMutation } = usersApi;
+export const {
+  useUserloginMutation,
+  useUserSignupMutation,
+  useUpdatePasswordMutation,
+} = usersApi;
 
 export default usersApi;

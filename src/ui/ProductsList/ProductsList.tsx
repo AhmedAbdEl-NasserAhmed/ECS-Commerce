@@ -5,20 +5,24 @@ import Spinner from "../Spinner/Spinner";
 
 import { getUniqueValues } from "@/lib/helpers";
 import ProductCard from "../ProductCard/ProductCard";
+import GridContainer from "@/ui/Container/GridContainer";
 
-function ProductList() {
-  const { data, isLoading } = useGetAllProductsQuery("products");
+interface IProductList {
+  products: any[];
+  isLoading: boolean;
+}
 
-  const uniqueItems = getUniqueValues(data?.data, "name");
+function ProductList(props: IProductList) {
+  const uniqueItems = getUniqueValues(props.products, "name");
 
-  if (isLoading) return <Spinner />;
+  if (props.isLoading) return <Spinner />;
 
   return (
-    <div className="mt-12 w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-[2.4rem]">
+    <GridContainer>
       {uniqueItems?.map((product) => {
         return <ProductCard key={product["_id"]} product={product} />;
       })}
-    </div>
+    </GridContainer>
   );
 }
 

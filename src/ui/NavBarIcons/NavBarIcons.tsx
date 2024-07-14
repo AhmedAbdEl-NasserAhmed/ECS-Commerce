@@ -26,7 +26,7 @@ function NavIcons() {
   }
 
   return (
-    <ul className=" relative flex items-center justify-between gap-4 xl:gap-6 ">
+    <ul className=" relative flex items-center justify-between gap-4 xl:gap-6 me-4">
       <li onClick={handleLoginClick}>
         <Image
           src="/profile.png"

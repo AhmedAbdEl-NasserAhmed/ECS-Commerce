@@ -124,12 +124,15 @@ function LoginPage() {
           )}
         />
         <div className="flex justify-between">
-          <Link className="text-xl font-bold" href={`/${locale}/user/register`}>
+          <Link
+            className="text-xl text-[#ed0534] font-bold"
+            href={`/${locale}/user/register`}
+          >
             Craete a new account ?
           </Link>
           <Link
-            className="text-[#141414] font-semibold sm:text-md md:text-xl "
-            href=""
+            className="text-[#ed0534]  font-semibold sm:text-md md:text-xl "
+            href={`/${locale}/user/forgetPassword`}
           >
             Forget My Password ?
           </Link>

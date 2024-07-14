@@ -35,7 +35,6 @@ const productsApi = createApi({
       providesTags: ["PRODUCTS", "CATEGORIES", "SUB-CATEGORIES"],
       transformResponse: (response) => {
         const data = getUniqueValues(response.data, "name");
-
         return data;
       },
     }),

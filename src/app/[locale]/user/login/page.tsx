@@ -35,8 +35,6 @@ function LoginPage() {
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   function onSubmit(data) {
-    console.log(data);
-
     loginFn({ email: data.email, password: data.password })
       .unwrap()
       .then((res) => {
@@ -49,6 +47,7 @@ function LoginPage() {
           })
         );
         localStorage.setItem("userToken", res.token);
+        localStorage.setItem("user", JSON.stringify(res.data));
         router.push(`/${locale}`);
       })
       .catch((err) => toast.error(err.data.message));

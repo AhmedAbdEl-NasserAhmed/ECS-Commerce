@@ -63,7 +63,7 @@ const Cart = ({ setIsCartOpen }) => {
           <div className="flex flex-col gap-8">
             {cart.map((product: CartItem) => {
               return (
-                <div key={product.id} className="flex gap-4">
+                <div key={product.cartItemId} className="flex gap-4">
                   {true && (
                     <Image
                       src={product.image}
@@ -137,7 +137,7 @@ const Cart = ({ setIsCartOpen }) => {
 
                       <span
                         className="text-blue-500 cursor-pointer"
-                        onClick={() => handleDeleteProduct(product.id)}
+                        onClick={() => handleDeleteProduct(product.cartItemId)}
                       >
                         Remove
                       </span>

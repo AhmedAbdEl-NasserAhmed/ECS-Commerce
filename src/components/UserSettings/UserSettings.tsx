@@ -1,4 +1,5 @@
 import { emailRegex, passwordRegex } from "@/constants/regx";
+import { useAppSelector } from "@/lib/hooks";
 import CustomizedTextField from "@/ui/TextField/TextField";
 import { Button, IconButton, InputAdornment } from "@mui/material";
 import { useState } from "react";
@@ -19,6 +20,10 @@ function UserSettings() {
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
+  const user = useAppSelector((state) => state.usersSlice.user);
+
+  const token = useAppSelector((state) => state.usersSlice.token);
+
   function onSubmit() {}
 
   return (
@@ -31,9 +36,9 @@ function UserSettings() {
           ACCOUNT DETAILS
         </h2>
         <Controller
-          name={"firstName"}
+          name={"name"}
           control={control}
-          defaultValue={""}
+          defaultValue={user?.name || ""}
           rules={{
             required: "This field is required",
             minLength: {
@@ -56,34 +61,9 @@ function UserSettings() {
           )}
         />
         <Controller
-          name={"lastName"}
-          control={control}
-          defaultValue={""}
-          rules={{
-            required: "This field is required",
-            minLength: {
-              value: 4,
-              message: "The name should be more than 4 characters ",
-            },
-          }}
-          render={({ field }) => (
-            <CustomizedTextField
-              textLabelClass={"font-semibold text-xl"}
-              placeholder={"Last Name"}
-              textlabel={"Last Name"}
-              field={field}
-              formerHelperStyles={{ style: { fontSize: "1rem" } }}
-              errors={errors}
-              type={"text"}
-              variant={"outlined"}
-              size={"small"}
-            />
-          )}
-        />
-        <Controller
           name={"email"}
           control={control}
-          defaultValue={""}
+          defaultValue={user?.email || ""}
           rules={{
             required: "Please Enter A Valid Email",
             pattern: {

@@ -6,8 +6,14 @@ if (typeof localStorage !== undefined) {
   userToken = localStorage.getItem("userToken");
 }
 
+let user = null;
+
+if (typeof localStorage !== undefined) {
+  user = JSON.parse(localStorage.getItem("user"));
+}
+
 const initialState = {
-  user: null,
+  user: user || null,
   isAuthenticated: !!userToken,
   token: userToken,
 };

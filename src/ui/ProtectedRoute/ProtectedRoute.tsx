@@ -27,8 +27,6 @@ function ProtectedRoute({ children }) {
 
   const authRoutes = ["/admin"];
 
-  console.log("USER", user);
-
   useEffect(() => {
     if (typeof window !== undefined) {
       const pathname = window.location.pathname;

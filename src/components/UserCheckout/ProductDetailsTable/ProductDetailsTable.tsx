@@ -14,7 +14,7 @@ function ProductDetailsTable({ cart, totalCartItems }) {
       <tbody>
         {cart.map((product) => {
           return (
-            <tr key={product.id}>
+            <tr key={product.cartItemId}>
               <td>
                 {" "}
                 {product.name} * {product.quantity}

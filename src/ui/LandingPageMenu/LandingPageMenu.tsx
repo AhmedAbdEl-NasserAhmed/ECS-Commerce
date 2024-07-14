@@ -1,15 +1,23 @@
 "use client";
 
-import { useAppSelector } from "@/lib/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import CartSideMenu from "../CartSideMenu/CartSideMenu";
+import { logoutUser } from "@/lib/features/usersSlice/usersSlice";
+import { useParams, useRouter } from "next/navigation";
 
 function LandingPageMenu() {
   const [opens, setOpens] = useState<boolean>(false);
 
+  const { locale } = useParams();
+
+  const router = useRouter();
+
   const [openSideMenu, setOpenSideMenu] = useState<boolean>(false);
+
+  const dispatch = useAppDispatch();
 
   const cart = useAppSelector((state) => state.cartSlice.cartItems);
 
@@ -41,7 +49,18 @@ function LandingPageMenu() {
             <Link href="">Contact</Link>
           </li>
           <li>
-            <Link href="">Logout</Link>
+            <Link
+              onClick={() => {
+                dispatch(logoutUser());
+                localStorage.removeItem("userToken");
+                localStorage.removeItem("user");
+                setOpens(false);
+                router.push(`/${locale}`);
+              }}
+              href=""
+            >
+              Logout
+            </Link>
           </li>
           <li onClick={() => setOpenSideMenu(true)}>
             <Link href="">Cart ({cart.length})</Link>

@@ -2,10 +2,12 @@ import useClickOutside from "@/hooks/useClickOutside";
 import { logoutUser } from "@/lib/features/usersSlice/usersSlice";
 import { useAppDispatch } from "@/lib/hooks";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 
 function UserMenu({ setIsProfileOpen }) {
   const { locale } = useParams();
+
+  const router = useRouter();
 
   const ref = useClickOutside({ close: setIsProfileOpen, value: false });
 
@@ -29,7 +31,9 @@ function UserMenu({ setIsProfileOpen }) {
         onClick={() => {
           dispatch(logoutUser());
           localStorage.removeItem("userToken");
+          localStorage.removeItem("user");
           setIsProfileOpen(false);
+          router.push(`/${locale}`);
         }}
       >
         Logout

@@ -30,6 +30,8 @@ function ProductDetails() {
 
   const state = useAppSelector((state) => state.cartSlice.cartItems);
 
+  const user = useAppSelector((state) => state.usersSlice.user);
+
   const [productDetailsState, dispatch] = useReducer(reducerFn, initialState);
 
   function action(type, payload = null) {
@@ -88,7 +90,8 @@ function ProductDetails() {
     toast.success("An item added to your cart");
     dispatchRedux(
       addItem({
-        id: crypto.randomUUID().substring(0, 5),
+        productID: productDetailsState.selectedProduct.productId,
+        cartItemId: crypto.randomUUID().substring(0, 5),
         name: productDetailsState.selectedProduct.name,
         size: productDetailsState.selectedProduct.size,
         quantity: productDetailsState.productQuantity,
@@ -96,6 +99,7 @@ function ProductDetails() {
         color: productDetailsState.selectedColor.color,
         price: productDetailsState.selectedProduct.saleProduct,
         maxQuantity: productDetailsState.selectedColor.quantity,
+        cartID: user.cart["_id"],
       })
     );
   }
@@ -175,6 +179,7 @@ function ProductDetails() {
               {data?.data?.images.map((image, index) => {
                 return (
                   <Box
+                    key={image.url}
                     onClick={() =>
                       action(ProductDetailsAction.SET_IMAGE_INDEX, {
                         value: index,
@@ -189,7 +194,6 @@ function ProductDetails() {
                         ? "border-slate-400"
                         : ""
                     } relative w-full h-full border-2 border-[#dcdbdb] cursor-pointer rounded-2xl transition-all duration-500`}
-                    key={image.id}
                   >
                     <Image
                       src={image.url}

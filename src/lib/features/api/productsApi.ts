@@ -18,12 +18,13 @@ const productsApi = createApi({
       }),
       invalidatesTags: ["PRODUCTS"],
     }),
-
     getAllProducts: builder.query({
-      query: () => ({
-        url: "products?limit=5",
-        method: "GET",
-      }),
+      query: ({ categoryId, max, min, page, colors, size, subCategory }) => {
+        return {
+          url: `products?category=${categoryId}&limit=5&max=${max}&min=${min}&page=${page}&size=${size}&colors=${colors}&subCategory=${subCategory}`,
+          method: "GET",
+        };
+      },
       providesTags: ["PRODUCTS", "CATEGORIES", "SUB-CATEGORIES"],
     }),
 
@@ -37,6 +38,13 @@ const productsApi = createApi({
         const data = getUniqueValues(response.data, "name");
         return data;
       },
+    }),
+    getAllProductsColors: builder.query({
+      query: () => ({
+        url: "products/colors",
+        method: "GET",
+      }),
+      providesTags: ["PRODUCTS", "CATEGORIES", "SUB-CATEGORIES"],
     }),
 
     getSingleProductBySlug: builder.query({
@@ -82,6 +90,7 @@ export const {
   useGetSingleProductBySlugQuery,
   useGetSingleProductByIDQuery,
   useUpdateSingleProductMutation,
+  useGetAllProductsColorsQuery,
 } = productsApi;
 
 export default productsApi;

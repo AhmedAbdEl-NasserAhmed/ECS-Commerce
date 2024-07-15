@@ -8,7 +8,7 @@ import TitledProductList from "@/components/TitledProductList/TitledProductList"
 import { useAppSelector } from "@/lib/hooks";
 import NotActiveMessage from "@/ui/NotActiveMessage/NotActiveMessage";
 
-function HomePage({ params: { locale } }) {
+function HomePage() {
   const { data, isLoading } = useGetAllProductsQuery("products");
 
   const user = useAppSelector((state) => state.usersSlice.user);

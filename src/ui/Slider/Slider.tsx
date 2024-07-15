@@ -17,7 +17,7 @@ function Slider() {
   }, []);
 
   return (
-    <div className="relative h-[calc(100vh-60px)] overflow-hidden">
+    <div className="relative h-[calc(100vh-90px)] overflow-hidden">
       <div
         className="w-max h-full flex transition-all ease-in-out duration-1000"
         style={{ transform: `translateX(-${currentSlide * 100}vw)` }}

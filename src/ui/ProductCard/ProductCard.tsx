@@ -55,7 +55,7 @@ const ProductCard = ({ product }) => {
           <span className="line-through text-gray-300">
             {`${product?.price} EGP`}
           </span>
-          <span className="">{`${product?.productSalePrice} EGP`}</span>
+          <span className="">{`${product?.saleProduct} EGP`}</span>
         </div>
       </div>
     </div>

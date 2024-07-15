@@ -67,7 +67,7 @@ function RegisterPage() {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className=" mt-44 bg-white shadow-[0px_0px_7px_5px_#0000000a] max-w-[80rem] m-auto  "
+      className=" mt-12 mb-12 bg-white shadow-[0px_0px_7px_5px_#0000000a] max-w-[80rem] m-auto  "
     >
       <div className="p-8 flex flex-col gap-12 ">
         <h2 className="text-3xl text-black font-bold flex justify-center">

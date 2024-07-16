@@ -3,6 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const cartItemCookies = getCookie("cartItems");
 
+console.log(cartItemCookies);
+
 interface CartSlice {
   cartItems: any;
 }

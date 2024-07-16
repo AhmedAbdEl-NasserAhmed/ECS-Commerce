@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { CartItem } from "@/types/types";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
+import { useEffect } from "react";
 import toast from "react-hot-toast";
 
 function CartSideMenu({ setOpenSideMenu, openSideMenu, setOpens }) {

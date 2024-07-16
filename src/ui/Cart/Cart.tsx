@@ -30,14 +30,6 @@ const Cart = ({ setIsCartOpen }) => {
 
   const token = useAppSelector((state) => state.usersSlice.token);
 
-  let date = new Date();
-  date.setTime(date.getTime() + 24 * 60 * 60 * 1000); // 24 hours from now
-  let expires = date.toUTCString();
-
-  useEffect(() => {
-    document.cookie = `cartItems=${JSON.stringify(cart)}; expires=${expires};`;
-  }, [cart, expires]);
-
   function handleDeleteProduct(color) {
     dispatch(removeItem(color));
   }

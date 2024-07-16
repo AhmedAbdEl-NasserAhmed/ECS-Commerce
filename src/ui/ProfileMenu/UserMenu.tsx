@@ -13,6 +13,10 @@ function UserMenu({ setIsProfileOpen }) {
 
   const dispatch = useAppDispatch();
 
+  const handleDeleteCookie = () => {
+    document.cookie = "cartItems=; Max-Age=0; path=/;";
+  };
+
   return (
     <ul
       ref={ref}
@@ -34,6 +38,7 @@ function UserMenu({ setIsProfileOpen }) {
           localStorage.removeItem("user");
           setIsProfileOpen(false);
           router.push(`/${locale}`);
+          handleDeleteCookie();
         }}
       >
         Logout

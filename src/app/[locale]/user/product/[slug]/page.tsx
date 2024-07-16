@@ -30,7 +30,7 @@ function ProductDetails() {
 
   const dispatchRedux = useAppDispatch();
 
-  const state = useAppSelector((state) => state.cartSlice.cartItems);
+  const cart = useAppSelector((state) => state.cartSlice.cartItems);
 
   const user = useAppSelector((state) => state.usersSlice.user);
 
@@ -59,7 +59,7 @@ function ProductDetails() {
   }, [productDetailsState.selectedProduct?.colors]);
 
   useEffect(() => {
-    const colorExists = state.some(
+    const colorExists = cart.some(
       (product) =>
         product.color === productDetailsState.selectedColor?.color &&
         product.size === productDetailsState.selectedProduct.size
@@ -68,7 +68,7 @@ function ProductDetails() {
     action(ProductDetailsAction.SET_COLOR_EXISTED, { value: colorExists });
   }, [
     productDetailsState.selectedColor,
-    state,
+    cart,
     productDetailsState.selectedProduct,
   ]);
 

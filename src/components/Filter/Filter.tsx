@@ -14,7 +14,7 @@ const Filter = () => {
   const searchParams = useSearchParams();
   const { replace } = useRouter();
 
-  const [value, setValue] = useState<number[]>([0, 5000]);
+  const [value, setValue] = useState<number[]>([0, 2000]);
 
   const handleChange = (event: Event, newValue: number | number[]) => {
     const params = new URLSearchParams(searchParams);
@@ -34,8 +34,8 @@ const Filter = () => {
   };
 
   return (
-    <div className="mt-12 mb-12 flex justify-between gap-10 lg:gap-0 flex-col md:flex-row ">
-      <div className="flex flex-wrap  gap-6 ">
+    <div className="mt-12 mb-12 flex justify-between gap-10 items-center lg:gap-0 flex-col md:flex-row ">
+      <div className="flex flex-wrap items-center gap-6 ">
         <FilterColorsOptions />
         <select
           name="size"

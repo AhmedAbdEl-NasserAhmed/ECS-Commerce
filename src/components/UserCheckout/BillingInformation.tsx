@@ -26,8 +26,6 @@ function BillingInformation() {
     color: "#666666",
   }));
 
-  console.log("formData", formData);
-
   function onSubmit() {}
 
   return (

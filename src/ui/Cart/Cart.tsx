@@ -67,8 +67,6 @@ const Cart = ({ setIsCartOpen }) => {
     return acc + cur.quantity * cur.price;
   }, 0);
 
-  console.log("cart", cart);
-
   return (
     <div
       ref={ref}

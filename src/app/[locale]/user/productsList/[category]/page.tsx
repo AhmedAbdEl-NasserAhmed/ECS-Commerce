@@ -75,8 +75,6 @@ function ProductsByCategory() {
     }
   }, [page, pathName, replace, searchParams, data?.data]);
 
-  console.log("products", products);
-
   return (
     <BaseContainer className="py-0">
       <div>

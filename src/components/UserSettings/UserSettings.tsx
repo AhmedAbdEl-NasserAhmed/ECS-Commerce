@@ -58,7 +58,6 @@ function UserSettings() {
         router.push(`/${locale}`);
       })
       .catch((err) => {
-        console.log("err", err);
         toast.error(err.data.message);
       });
   }

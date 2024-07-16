@@ -10,8 +10,6 @@ function Orders() {
     return acc + cur.quantity * cur.price;
   }, 0);
 
-  console.log("cart", cart);
-
   if (!cart.length)
     return (
       <div className="p-6 bg-white shadow-md  rounded-md ">

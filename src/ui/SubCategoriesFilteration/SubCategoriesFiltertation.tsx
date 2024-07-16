@@ -9,7 +9,9 @@ function SubCategoriesFiltertation() {
   const { data } = useGetAllSubCategoriesQuery("sucCategories");
 
   const pathName = usePathname();
+
   const searchParams = useSearchParams();
+
   const { replace } = useRouter();
 
   const [subCategories, setSubCategories] = useState<string[]>([]);
@@ -17,6 +19,7 @@ function SubCategoriesFiltertation() {
   function handleAddSubCategoriesToParams(e: ChangeEvent<HTMLSelectElement>) {
     if (e.target.value !== "" && !subCategories.includes(e.target.value)) {
       const selectedSubCategories = [...subCategories, e.target.value];
+
       setSubCategories(selectedSubCategories);
 
       const params = new URLSearchParams(searchParams);

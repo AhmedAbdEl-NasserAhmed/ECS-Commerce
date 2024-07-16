@@ -1,10 +1,9 @@
 "use client";
 
-import { sizesOptions } from "@/constants/sizeOptions";
 import FilterColorsOptions from "@/ui/FiltersColorOptions/FilterColorsOptions";
+import FilterSizesOptions from "@/ui/FilterSizesOptions/FilterSizesOptions";
 import RangeSlider from "@/ui/RangeSlider/RangeSlider";
 import SubCategoriesFiltertation from "@/ui/SubCategoriesFilteration/SubCategoriesFiltertation";
-import Slider from "@mui/material/Slider";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
@@ -34,25 +33,12 @@ const Filter = () => {
   };
 
   return (
-    <div className="mt-12 mb-12 flex justify-between gap-10 items-center lg:gap-0 flex-col md:flex-row ">
-      <div className="flex flex-wrap items-center gap-6 ">
+    <div className="mt-12 mb-12 flex justify-between gap-10 md:items-center lg:gap-0 flex-col md:flex-row  ">
+      <div className="flex  md:items-center flex-col md:flex-row gap-8 md:gap-6 ">
         <FilterColorsOptions />
-        <select
-          name="size"
-          className="py-2 px-4 rounded-2xl text-lg font-medium bg-[#EBEDED]"
-          onChange={handleFilterChange}
-        >
-          <option value="">Size</option>
-          {sizesOptions.map((size) => {
-            return (
-              <option key={size.id} value={size.value}>
-                {size.value}
-              </option>
-            );
-          })}
-        </select>
+        <FilterSizesOptions handleFilterChange={handleFilterChange} />
         <SubCategoriesFiltertation />
-        <div className="w-72">
+        <div className="w-[90%] md:w-72 m-auto">
           <RangeSlider handleChange={handleChange} value={value} />
         </div>
       </div>
@@ -60,7 +46,7 @@ const Filter = () => {
         <select
           name="sort"
           id=""
-          className="py-2 px-4 rounded-2xl text-lg font-medium bg-white ring-1 ring-gray-400"
+          className="py-2 px-4 rounded-2xl text-lg font-medium bg-white ring-1 ring-gray-400 w-full"
           onChange={handleFilterChange}
         >
           <option>Sort By</option>

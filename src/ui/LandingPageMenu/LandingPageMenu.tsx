@@ -21,10 +21,6 @@ function LandingPageMenu() {
 
   const cart = useAppSelector((state) => state.cartSlice.cartItems);
 
-  const handleDeleteCookie = () => {
-    document.cookie = "cartItems=; Max-Age=0; path=/;";
-  };
-
   return (
     <div className="md:hidden">
       <Image
@@ -60,7 +56,6 @@ function LandingPageMenu() {
                 localStorage.removeItem("user");
                 setOpens(false);
                 router.push(`/${locale}`);
-                handleDeleteCookie();
               }}
               href=""
             >

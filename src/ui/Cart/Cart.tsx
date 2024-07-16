@@ -30,19 +30,21 @@ const Cart = ({ setIsCartOpen }) => {
 
   const token = useAppSelector((state) => state.usersSlice.token);
 
-  function handleDeleteProduct(color) {
-    dispatch(removeItem(color));
+  console.log(cart);
+
+  function handleDeleteProduct(product) {
+    dispatch(removeItem(product.cartItemId));
   }
 
   function addCartId() {
-    dispatch(assignCartId(user.cart["_id"]));
+    dispatch(assignCartId(user?.cart["_id"]));
   }
 
   function handleIncrementProductQuantity(product) {
     if (product.quantity !== product.maxQuantity) {
       dispatch(
         incrementProductItem({
-          id: product.id,
+          id: product.cartItemId,
           maxQuantity: product.maxQuantity,
         })
       );
@@ -52,7 +54,7 @@ const Cart = ({ setIsCartOpen }) => {
   }
 
   function handleDecrementProductQuantity(product) {
-    dispatch(decrementProductItem(product.id));
+    dispatch(decrementProductItem(product.cartItemId));
   }
 
   const totalCartItems = cart.reduce((acc, cur) => {
@@ -147,7 +149,7 @@ const Cart = ({ setIsCartOpen }) => {
 
                       <span
                         className="text-blue-500 cursor-pointer"
-                        onClick={() => handleDeleteProduct(product.cartItemId)}
+                        onClick={() => handleDeleteProduct(product)}
                       >
                         Remove
                       </span>

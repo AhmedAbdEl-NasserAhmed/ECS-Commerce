@@ -3,8 +3,6 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const cartItemCookies = getCookie("cartItems");
 
-console.log(cartItemCookies);
-
 interface CartSlice {
   cartItems: any;
 }
@@ -20,16 +18,18 @@ const cartSlice = createSlice({
     addItem(state, action) {
       state.cartItems = [...state.cartItems, action.payload];
     },
+
     removeItem(state, action) {
       state.cartItems = state.cartItems.filter((product) => {
         return product.cartItemId !== action.payload;
       });
     },
+
     incrementProductItem(state, action) {
       const { id, maxQuantity } = action.payload;
 
       state.cartItems = state.cartItems.map((product) =>
-        product.id === id
+        product.cartItemId === id
           ? {
               ...product,
               quantity:
@@ -42,7 +42,7 @@ const cartSlice = createSlice({
     },
     decrementProductItem(state, action) {
       state.cartItems = state.cartItems.map((product) => {
-        return product.id === action.payload
+        return product.cartItemId === action.payload
           ? {
               ...product,
               quantity:

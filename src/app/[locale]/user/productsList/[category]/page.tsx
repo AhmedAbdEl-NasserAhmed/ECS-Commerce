@@ -46,7 +46,7 @@ function ProductsByCategory() {
     const firstEntry = entries[0];
 
     if (firstEntry.isIntersecting && hasMore) {
-      setPage((prev) => prev + 1);
+      // setPage((prev) => prev + 1);
     }
   }
 

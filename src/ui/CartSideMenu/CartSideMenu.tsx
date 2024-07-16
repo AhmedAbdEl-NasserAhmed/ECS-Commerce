@@ -27,15 +27,19 @@ function CartSideMenu({ setOpenSideMenu, openSideMenu, setOpens }) {
 
   const token = useAppSelector((state) => state.usersSlice.token);
 
-  function handleDeleteProduct(color) {
-    dispatch(removeItem(color));
+  function handleDeleteProduct(product) {
+    dispatch(removeItem(product.cartItemId));
+  }
+
+  function addCartId() {
+    dispatch(assignCartId(user?.cart["_id"]));
   }
 
   function handleIncrementProductQuantity(product) {
     if (product.quantity !== product.maxQuantity) {
       dispatch(
         incrementProductItem({
-          id: product.id,
+          id: product.cartItemId,
           maxQuantity: product.maxQuantity,
         })
       );
@@ -45,11 +49,7 @@ function CartSideMenu({ setOpenSideMenu, openSideMenu, setOpens }) {
   }
 
   function handleDecrementProductQuantity(product) {
-    dispatch(decrementProductItem(product.id));
-  }
-
-  function addCartId() {
-    dispatch(assignCartId(user.cart["_id"]));
+    dispatch(decrementProductItem(product.cartItemId));
   }
 
   const totalCartItems = cart.reduce((acc, cur) => {
@@ -74,7 +74,7 @@ function CartSideMenu({ setOpenSideMenu, openSideMenu, setOpens }) {
             <div className="flex flex-col gap-14">
               {cart.map((product: CartItem) => {
                 return (
-                  <div key={product.id} className="flex gap-4">
+                  <div key={product.cartItemId} className="flex gap-4">
                     {true && (
                       <Image
                         src={product.image}
@@ -148,7 +148,7 @@ function CartSideMenu({ setOpenSideMenu, openSideMenu, setOpens }) {
 
                         <span
                           className="text-blue-500 cursor-pointer"
-                          onClick={() => handleDeleteProduct(product.id)}
+                          onClick={() => handleDeleteProduct(product)}
                         >
                           Remove
                         </span>
@@ -173,6 +173,7 @@ function CartSideMenu({ setOpenSideMenu, openSideMenu, setOpens }) {
                   onClick={() => {
                     if (token) {
                       setOpenSideMenu(false);
+                      setOpens(false);
                       addCartId();
                       router.push(`/${locale}/user/checkout`);
                     } else {

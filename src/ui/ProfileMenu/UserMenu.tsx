@@ -3,6 +3,7 @@ import { logoutUser } from "@/lib/features/usersSlice/usersSlice";
 import { useAppDispatch } from "@/lib/hooks";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 function UserMenu({ setIsProfileOpen }) {
   const { locale } = useParams();
@@ -34,6 +35,7 @@ function UserMenu({ setIsProfileOpen }) {
           localStorage.removeItem("user");
           setIsProfileOpen(false);
           router.push(`/${locale}`);
+          toast.success("Do Not Be Late");
         }}
       >
         Logout

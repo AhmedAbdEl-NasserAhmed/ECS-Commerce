@@ -18,7 +18,7 @@ const TitledProductList: React.FC<ITitledProductList> = (props) => {
     );
 
   return (
-    <BaseContainer className={`${props.baseContainerClass} py-10`}>
+    <BaseContainer className={`${props.baseContainerClass} py-20`}>
       <div className="text-center ">
         {props.title && (
           <h1 className="text-6xl font-semibold uppercase text-heading-color1 pb-4">

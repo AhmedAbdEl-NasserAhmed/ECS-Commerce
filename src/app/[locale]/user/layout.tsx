@@ -6,6 +6,7 @@ import Footer from "@/ui/Footer/Footer";
 import Modal from "@/ui/Modal/Modal";
 import NavBar from "@/ui/NavBar/NavBar";
 import NotActiveMessage from "@/ui/NotActiveMessage/NotActiveMessage";
+import UserProtectedRoute from "@/ui/UserProtectedRoute/UserProtectedRoute";
 import { useEffect } from "react";
 
 function Layout({ children }) {

@@ -29,6 +29,11 @@ function SubCategoriesFiltertation() {
       params.set("subCategory", query);
 
       replace(`${pathName}?${params.toString()}`);
+    } else {
+      setSubCategories([]);
+      const params = new URLSearchParams(searchParams);
+      params.set("subCategory", "");
+      replace(`${pathName}?${params.toString()}`);
     }
   }
 

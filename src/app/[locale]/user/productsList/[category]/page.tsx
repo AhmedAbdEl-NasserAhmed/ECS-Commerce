@@ -6,11 +6,18 @@ import { useGetAllProductsQuery } from "@/lib/features/api/productsApi";
 import BaseContainer from "@/ui/Container/BaseContainer";
 
 import Spinner from "@/ui/Spinner/Spinner";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import {
+  useParams,
+  usePathname,
+  useRouter,
+  useSearchParams,
+} from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 function ProductsByCategory() {
   const searchParams = useSearchParams();
+
+  const { category } = useParams();
 
   const pageUrl = searchParams.get("page");
 
@@ -33,20 +40,20 @@ function ProductsByCategory() {
   const subCategory = searchParams.get("subCategory");
 
   const { data, isFetching } = useGetAllProductsQuery({
-    categoryId: "66885ced811b33a15a63271d",
+    categoryId: category,
     min: minPrice || undefined,
     max: maxPrice || undefined,
     size: size || undefined,
     colors: colors || undefined,
     subCategory: subCategory || undefined,
-    // page,
+    page,
   });
 
   function onIntersection(entries: IntersectionObserverEntry[]) {
     const firstEntry = entries[0];
 
     if (firstEntry.isIntersecting && hasMore) {
-      // setPage((prev) => prev + 1);
+      setPage((prev) => prev + 1);
     }
   }
 
@@ -65,15 +72,34 @@ function ProductsByCategory() {
   }, [hasMore]);
 
   useEffect(() => {
-    if (data?.data) {
-      setProducts((prevProducts) => [
-        ...new Set([...prevProducts, ...data?.data]),
-      ]);
-      const params = new URLSearchParams(searchParams);
-      params.set("page", String(page));
-      replace(`${pathName}?${params.toString()}`);
+    if (data?.data.length) {
+      setProducts((prevProducts) => {
+        if (page === 1) {
+          return data?.data;
+        } else {
+          return [...new Set([...prevProducts, ...data?.data])];
+        }
+      });
+      setHasMore(true);
+    } else {
+      setHasMore(false);
     }
-  }, [page, pathName, replace, searchParams, data?.data]);
+  }, [data?.data, page]);
+
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams);
+    params.set("page", String(page));
+    replace(`${pathName}?${params.toString()}`, { scroll: false });
+  }, [page, pathName, replace, searchParams]);
+
+  useEffect(() => {
+    setPage(1);
+    setProducts(data?.data);
+  }, [minPrice, size, maxPrice, colors, subCategory, data?.data]);
+
+  console.log(data);
+
+  if (isFetching) return <Spinner />;
 
   return (
     <BaseContainer className="py-0">
@@ -88,8 +114,8 @@ function ProductsByCategory() {
           isLoading={isFetching}
         />
       </div>
-      {hasMore && (
-        <div className="flex justify-center items-center" ref={elementRef}>
+      {hasMore && 1 !== page && (
+        <div className="flex justify-center items-center p-12" ref={elementRef}>
           <Spinner />
         </div>
       )}

@@ -7,6 +7,7 @@ import { useState } from "react";
 import CartSideMenu from "../CartSideMenu/CartSideMenu";
 import { logoutUser } from "@/lib/features/usersSlice/usersSlice";
 import { useParams, useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 function LandingPageMenu() {
   const [opens, setOpens] = useState<boolean>(false);
@@ -56,6 +57,7 @@ function LandingPageMenu() {
                 localStorage.removeItem("user");
                 setOpens(false);
                 router.push(`/${locale}`);
+                toast.success("Do Not Be Late");
               }}
               href=""
             >

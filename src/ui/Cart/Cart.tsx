@@ -30,8 +30,6 @@ const Cart = ({ setIsCartOpen }) => {
 
   const token = useAppSelector((state) => state.usersSlice.token);
 
-  console.log(cart);
-
   function handleDeleteProduct(product) {
     dispatch(removeItem(product.cartItemId));
   }

@@ -8,6 +8,9 @@ import TitledProductList from "@/components/TitledProductList/TitledProductList"
 import { useAppSelector } from "@/lib/hooks";
 import NotActiveMessage from "@/ui/NotActiveMessage/NotActiveMessage";
 import { useEffect } from "react";
+import BaseContainer from "@/ui/Container/BaseContainer";
+
+import HomePageCategory from "@/ui/HomePageCategory/HomePageCategory";
 
 function HomePage() {
   const { data, isLoading } = useGetAllProductsQuery("products");
@@ -31,6 +34,10 @@ function HomePage() {
       {!user?.isActive && user && <NotActiveMessage />}
       <NavBar />
       <Slider />
+      <BaseContainer className="p-36">
+        <HomePageCategory />
+      </BaseContainer>
+
       <TitledProductList
         title="Hot Products"
         description="Mauris luctus nisi sapien tristique dignissim ornare"

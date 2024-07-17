@@ -45,16 +45,6 @@ function ProductDetails() {
       skip: !productDetailsState.selectedProduct?.category,
     });
 
-  // let date = new Date();
-  // date.setTime(date.getTime() + 24 * 60 * 60 * 1000);
-  // let expires = date.toUTCString();
-
-  // useEffect(() => {
-  //   document.cookie = `cartItems=${JSON.stringify(
-  //     cart
-  //   )};  expires=${expires}; path=/`;
-  // }, [cart, expires]);
-
   useEffect(() => {
     action(ProductDetailsAction.SET_SELECTED_PRODUCT, {
       value: data?.data?.products[productDetailsState.currentProductIndex],

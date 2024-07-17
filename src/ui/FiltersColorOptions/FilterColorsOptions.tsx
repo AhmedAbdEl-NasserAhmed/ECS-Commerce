@@ -8,11 +8,11 @@ import { ChangeEvent, useState } from "react";
 function FilterColorsOptions() {
   const { data } = useGetAllProductsColorsQuery("colors");
 
+  const searchParams = useSearchParams();
+
   const [selectedColors, setSelectedColors] = useState<string[]>([]);
 
   const pathName = usePathname();
-
-  const searchParams = useSearchParams();
 
   const { replace } = useRouter();
 
@@ -30,12 +30,13 @@ function FilterColorsOptions() {
       const newUrl = `${pathName}?${params.toString()}`;
 
       replace(newUrl);
-    } else {
-      setSelectedColors([]);
-      const params = new URLSearchParams(searchParams);
-      params.set("colors", "");
-      replace(`${pathName}?${params.toString()}`);
     }
+    // } else {
+    //   setSelectedColors([]);
+    //   const params = new URLSearchParams(searchParams);
+    //   params.set("colors", "");
+    //   replace(`${pathName}?${params.toString()}`);
+    // }
   };
 
   return (

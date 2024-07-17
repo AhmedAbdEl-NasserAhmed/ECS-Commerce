@@ -1,11 +1,17 @@
+"use client";
+
 import Link from "next/link";
 import LandingPageMenu from "../LandingPageMenu/LandingPageMenu";
 import Logo from "../Logo/Logo";
 import SearchBar from "../SearchBar/SearchBar";
 import NavIcons from "../NavBarIcons/NavBarIcons";
 import BaseContainer from "../Container/BaseContainer";
+import NavBarCategoriesList from "../NavBarCaegoriesList/NavBarCategoriesList";
+import { useState } from "react";
 
 function NavBar() {
+  const [showCategoriesMenu, setShowCategoriesMenu] = useState<boolean>(false);
+
   return (
     <BaseContainer>
       <nav className="relative h-36">
@@ -23,15 +29,16 @@ function NavBar() {
               <li>
                 <Link href="">Home Page</Link>
               </li>
-              <li>
-                <Link href="">Shop</Link>
+
+              <li
+                className="relative"
+                onMouseEnter={() => setShowCategoriesMenu(true)}
+                onMouseLeave={() => setShowCategoriesMenu(false)}
+              >
+                <Link href="">Categories</Link>
+                <NavBarCategoriesList showCategoriesMenu={showCategoriesMenu} />
               </li>
-              <li>
-                <Link href="">Deals</Link>
-              </li>
-              <li>
-                <Link href="">About</Link>
-              </li>
+
               <li>
                 <Link href="">Contact</Link>
               </li>

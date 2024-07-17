@@ -45,7 +45,6 @@ const Filter = () => {
       <div className="">
         <select
           name="sort"
-          id=""
           className="py-2 px-4 rounded-2xl text-lg font-medium bg-white ring-1 ring-gray-400 w-full"
           onChange={handleFilterChange}
         >

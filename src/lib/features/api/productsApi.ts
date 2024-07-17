@@ -21,7 +21,7 @@ const productsApi = createApi({
     getAllProducts: builder.query({
       query: ({ categoryId, max, min, page, colors, size, subCategory }) => {
         return {
-          url: `products?category=${categoryId}&limit=2&max=${max}&min=${min}&page=${page}&size=${size}&colors=${colors}&subCategory=${subCategory}`,
+          url: `products?category=${categoryId}&limit=4&max=${max}&min=${min}&page=${page}&size=${size}&colors=${colors}&subCategory=${subCategory}`,
           method: "GET",
         };
       },
@@ -85,6 +85,7 @@ const productsApi = createApi({
 export const {
   useGetProductByNameQuery,
   useGetAllProductsQuery,
+  useLazyGetAllProductsQuery,
   useAddProductMutation,
   useDeleteSingleProductMutation,
   useGetSingleProductBySlugQuery,

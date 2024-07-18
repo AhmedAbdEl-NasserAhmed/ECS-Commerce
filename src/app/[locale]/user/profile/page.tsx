@@ -1,5 +1,6 @@
 "use client";
 
+import UserOrders from "@/components/UserOrders/UserOrders";
 import UserSettings from "@/components/UserSettings/UserSettings";
 import WishList from "@/components/WishList/WishList";
 import BaseTabs from "@/ui/Tabs/Tabs";
@@ -18,8 +19,9 @@ function ProfilePage() {
         childStyle={{ border: "none" }}
         orientation="vertical"
         tabs={[
-          { label: "Wish List", content: <WishList />, sx: { flexGrow: 1 } },
+          // { label: "Wish List", content: <WishList />, sx: { flexGrow: 1 } },
           { label: "Settings", content: <UserSettings />, sx: { flexGrow: 1 } },
+          { label: "Orders", content: <UserOrders />, sx: { flexGrow: 1 } },
         ]}
       />
     </div>

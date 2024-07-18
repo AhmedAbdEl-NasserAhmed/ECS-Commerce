@@ -2,6 +2,7 @@
 
 import { useAppSelector } from "@/lib/hooks";
 import BreadCrumpet from "@/ui/BreadCrumpet/BreadCrumpet";
+import FloatingWhatsAppComponent from "@/ui/FloatingWhatsAppIcon/FloatingWhatsAppIcon";
 import Footer from "@/ui/Footer/Footer";
 import Modal from "@/ui/Modal/Modal";
 import NavBar from "@/ui/NavBar/NavBar";
@@ -29,6 +30,7 @@ function Layout({ children }) {
       <NavBar />
       <BreadCrumpet />
       {children}
+      <FloatingWhatsAppComponent />
       <Footer />
     </div>
   );

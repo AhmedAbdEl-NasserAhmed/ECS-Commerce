@@ -5,6 +5,7 @@ import categoriesApi from "./features/api/categoriesApi";
 import subCategoriesApi from "./features/api/subCategoriesApi";
 import productsApi from "./features/api/productsApi";
 import cartSlice from "./features/cartSlice/cartSlice";
+import ordersApi from "./features/api/ordersApi";
 
 export const makeStore = () => {
   return configureStore({
@@ -15,13 +16,15 @@ export const makeStore = () => {
       [categoriesApi.reducerPath]: categoriesApi.reducer,
       [subCategoriesApi.reducerPath]: subCategoriesApi.reducer,
       [productsApi.reducerPath]: productsApi.reducer,
+      [ordersApi.reducerPath]: ordersApi.reducer,
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({ serializableCheck: false }).concat(
         usersApi.middleware,
         categoriesApi.middleware,
         subCategoriesApi.middleware,
-        productsApi.middleware
+        productsApi.middleware,
+        ordersApi.middleware
       ),
   });
 };

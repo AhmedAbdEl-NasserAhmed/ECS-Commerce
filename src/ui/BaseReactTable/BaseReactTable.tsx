@@ -36,7 +36,7 @@ function BaseReactTable({
     debugTable: true,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
+    // getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     onPaginationChange: setPagination,
     //no need to pass pageCount or rowCount with client-side pagination as it is calculated automatically
@@ -85,14 +85,15 @@ function BaseReactTable({
                         asc: " 🔼",
                         desc: " 🔽",
                       }[header.column.getIsSorted() as string] ?? null}
-                      {header.column.getCanFilter() && isValidData ? (
-                        <div className={styles["filter-inputs"]}>
-                          <BaseReactTableFilter
-                            column={header.column}
-                            table={table}
-                          />
-                        </div>
-                      ) : null}
+                      {header.column.getCanFilter() && isValidData
+                        ? // <div className={styles["filter-inputs"]}>
+                          //   <BaseReactTableFilter
+                          //     column={header.column}
+                          //     table={table}
+                          //   />
+                          // </div>
+                          null
+                        : null}
                     </div>
                   </th>
                 );

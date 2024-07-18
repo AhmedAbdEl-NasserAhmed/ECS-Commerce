@@ -1,6 +1,7 @@
 "use client";
 
 import { useAppSelector } from "@/lib/hooks";
+import { UserType } from "@/types/enums";
 import {
   useParams,
   usePathname,
@@ -8,11 +9,6 @@ import {
   useSearchParams,
 } from "next/navigation";
 import { useEffect } from "react";
-
-enum UserType {
-  ADMIN = "ADMIN",
-  USER = "USER",
-}
 
 function ProtectedRoute({ children }) {
   const router = useRouter();
@@ -34,13 +30,14 @@ function ProtectedRoute({ children }) {
         "/" + pathname.split("/").at(-1)
       );
 
-      if (user.isAuthenticated) {
+      if (user.isAuthenticated && user.user.role === UserType.ADMIN) {
         if (isAuthAdminRoute) {
           router.push(`/${locale}/admin/dashboard/products`);
         } else {
           return;
         }
       } else {
+        router.push(`/${locale}`);
         if (isAuthAdminRoute) {
           return;
         } else {

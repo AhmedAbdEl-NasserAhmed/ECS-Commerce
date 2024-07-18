@@ -14,6 +14,7 @@ import Image from "next/image";
 import toast from "react-hot-toast";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { UserType } from "@/types/enums";
 
 const Cart = ({ setIsCartOpen }) => {
   const { locale } = useParams();
@@ -124,6 +125,7 @@ const Cart = ({ setIsCartOpen }) => {
 
                       <div className="flex items-center gap-5">
                         <button
+                          disabled={user?.role === UserType.ADMIN}
                           className={` ${
                             product.quantity === product.maxQuantity
                               ? "bg-red-500"
@@ -136,6 +138,7 @@ const Cart = ({ setIsCartOpen }) => {
                           +
                         </button>
                         <button
+                          disabled={user?.role === UserType.ADMIN}
                           className="w-7 h-7 bg-black rounded-full text-white flex items-center justify-center"
                           onClick={() =>
                             handleDecrementProductQuantity(product)
@@ -145,12 +148,13 @@ const Cart = ({ setIsCartOpen }) => {
                         </button>
                       </div>
 
-                      <span
+                      <button
+                        disabled={user?.role === UserType.ADMIN}
                         className="text-blue-500 cursor-pointer"
                         onClick={() => handleDeleteProduct(product)}
                       >
                         Remove
-                      </span>
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -169,6 +173,7 @@ const Cart = ({ setIsCartOpen }) => {
             </p>
             <div className="flex justify-end  text-xl">
               <button
+                disabled={user?.role === UserType.ADMIN}
                 onClick={() => {
                   if (token) {
                     setIsCartOpen(false);

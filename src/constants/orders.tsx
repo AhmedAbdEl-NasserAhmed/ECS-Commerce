@@ -5,6 +5,7 @@ export const orders = [
       $oid: "66951f59f68408ea021da1c3",
     },
     orderPrice: 1000,
+
     items: [
       {
         product: {
@@ -12,37 +13,37 @@ export const orders = [
         },
         price: 200,
         quantity: 5,
-        color: [
-          {
-            value: "Black",
-            label: "Black",
-            color: "#000000",
-            quantity: -25,
-            _id: {
-              $oid: "668f0359168e757760b16258",
-            },
+        color: {
+          value: "Black",
+          label: "Black",
+          color: "#000000",
+          quantity: -25,
+          _id: {
+            $oid: "668f0359168e757760b16258",
           },
-        ],
+        },
         _id: {
           $oid: "66952004f68408ea021da1e7",
         },
       },
     ],
     orderStatus: "created",
-    billingData: {
-      firstName: "John",
-      lastName: "Doe",
-      apartment: "5B",
-      street: "123 Main St",
-      building: "Sunshine Apartments",
-      city: "New York",
-      country: "USA",
-      floor: "5",
-      phoneNumber: "123-456-7890",
-      _id: {
-        $oid: "66952004f68408ea021da1e9",
+    billingData: [
+      {
+        firstName: "John",
+        lastName: "Doe",
+        apartment: "5B",
+        street: "123 Main St",
+        building: "Sunshine Apartments",
+        city: "New York",
+        country: "USA",
+        floor: "5",
+        phoneNumber: "123-456-7890",
+        _id: {
+          $oid: "66952004f68408ea021da1e9",
+        },
       },
-    },
+    ],
     paymentOrderId: "226652643",
     createdAt: {
       $date: "2024-07-15T13:11:32.074Z",
@@ -65,17 +66,16 @@ export const orders = [
         },
         price: 300,
         quantity: 4,
-        color: [
-          {
-            value: "Red",
-            label: "Red",
-            color: "#FF0000",
-            quantity: -20,
-            _id: {
-              $oid: "668f0359168e757760b16260",
-            },
+        color: {
+          value: "Red",
+          label: "Red",
+          color: "#FF0000",
+          quantity: -20,
+          _id: {
+            $oid: "668f0359168e757760b16260",
           },
-        ],
+        },
+
         _id: {
           $oid: "66952004f68408ea021da1e8",
         },
@@ -118,17 +118,16 @@ export const orders = [
         },
         price: 500,
         quantity: 3,
-        color: [
-          {
-            value: "Blue",
-            label: "Blue",
-            color: "#0000FF",
-            quantity: -15,
-            _id: {
-              $oid: "668f0359168e757760b16262",
-            },
+        color: {
+          value: "Blue",
+          label: "Blue",
+          color: "#0000FF",
+          quantity: -15,
+          _id: {
+            $oid: "668f0359168e757760b16262",
           },
-        ],
+        },
+
         _id: {
           $oid: "66952004f68408ea021da1eb",
         },
@@ -171,17 +170,16 @@ export const orders = [
         },
         price: 200,
         quantity: 4,
-        color: [
-          {
-            value: "Green",
-            label: "Green",
-            color: "#00FF00",
-            quantity: -20,
-            _id: {
-              $oid: "668f0359168e757760b16264",
-            },
+        color: {
+          value: "Green",
+          label: "Green",
+          color: "#00FF00",
+          quantity: -20,
+          _id: {
+            $oid: "668f0359168e757760b16264",
           },
-        ],
+        },
+
         _id: {
           $oid: "66952004f68408ea021da1ed",
         },

@@ -190,6 +190,8 @@ function EditProduct() {
     return getSumFrom(formData["colors"], formData["colors-quantity"]);
   };
 
+  console.log("formData", formData);
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
@@ -360,7 +362,7 @@ function EditProduct() {
                         }}
                         render={({ field }) => (
                           <CustomizedTextField
-                            // disabled={productResponse.isLoading}
+                            disabled={updateProductResponse.isLoading}
                             textLabelClass={"font-semibold text-xl"}
                             placeholder={t("quantity")}
                             field={field}

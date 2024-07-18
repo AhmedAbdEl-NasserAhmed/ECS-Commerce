@@ -44,6 +44,8 @@ function AdminLoginForm() {
 
         localStorage.setItem("userToken", res.token);
 
+        localStorage.setItem("user", JSON.stringify(res.data));
+
         dispatch(loginUser({ user: res.data, token: res.token }));
       })
       .catch((err) => toast.error(err.data.message));

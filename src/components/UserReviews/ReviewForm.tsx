@@ -5,9 +5,13 @@ import { Controller, useForm } from "react-hook-form";
 import ReactStars from "react-stars";
 import "./ReviewForm.css";
 import { Button } from "@mui/material";
+import { useAppSelector } from "@/lib/hooks";
+import { UserType } from "@/types/enums";
 
 const ReviewForm = (props) => {
   const t = useTranslations("User");
+
+  const user = useAppSelector((state) => state.usersSlice.user);
 
   const {
     handleSubmit,
@@ -37,6 +41,7 @@ const ReviewForm = (props) => {
           }}
           render={({ field }) => (
             <CustomizedTextField
+              disabled={user?.role === UserType.ADMIN}
               textLabelClass={"font-semibold text-xl"}
               placeholder={t("Review")}
               textlabel={t("Review")}
@@ -75,6 +80,7 @@ const ReviewForm = (props) => {
       </div>
       <div className="flex justify-end">
         <Button
+          disabled={user?.role === UserType.ADMIN}
           sx={{
             paddingInline: "1.6rem",
             paddingBlock: "1rem",

@@ -1,6 +1,7 @@
 "use client";
 
 import { useAppSelector } from "@/lib/hooks";
+import { UserType } from "@/types/enums";
 import BreadCrumpet from "@/ui/BreadCrumpet/BreadCrumpet";
 import FloatingWhatsAppComponent from "@/ui/FloatingWhatsAppIcon/FloatingWhatsAppIcon";
 import Footer from "@/ui/Footer/Footer";
@@ -30,7 +31,7 @@ function Layout({ children }) {
       <NavBar />
       <BreadCrumpet />
       {children}
-      <FloatingWhatsAppComponent />
+      {user?.role !== UserType.ADMIN && <FloatingWhatsAppComponent />}
       <Footer />
     </div>
   );

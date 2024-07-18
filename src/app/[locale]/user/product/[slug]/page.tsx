@@ -22,6 +22,7 @@ import BaseTabs from "@/ui/Tabs/Tabs";
 import Reviews from "@/components/UserReviews/Reviews";
 import BaseContainer from "@/ui/Container/BaseContainer";
 import ReactStars from "react-stars";
+import { UserType } from "@/types/enums";
 
 function ProductDetails() {
   const params = useParams();
@@ -33,6 +34,8 @@ function ProductDetails() {
   const cart = useAppSelector((state) => state.cartSlice.cartItems);
 
   const user = useAppSelector((state) => state.usersSlice.user);
+
+  console.log(user);
 
   const [productDetailsState, dispatch] = useReducer(reducerFn, initialState);
 
@@ -304,6 +307,7 @@ function ProductDetails() {
           </Box>
           <Box className="flex items-center gap-5 ">
             <button
+              disabled={user?.role === UserType.ADMIN}
               onClick={handleDecrementQuantity}
               className="bg-black w-10 h-10 text-2xl flex items-center justify-center text-white p-2 rounded-full"
             >
@@ -317,6 +321,7 @@ function ProductDetails() {
             />
 
             <button
+              disabled={user?.role === UserType.ADMIN}
               onClick={handleIncrementQuantity}
               className="bg-black w-10 h-10 text-2xl flex items-center justify-center text-white p-2 rounded-full"
             >
@@ -332,6 +337,7 @@ function ProductDetails() {
             )}
           <Box className="md:w-1/2">
             <button
+              disabled={user?.role === UserType.ADMIN}
               onClick={() => {
                 handleAddCartItem();
                 action(ProductDetailsAction.SET_PRODUCT_QUANTITY, {

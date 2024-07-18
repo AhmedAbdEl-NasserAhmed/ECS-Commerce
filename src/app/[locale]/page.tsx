@@ -12,6 +12,7 @@ import BaseContainer from "@/ui/Container/BaseContainer";
 
 import HomePageCategory from "@/ui/HomePageCategory/HomePageCategory";
 import FloatingWhatsAppComponent from "@/ui/FloatingWhatsAppIcon/FloatingWhatsAppIcon";
+import { UserType } from "@/types/enums";
 
 function HomePage() {
   const { data, isLoading } = useGetAllProductsQuery("products");
@@ -45,7 +46,7 @@ function HomePage() {
         products={data?.data}
         isLoading={isLoading}
       />
-      <FloatingWhatsAppComponent />
+      {user?.role !== UserType.ADMIN && <FloatingWhatsAppComponent />}
       <Footer />
     </div>
   );

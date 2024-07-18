@@ -1,6 +1,22 @@
-.whatsapp-widget {
+._2qp0Z {
   position: fixed;
   bottom: 50px;
   right: 50px;
-  display: block;
+  z-index: 99999;
+  background-color: #25d366;
+  color: white;
+  font-size: 2.7rem;
+  transition: 0.5s all;
+
+  &:hover {
+    background-color: #25d366;
+  }
+}
+
+._1yCVn {
+  z-index: 999999999;
+}
+
+._1qse9 {
+  z-index: 999999999;
 }

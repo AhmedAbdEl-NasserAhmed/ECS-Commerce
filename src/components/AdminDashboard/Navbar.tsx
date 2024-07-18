@@ -8,6 +8,9 @@ import { Box, InputAdornment } from "@mui/material";
 import CustomizedTextField from "@/ui/TextField/TextField";
 import { HiMenuAlt3 } from "react-icons/hi";
 import { useParams, usePathname, useRouter } from "next/navigation";
+import { useAppDispatch } from "@/lib/hooks";
+import { logoutUser } from "@/lib/features/usersSlice/usersSlice";
+import toast from "react-hot-toast";
 
 interface Props {
   setExpand?: (isTrue: any) => void;
@@ -23,6 +26,16 @@ function Navbar({ setExpand, setExpanded }: Props) {
 
   const [langState, setLangState] = useState(locale);
 
+  const dispatch = useAppDispatch();
+
+  function handleLogoutAdmin() {
+    dispatch(logoutUser());
+    localStorage.removeItem("userToken");
+    localStorage.removeItem("user");
+    router.push(`/${locale}/admin`);
+    toast.success("Do Not Be Late");
+  }
+
   const onChangeLanguage = (value: string) => {
     setLangState(value);
 
@@ -35,12 +48,12 @@ function Navbar({ setExpand, setExpanded }: Props) {
       component="nav"
       display="flex"
       alignItems="center"
-      className="h-[10vh] border-b-2 bg-[#FFFFFF] sticky top-0 z-50 border-gray-100 justify-between"
+      className="h-[10vh] px-8 border-b-2 py-12 bg-[#FFFFFF] sticky top-0 z-50 border-gray-100 justify-between"
     >
       <Box
         display="flex"
         alignItems="center"
-        className="px-8 justify-between py-12 w-full "
+        className="justify-between w-full "
       >
         <Box className="flex items-center w-full gap-6  ">
           <span
@@ -106,36 +119,21 @@ function Navbar({ setExpand, setExpanded }: Props) {
             />
           </Box>
         </Box>
-
-        <ul className="flex items-center gap-3 sm:gap-5 text-3xl ">
-          {/* <li className="flex justify-center items-center gap-2 ">
-            <div className="  w-[2.4rem] h-[2.4rem] sm:w-[3rem]  sm:h-[3rem] relative ">
-              <Image
-                className="rounded-full  "
-                src="/profile.webp"
-                fill
-                sizes="10vw"
-                alt="Profile photo"
-              />
-            </div>
-            <span>
-              <FaAngleDown />
-            </span>
-          </li> */}
-          {/* <li>
-            <HiOutlineBell />
-          </li> */}
-          <li>
-            <select
-              value={langState}
-              onChange={(e) => onChangeLanguage(e.target.value)}
-            >
-              <option value="en">EN</option>
-              <option value="ar">AR</option>
-            </select>
-          </li>
-        </ul>
       </Box>
+      <ul className="flex items-center justify-end gap-5 w-1/2   ">
+        <li className="text-3xl">
+          <select
+            value={langState}
+            onChange={(e) => onChangeLanguage(e.target.value)}
+          >
+            <option value="en">EN</option>
+            <option value="ar">AR</option>
+          </select>
+        </li>
+        <li onClick={handleLogoutAdmin} className="text-2xl cursor-pointer">
+          LOG OUT
+        </li>
+      </ul>
     </Box>
   );
 }

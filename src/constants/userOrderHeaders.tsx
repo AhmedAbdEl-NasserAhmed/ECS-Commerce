@@ -14,41 +14,13 @@ export const useOrderHeaders = () => {
     //   accessorKey: "price",
     //   size: 100,
     // },
-    // {
-    //   id: "orderPrice",
-    //   header: () => "Order Price",
-    //   accessorKey: "orderPrice",
-    // },
+
     // {
     //   id: "price",
     //   header: () => "Product Price",
     //   accessorKey: "price",
     // },
     // {
-    //   id: "color",
-    //   header: () => "Product Colors",
-    //   cell: ({
-    //     cell: {
-    //       row: { original },
-    //     },
-    //   }) => (
-    //     <div style={{ gap: "10px" }} className="flex justify-center">
-    //       {original.colors.map((color) => (
-    //         <span
-    //           key={color.label}
-    //           style={{
-    //             width: "12px",
-    //             height: "12px",
-    //             borderRadius: "50%",
-    //             backgroundColor: color.color,
-    //           }}
-    //         >
-    //           &nbsp;
-    //         </span>
-    //       ))}
-    //     </div>
-    //   ),
-    // },
 
     {
       id: "items",
@@ -68,6 +40,13 @@ export const useOrderHeaders = () => {
         </div>
       ),
     },
+
+    {
+      id: "orderPrice",
+      header: () => "Total Price",
+      accessorKey: "orderPrice",
+    },
+
     {
       id: "items",
       header: () => "Order Colors",
@@ -77,54 +56,25 @@ export const useOrderHeaders = () => {
         },
       }) => (
         <div style={{ gap: "10px" }} className="flex justify-center">
-          {original?.items.map((product, index) => {
+          {original?.items.map((product) => {
             return (
-              <div key={index}>
-                {product?.color?.map((color) => {
-                  return (
-                    <span
-                      key={color.label}
-                      style={{
-                        display: "block",
-                        width: "12px",
-                        height: "12px",
-                        borderRadius: "50%",
-                        backgroundColor: color.color,
-                      }}
-                    >
-                      &nbsp;
-                    </span>
-                  );
-                })}
-              </div>
+              <span
+                key={product.color["_id"]["$oid"]}
+                style={{
+                  display: "block",
+                  width: "12px",
+                  height: "12px",
+                  borderRadius: "50%",
+                  backgroundColor: product.color.color,
+                }}
+              >
+                &nbsp;
+              </span>
             );
           })}
         </div>
       ),
     },
-
-    {
-      id: "billingData",
-      header: () => "Buyer Information",
-      Cell: ({ cell }) => {
-        const value = cell.original.billingData;
-        console.log("cell", cell);
-        return (
-          <div style={{ gap: "10px" }} className="flex flex-col">
-            {Object.keys(cell).map((key) => {
-              return (
-                <ul className="flex flex-col" key={key}>
-                  <li>
-                    {key}: {cell[key]}
-                  </li>
-                </ul>
-              );
-            })}
-          </div>
-        );
-      },
-    },
-
     {
       id: "orderStatus",
       header: () => "Order Status",

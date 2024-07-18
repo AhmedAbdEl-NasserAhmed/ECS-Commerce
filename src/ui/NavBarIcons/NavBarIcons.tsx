@@ -2,15 +2,32 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import Cart from "../Cart/Cart";
 import ProfileMenu from "../ProfileMenu/ProfileMenu";
 import { useAppSelector } from "@/lib/hooks";
+import { UserType } from "@/types/enums";
 
 function NavIcons() {
+  const { locale } = useParams();
+  const router = useRouter();
+  const pathName = usePathname();
+
   const [isProfileOpen, setIsProfileOpen] = useState<boolean>(false);
 
+  const user = useAppSelector((state) => state.usersSlice.user);
+
   const [isCartOpen, setIsCartOpen] = useState<boolean>(false);
+
+  const [langState, setLangState] = useState(locale);
+
+  const onChangeLanguage = (value: string) => {
+    setLangState(value);
+
+    const newPath = pathName.replace(`/${locale}`, `/${value}`);
+
+    router.push(newPath);
+  };
 
   const cart = useAppSelector((state) => state.cartSlice.cartItems);
 
@@ -30,15 +47,7 @@ function NavIcons() {
         />
       </li>
       {isProfileOpen && <ProfileMenu setIsProfileOpen={setIsProfileOpen} />}
-      <li>
-        <Image
-          src="/notification.png"
-          alt="notification"
-          width={22}
-          height={22}
-          className="cursor-pointer"
-        />
-      </li>
+
       <li className="relative" onClick={() => setIsCartOpen((open) => !open)}>
         <Image
           src="/cart.png"
@@ -51,8 +60,19 @@ function NavIcons() {
           {cart.length}
         </span>
       </li>
+      <li className="text-2xl">
+        <select
+          value={langState}
+          onChange={(e) => onChangeLanguage(e.target.value)}
+        >
+          <option value="en">EN</option>
+          <option value="ar">AR</option>
+        </select>
+      </li>
 
-      {isCartOpen && <Cart setIsCartOpen={setIsCartOpen} />}
+      {isCartOpen && user?.role !== UserType.ADMIN && (
+        <Cart setIsCartOpen={setIsCartOpen} />
+      )}
     </ul>
   );
 }

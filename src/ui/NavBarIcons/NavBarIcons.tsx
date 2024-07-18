@@ -8,20 +8,13 @@ import ProfileMenu from "../ProfileMenu/ProfileMenu";
 import { useAppSelector } from "@/lib/hooks";
 
 function NavIcons() {
-  const router = useRouter();
-
   const [isProfileOpen, setIsProfileOpen] = useState<boolean>(false);
 
   const [isCartOpen, setIsCartOpen] = useState<boolean>(false);
 
-  const isLoggedIn = false;
-
   const cart = useAppSelector((state) => state.cartSlice.cartItems);
 
   function handleLoginClick() {
-    if (!isLoggedIn) {
-      // router.push("/login");
-    }
     setIsProfileOpen((open) => !open);
   }
 

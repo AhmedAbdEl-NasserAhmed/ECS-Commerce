@@ -6,16 +6,19 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Link from "next/link";
-import { useParams, usePathname } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useGetAllCategoriesQuery } from "@/lib/features/api/categoriesApi";
-import { handleLink } from "@/lib/helpers";
 
 function MobileScreenCategoriesList({ setOpens }) {
   const { locale } = useParams();
 
-  const pathName = usePathname();
+  const { replace } = useRouter();
 
   const { data, isLoading } = useGetAllCategoriesQuery("categories");
+
+  const handleClick = (id: string) => {
+    replace(`/${locale}/user/productsList/${id}`);
+  };
 
   if (isLoading) return;
 
@@ -36,17 +39,14 @@ function MobileScreenCategoriesList({ setOpens }) {
           <ul className=" flex flex-col gap-6 items-center justify-center  ">
             {data?.data.map((category) => (
               <li key={category["_id"]}>
-                <Link
-                  onClick={() => setOpens(false)}
-                  href={handleLink(
-                    pathName,
-                    locale,
-                    category["_id"],
-                    `${locale}/user/productsList/`
-                  )}
+                <button
+                  onClick={() => {
+                    handleClick(category["_id"]);
+                    setOpens(false);
+                  }}
                 >
                   {category.name}
-                </Link>
+                </button>
               </li>
             ))}
           </ul>

@@ -17,7 +17,7 @@ function Logo() {
           height={24}
           className="hidden md:block"
         />
-        <span className="hidden md:block  font-semibold">ORCA</span>
+        <span className="hidden xl:block  font-semibold">ORCA</span>
         <Image
           src="/logo.png"
           alt="Logo"

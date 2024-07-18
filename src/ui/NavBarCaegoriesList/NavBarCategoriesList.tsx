@@ -1,14 +1,11 @@
 "use client";
 
 import { useGetAllCategoriesQuery } from "@/lib/features/api/categoriesApi";
-import { handleLink } from "@/lib/helpers";
 import Link from "next/link";
 import { useParams, usePathname, useRouter } from "next/navigation";
 
 function NavBarCategoriesList({ showCategoriesMenu }) {
   const { locale } = useParams();
-
-  //   const pathName = usePathname();
 
   const { replace } = useRouter();
 
@@ -17,7 +14,7 @@ function NavBarCategoriesList({ showCategoriesMenu }) {
   if (isLoading) return;
 
   const handleClick = (id: string) => {
-    replace(`${locale}/user/productsList/${id}`, { scroll: false });
+    replace(`/${locale}/user/productsList/${id}`);
   };
 
   return (

@@ -6,17 +6,14 @@ import Link from "next/link";
 import { useState } from "react";
 import CartSideMenu from "../CartSideMenu/CartSideMenu";
 import { logoutUser } from "@/lib/features/usersSlice/usersSlice";
-import { useParams, usePathname, useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import MobileScreenCategoriesList from "../MobileScreenCategoriesList/MobileScreenCategoriesList";
-import { handleLink } from "@/lib/helpers";
 
 function LandingPageMenu() {
   const [opens, setOpens] = useState<boolean>(false);
 
   const { locale } = useParams();
-
-  const pathName = usePathname();
 
   const router = useRouter();
 
@@ -48,20 +45,24 @@ function LandingPageMenu() {
             <Link href="">Contact</Link>
           </li>
           <li>
-            <Link
-              onClick={() => setOpens(false)}
-              href={handleLink(pathName, locale, "register", `${locale}/user/`)}
+            <button
+              onClick={() => {
+                router.replace(`/${locale}/user/register`);
+                setOpens(false);
+              }}
             >
               Sign up
-            </Link>
+            </button>
           </li>
           <li>
-            <Link
-              onClick={() => setOpens(false)}
-              href={handleLink(pathName, locale, "login", `${locale}/user/`)}
+            <button
+              onClick={() => {
+                router.replace(`/${locale}/user/login`);
+                setOpens(false);
+              }}
             >
               Log in
-            </Link>
+            </button>
           </li>
           <li>
             <Link

@@ -78,16 +78,3 @@ export function getCookie(name) {
   if (parts.length === 2) return parts.pop().split(";").shift();
   return null;
 }
-
-export function handleLink(
-  pathName: string,
-  locale: any,
-  route: string,
-  fullRoute: string
-) {
-  if (pathName.split("/").at(-1) !== locale) {
-    return `${route}`;
-  } else {
-    return `${fullRoute}${route}`;
-  }
-}

@@ -8,9 +8,12 @@ import NavIcons from "../NavBarIcons/NavBarIcons";
 import BaseContainer from "../Container/BaseContainer";
 import NavBarCategoriesList from "../NavBarCaegoriesList/NavBarCategoriesList";
 import { useState } from "react";
+import { useParams } from "next/navigation";
 
 function NavBar() {
   const [showCategoriesMenu, setShowCategoriesMenu] = useState<boolean>(false);
+
+  const { locale } = useParams();
 
   return (
     <BaseContainer>
@@ -36,7 +39,7 @@ function NavBar() {
               </li>
 
               <li>
-                <Link href="">Contact</Link>
+                <Link href={`/${locale}/user/contact`}>Contact</Link>
               </li>
             </ul>
           </div>

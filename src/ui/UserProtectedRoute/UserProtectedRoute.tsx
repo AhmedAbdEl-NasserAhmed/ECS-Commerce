@@ -1,4 +1,5 @@
 import { useAppSelector } from "@/lib/hooks";
+import { UserType } from "@/types/enums";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 
@@ -13,16 +14,18 @@ function UserProtectedRoute({ children }) {
     (state) => state.usersSlice.isAuthenticated
   );
 
+  const forbiddenRoutes = ["checkout", "login", "register", "contact"];
+
   useEffect(() => {
-    const forbiddenRoutes = ["admin"];
     if (
-      forbiddenRoutes.includes(pathName) &&
-      user.role === "user" &&
-      (isAuthenticated || !isAuthenticated)
+      user?.role === UserType.ADMIN &&
+      forbiddenRoutes.includes(`${pathName.split("/").at(-1)}`)
     ) {
       router.back();
+    } else if (!isAuthenticated && pathName.includes("checkout")) {
+      router.back();
     }
-  }, [isAuthenticated, user, pathName, router]);
+  }, [forbiddenRoutes, isAuthenticated, pathName, router, user?.role]);
 
   return children;
 }

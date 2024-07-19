@@ -9,6 +9,7 @@ import { logoutUser } from "@/lib/features/usersSlice/usersSlice";
 import { useParams, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import MobileScreenCategoriesList from "../MobileScreenCategoriesList/MobileScreenCategoriesList";
+import { UserType } from "@/types/enums";
 
 function LandingPageMenu() {
   const [opens, setOpens] = useState<boolean>(false);
@@ -23,6 +24,10 @@ function LandingPageMenu() {
 
   const cart = useAppSelector((state) => state.cartSlice.cartItems);
 
+  const user = useAppSelector((state) => state.usersSlice.user);
+
+  const userRoleAdmin = user.role === UserType.ADMIN;
+
   return (
     <div className="md:hidden">
       <Image
@@ -34,16 +39,21 @@ function LandingPageMenu() {
         className="cursor-pointer"
       />
       {opens && (
-        <ul className="fixed h-screen w-full gap-8 bg-black z-[1000] text-white text-3xl flex flex-col items-center justify-center left-0 top-0 ">
+        <ul className="fixed h-screen w-full gap-12 bg-black z-[1000] text-white text-3xl flex flex-col items-center justify-center left-0 top-0 ">
           <li>
-            <Link href="">Home Page</Link>
+            <button
+              onClick={() => {
+                router.replace(`/${locale}`);
+                setOpens(false);
+              }}
+            >
+              Home Page
+            </button>
           </li>
           <li>
             <MobileScreenCategoriesList setOpens={setOpens} />
           </li>
-          <li>
-            <Link href="">Contact</Link>
-          </li>
+
           <li>
             <button
               onClick={() => {
@@ -65,6 +75,17 @@ function LandingPageMenu() {
             </button>
           </li>
           <li>
+            <button
+              onClick={() => {
+                router.replace(`/${locale}/user/contact`);
+                setOpens(false);
+              }}
+            >
+              Contact Us
+            </button>
+          </li>
+
+          <li>
             <Link
               onClick={() => {
                 dispatch(logoutUser());
@@ -79,15 +100,18 @@ function LandingPageMenu() {
               Logout
             </Link>
           </li>
-          <li onClick={() => setOpenSideMenu(true)}>
-            <Link href="">Cart ({cart.length})</Link>
-          </li>
+          {!userRoleAdmin && (
+            <li onClick={() => setOpenSideMenu(true)}>
+              <Link href="">Cart ({cart.length})</Link>
+            </li>
+          )}
           <span
             onClick={() => setOpens(false)}
             className="text-6xl absolute top-4 right-4 cursor-pointer"
           >
             &times;
           </span>
+
           <CartSideMenu
             setOpens={setOpens}
             setOpenSideMenu={setOpenSideMenu}

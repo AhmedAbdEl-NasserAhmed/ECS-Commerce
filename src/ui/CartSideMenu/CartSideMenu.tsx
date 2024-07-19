@@ -6,6 +6,7 @@ import {
   removeItem,
 } from "@/lib/features/cartSlice/cartSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { UserType } from "@/types/enums";
 import { CartItem } from "@/types/types";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";

@@ -21,10 +21,13 @@ function NavBarCategoriesList({ showCategoriesMenu }) {
     <ul
       className={` ${
         showCategoriesMenu ? "opacity-100" : "opacity-0"
-      } absolute h-auto  bg-white p-5 w-80 shadow-2xl top-10 z-50 left-0 transition-all duration-300 flex flex-col gap-6 overflow-y-scroll `}
+      } absolute h-auto  bg-white  w-80 shadow-2xl top-10 z-50 left-0 transition-all duration-300 flex flex-col gap-6 overflow-y-scroll `}
     >
       {data?.data.map((category) => (
-        <li key={category["_id"]}>
+        <li
+          className="px-4 py-2 hover:bg-black hover:text-white transition-all duration-300"
+          key={category["_id"]}
+        >
           <button onClick={() => handleClick(category["_id"])}>
             {category.name}
           </button>

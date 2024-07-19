@@ -26,7 +26,7 @@ function MobileScreenCategoriesList({ setOpens }) {
     <div>
       <Accordion>
         <AccordionSummary
-          sx={{ backgroundColor: "black", color: "white" }}
+          sx={{ backgroundColor: "white", color: "black" }}
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1-content"
           id="panel1-header"
@@ -34,9 +34,13 @@ function MobileScreenCategoriesList({ setOpens }) {
           Categories
         </AccordionSummary>
         <AccordionDetails
-          sx={{ backgroundColor: "white", color: "black", borderRadius: "5px" }}
+          sx={{
+            backgroundColor: "white",
+            color: "black",
+            borderRadius: "5px",
+          }}
         >
-          <ul className=" flex flex-col gap-6 items-center justify-center  ">
+          <ul className=" flex flex-col gap-12 items-center justify-center  ">
             {data?.data.map((category) => (
               <li key={category["_id"]}>
                 <button

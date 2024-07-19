@@ -26,14 +26,14 @@ function Layout({ children }) {
   }, [cart, expires]);
 
   return (
-    <div>
+    <UserProtectedRoute>
       {!user?.isActive && user && <NotActiveMessage />}
       <NavBar />
       <BreadCrumpet />
       {children}
       {user?.role !== UserType.ADMIN && <FloatingWhatsAppComponent />}
       <Footer />
-    </div>
+    </UserProtectedRoute>
   );
 }
 

@@ -33,7 +33,6 @@ class CustomErrorBoundary extends React.Component<
       if (this.props.errorComponent) {
         return this.props.errorComponent;
       }
-      console.log(this.state);
 
       return (
         <div className="text-4xl h-screen flex justify-center items-center flex-col bg-gray-100 gap-12">

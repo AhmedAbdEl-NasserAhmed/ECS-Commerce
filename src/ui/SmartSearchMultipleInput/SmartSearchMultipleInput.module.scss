@@ -24,12 +24,12 @@
   }
 
   &__close {
-    padding: 0.5rem;
-    background-color: #ebebeb;
+    padding: 0.5rem 0.8rem;
     border-radius: 5px;
     gap: 15px;
-    box-shadow: 3px 2px 5px -1px rgba(0, 0, 0, 0.2);
     text-transform: capitalize;
     cursor: pointer;
+    background: #ed0533;
+    color: white;
   }
 }

@@ -23,7 +23,13 @@ function CustomizedTextField({
   onChange,
   placeholder,
   mainContainerSx,
+  customError,
 }: Partial<CustomizedTextFieldProps>) {
+  const inputHasError = customError
+    ? customError
+    : errors
+    ? errors[field?.name]
+    : false;
   if (field) {
     return (
       <Box className={`flex flex-col gap-4`} sx={mainContainerSx}>
@@ -32,8 +38,8 @@ function CustomizedTextField({
           disabled={disabled}
           placeholder={placeholder}
           multiline={multiline}
-          error={!!errors?.[field.name]}
-          helperText={errors?.[field.name]?.message || ""}
+          error={!!inputHasError}
+          helperText={inputHasError?.message || ""}
           rows={rows}
           className={className}
           type={type}
@@ -93,8 +99,8 @@ function CustomizedTextField({
       <Box className={`flex flex-col gap-4`} sx={mainContainerSx}>
         {textlabel && <label className={textLabelClass}>{textlabel}</label>}
         <TextField
-          error={!!errors?.[name]}
-          helperText={errors?.[name]?.message || ""}
+          error={!!inputHasError}
+          helperText={inputHasError?.message || ""}
           placeholder={placeholder}
           className={className}
           onChange={onChange}

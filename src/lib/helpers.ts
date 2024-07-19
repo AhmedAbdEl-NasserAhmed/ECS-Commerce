@@ -4,15 +4,23 @@ import { useRouter } from "next/router";
 export const getAddProductServerData = (data: AdminProductProps) => {
   const formData = new FormData();
 
-  const excludeKeys = ["images", "subCategory", "colors", "colors-quantity"];
+  const excludeKeys = [
+    "images",
+    "subCategory",
+    "colors",
+    "colors-quantity",
+    "quantity",
+  ];
 
   for (let key in data) {
     if (excludeKeys.includes(key)) continue;
 
     if (typeof data[key] !== "object") {
+      console.log("1.");
       formData.append(key, data[key]);
     }
     if (typeof data[key] === "object") {
+      console.log("2.");
       formData.append(key, JSON.stringify(data[key]));
     }
   }

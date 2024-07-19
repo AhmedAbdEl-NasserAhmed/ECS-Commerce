@@ -35,6 +35,13 @@ function NavIcons() {
     setIsProfileOpen((open) => !open);
   }
 
+  console.log(
+    "xx",
+    isCartOpen,
+    user?.role !== UserType.ADMIN,
+    isCartOpen && user?.role !== UserType.ADMIN
+  );
+
   return (
     <ul className=" relative flex items-center justify-between gap-4 xl:gap-6 me-4">
       <li onClick={handleLoginClick}>
@@ -48,18 +55,20 @@ function NavIcons() {
       </li>
       {isProfileOpen && <ProfileMenu setIsProfileOpen={setIsProfileOpen} />}
 
-      <li className="relative" onClick={() => setIsCartOpen((open) => !open)}>
-        <Image
-          src="/cart.png"
-          alt="cart"
-          width={22}
-          height={22}
-          className="cursor-pointer"
-        />
-        <span className="absolute w-6 h-6  rounded-full text-sm bg-red-500 -top-3 z-10 flex items-center justify-center text-white  -right-3">
-          {cart.length}
-        </span>
-      </li>
+      {user?.role !== UserType.ADMIN && (
+        <li className="relative" onClick={() => setIsCartOpen((open) => !open)}>
+          <Image
+            src="/cart.png"
+            alt="cart"
+            width={22}
+            height={22}
+            className="cursor-pointer"
+          />
+          <span className="absolute w-6 h-6  rounded-full text-sm bg-red-500 -top-3 z-10 flex items-center justify-center text-white  -right-3">
+            {cart.length}
+          </span>
+        </li>
+      )}
       <li className="text-2xl">
         <select
           value={langState}

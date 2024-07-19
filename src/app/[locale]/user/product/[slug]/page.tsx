@@ -23,6 +23,7 @@ import Reviews from "@/components/UserReviews/Reviews";
 import BaseContainer from "@/ui/Container/BaseContainer";
 import ReactStars from "react-stars";
 import { UserType } from "@/types/enums";
+import { Layout } from "@/config/layout";
 
 function ProductDetails() {
   const params = useParams();
@@ -176,6 +177,8 @@ function ProductDetails() {
 
   if (isLoading || mainCategoryLoading) return <Spinner />;
 
+  const isAdmin = user?.role === UserType.ADMIN;
+
   return (
     <BaseContainer>
       <Box className="flex p-[4rem] flex-col gap-16 lg:flex-row ">
@@ -224,9 +227,11 @@ function ProductDetails() {
             <h2 className="text-4xl font-semibold capitalize">
               {productDetailsState.selectedProduct?.name}
             </h2>
-            <span className="text-4xl cursor-pointer">
-              <HiOutlineHeart />
-            </span>
+            {Layout.featureWishlist && (
+              <span className="text-4xl cursor-pointer">
+                <HiOutlineHeart />
+              </span>
+            )}
           </Box>
           <Box className="flex items-center gap-4 flex-wrap">
             <Box>
@@ -305,29 +310,31 @@ function ProductDetails() {
               })}
             </div>
           </Box>
-          <Box className="flex items-center gap-5 ">
-            <button
-              disabled={user?.role === UserType.ADMIN}
-              onClick={handleDecrementQuantity}
-              className="bg-black w-10 h-10 text-2xl flex items-center justify-center text-white p-2 rounded-full"
-            >
-              -
-            </button>
-            <input
-              className="text-center p-4 rounded-xl grow md:grow-0 text-2xl w-[15%] border-2 border-gray-200"
-              type="number"
-              value={productDetailsState.productQuantity}
-              readOnly
-            />
+          {!isAdmin && (
+            <Box className="flex items-center gap-5 ">
+              <button
+                disabled={isAdmin}
+                onClick={handleDecrementQuantity}
+                className="bg-black w-10 h-10 text-2xl flex items-center justify-center text-white p-2 rounded-full"
+              >
+                -
+              </button>
+              <input
+                className="text-center p-4 rounded-xl grow md:grow-0 text-2xl w-[15%] border-2 border-gray-200"
+                type="number"
+                value={productDetailsState.productQuantity}
+                readOnly
+              />
 
-            <button
-              disabled={user?.role === UserType.ADMIN}
-              onClick={handleIncrementQuantity}
-              className="bg-black w-10 h-10 text-2xl flex items-center justify-center text-white p-2 rounded-full"
-            >
-              +
-            </button>
-          </Box>
+              <button
+                disabled={isAdmin}
+                onClick={handleIncrementQuantity}
+                className="bg-black w-10 h-10 text-2xl flex items-center justify-center text-white p-2 rounded-full"
+              >
+                +
+              </button>
+            </Box>
+          )}
           {productDetailsState.productQuantity ===
             productDetailsState.selectedColor?.quantity &&
             productDetailsState.selectedColor?.value && (
@@ -335,28 +342,32 @@ function ProductDetails() {
                 This is maximum Quantity for this product Color
               </p>
             )}
-          <Box className="md:w-1/2">
-            <button
-              disabled={user?.role === UserType.ADMIN}
-              onClick={() => {
-                handleAddCartItem();
-                action(ProductDetailsAction.SET_PRODUCT_QUANTITY, {
-                  value: 0,
-                });
-              }}
-              className="bg-[#ed0534] hover:bg-black transition duration-500 text-white p-4 text-2xl rounded-lg w-full"
-            >
-              Add To Cart
-            </button>
-          </Box>
+          {!isAdmin && (
+            <Box className="md:w-1/2">
+              <button
+                disabled={isAdmin}
+                onClick={() => {
+                  handleAddCartItem();
+                  action(ProductDetailsAction.SET_PRODUCT_QUANTITY, {
+                    value: 0,
+                  });
+                }}
+                className="bg-[#ed0534] hover:bg-black transition duration-500 text-white p-4 text-2xl rounded-lg w-full"
+              >
+                Add To Cart
+              </button>
+            </Box>
+          )}
         </Box>
       </Box>
-      <BaseTabs
-        orientation="horizontal"
-        tabs={[
-          { label: "Reviews", content: <Reviews reviews={dummyReviews} /> },
-        ]}
-      />
+      {!isAdmin && (
+        <BaseTabs
+          orientation="horizontal"
+          tabs={[
+            { label: "Reviews", content: <Reviews reviews={dummyReviews} /> },
+          ]}
+        />
+      )}
     </BaseContainer>
   );
 }

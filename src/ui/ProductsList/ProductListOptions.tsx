@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 
 import { HiEye, HiOutlineHeart } from "react-icons/hi2";
 import ProductActionItem from "../ProductCard/ProductActionItem";
+import { Layout } from "@/config/layout";
 
 function ProductListOptions({ product }) {
   const router = useRouter();
@@ -13,7 +14,9 @@ function ProductListOptions({ product }) {
 
   return (
     <ul className="absolute top-7 -right-36 group-hover:right-8 group-hover:z-20 transition-all duration-700  flex flex-col gap-7">
-      <ProductActionItem icon={<HiOutlineHeart />} />{" "}
+      {Layout.featureWishlist && (
+        <ProductActionItem icon={<HiOutlineHeart />} />
+      )}
       <ProductActionItem
         icon={<HiEye />}
         onClick={() => router.push(`/${locale}/user/product/${product?.slug}`)}

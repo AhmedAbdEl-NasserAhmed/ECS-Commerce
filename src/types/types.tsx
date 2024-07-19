@@ -88,6 +88,7 @@ export interface CustomizedTextFieldProps {
   isMulti?: boolean;
   disabled?: boolean;
   errors: object;
+  customError?: any;
 }
 
 export interface AdminDashboardLink {

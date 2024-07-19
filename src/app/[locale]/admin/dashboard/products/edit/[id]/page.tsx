@@ -54,6 +54,7 @@ function EditProduct() {
 
   const formData = watch();
 
+
   const [updateProductFn, updateProductResponse] =
     useUpdateSingleProductMutation();
 
@@ -365,7 +366,10 @@ function EditProduct() {
                             placeholder={t("quantity")}
                             field={field}
                             formerHelperStyles={{ style: { fontSize: "1rem" } }}
-                            errors={errors}
+                            // errors={errors}
+                            customError={
+                              errors?.["colors-quantity"]?.[color.label]
+                            }
                             type={"number"}
                             variant={"outlined"}
                             size={"small"}

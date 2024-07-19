@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import GridContainer from "../Container/GridContainer";
 
 function HomePageCategory() {
   const { locale } = useParams();
@@ -17,21 +18,45 @@ function HomePageCategory() {
           Have a Tour in our amaizng JEANS offers
         </p>
       </div>
-
-      <div className=" w-full h-[50vh] relative group overflow-hidden">
-        <div className="bg-[url(https://images.pexels.com/photos/16390580/pexels-photo-16390580/free-photo-of-jeans-on-hangers.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1)] bg-cover bg-center w-full h-full block bg-no-repeat">
-          <span className="absolute -left-[100vw]  w-full h-full flex justify-center items-center  group-hover:left-0 transition-all duration-700 ">
-            <span className="bg-black opacity-50 w-full h-full "></span>
-          </span>
+      <GridContainer columns={2} gap={1} className="h-[50rem]">
+        <div className="bg-[url(https://tailoredathlete.com/cdn/shop/articles/Best_Jeans_for_Body_Type_Male_900x.jpg?v=1677586239)] bg-cover bg-center w-full bg-no-repeat relative group">
+          <div className="bg-black/50 opacity-0 transition-all hover:opacity-100 w-full h-full duration-400 flex flex-col gap-10 items-center justify-center">
+            <h3 className="text-white text-4xl uppercase tracking-[1rem] font-medium">
+              Male Jeans
+            </h3>
+            <Link
+              className="text-3xl bg-white text-black p-6 rounded-md transition-all duration-400"
+              href={`/${locale}/user/productsList/6696d2e5498de05bd22375b9`}
+            >
+              Start Shopping
+            </Link>
+          </div>
         </div>
-        <Link
-          style={{ transform: "translate(-50%)" }}
-          className="text-3xl bg-white text-black p-6 absolute rounded-md left-[50%] -bottom-[50%] group-hover:bottom-[50%] transition-all duration-1000 "
-          href={`/${locale}/user/productsList/6696d2e5498de05bd22375b9`}
-        >
-          Start Shopping
-        </Link>
-      </div>
+        <div className="bg-[url(https://www.darveys.com/blog/wp-content/uploads/2022/03/featured-image.jpg)] bg-cover bg-center w-full bg-no-repeat h-[50rem] relative group">
+          <div className="bg-black/50 opacity-0 transition-all hover:opacity-100 w-full h-full duration-400 flex flex-col gap-10 items-center justify-center">
+            <h3 className="text-white text-4xl uppercase tracking-[1rem] font-medium">
+              Female Jeans
+            </h3>
+            <Link
+              className="text-3xl bg-white text-black p-6 rounded-md transition-all duration-400"
+              href={`/${locale}/user/productsList/6696d2e5498de05bd22375b9`}
+            >
+              Start Shopping
+            </Link>
+          </div>
+        </div>
+      </GridContainer>
+      {/* <div className="bg-[url(https://images.pexels.com/photos/16390580/pexels-photo-16390580/free-photo-of-jeans-on-hangers.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1)] bg-cover bg-center w-full h-full block bg-no-repeat w-full h-[30rem] relative group">
+        <div className="h-full flex items-center justify-center">
+          <span className=" absolute w-full h-full -z-50 bg-black opacity-50 flex justify-center items-center opacity-0 group-hover:opacity-1 transition-all duration-400"></span>
+          <Link
+            className="text-3xl bg-white text-black p-6 rounded-md transition-all duration-400 opacity-1 group-hover:opacity-1"
+            href={`/${locale}/user/productsList/6696d2e5498de05bd22375b9`}
+          >
+            Start Shopping
+          </Link>
+        </div>
+      </div> */}
     </>
   );
 }

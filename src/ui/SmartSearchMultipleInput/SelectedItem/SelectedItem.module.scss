@@ -1,10 +1,10 @@
 .selected-item {
   display: flex;
-  padding: 0.5rem;
-  background-color: #ebebeb;
   border-radius: 5px;
   gap: 15px;
-  box-shadow: 3px 2px 5px -1px rgba(0, 0, 0, 0.2);
+  padding: 0.5rem 0.8rem;
+  background: #f1e5ce;
+
   text-transform: capitalize;
 }
 
@@ -16,7 +16,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #cdcdcddd;
-  color: black;
   cursor: pointer;
+  background: #ed0533;
+  color: white;
 }

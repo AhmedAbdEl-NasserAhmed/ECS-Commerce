@@ -27,9 +27,10 @@ const ordersApi = createApi({
     updateOrder: builder.mutation({
       query: ({ body, orderId }) => ({
         url: `orders/${orderId}`,
-        method: "PUT",
+        method: "PATCH",
         body,
       }),
+      invalidatesTags: ["ORDERS"],
     }),
   }),
 });

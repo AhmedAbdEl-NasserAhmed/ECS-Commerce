@@ -3,15 +3,11 @@ import {
   useGetOrderByIdQuery,
   useUpdateOrderMutation,
 } from "@/lib/features/api/ordersApi";
-import {
-  useGetSingleProductByIDQuery,
-  useUpdateSingleProductMutation,
-} from "@/lib/features/api/productsApi";
-import { getAddProductServerData } from "@/lib/helpers";
 import { OrderStatusEnum } from "@/types/enums";
 import { AdminProductProps } from "@/types/types";
 import MiniSpinner from "@/ui/MiniSpinner/MiniSpinner";
 import MultiChoiceSelectMenu from "@/ui/MultiChoiceSelectMenu/MultiChoiceSelectMenu";
+import Spinner from "@/ui/Spinner/Spinner";
 import CustomizedTextField from "@/ui/TextField/TextField";
 import { Box, Button } from "@mui/material";
 import { useTranslations } from "next-intl";
@@ -23,7 +19,7 @@ import { useForm, Controller } from "react-hook-form";
 import toast from "react-hot-toast";
 import { HiChevronRight } from "react-icons/hi2";
 
-function EditProduct() {
+function EditOrder() {
   const params = useParams();
 
   const { locale } = useParams();
@@ -38,14 +34,11 @@ function EditProduct() {
     handleSubmit,
     control,
     reset,
-    watch,
     setValue,
     formState: { errors },
   } = useForm<AdminProductProps>({
     mode: "onChange",
   });
-
-  const formData = watch();
 
   const [updateOrder, updateOrderResponse] = useUpdateOrderMutation();
 
@@ -54,12 +47,27 @@ function EditProduct() {
   const t = useTranslations("Dashboard");
 
   function onSubmit(data: AdminProductProps) {
-    updateOrder({ body: { ...data }, orderId: params.id })
-      .unwrap()
-      .then()
-      .catch();
-  }
+    const isSameStatus =
+      data.status.value === OrderStatusEnum[order.data.orderStatus];
 
+    if (isSameStatus) {
+      toast.error(t("Please change the status!"));
+      return;
+    }
+    updateOrder({
+      body: { orderStatus: data.status.value.toLowerCase() },
+      orderId: params.id,
+    })
+      .unwrap()
+      .then(() => {
+        toast.success("Product is updated");
+        router.push(`/${locale}/admin/dashboard/orders`);
+        reset();
+      })
+      .catch((err) => {
+        toast.error(err.message);
+      });
+  }
 
   useEffect(() => {
     setValue("status", {
@@ -68,6 +76,8 @@ function EditProduct() {
       color: "#ed0534",
     });
   }, [setValue, order?.data]);
+
+  if (isFetching) return <Spinner />;
 
   return (
     <form
@@ -233,11 +243,7 @@ function EditProduct() {
             variant="contained"
             size="large"
           >
-            {updateOrderResponse.isLoading ? (
-              <MiniSpinner />
-            ) : (
-              t("Edit Product")
-            )}
+            {updateOrderResponse.isLoading ? <MiniSpinner /> : t("Edit Order")}
           </Button>
         </Box>
       </Box>
@@ -245,4 +251,4 @@ function EditProduct() {
   );
 }
 
-export default EditProduct;
+export default EditOrder;

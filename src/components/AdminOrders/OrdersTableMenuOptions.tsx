@@ -19,17 +19,6 @@ function OrdersTableMenuOptions({ order }) {
           <Menus.Button
             onClick={() => {
               router.push(
-                `/${locale}/admin/dashboard/orders/details/${order?.["_id"]}`
-              );
-            }}
-            icon={<HiEye />}
-          >
-            View
-          </Menus.Button>
-
-          <Menus.Button
-            onClick={() => {
-              router.push(
                 `/${locale}/admin/dashboard/orders/edit/${order["_id"]}`
               );
             }}

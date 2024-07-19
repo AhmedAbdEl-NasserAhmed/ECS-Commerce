@@ -2,7 +2,7 @@
 
 import Menus from "@/ui/Menus/Menus";
 import Modal from "@/ui/Modal/Modal";
-import { HiEye } from "react-icons/hi2";
+import { HiEye, HiMiniPencilSquare } from "react-icons/hi2";
 import { useParams, useRouter } from "next/navigation";
 
 function OrdersTableMenuOptions({ order }) {
@@ -25,6 +25,17 @@ function OrdersTableMenuOptions({ order }) {
             icon={<HiEye />}
           >
             View
+          </Menus.Button>
+
+          <Menus.Button
+            onClick={() => {
+              router.push(
+                `/${locale}/admin/dashboard/orders/edit/${order["_id"]}`
+              );
+            }}
+            icon={<HiMiniPencilSquare />}
+          >
+            Edit
           </Menus.Button>
         </Menus.List>
       </Menus.Menu>

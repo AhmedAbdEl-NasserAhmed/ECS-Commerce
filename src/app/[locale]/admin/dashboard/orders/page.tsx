@@ -7,27 +7,13 @@ import Link from "next/link";
 import { HiChevronRight } from "react-icons/hi2";
 
 import BaseTable from "@/ui/BaseReactTable";
-import { useParams } from "next/navigation";
 import { ordersTableHeaders } from "@/constants/ordersTableHeaders";
 import { useTranslations } from "next-intl";
-
-const data = {
-  data: [
-    {
-      _id: "1234",
-      email: "khalednasser788@gmail.com",
-      mobile: "0124561244",
-      orderPrice: 800,
-      status: "purchased",
-      transactionId: "#0123442211",
-    },
-  ],
-};
-
-const isFetching = false;
+import { useGetAllOrdersQuery } from "@/lib/features/api/ordersApi";
 
 function Orders() {
   const t = useTranslations("Dashboard");
+  const { data: orders, isFetching } = useGetAllOrdersQuery("orders");
 
   return (
     <Box className=" flex flex-col gap-8 px-[4rem] py-[1.2rem] bg-[#FDFDFD] ">
@@ -58,7 +44,7 @@ function Orders() {
           {isFetching ? (
             <Spinner />
           ) : (
-            <BaseTable data={data?.data} columns={ordersTableHeaders(t)} />
+            <BaseTable data={orders?.data} columns={ordersTableHeaders(t)} />
           )}
         </Menus>
       </Box>

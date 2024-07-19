@@ -1,0 +1,39 @@
+.order-status {
+  position: relative;
+  display: inline-block;
+
+  &::before {
+    content: "";
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    top: 48%;
+    transform: translateY(-50%);
+    left: -1.2rem;
+  }
+  &--CREATED {
+    color: #2ecc71;
+    &::before {
+      background-color: #2ecc71;
+    }
+  }
+  &--DELIVERED {
+    color: #353b48;
+    &::before {
+      background-color: #353b48;
+    }
+  }
+  &--DELIVERING {
+    color: #3498db;
+    &::before {
+      background-color: #3498db;
+    }
+  }
+  &--REFUND {
+    color: #e74c3c;
+    &::before {
+      background-color: #e74c3c;
+    }
+  }
+}

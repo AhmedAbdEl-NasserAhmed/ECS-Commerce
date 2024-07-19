@@ -13,7 +13,7 @@ const Filter = () => {
   const searchParams = useSearchParams();
   const { replace } = useRouter();
 
-  const [value, setValue] = useState<number[]>([0, 2000]);
+  const [value, setValue] = useState<number[]>([1, 5000]);
 
   const handleChange = (event: Event, newValue: number | number[]) => {
     const params = new URLSearchParams(searchParams);

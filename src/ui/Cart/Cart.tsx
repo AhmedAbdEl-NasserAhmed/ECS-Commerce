@@ -166,7 +166,7 @@ const Cart = ({ setIsCartOpen }) => {
           <div className="">
             <div className="flex items-center justify-between font-bold text-xl">
               <span className="">Total</span>
-              <span className="">{totalCartItems} EGP</span>
+              <span className="">{Math.trunc(totalCartItems)} EGP</span>
             </div>
             <p className="text-gray-500 text-xl mt-2 mb-4">
               Shipping and taxes calculated at checkout.

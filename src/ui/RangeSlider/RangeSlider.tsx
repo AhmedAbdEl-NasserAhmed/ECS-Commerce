@@ -19,8 +19,8 @@ function RangeSlider({ value, handleChange }) {
       </div>
       <Slider
         sx={{ color: "red" }}
-        min={0}
-        max={2000}
+        min={1}
+        max={5000}
         getAriaLabel={() => "Price range"}
         value={value}
         onChange={handleChange}

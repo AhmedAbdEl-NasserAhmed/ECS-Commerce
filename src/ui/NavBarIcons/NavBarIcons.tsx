@@ -17,6 +17,8 @@ function NavIcons() {
 
   const user = useAppSelector((state) => state.usersSlice.user);
 
+  const makePayment = useAppSelector((state) => state.cartSlice.makePayment);
+
   const [isCartOpen, setIsCartOpen] = useState<boolean>(false);
 
   const [langState, setLangState] = useState(locale);
@@ -48,7 +50,7 @@ function NavIcons() {
       </li>
       {isProfileOpen && <ProfileMenu setIsProfileOpen={setIsProfileOpen} />}
 
-      {user?.role !== UserType.ADMIN && (
+      {user?.role !== UserType.ADMIN && !makePayment && (
         <li className="relative" onClick={() => setIsCartOpen((open) => !open)}>
           <Image
             src="/cart.png"
@@ -72,7 +74,7 @@ function NavIcons() {
         </select>
       </li>
 
-      {isCartOpen && user?.role !== UserType.ADMIN && (
+      {isCartOpen && user?.role !== UserType.ADMIN && !makePayment && (
         <Cart setIsCartOpen={setIsCartOpen} />
       )}
     </ul>

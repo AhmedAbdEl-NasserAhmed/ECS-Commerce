@@ -5,10 +5,12 @@ const cartItemCookies = getCookie("cartItems");
 
 interface CartSlice {
   cartItems: any;
+  makePayment: boolean;
 }
 
 const initialState: CartSlice = {
   cartItems: JSON.parse(cartItemCookies) || [],
+  makePayment: false,
 };
 
 const cartSlice = createSlice({
@@ -58,6 +60,12 @@ const cartSlice = createSlice({
         return !product.cart ? { ...product, cart: action.payload } : product;
       });
     },
+    makePayment(state, action) {
+      state.makePayment = action.payload;
+    },
+    emptyCartItems(state) {
+      state.cartItems = [];
+    },
   },
 });
 
@@ -67,6 +75,8 @@ export const {
   incrementProductItem,
   decrementProductItem,
   assignCartId,
+  makePayment,
+  emptyCartItems,
 } = cartSlice.actions;
 
 export default cartSlice.reducer;

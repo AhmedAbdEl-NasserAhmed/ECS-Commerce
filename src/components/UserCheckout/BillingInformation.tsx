@@ -9,16 +9,34 @@ import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { Button } from "@mui/material";
 import ErrorMessage from "@/ui/ErrorMessage/ErrorMessage";
+import { usePaymentCheckoutMutation } from "@/lib/features/api/paymentApi";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import MiniSpinner from "@/ui/MiniSpinner/MiniSpinner";
+import {
+  emptyCartItems,
+  makePayment,
+} from "@/lib/features/cartSlice/cartSlice";
+import Link from "next/link";
+import { useParams, useRouter } from "next/navigation";
 
 function BillingInformation() {
   const {
     control,
-    watch,
     handleSubmit,
     formState: { errors },
   } = useForm({ mode: "onChange" });
 
-  const formData = watch();
+  const [paymentFn, paymentResponse] = usePaymentCheckoutMutation();
+
+  const { locale } = useParams();
+
+  const router = useRouter();
+
+  const dispatch = useAppDispatch();
+
+  const cart = useAppSelector((state) => state.cartSlice.cartItems);
+
+  console.log("CART", cart);
 
   const countries = getNames().map((country) => ({
     label: country,
@@ -26,7 +44,39 @@ function BillingInformation() {
     color: "#666666",
   }));
 
-  function onSubmit() {}
+  function onSubmit(data) {
+    dispatch(makePayment(true));
+    paymentFn({
+      billing_data: {
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email,
+        phoneNumber: data.phoneNumber,
+        country: data.country.label,
+        city: data.city,
+        building: data.building,
+        apartment: data.apartment,
+        street: data.street,
+        floor: data.floor,
+      },
+      cartItems: cart,
+    })
+      .unwrap()
+      .then((res) => {
+        dispatch(makePayment(false));
+        dispatch(emptyCartItems());
+        // window.open(res.url, "_blank", "noopener,noreferrer");
+        window.open(
+          "  http://localhost:3000/en/user/payment/status=success",
+          "_blank",
+          "noopener,noreferrer"
+        );
+        router.replace(`/${locale}`);
+      })
+      .catch(() => {
+        dispatch(makePayment(false));
+      });
+  }
 
   return (
     <form
@@ -52,6 +102,7 @@ function BillingInformation() {
             }}
             render={({ field }) => (
               <CustomizedTextField
+                disabled={paymentResponse.isLoading}
                 textLabelClass={"font-semibold text-xl"}
                 placeholder={"First Name"}
                 textlabel={"First Name"}
@@ -79,6 +130,7 @@ function BillingInformation() {
             }}
             render={({ field }) => (
               <CustomizedTextField
+                disabled={paymentResponse.isLoading}
                 textLabelClass={"font-semibold text-xl"}
                 placeholder={"Last Name"}
                 textlabel={"Last Name"}
@@ -107,6 +159,7 @@ function BillingInformation() {
           }}
           render={({ field }) => (
             <CustomizedTextField
+              disabled={paymentResponse.isLoading}
               textLabelClass={"font-semibold text-xl"}
               placeholder={"Email Address"}
               textlabel={"Email Address"}
@@ -130,7 +183,7 @@ function BillingInformation() {
             rules={{ required: "This field is required" }}
             render={({ field }) => (
               <MultiChoiceSelectMenu
-                disabled={false}
+                disabled={false || paymentResponse.isLoading}
                 isMulti={false}
                 textLabelClass={"font-semibold text-xl"}
                 placeholder={"Select a Country "}
@@ -152,6 +205,7 @@ function BillingInformation() {
             rules={{ required: "This field is required" }}
             render={({ field }) => (
               <PhoneInput
+                disabled={paymentResponse.isLoading}
                 country={"eg"}
                 value={field.value}
                 onChange={field.onChange}
@@ -181,6 +235,7 @@ function BillingInformation() {
             rules={{ required: "This field is required" }}
             render={({ field }) => (
               <CustomizedTextField
+                disabled={paymentResponse.isLoading}
                 textLabelClass={"font-semibold text-xl"}
                 placeholder={"City"}
                 textlabel={"City"}
@@ -202,6 +257,7 @@ function BillingInformation() {
             rules={{ required: "This field is required" }}
             render={({ field }) => (
               <CustomizedTextField
+                disabled={paymentResponse.isLoading}
                 textLabelClass={"font-semibold text-xl"}
                 placeholder={"Apartment"}
                 textlabel={"Apartment"}
@@ -220,12 +276,13 @@ function BillingInformation() {
       <div className="flex items-center flex-wrap md:flex-nowrap gap-8 ">
         <div className="w-full ">
           <Controller
-            name={"buidling"}
+            name={"building"}
             control={control}
             defaultValue={""}
             rules={{ required: "This field is required" }}
             render={({ field }) => (
               <CustomizedTextField
+                disabled={paymentResponse.isLoading}
                 textLabelClass={"font-semibold text-xl"}
                 placeholder={"Building"}
                 textlabel={"Building"}
@@ -247,6 +304,7 @@ function BillingInformation() {
             rules={{ required: "This field is required" }}
             render={({ field }) => (
               <CustomizedTextField
+                disabled={paymentResponse.isLoading}
                 textLabelClass={"font-semibold text-xl"}
                 placeholder={"Street"}
                 textlabel={"Street"}
@@ -268,6 +326,7 @@ function BillingInformation() {
             rules={{ required: "This field is required" }}
             render={({ field }) => (
               <CustomizedTextField
+                disabled={paymentResponse.isLoading}
                 textLabelClass={"font-semibold text-xl"}
                 placeholder={"Floor"}
                 textlabel={"Floor"}
@@ -284,6 +343,7 @@ function BillingInformation() {
       </div>
 
       <Button
+        disabled={paymentResponse.isLoading}
         sx={{
           padding: "0.85rem",
           fontSize: "1.2rem",
@@ -296,7 +356,7 @@ function BillingInformation() {
         variant="contained"
         size="large"
       >
-        Place Order
+        {paymentResponse.isLoading ? <MiniSpinner /> : "Place Order"}
       </Button>
     </form>
   );

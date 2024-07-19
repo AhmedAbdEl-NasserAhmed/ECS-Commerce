@@ -65,10 +65,26 @@ function ProductsList({ data, setProductName }) {
                       alt="iamge"
                     />
                   </div>
-                  <h2 className="font-semibold">{product.name}</h2>
+                  <div className="flex flex-col gap-2">
+                    <h2 className="font-semibold">{product.name}</h2>
+                    <h2 className="font-semibold">{product.size.value}</h2>
+                  </div>
                 </div>
-                <div>
-                  <h2 className="font-semibold">{product.price} EGP</h2>
+                <div className="flex flex-col gap-2">
+                  <div>
+                    <h2 className="font-semibold">{product.price} EGP</h2>
+                  </div>
+                  <ul className="flex items-center justify-center gap-2">
+                    {product.colors.map((color) => {
+                      return (
+                        <li
+                          className="w-4 h-4 rounded-full block"
+                          key={product["_id"]}
+                          style={{ backgroundColor: color.value }}
+                        ></li>
+                      );
+                    })}
+                  </ul>
                 </div>
               </div>
             </Link>

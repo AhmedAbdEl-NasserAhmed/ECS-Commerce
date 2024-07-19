@@ -127,6 +127,8 @@ function EditProduct() {
 
     const serverData = getAddProductServerData(myData);
 
+    console.log("serverData", serverData);
+
     const formDataImagesLength = Object.values(data.images)[0];
 
     if (!formDataImagesLength) {

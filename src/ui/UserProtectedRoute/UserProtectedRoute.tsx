@@ -17,7 +17,7 @@ function UserProtectedRoute({ children }) {
     const forbiddenRoutes = ["admin"];
     if (
       forbiddenRoutes.includes(pathName) &&
-      user.role === "user" &&
+      user?.role === "user" &&
       (isAuthenticated || !isAuthenticated)
     ) {
       router.back();

@@ -1,7 +1,20 @@
 import Image from "next/image";
 import ProductListOptions from "../ProductsList/ProductListOptions";
+import { useGetCategoryByIdQuery } from "@/lib/features/api/categoriesApi";
+import Link from "next/link";
+import { useParams } from "next/navigation";
 
 const ProductCard = ({ product }) => {
+  // console.log("product", product);
+  const { data: category, isFetching } = useGetCategoryByIdQuery(
+    product?.category,
+    { skip: !product?.category }
+  );
+
+  const { locale } = useParams();
+
+  console.log("category", category);
+
   return (
     <div
       className=""
@@ -37,7 +50,7 @@ const ProductCard = ({ product }) => {
 
         <ProductListOptions product={product} />
         <div className="absolute font-bold top-[1.5rem] left-[1.5rem] text-white z-20 bg-[green] py-[.3rem] px-[.8rem] text-base rounded">
-          {product?.category?.name}
+          {category?.data?.name}
         </div>
         <div
           className="absolute z-20 transition-all duration-500 -bottom-[5rem] group-hover:bottom-[2rem] bg-white w-[75%] text-center p-[1.2rem] text-[1.5rem] font-medium rounded hover:bg-[#ed0534] hover:text-white"
@@ -46,7 +59,9 @@ const ProductCard = ({ product }) => {
             transform: "translateX(-50%)",
           }}
         >
-          Add to cart
+          <Link href={`/${locale}/user/product/${product?.slug}`}>
+            Shop Now
+          </Link>
         </div>
       </div>
       <div className="bg-white flex flex-col items-center justify-center h-[9rem] gap-[1rem]">

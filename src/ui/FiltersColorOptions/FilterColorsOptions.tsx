@@ -30,13 +30,12 @@ function FilterColorsOptions() {
       const newUrl = `${pathName}?${params.toString()}`;
 
       replace(newUrl);
+    } else {
+      setSelectedColors([]);
+      const params = new URLSearchParams(searchParams);
+      params.set("colors", "");
+      replace(`${pathName}?${params.toString()}`);
     }
-    // } else {
-    //   setSelectedColors([]);
-    //   const params = new URLSearchParams(searchParams);
-    //   params.set("colors", "");
-    //   replace(`${pathName}?${params.toString()}`);
-    // }
   };
 
   return (

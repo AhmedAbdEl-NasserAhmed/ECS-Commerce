@@ -65,7 +65,9 @@
     "All Reviews": "Reviews",
     "View All": "View All",
     "Edit Product": "Edit Product",
-    "quantity": "quantity"
+    "Edit Order": "ِEdit Order",
+    "quantity": "quantity",
+    "Please change the status!": "Please change the status!"
   },
   "Login": {
     "greeting": "Welcome to ORCA, our e-commerce website, Admin! We are thrilled to have you onboard. Here, you can manage products, track orders, and oversee the entire store efficiently. Thank you for being a crucial part of our team.",

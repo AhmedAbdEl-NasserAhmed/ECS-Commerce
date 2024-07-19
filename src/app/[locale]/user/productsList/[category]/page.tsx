@@ -64,15 +64,7 @@ function ProductsByCategory() {
     }
   }, [data?.data, page]);
 
-  console.log("minPrice", minPrice);
-  console.log("maxPrice", maxPrice);
-
-  console.log("Data", data?.data);
-
-  console.log("PRODUCTS", products);
-
   useEffect(() => {
-    console.log("hello");
     setPage(1);
     setProducts([]);
   }, [minPrice, maxPrice, size, colors, subCategory]);

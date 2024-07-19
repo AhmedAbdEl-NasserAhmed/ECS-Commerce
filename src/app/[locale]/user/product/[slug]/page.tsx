@@ -36,8 +36,6 @@ function ProductDetails() {
 
   const user = useAppSelector((state) => state.usersSlice.user);
 
-  console.log(user);
-
   const [productDetailsState, dispatch] = useReducer(reducerFn, initialState);
 
   function action(type, payload = null) {

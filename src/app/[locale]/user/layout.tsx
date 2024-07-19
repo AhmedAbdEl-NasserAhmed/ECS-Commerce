@@ -3,6 +3,7 @@
 import { useAppSelector } from "@/lib/hooks";
 import { UserType } from "@/types/enums";
 import BreadCrumpet from "@/ui/BreadCrumpet/BreadCrumpet";
+import CustomErrorBoundary from "@/ui/ErrorBoundary/ErrorBoundary";
 import FloatingWhatsAppComponent from "@/ui/FloatingWhatsAppIcon/FloatingWhatsAppIcon";
 import Footer from "@/ui/Footer/Footer";
 import Modal from "@/ui/Modal/Modal";
@@ -26,14 +27,16 @@ function Layout({ children }) {
   }, [cart, expires]);
 
   return (
-    <UserProtectedRoute>
-      {!user?.isActive && user && <NotActiveMessage />}
-      <NavBar />
-      <BreadCrumpet />
-      {children}
-      {user?.role !== UserType.ADMIN && <FloatingWhatsAppComponent />}
-      <Footer />
-    </UserProtectedRoute>
+    <CustomErrorBoundary>
+      <UserProtectedRoute>
+        {!user?.isActive && user && <NotActiveMessage />}
+        <NavBar />
+        <BreadCrumpet />
+        {children}
+        {user?.role !== UserType.ADMIN && <FloatingWhatsAppComponent />}
+        <Footer />
+      </UserProtectedRoute>
+    </CustomErrorBoundary>
   );
 }
 

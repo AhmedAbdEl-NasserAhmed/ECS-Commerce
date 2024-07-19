@@ -127,8 +127,6 @@ function EditProduct() {
 
     const serverData = getAddProductServerData(myData);
 
-    console.log("serverData", serverData);
-
     const formDataImagesLength = Object.values(data.images)[0];
 
     if (!formDataImagesLength) {
@@ -191,8 +189,6 @@ function EditProduct() {
     if (!formData[`colors-quantity`]) return 0;
     return getSumFrom(formData["colors"], formData["colors-quantity"]);
   };
-
-  console.log("formData", formData);
 
   return (
     <form

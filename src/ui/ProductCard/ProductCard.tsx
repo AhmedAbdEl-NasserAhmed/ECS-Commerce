@@ -5,15 +5,12 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 
 const ProductCard = ({ product }) => {
-  // console.log("product", product);
   const { data: category, isFetching } = useGetCategoryByIdQuery(
     product?.category,
     { skip: !product?.category }
   );
 
   const { locale } = useParams();
-
-  console.log("category", category);
 
   return (
     <div

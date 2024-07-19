@@ -1,5 +1,4 @@
 import { AdminProductProps } from "@/types/types";
-import { useRouter } from "next/router";
 
 export const getAddProductServerData = (data: AdminProductProps) => {
   const formData = new FormData();
@@ -16,11 +15,9 @@ export const getAddProductServerData = (data: AdminProductProps) => {
     if (excludeKeys.includes(key)) continue;
 
     if (typeof data[key] !== "object") {
-      console.log("1.");
       formData.append(key, data[key]);
     }
     if (typeof data[key] === "object") {
-      console.log("2.");
       formData.append(key, JSON.stringify(data[key]));
     }
   }
@@ -81,6 +78,11 @@ export function getUniqueValues(arr, value) {
 }
 
 export function getCookie(name) {
+  if (typeof document === "undefined") {
+    // document is not available (e.g., during server-side rendering)
+    return null;
+  }
+
   const value = `; ${document.cookie}`;
   const parts = value.split(`; ${name}=`);
   if (parts.length === 2) return parts.pop().split(";").shift();

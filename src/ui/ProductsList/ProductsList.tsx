@@ -1,6 +1,5 @@
 "use client";
 
-import { useGetAllProductsQuery } from "@/lib/features/api/productsApi";
 import Spinner from "../Spinner/Spinner";
 
 import { getUniqueValues } from "@/lib/helpers";

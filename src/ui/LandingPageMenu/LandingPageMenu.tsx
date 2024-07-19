@@ -26,7 +26,7 @@ function LandingPageMenu() {
 
   const user = useAppSelector((state) => state.usersSlice.user);
 
-  const userRoleAdmin = user.role === UserType.ADMIN;
+  const userRoleAdmin = user?.role === UserType.ADMIN;
 
   return (
     <div className="md:hidden">

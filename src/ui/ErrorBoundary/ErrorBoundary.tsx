@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React, { ReactNode, ErrorInfo, ReactElement } from "react";
 
 interface ErrorBoundaryProps {
@@ -32,15 +33,14 @@ class CustomErrorBoundary extends React.Component<
       if (this.props.errorComponent) {
         return this.props.errorComponent;
       }
+      console.log(this.state);
+
       return (
-        <div>
+        <div className="text-4xl h-screen flex justify-center items-center flex-col bg-gray-100 gap-12">
           <h2>Oops, there is an error!</h2>
-          <button
-            type="button"
-            onClick={() => this.setState({ hasError: false })}
-          >
+          <Link href="/" className="bg-black text-white p-4 rounded-md">
             Try again?
-          </button>
+          </Link>
         </div>
       );
     }

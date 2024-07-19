@@ -1,28 +1,23 @@
 "use client";
 
+import useDebounceHook from "@/hooks/useDebounceHook";
+import { useGetProductByNameQuery } from "@/lib/features/api/productsApi";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
+import ProductsList from "./ProductsList";
 
 function SearchBar() {
-  const router = useRouter();
+  const [productName, setProductName] = useState<string>("");
 
-  function handleSearch(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+  const debounceValue = useDebounceHook(productName);
 
-    const formData = new FormData(event.currentTarget);
-    const name = formData.get("name") as string;
-
-    if (name) {
-      router.push(`/list?name=${name}`);
-    }
-  }
+  const { data, isLoading } = useGetProductByNameQuery(debounceValue);
 
   return (
-    <form
-      className="flex text-xl items-center justify-between gap-4 bg-gray-100 p-4 rounded-md grow"
-      onSubmit={handleSearch}
-    >
+    <div className="relative flex text-xl items-center justify-between gap-4 bg-gray-100 p-4 rounded-md grow">
       <input
+        value={productName}
+        onChange={(e) => setProductName(e.target.value)}
         name="name"
         className="grow bg-transparent outline-none"
         placeholder="Search"
@@ -30,7 +25,8 @@ function SearchBar() {
       <button className="cursor-pointer">
         <Image src="/search.png" width={16} height={16} alt="Search-logo" />
       </button>
-    </form>
+      <ProductsList setProductName={setProductName} data={data} />
+    </div>
   );
 }
 

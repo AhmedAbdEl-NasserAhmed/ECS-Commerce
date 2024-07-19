@@ -7,11 +7,5 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <CustomErrorBoundary>
-      <html>
-        <body>{children}</body>
-      </html>
-    </CustomErrorBoundary>
-  );
+  return children;
 }

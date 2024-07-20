@@ -37,8 +37,6 @@ function BillingInformation() {
 
   const cart = useAppSelector((state) => state.cartSlice.cartItems);
 
-  console.log("CART", cart);
-
   const countries = getNames().map((country) => ({
     label: country,
     value: country,

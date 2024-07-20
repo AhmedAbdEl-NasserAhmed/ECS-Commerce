@@ -1,23 +1,42 @@
 "use client";
 
 import { emailRegex } from "@/constants/regx";
+import { useSendFeedBackMutation } from "@/lib/features/api/contactUsApi";
 import { useAppSelector } from "@/lib/hooks";
 import { UserType } from "@/types/enums";
+import MiniSpinner from "@/ui/MiniSpinner/MiniSpinner";
 import CustomizedTextField from "@/ui/TextField/TextField";
 import { Button } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 
 function Contact() {
   const {
     control,
-    watch,
+    reset,
     handleSubmit,
     formState: { errors },
   } = useForm({ mode: "onChange" });
 
   const user = useAppSelector((state) => state.usersSlice.user);
 
-  function onSubmit() {}
+  const [sendFeedBackFn, feedBackResponse] = useSendFeedBackMutation();
+
+  function onSubmit(data) {
+    sendFeedBackFn({
+      name: data.name,
+      email: data.email,
+      message: data.message,
+    })
+      .unwrap()
+      .then(() => {
+        toast.success("We are always here for you");
+        reset();
+      })
+      .catch(() => {
+        toast.error("Something Went Wrong");
+      });
+  }
 
   return (
     <form
@@ -41,7 +60,9 @@ function Contact() {
           }}
           render={({ field }) => (
             <CustomizedTextField
-              disabled={user?.role === UserType.ADMIN}
+              disabled={
+                user?.role === UserType.ADMIN || feedBackResponse.isLoading
+              }
               textLabelClass={"font-semibold text-xl"}
               placeholder={"First Name"}
               textlabel={"First Name"}
@@ -67,7 +88,9 @@ function Contact() {
           }}
           render={({ field }) => (
             <CustomizedTextField
-              disabled={user?.role === UserType.ADMIN}
+              disabled={
+                user?.role === UserType.ADMIN || feedBackResponse.isLoading
+              }
               textLabelClass={"font-semibold text-xl"}
               placeholder={"Email Address"}
               textlabel={"Email Address"}
@@ -87,7 +110,9 @@ function Contact() {
           defaultValue=""
           render={({ field }) => (
             <CustomizedTextField
-              disabled={user?.role === UserType.ADMIN}
+              disabled={
+                user?.role === UserType.ADMIN || feedBackResponse.isLoading
+              }
               textLabelClass={"font-semibold text-xl"}
               placeholder={"Message"}
               textlabel={"Message"}
@@ -110,7 +135,7 @@ function Contact() {
           )}
         />
         <Button
-          disabled={user?.role === UserType.ADMIN}
+          disabled={user?.role === UserType.ADMIN || feedBackResponse.isLoading}
           sx={{
             padding: "0.85rem",
             fontSize: "1.2rem",
@@ -123,7 +148,7 @@ function Contact() {
           variant="contained"
           size="large"
         >
-          Submit
+          {feedBackResponse.isLoading ? <MiniSpinner /> : "Submit"}
         </Button>
       </div>
     </form>

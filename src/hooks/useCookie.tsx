@@ -8,8 +8,6 @@ function useCookie(name, value) {
   useEffect(() => {
     const isCookiesExisted = Cookies.get(name);
 
-    console.log(!isCookiesExisted);
-
     if (!isCookiesExisted) {
       localStorage.removeItem("cartItemsExpiration");
     }

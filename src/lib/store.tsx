@@ -7,6 +7,7 @@ import productsApi from "./features/api/productsApi";
 import cartSlice from "./features/cartSlice/cartSlice";
 import ordersApi from "./features/api/ordersApi";
 import paymentApi from "./features/api/paymentApi";
+import contactUsApi from "./features/api/contactUsApi";
 
 export const makeStore = () => {
   return configureStore({
@@ -19,6 +20,7 @@ export const makeStore = () => {
       [productsApi.reducerPath]: productsApi.reducer,
       [ordersApi.reducerPath]: ordersApi.reducer,
       [paymentApi.reducerPath]: paymentApi.reducer,
+      [contactUsApi.reducerPath]: contactUsApi.reducer,
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({ serializableCheck: false }).concat(
@@ -27,7 +29,8 @@ export const makeStore = () => {
         subCategoriesApi.middleware,
         productsApi.middleware,
         ordersApi.middleware,
-        paymentApi.middleware
+        paymentApi.middleware,
+        contactUsApi.middleware
       ),
   });
 };

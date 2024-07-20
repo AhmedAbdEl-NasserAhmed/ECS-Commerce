@@ -3,14 +3,15 @@ import ReviewItem, { IReview } from "./ReviewItem";
 
 interface ReviewsProps {
   reviews: IReview[];
+  productId: string;
 }
 
-const Reviews = ({ reviews }: ReviewsProps) => {
+const Reviews = ({ reviews, productId }: ReviewsProps) => {
   return (
     <div>
-      <ReviewForm />
+      <ReviewForm productId={productId} />
       <div className="max-h-[500px] overflow-y-auto">
-        {reviews.map((review) => {
+        {reviews?.map((review) => {
           return <ReviewItem key={review["_id"]} review={review} />;
         })}
       </div>

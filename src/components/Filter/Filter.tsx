@@ -33,7 +33,7 @@ const Filter = () => {
   };
 
   return (
-    <div className="mt-12 mb-12 flex justify-between gap-10 md:items-center lg:gap-0 flex-col md:flex-row  ">
+    <div className="p-12 flex justify-between gap-10 md:items-center lg:gap-0 flex-col md:flex-row shadow-md ">
       <div className="flex  md:items-center flex-col md:flex-row gap-8 md:gap-6 ">
         <FilterColorsOptions />
         <FilterSizesOptions handleFilterChange={handleFilterChange} />

@@ -2,7 +2,7 @@
 
 import { useGetSingleProductBySlugQuery } from "@/lib/features/api/productsApi";
 import Spinner from "@/ui/Spinner/Spinner";
-import { Box } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import { ChangeEvent, useEffect, useReducer, useState } from "react";
@@ -24,11 +24,28 @@ import BaseContainer from "@/ui/Container/BaseContainer";
 import ReactStars from "react-stars";
 import { UserType } from "@/types/enums";
 import { Layout } from "@/config/layout";
+import { useGetAllReviewsQuery } from "@/lib/features/api/reviewsApi";
+import Menus from "@/ui/Menus/Menus";
+import MiniSpinner from "@/ui/MiniSpinner/MiniSpinner";
+import ReviewsSorting from "@/components/UserReviews/ReviewsSorting";
 
 function ProductDetails() {
   const params = useParams();
 
   const { data, isLoading } = useGetSingleProductBySlugQuery(params.slug);
+
+  const [page, setPage] = useState<number>(1);
+
+  const [sort, setSort] = useState<string>("");
+
+  function handleSortChange(e: ChangeEvent<HTMLSelectElement>) {
+    setSort(e.target.value);
+  }
+
+  const { data: reviews, isFetching: loadingReview } = useGetAllReviewsQuery({
+    page,
+    sort,
+  });
 
   const dispatchRedux = useAppDispatch();
 
@@ -149,33 +166,9 @@ function ProductDetails() {
     });
   }
 
-  const dummyReviews = [
-    {
-      _id: "123",
-      username: "Khaled",
-      stars: 3,
-      review:
-        "Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Cras ultricies ligula sed magna dictum porta. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Vivamus magna justo.",
-    },
-    {
-      _id: "1234",
-      username: "Ahmed",
-      stars: 2,
-      review:
-        "Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Cras ultricies ligula sed magna dictum porta. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Vivamus magna justo.",
-    },
-    {
-      _id: "32",
-      username: "Mostafa",
-      stars: 5,
-      review:
-        "Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Cras ultricies ligula sed magna dictum porta. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Vivamus magna justo.",
-    },
-  ];
-
-  if (isLoading || mainCategoryLoading) return <Spinner />;
-
   const isAdmin = user?.role === UserType.ADMIN;
+
+  if (isLoading || mainCategoryLoading || loadingReview) return <Spinner />;
 
   return (
     <BaseContainer>
@@ -359,12 +352,48 @@ function ProductDetails() {
         </Box>
       </Box>
       {!isAdmin && (
-        <BaseTabs
-          orientation="horizontal"
-          tabs={[
-            { label: "Reviews", content: <Reviews reviews={dummyReviews} /> },
-          ]}
-        />
+        <Menus>
+          <div className="relative ">
+            <BaseTabs
+              orientation="horizontal"
+              tabs={[
+                {
+                  label: "Reviews",
+                  content: (
+                    <Reviews
+                      productId={
+                        productDetailsState?.selectedProduct?.productId
+                      }
+                      reviews={reviews?.data}
+                    />
+                  ),
+                },
+              ]}
+            />
+            <ReviewsSorting handleSortChange={handleSortChange} />
+          </div>
+        </Menus>
+      )}
+      {reviews?.numPages > page && (
+        <Button
+          disabled={loadingReview}
+          onClick={() => setPage((page) => page + 1)}
+          sx={{
+            marginBottom: "2rem",
+            width: "100%",
+            padding: "0.85rem",
+            fontSize: "1.2rem",
+            backgroundColor: "#ed0534",
+            "&:hover": {
+              backgroundColor: "#161616",
+            },
+          }}
+          type="button"
+          variant="contained"
+          size="large"
+        >
+          {loadingReview ? <MiniSpinner /> : "Show More"}
+        </Button>
       )}
     </BaseContainer>
   );

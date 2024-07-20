@@ -1,4 +1,6 @@
 import ProductTableMenuOptions from "@/components/AdminProduct/productTableMenuOptions";
+import { OrderStatusEnum } from "@/types/enums";
+import OrderStatus from "@/ui/OrderStatus/OrderStatus";
 import Image from "next/image";
 
 export const useOrderHeaders = () => {
@@ -8,19 +10,6 @@ export const useOrderHeaders = () => {
       header: () => "Transaction Id",
       accessorKey: "transaction_id",
     },
-    // {
-    //   id: "price",
-    //   header: () => "Product Price",
-    //   accessorKey: "price",
-    //   size: 100,
-    // },
-
-    // {
-    //   id: "price",
-    //   header: () => "Product Price",
-    //   accessorKey: "price",
-    // },
-    // {
 
     {
       id: "items",
@@ -30,7 +19,10 @@ export const useOrderHeaders = () => {
           row: { original },
         },
       }) => (
-        <div style={{ gap: "10px" }} className="flex justify-center">
+        <div
+          style={{ gap: "10px" }}
+          className="flex flex-col gap-4 justify-center"
+        >
           {original.items.map((product) => (
             <div key={product["_id"]} className="flex flex-col gap-4">
               <h2>Product : {product.product.name}</h2>
@@ -49,10 +41,13 @@ export const useOrderHeaders = () => {
           row: { original },
         },
       }) => (
-        <div style={{ gap: "10px" }} className="flex justify-center">
+        <div
+          style={{ gap: "10px" }}
+          className="flex items-center flex-col gap-4 "
+        >
           {original.items.map((product) => (
-            <div key={product["_id"]} className="flex flex-col gap-4">
-              <h2>Size: {product.product.size.value}</h2>
+            <div key={product["_id"]} className="flex ">
+              <h2>Size {product.product.size.value}</h2>
             </div>
           ))}
         </div>
@@ -117,8 +112,14 @@ export const useOrderHeaders = () => {
 
     {
       id: "orderStatus",
-      header: () => "Order Status",
-      accessorKey: "orderStatus",
+      header: () => <div>{"order status"}</div>,
+      cell: ({
+        cell: {
+          row: { original },
+        },
+      }) => {
+        return <OrderStatus status={OrderStatusEnum[original.orderStatus]} />;
+      },
     },
   ];
 };

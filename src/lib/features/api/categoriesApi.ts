@@ -29,6 +29,7 @@ const categoriesApi = createApi({
       }),
       providesTags: ["CATEGORIES"],
     }),
+
     getCategory: builder.query({
       query: (letter) => ({
         url: `categories/filtered?letters=${letter}`,
@@ -36,13 +37,15 @@ const categoriesApi = createApi({
       }),
       providesTags: ["CATEGORIES"],
     }),
+
     getCategoryById: builder.query({
       query: (id) => ({
-        url: `categories/${id}`,
+        url: `categories/id/${id}`,
         method: "GET",
       }),
       providesTags: ["CATEGORIES"],
     }),
+
     editCategory: builder.mutation({
       query: ({ id, data }) => ({
         url: `categories/${id}`,

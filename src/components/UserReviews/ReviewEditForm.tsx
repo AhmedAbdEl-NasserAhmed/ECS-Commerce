@@ -3,16 +3,18 @@ import CustomizedTextField from "@/ui/TextField/TextField";
 import { useTranslations } from "next-intl";
 import { Controller, useForm } from "react-hook-form";
 import ReactStars from "react-stars";
-import "./ReviewForm.css";
+import "./ReviewEditForm.scss";
 import { Button } from "@mui/material";
 import { useAppSelector } from "@/lib/hooks";
 import { UserType } from "@/types/enums";
-import { useSendReviewMutation } from "@/lib/features/api/reviewsApi";
+import {
+  useEditReviewMutation,
+  useSendReviewMutation,
+} from "@/lib/features/api/reviewsApi";
 import toast from "react-hot-toast";
 import MiniSpinner from "@/ui/MiniSpinner/MiniSpinner";
-import Spinner from "@/ui/Spinner/Spinner";
 
-const ReviewForm = (props) => {
+const ReviewEditForm = (props) => {
   const t = useTranslations("User");
 
   const user = useAppSelector((state) => state.usersSlice.user);
@@ -24,45 +26,46 @@ const ReviewForm = (props) => {
   const {
     handleSubmit,
     control,
+    watch,
     reset,
     formState: { errors },
   } = useForm<UserReviewForm>({ mode: "onChange" });
 
-  const [sendReview, reviewRes] = useSendReviewMutation();
+  const [editReview, editReviewRes] = useEditReviewMutation();
 
   const onSubmitHandler = (data) => {
     if (data.stars < 1) {
       toast.error("Please Review must be more than 1");
       return;
     }
-
-    sendReview({
-      title: data.review,
-      ratings: data.stars,
-      user: user["_id"],
-      product: props.productId,
+    editReview({
+      data: {
+        title: data.review,
+        ratings: data.stars,
+      },
+      id: props.review["_id"],
     })
       .unwrap()
       .then(() => {
-        toast.success("your review has been added");
+        toast.success("your review has been Edited");
         reset();
+        props.setShowModal();
       })
       .catch(() => {
         toast.error("Something went wrong");
+        props.setShowModal();
       });
   };
-
-  if (reviewRes.isLoading) return;
 
   return (
     <form
       onSubmit={handleSubmit(onSubmitHandler)}
-      className=" flex flex-col gap-8  py-[1.2rem] mb-10 bg-[#FDFDFD] "
+      className=" flex flex-col gap-8 p-12 w-[80vw] md:w-[50vw] rounded-md  bg-[#FDFDFD] "
     >
       <div className="relative">
         <Controller
           name={"review"}
-          defaultValue={""}
+          defaultValue={props.review.title}
           control={control}
           rules={{
             required: "This field is required",
@@ -72,7 +75,7 @@ const ReviewForm = (props) => {
               disabled={
                 user?.role === UserType.ADMIN ||
                 !isAuthenticated ||
-                reviewRes.isLoading
+                editReviewRes.isLoading
               }
               textLabelClass={"font-semibold text-xl"}
               placeholder={t("Review")}
@@ -97,14 +100,14 @@ const ReviewForm = (props) => {
         />
         <Controller
           name={"stars"}
-          defaultValue={""}
+          defaultValue={props.review.ratings}
           control={control}
           render={({ field }) => (
             <ReactStars
               disabled={
                 user?.role === UserType.ADMIN ||
                 !isAuthenticated ||
-                reviewRes.isLoading
+                editReviewRes.isLoading
               }
               className="review-form-stars"
               count={5}
@@ -120,7 +123,7 @@ const ReviewForm = (props) => {
           disabled={
             user?.role === UserType.ADMIN ||
             !isAuthenticated ||
-            reviewRes.isLoading
+            editReviewRes.isLoading
           }
           sx={{
             paddingInline: "1.6rem",
@@ -138,10 +141,12 @@ const ReviewForm = (props) => {
           variant="contained"
           size="large"
         >
-          {user?.role === UserType.ADMIN || reviewRes.isLoading ? (
+          {user?.role === UserType.ADMIN ||
+          !isAuthenticated ||
+          editReviewRes.isLoading ? (
             <MiniSpinner />
           ) : (
-            "Add Review"
+            "Edit Review"
           )}
         </Button>
       </div>
@@ -149,4 +154,4 @@ const ReviewForm = (props) => {
   );
 };
 
-export default ReviewForm;
+export default ReviewEditForm;

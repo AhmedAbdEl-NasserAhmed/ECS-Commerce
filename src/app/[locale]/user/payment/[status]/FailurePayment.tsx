@@ -1,11 +1,27 @@
 "use client";
 
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { FaExclamationTriangle } from "react-icons/fa";
 
 function FailurePayment() {
   const { locale } = useParams();
+
+  const router = useRouter();
+
+  const [redirectNumber, setRedirectNumber] = useState<number>(5);
+
+  useEffect(() => {
+    for (let i = 0; i < redirectNumber; i++) {
+      setTimeout(() => {
+        setRedirectNumber(i);
+      }, 1000);
+    }
+    if (redirectNumber === 0) {
+      router.replace(`/${locale}`);
+    }
+  }, [redirectNumber, locale, router]);
 
   return (
     <div className=" flex flex-col items-center justify-center gap-6 mt-12 mb-12 p-8 h-56 bg-white shadow-[0px_0px_7px_5px_#0000000a] max-w-[80rem] m-auto ">

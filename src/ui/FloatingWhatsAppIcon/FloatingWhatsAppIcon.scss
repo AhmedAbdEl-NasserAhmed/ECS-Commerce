@@ -1,22 +1,39 @@
-._2qp0Z {
+.icon {
   position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   bottom: 50px;
   right: 50px;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
   z-index: 99999;
   background-color: #25d366;
   color: white;
   font-size: 2.7rem;
   transition: 0.5s all;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.5), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+
+  &__effect {
+    position: absolute;
+    background-color: white;
+    width: 100%;
+    height: 100%;
+    transform: scale(0);
+    transition: 0.5s all;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    z-index: -1;
+  }
 
   &:hover {
-    background-color: #25d366;
+    color: #25d366;
+    transition: 0.2s all;
   }
-}
 
-._1yCVn {
-  z-index: 999999999;
-}
-
-._1qse9 {
-  z-index: 999999999;
+  &:hover &__effect {
+    transform: scale(1);
+  }
 }

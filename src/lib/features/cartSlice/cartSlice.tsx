@@ -1,7 +1,7 @@
-import { getCookie } from "@/lib/helpers";
+import Cookies from "js-cookie";
 import { createSlice } from "@reduxjs/toolkit";
 
-const cartItemCookies = getCookie("cartItems");
+let cartItemCookies = Cookies.get("cartItems");
 
 interface CartSlice {
   cartItems: any;
@@ -9,7 +9,7 @@ interface CartSlice {
 }
 
 const initialState: CartSlice = {
-  cartItems: JSON.parse(cartItemCookies) || [],
+  cartItems: cartItemCookies ? JSON.parse(cartItemCookies) : [],
   makePayment: false,
 };
 

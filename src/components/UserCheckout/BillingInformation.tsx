@@ -18,6 +18,7 @@ import {
 } from "@/lib/features/cartSlice/cartSlice";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 function BillingInformation() {
   const {
@@ -45,6 +46,11 @@ function BillingInformation() {
   }));
 
   function onSubmit(data) {
+    if (!cart.length) {
+      toast.error("Please add items to you cart");
+      return;
+    }
+
     dispatch(makePayment(true));
     paymentFn({
       billing_data: {
@@ -65,12 +71,7 @@ function BillingInformation() {
       .then((res) => {
         dispatch(makePayment(false));
         dispatch(emptyCartItems());
-        // window.open(res.url, "_blank", "noopener,noreferrer");
-        window.open(
-          "  http://localhost:3000/en/user/payment/status=success",
-          "_blank",
-          "noopener,noreferrer"
-        );
+        window.open(res.url, "_blank", "noopener,noreferrer");
         router.replace(`/${locale}`);
       })
       .catch(() => {

@@ -6,7 +6,12 @@ const withNextIntl = createNextIntlPlugin();
 const nextConfig = {
   reactStrictMode: false,
   images: {
-    domains: ["res.cloudinary.com", "images.pexels.com", "images.unsplash.com"],
+    domains: [
+      "res.cloudinary.com",
+      "images.pexels.com",
+      "images.unsplash.com",
+      "plus.unsplash.com",
+    ],
   },
 };
 

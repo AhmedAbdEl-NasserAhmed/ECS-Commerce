@@ -79,7 +79,6 @@ export function getUniqueValues(arr, value) {
 
 export function getCookie(name) {
   if (typeof document === "undefined") {
-    // document is not available (e.g., during server-side rendering)
     return null;
   }
 

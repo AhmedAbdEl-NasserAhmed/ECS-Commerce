@@ -1,17 +1,13 @@
-// components/FloatingWhatsApp.tsx
-import React from "react";
-import { WhatsAppWidget } from "react-whatsapp-widget";
-import "react-whatsapp-widget/dist/index.css";
+import { FaWhatsapp } from "react-icons/fa";
+
 import "./FloatingWhatsAppIcon.scss";
 
 const FloatingWhatsAppComponent: React.FC = () => {
   return (
-    <WhatsAppWidget
-      phoneNumber="+0201019658353" // Replace with your WhatsApp number
-      companyName="ORCA"
-      message="Hello! How can we help you?"
-      sendButton="Send"
-    />
+    <a className="icon" href="https://wa.me/+201019658353" target="_blank">
+      <FaWhatsapp />
+      <span className="icon__effect"></span>
+    </a>
   );
 };
 

@@ -8,6 +8,9 @@ import { getMessages } from "next-intl/server";
 import NavBar from "@/ui/NavBar/NavBar";
 import { ErrorBoundary } from "next/dist/client/components/error-boundary";
 import CustomErrorBoundary from "@/ui/ErrorBoundary/ErrorBoundary";
+import { useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { setCartItems } from "@/lib/features/cartSlice/cartSlice";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -20,13 +23,6 @@ export const metadata: Metadata = {
   title: "Orca  ",
   description: "E commerce Web site",
 };
-
-const CustomErrorComponent = () => (
-  <div>
-    <h2>Something went wrong.</h2>
-    <p>Please try again later.</p>
-  </div>
-);
 
 export default async function LocaleLayout({
   children,

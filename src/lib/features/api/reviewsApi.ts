@@ -36,6 +36,14 @@ const reviewsApi = createApi({
       providesTags: ["REVIEWS"],
     }),
 
+    getProductReviews: builder.query({
+      query: ({ id }) => ({
+        url: `reviews/${id}/product`,
+        method: "GET",
+      }),
+      providesTags: ["REVIEWS"],
+    }),
+
     editReview: builder.mutation({
       query: ({ data, id }) => ({
         url: `reviews/${id}`,
@@ -52,6 +60,7 @@ export const {
   useDeleteReviewMutation,
   useGetAllReviewsQuery,
   useEditReviewMutation,
+  useGetProductReviewsQuery,
 } = reviewsApi;
 
 export default reviewsApi;

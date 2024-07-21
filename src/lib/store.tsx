@@ -9,6 +9,7 @@ import ordersApi from "./features/api/ordersApi";
 import paymentApi from "./features/api/paymentApi";
 import contactUsApi from "./features/api/contactUsApi";
 import reviewsApi from "./features/api/reviewsApi";
+import cartItemsApi from "./features/api/cartItemsApi";
 
 export const makeStore = () => {
   return configureStore({
@@ -23,6 +24,7 @@ export const makeStore = () => {
       [paymentApi.reducerPath]: paymentApi.reducer,
       [contactUsApi.reducerPath]: contactUsApi.reducer,
       [reviewsApi.reducerPath]: reviewsApi.reducer,
+      [cartItemsApi.reducerPath]: cartItemsApi.reducer,
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({ serializableCheck: false }).concat(
@@ -33,7 +35,8 @@ export const makeStore = () => {
         ordersApi.middleware,
         paymentApi.middleware,
         contactUsApi.middleware,
-        reviewsApi.middleware
+        reviewsApi.middleware,
+        cartItemsApi.middleware
       ),
   });
 };

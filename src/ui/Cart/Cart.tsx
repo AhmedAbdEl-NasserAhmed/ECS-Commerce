@@ -56,7 +56,7 @@ const Cart = ({ setIsCartOpen }) => {
     dispatch(decrementProductItem(product.cartItemId));
   }
 
-  const totalCartItems = cart.reduce((acc, cur) => {
+  const totalCartItems = cart?.reduce((acc, cur) => {
     return acc + cur.quantity * cur.price;
   }, 0);
 
@@ -65,7 +65,7 @@ const Cart = ({ setIsCartOpen }) => {
       ref={ref}
       className="w-max absolute p-4 rounded-lg shadow-[0_3px_10px_rgb(0,0,0,0.2)] bg-white top-12 right-0 flex flex-col gap-6 z-20"
     >
-      {cart.length === 0 ? (
+      {cart?.length === 0 ? (
         <div className="">Cart is Empty</div>
       ) : (
         <>

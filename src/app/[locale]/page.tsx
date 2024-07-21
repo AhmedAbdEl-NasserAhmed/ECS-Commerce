@@ -5,7 +5,7 @@ import Footer from "@/ui/Footer/Footer";
 import Slider from "@/ui/Slider/Slider";
 import { useGetAllProductsQuery } from "@/lib/features/api/productsApi";
 import TitledProductList from "@/components/TitledProductList/TitledProductList";
-import { useAppSelector } from "@/lib/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import NotActiveMessage from "@/ui/NotActiveMessage/NotActiveMessage";
 import BaseContainer from "@/ui/Container/BaseContainer";
 import HomePageCategory from "@/ui/HomePageCategory/HomePageCategory";
@@ -13,6 +13,8 @@ import FloatingWhatsAppComponent from "@/ui/FloatingWhatsAppIcon/FloatingWhatsAp
 import { UserType } from "@/types/enums";
 import UserProtectedRoute from "@/ui/UserProtectedRoute/UserProtectedRoute";
 import useCookie from "@/hooks/useCookie";
+import { useEffect } from "react";
+import { setCartItems } from "@/lib/features/cartSlice/cartSlice";
 
 function HomePage() {
   const { data, isLoading } = useGetAllProductsQuery("products");
@@ -21,7 +23,13 @@ function HomePage() {
 
   const cart = useAppSelector((state) => state.cartSlice.cartItems);
 
-  useCookie("cartItems", cart);
+  const dispatch = useAppDispatch();
+
+  // useEffect(() => {
+  //   dispatch(
+  //     setCartItems(user?.cart.items ? cart.concat(user?.cart.items) : cart)
+  //   );
+  // }, []);
 
   return (
     <UserProtectedRoute>

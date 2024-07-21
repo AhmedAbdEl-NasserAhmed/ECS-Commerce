@@ -66,6 +66,9 @@ const cartSlice = createSlice({
     emptyCartItems(state) {
       state.cartItems = [];
     },
+    setCartItems(state, action) {
+      state.cartItems = action.payload;
+    },
   },
 });
 
@@ -77,6 +80,7 @@ export const {
   assignCartId,
   makePayment,
   emptyCartItems,
+  setCartItems,
 } = cartSlice.actions;
 
 export default cartSlice.reducer;

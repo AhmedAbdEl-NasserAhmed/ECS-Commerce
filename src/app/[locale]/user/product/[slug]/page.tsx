@@ -24,13 +24,18 @@ import BaseContainer from "@/ui/Container/BaseContainer";
 import ReactStars from "react-stars";
 import { UserType } from "@/types/enums";
 import { Layout } from "@/config/layout";
-import { useGetAllReviewsQuery } from "@/lib/features/api/reviewsApi";
+import {
+  useGetAllReviewsQuery,
+  useGetProductReviewsQuery,
+} from "@/lib/features/api/reviewsApi";
 import Menus from "@/ui/Menus/Menus";
 import MiniSpinner from "@/ui/MiniSpinner/MiniSpinner";
 import ReviewsSorting from "@/components/UserReviews/ReviewsSorting";
 
 function ProductDetails() {
   const params = useParams();
+
+  const [productDetailsState, dispatch] = useReducer(reducerFn, initialState);
 
   const { data, isLoading } = useGetSingleProductBySlugQuery(params.slug);
 
@@ -42,18 +47,16 @@ function ProductDetails() {
     setSort(e.target.value);
   }
 
-  const { data: reviews, isFetching: loadingReview } = useGetAllReviewsQuery({
-    page,
-    sort,
-  });
+  const { data: reviews, isFetching: loadingReview } =
+    useGetProductReviewsQuery({
+      id: productDetailsState?.selectedProduct?.productId,
+    });
 
   const dispatchRedux = useAppDispatch();
 
   const cart = useAppSelector((state) => state.cartSlice.cartItems);
 
   const user = useAppSelector((state) => state.usersSlice.user);
-
-  const [productDetailsState, dispatch] = useReducer(reducerFn, initialState);
 
   function action(type, payload = null) {
     dispatch({ type, payload });
@@ -81,7 +84,8 @@ function ProductDetails() {
     const colorExists = cart.some(
       (product) =>
         product.color === productDetailsState.selectedColor?.color &&
-        product.size === productDetailsState.selectedProduct.size
+        product.size === productDetailsState.selectedProduct.size &&
+        product.product === productDetailsState.selectedProduct.productId
     );
 
     action(ProductDetailsAction.SET_COLOR_EXISTED, { value: colorExists });

@@ -60,7 +60,7 @@ function NavIcons() {
             className="cursor-pointer"
           />
           <span className="absolute w-6 h-6  rounded-full text-sm bg-red-500 -top-3 z-10 flex items-center justify-center text-white  -right-3">
-            {cart.length}
+            {cart?.length}
           </span>
         </li>
       )}

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   PaginationState,
   flexRender,
@@ -11,20 +11,33 @@ import {
 import BaseReactTableFilter from "./BaseReactTableFilter";
 import styles from "./BaseReactTable.module.scss";
 import { useTranslations } from "next-intl";
+import {
+  IPaginationControllersActions,
+  IPaginationControllersState,
+} from "@/hooks/useBaseTablePagination/interfaces";
+import Spinner from "../Spinner/Spinner";
+
+export const DEFAULT_PAGE_SIZE = 10;
+export const DEFAULT_ROW_HEIGHT = 100;
 
 function BaseReactTable({
   data,
   columns,
-  enablePagination,
+  paginationControllers,
+  isLoading,
 }: {
   data: any;
   columns: any;
-  enablePagination: boolean;
+  paginationControllers?: IPaginationControllersState &
+    IPaginationControllersActions;
+  isLoading?: boolean;
 }) {
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
-    pageSize: 10,
+    pageSize: paginationControllers?.pageSize || DEFAULT_PAGE_SIZE,
   });
+
+  const [tableLoaderHeight, setTableLoaderHeight] = useState<number>(0);
 
   const t = useTranslations("Index");
 
@@ -36,15 +49,21 @@ function BaseReactTable({
     debugTable: true,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    // getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    pageCount: paginationControllers?.totalPages,
     onPaginationChange: setPagination,
-    //no need to pass pageCount or rowCount with client-side pagination as it is calculated automatically
     state: {
       pagination,
     },
-    // autoResetPageIndex: false, // turn off page index reset when sorting or filtering
   });
+
+  function getTableBodyHeight() {
+    setTableLoaderHeight(data.length * DEFAULT_ROW_HEIGHT);
+  }
+
+  useEffect(() => {
+    getTableBodyHeight();
+  }, [data]);
 
   const getTableHeaderColumnWidth = () => {
     if (columns.at(-1).id === "actions") {
@@ -53,10 +72,12 @@ function BaseReactTable({
     return `calc(100% / ${columns.length})`;
   };
 
+  if (!data) return <Spinner />;
+
   return (
     <div className="p-2">
       <div className="h-2" />
-      <table className={styles.table}>
+      <table className={`${styles.table}`}>
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
@@ -101,7 +122,18 @@ function BaseReactTable({
             </tr>
           ))}
         </thead>
-        <tbody>
+        <tbody
+          className="relative"
+          style={{
+            height: `${tableLoaderHeight}px`,
+          }}
+        >
+          {isLoading && (
+            <div className="bg-white/50 absolute top-0 left-0 w-full h-full flex items-center justify-center flex-col gap-2">
+              <Spinner />
+              <p>Fetching data...</p>
+            </div>
+          )}
           {isValidData ? (
             table.getRowModel().rows.map((row) => {
               return (
@@ -127,34 +159,46 @@ function BaseReactTable({
         </tbody>
       </table>
       <div className="h-2" />
-      {isValidData && enablePagination && (
+      {isValidData && paginationControllers?.enablePagination && (
         <div className={styles.pagination}>
           <div className={styles["pagination__controllers"]}>
             <button
               className="border rounded p-1"
-              onClick={() => table.firstPage()}
-              disabled={!table.getCanPreviousPage()}
+              onClick={() => {
+                table.firstPage();
+                paginationControllers?.onFirstHandler();
+              }}
+              disabled={!paginationControllers?.canGoPrevPage}
             >
               {"<<"}
             </button>
             <button
               className="border rounded p-1"
-              onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}
+              onClick={() => {
+                table.previousPage();
+                paginationControllers?.onPrevHandler();
+              }}
+              disabled={!paginationControllers.canGoPrevPage}
             >
               {"<"}
             </button>
             <button
               className="border rounded p-1"
-              onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}
+              onClick={() => {
+                table.nextPage();
+                paginationControllers?.onNextHandler();
+              }}
+              disabled={!paginationControllers.canGoNextPage}
             >
               {">"}
             </button>
             <button
               className="border rounded p-1"
-              onClick={() => table.lastPage()}
-              disabled={!table.getCanNextPage()}
+              onClick={() => {
+                table.lastPage();
+                paginationControllers?.onLastHandler();
+              }}
+              disabled={!paginationControllers.canGoNextPage}
             >
               {">>"}
             </button>
@@ -163,29 +207,14 @@ function BaseReactTable({
           <span className="flex items-center gap-1">
             <div>{t("Page")} </div>
             <strong>
-              {table.getState().pagination.pageIndex + 1} {t("of")}{" "}
+              {paginationControllers?.page + 1} {t("of")}{" "}
               {table.getPageCount().toLocaleString()}
             </strong>
           </span>
-          <span className="flex items-center gap-1">
-            | {t("Go to page")}:&nbsp;
-            <input
-              type="number"
-              defaultValue={table.getState().pagination.pageIndex + 1}
-              onChange={(e) => {
-                const page =
-                  +e.target.value <= +table.getPageCount().toLocaleString() - 1
-                    ? Number(e.target.value) - 1
-                    : +table.getPageCount().toLocaleString() - 1;
-                table.setPageIndex(page);
-              }}
-              className={`border p-1 rounded w-16 ${styles["pagination__controllers--page-input"]}`}
-            />
-          </span>
           <select
-            value={table.getState().pagination.pageSize}
+            value={paginationControllers?.pageSize}
             onChange={(e) => {
-              table.setPageSize(Number(e.target.value));
+              paginationControllers?.onChangeNumberOfPages(+e.target.value);
             }}
           >
             {[5, 10, 20, 30, 40, 50].map((pageSize) => (
@@ -196,11 +225,6 @@ function BaseReactTable({
           </select>
         </div>
       )}
-      {/* <div>
-        Showing {table.getRowModel().rows.length.toLocaleString()} of{" "}
-        {table.getRowCount().toLocaleString()} Rows
-      </div> */}
-      {/* <pre>{JSON.stringify(table.getState().pagination, null, 2)}</pre> */}
     </div>
   );
 }

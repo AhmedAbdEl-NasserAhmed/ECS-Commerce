@@ -87,3 +87,14 @@ export function getCookie(name) {
   if (parts.length === 2) return parts.pop().split(";").shift();
   return null;
 }
+
+export const queryBuilder = (query) => {
+  let queryString = "";
+
+  for (let key in query) {
+    queryString += `${key}=${query[key]}`;
+    queryString += "&";
+  }
+
+  return queryString.slice(0, -1);
+};

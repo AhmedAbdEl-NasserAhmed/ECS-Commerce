@@ -1,23 +1,40 @@
 "use client";
 
 import { productTableHeaders } from "@/constants/productTableHeaders";
-import { useGetAllProductsQuery } from "@/lib/features/api/productsApi";
+import useBaseTablePagination from "@/hooks/useBaseTablePagination/useBaseTablePagination";
+import {
+  useGetAllProductsQuery,
+  useLazyGetPaginatedProductsQuery,
+} from "@/lib/features/api/productsApi";
 import BaseTable from "@/ui/BaseReactTable";
 import Menus from "@/ui/Menus/Menus";
 import Spinner from "@/ui/Spinner/Spinner";
 import { Box } from "@mui/material";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
+import { useEffect } from "react";
 import { HiChevronRight } from "react-icons/hi2";
 
 function Products() {
-  const { data, isFetching } = useGetAllProductsQuery("products");
+  const [getPaginatedProducts, getPaginatedProductsResponse] =
+    useLazyGetPaginatedProductsQuery();
+
+  const { paginationControllers } = useBaseTablePagination(
+    getPaginatedProductsResponse?.data?.numPages
+  );
 
   const t = useTranslations("Dashboard");
 
   const tIndex = useTranslations("Index");
 
-  if (isFetching) return <Spinner />;
+  useEffect(() => {
+    getPaginatedProducts({
+      page: paginationControllers.page + 1,
+      limit: paginationControllers.pageSize,
+    });
+  }, [paginationControllers.page, paginationControllers.pageSize]);
+
+  if (!getPaginatedProductsResponse?.data?.data) return <Spinner />;
 
   return (
     <Box className=" flex flex-col gap-8 px-[4rem] py-[1.2rem] bg-white ">
@@ -43,11 +60,12 @@ function Products() {
           </span>
         </Box>
         <Menus>
-          {isFetching ? (
-            <Spinner />
-          ) : (
-            <BaseTable data={data?.data} columns={productTableHeaders(t)} />
-          )}
+          <BaseTable
+            data={getPaginatedProductsResponse?.data?.data}
+            isLoading={getPaginatedProductsResponse?.isFetching}
+            columns={productTableHeaders(t)}
+            paginationControllers={paginationControllers}
+          />
         </Menus>
       </Box>
     </Box>

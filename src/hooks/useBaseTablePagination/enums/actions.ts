@@ -6,4 +6,5 @@ export enum PaginationActionsEnum {
   GO_TO_PAGE,
   CHANGE_PAGE_SIZE,
   CHANGE_TOTAL_PAGES,
+  ENABLE_PAGINATION,
 }

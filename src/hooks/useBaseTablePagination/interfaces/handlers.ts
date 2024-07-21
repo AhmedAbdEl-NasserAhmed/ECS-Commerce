@@ -5,4 +5,5 @@ export interface IPaginationControllersActions {
   onLastHandler: () => void;
   onChangeNumberOfPages?: (numberOfPages: number) => void;
   goToPage?: (page: number) => void;
+  enablePaginationHandler?: (shouldBeEnabled: boolean) => void;
 }

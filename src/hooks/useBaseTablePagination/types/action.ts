@@ -1,6 +1,7 @@
 import {
   ChangePageSizeAction,
   ChangeTotalPagesAction,
+  EnablePaginationAction,
   FirstAction,
   GoToPageAction,
   LastAction,
@@ -15,4 +16,5 @@ export type Action =
   | LastAction
   | GoToPageAction
   | ChangePageSizeAction
-  | ChangeTotalPagesAction;
+  | ChangeTotalPagesAction
+  | EnablePaginationAction;

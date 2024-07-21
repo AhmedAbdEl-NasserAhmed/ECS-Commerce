@@ -51,12 +51,18 @@ export const reducerFn = (
     case PaginationActionsEnum.CHANGE_PAGE_SIZE:
       return {
         ...state,
+        page: 0,
         pageSize: action.payload.pageSize,
       };
     case PaginationActionsEnum.CHANGE_TOTAL_PAGES:
       return {
         ...state,
         totalPages: action.payload.totalPages,
+      };
+    case PaginationActionsEnum.ENABLE_PAGINATION:
+      return {
+        ...state,
+        enablePagination: action.payload.enablePagination,
       };
     default:
       return initialState;

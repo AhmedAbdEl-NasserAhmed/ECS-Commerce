@@ -72,6 +72,13 @@ function BaseReactTable({
     return `calc(100% / ${columns.length})`;
   };
 
+  useEffect(() => {
+    setPagination((s) => ({
+      ...s,
+      pageSize: paginationControllers?.pageSize || DEFAULT_PAGE_SIZE,
+    }));
+  }, [paginationControllers.pageSize]);
+
   if (!data) return <Spinner />;
 
   return (

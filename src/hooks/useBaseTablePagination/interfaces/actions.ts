@@ -26,3 +26,7 @@ export interface ChangeTotalPagesAction {
   type: PaginationActionsEnum.CHANGE_TOTAL_PAGES;
   payload: { totalPages: number };
 }
+export interface EnablePaginationAction {
+  type: PaginationActionsEnum.ENABLE_PAGINATION;
+  payload: { enablePagination: boolean };
+}

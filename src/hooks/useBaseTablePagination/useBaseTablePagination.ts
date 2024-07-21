@@ -12,7 +12,7 @@ const useBaseTablePagination = (serverNumPages: number) => {
 
   const paginationControllers: IPaginationControllersState &
     IPaginationControllersActions = {
-    enablePagination: true,
+    enablePagination: paginationData.enablePagination,
     page: paginationData.page,
     pageSize: paginationData.pageSize,
     totalPages: paginationData.totalPages,
@@ -40,6 +40,12 @@ const useBaseTablePagination = (serverNumPages: number) => {
       dispatchPaginationAction({
         type: PaginationActionsEnum.GO_TO_PAGE,
         payload: { page },
+      });
+    },
+    enablePaginationHandler(shouldBeEnabled) {
+      dispatchPaginationAction({
+        type: PaginationActionsEnum.ENABLE_PAGINATION,
+        payload: { enablePagination: shouldBeEnabled },
       });
     },
   };

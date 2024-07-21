@@ -91,9 +91,10 @@ function SmartSearchInput({
           }}
           className=" w-full"
           placeholder={placeholder}
-          onChange={(e) =>
-            action(SmartSearchActions.CHANGE_INPUT, { value: e.target.value })
-          }
+          onChange={(e) => {
+            onChange(e.target.value);
+            action(SmartSearchActions.CHANGE_INPUT, { value: e.target.value });
+          }}
           name={name}
           value={smartSearchState.inputValue}
           sx={{

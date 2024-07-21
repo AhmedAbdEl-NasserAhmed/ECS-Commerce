@@ -161,7 +161,6 @@ function DashBoardPageg() {
             <BaseTable
               data={_data?.data}
               columns={ordersTableHeadersWithoutActions(t)}
-              enablePagination={false}
             />
           )}
         </AnalysisCard>

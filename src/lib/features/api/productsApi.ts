@@ -1,5 +1,5 @@
 import axiosBaseQuery from "@/api";
-import { getUniqueValues } from "@/lib/helpers";
+import { getUniqueValues, queryBuilder } from "@/lib/helpers";
 
 import { createApi } from "@reduxjs/toolkit/query/react";
 
@@ -21,7 +21,7 @@ const productsApi = createApi({
     getAllProducts: builder.query({
       query: ({ categoryId, max, min, page, colors, size, subCategory }) => {
         return {
-          url: `products?category=${categoryId}&limit=4&max=${max}&min=${min}&page=${page}&size=${size}&colors=${colors}&subCategory=${subCategory}`,
+          url: `products?category=${categoryId}&limit=100&max=${max}&min=${min}&page=${page}&size=${size}&colors=${colors}&subCategory=${subCategory}`,
           method: "GET",
         };
       },
@@ -52,6 +52,16 @@ const productsApi = createApi({
         url: `products/slug/${slug}`,
         method: "GET",
       }),
+      providesTags: ["PRODUCTS", "CATEGORIES", "SUB-CATEGORIES"],
+    }),
+    getPaginatedProducts: builder.query({
+      query: (query) => {
+        const q = queryBuilder(query);
+        return {
+          url: `products/allProductsAdmin?${q}`,
+          method: "GET",
+        };
+      },
       providesTags: ["PRODUCTS", "CATEGORIES", "SUB-CATEGORIES"],
     }),
 
@@ -92,6 +102,8 @@ export const {
   useGetSingleProductByIDQuery,
   useUpdateSingleProductMutation,
   useGetAllProductsColorsQuery,
+  useGetPaginatedProductsQuery,
+  useLazyGetPaginatedProductsQuery,
 } = productsApi;
 
 export default productsApi;

@@ -98,6 +98,10 @@
 .pagination .pagination__controllers button:hover {
   background-color: #2656b5;
 }
+.pagination .pagination__controllers button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
 .pagination .pagination__controllers--page-input {
   width: 50px;
   text-align: center;

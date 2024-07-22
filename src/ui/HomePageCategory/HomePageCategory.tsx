@@ -11,7 +11,7 @@ function HomePageCategory() {
     <>
       <div className=" text-center mb-10">
         <h1 className="text-6xl font-semibold uppercase text-heading-color1 pb-4">
-          Best Sale Category
+          Best Sale Categories
         </h1>
 
         <p className="font-normal	text-paragraph-color1 text-[1.6rem]">
@@ -19,14 +19,14 @@ function HomePageCategory() {
         </p>
       </div>
       <GridContainer columns={2} gap={1} className="h-[50rem]">
-        <div className="bg-[url(https://tailoredathlete.com/cdn/shop/articles/Best_Jeans_for_Body_Type_Male_900x.jpg?v=1677586239)] bg-cover bg-center w-full bg-no-repeat relative group">
+        <div className="bg-[url(https://tailoredathlete.com/cdn/shop/articles/Best_Jeans_for_Body_Type_Male_900x.jpg?v=1677586239)] bg-cover bg-center w-full bg-no-repeat relative group h-[50rem]">
           <div className="bg-black/50 opacity-0 transition-all hover:opacity-100 w-full h-full duration-400 flex flex-col gap-10 items-center justify-center">
             <h3 className="text-white text-4xl uppercase tracking-[1rem] font-medium">
               Male Jeans
             </h3>
             <Link
               className="text-3xl bg-white text-black p-6 rounded-md transition-all duration-400"
-              href={`/${locale}/user/productsList/6696d2e5498de05bd22375b9`}
+              href={`/${locale}/user/productsList/6696d2e5498de05bd22375b9?&subCategory=669da7c5ba39b5d2a32b0352`}
             >
               Start Shopping
             </Link>
@@ -39,24 +39,13 @@ function HomePageCategory() {
             </h3>
             <Link
               className="text-3xl bg-white text-black p-6 rounded-md transition-all duration-400"
-              href={`/${locale}/user/productsList/6696d2e5498de05bd22375b9`}
+              href={`/${locale}/user/productsList/6696d2e5498de05bd22375b9?&subCategory=669da7d8ba39b5d2a32b0355`}
             >
               Start Shopping
             </Link>
           </div>
         </div>
       </GridContainer>
-      {/* <div className="bg-[url(https://images.pexels.com/photos/16390580/pexels-photo-16390580/free-photo-of-jeans-on-hangers.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1)] bg-cover bg-center w-full h-full block bg-no-repeat w-full h-[30rem] relative group">
-        <div className="h-full flex items-center justify-center">
-          <span className=" absolute w-full h-full -z-50 bg-black opacity-50 flex justify-center items-center opacity-0 group-hover:opacity-1 transition-all duration-400"></span>
-          <Link
-            className="text-3xl bg-white text-black p-6 rounded-md transition-all duration-400 opacity-1 group-hover:opacity-1"
-            href={`/${locale}/user/productsList/6696d2e5498de05bd22375b9`}
-          >
-            Start Shopping
-          </Link>
-        </div>
-      </div> */}
     </>
   );
 }

@@ -58,7 +58,7 @@ function BaseReactTable({
   });
 
   function getTableBodyHeight() {
-    setTableLoaderHeight(data.length * DEFAULT_ROW_HEIGHT);
+    setTableLoaderHeight(data?.length * DEFAULT_ROW_HEIGHT);
   }
 
   useEffect(() => {

@@ -1,4 +1,5 @@
 import axiosBaseQuery from "@/api";
+import { queryBuilder } from "@/lib/helpers";
 
 import { createApi } from "@reduxjs/toolkit/query/react";
 
@@ -24,13 +25,18 @@ const ordersApi = createApi({
       }),
       providesTags: ["ORDERS"],
     }),
+
     getOrderByUserId: builder.query({
-      query: (userId) => ({
-        url: `orders/${userId}/user`,
-        method: "GET",
-      }),
+      query: ({ userId, query }) => {
+        const q = queryBuilder(query);
+        return {
+          url: `orders/${userId}/user?${q}`,
+          method: "GET",
+        };
+      },
       providesTags: ["ORDERS"],
     }),
+
     updateOrder: builder.mutation({
       query: ({ body, orderId }) => ({
         url: `orders/${orderId}`,
@@ -46,7 +52,7 @@ export const {
   useGetAllOrdersQuery,
   useGetOrderByIdQuery,
   useUpdateOrderMutation,
-  useGetOrderByUserIdQuery,
+  useLazyGetOrderByUserIdQuery,
 } = ordersApi;
 
 export default ordersApi;

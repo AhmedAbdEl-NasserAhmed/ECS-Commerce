@@ -41,6 +41,7 @@ function ProductsByCategory() {
   const maxPrice = searchParams.get("max");
   const colors = searchParams.get("colors");
   const subCategory = searchParams.get("subCategory");
+  const sort = searchParams.get("sort");
 
   const { data, isLoading, isFetching } = useGetAllProductsQuery({
     categoryId: category,
@@ -49,9 +50,17 @@ function ProductsByCategory() {
     size: size || undefined,
     colors: colors || undefined,
     subCategory: subCategory || undefined,
+    sort: sort || "",
     limit: 4,
     page,
   });
+
+  useEffect(() => {
+    if (minPrice || maxPrice || size || colors || subCategory || sort) {
+      setPage(1);
+      setProducts([]);
+    }
+  }, [minPrice, maxPrice, size, colors, subCategory, sort]);
 
   useEffect(() => {
     if (data?.data.length) {
@@ -64,11 +73,6 @@ function ProductsByCategory() {
       });
     }
   }, [data?.data, page]);
-
-  useEffect(() => {
-    setPage(1);
-    setProducts([]);
-  }, [minPrice, maxPrice, size, colors, subCategory]);
 
   useEffect(() => {
     const params = new URLSearchParams(searchParams);
@@ -92,31 +96,33 @@ function ProductsByCategory() {
           />
         </div>
       </div>
-      {data?.pagesNumber !== page && data?.pagesNumber > 2 && (
-        <div
-          ref={elementRef}
-          className="flex w-full md:w-1/2 items-center m-auto justify-center p-12"
-        >
-          <Button
-            disabled={isFetching}
-            onClick={() => setPage((page) => page + 1)}
-            sx={{
-              width: "100%",
-              padding: "0.85rem",
-              fontSize: "1.2rem",
-              backgroundColor: "#ed0534",
-              "&:hover": {
-                backgroundColor: "#161616",
-              },
-            }}
-            type="button"
-            variant="contained"
-            size="large"
+      {data?.pagesNumber !== page &&
+        data?.pagesNumber > 2 &&
+        data?.data.length > 0 && (
+          <div
+            ref={elementRef}
+            className="flex w-full md:w-1/2 items-center m-auto justify-center p-12"
           >
-            {isFetching ? <MiniSpinner /> : "Show More"}
-          </Button>
-        </div>
-      )}
+            <Button
+              disabled={isFetching}
+              onClick={() => setPage((page) => page + 1)}
+              sx={{
+                width: "100%",
+                padding: "0.85rem",
+                fontSize: "1.2rem",
+                backgroundColor: "#ed0534",
+                "&:hover": {
+                  backgroundColor: "#161616",
+                },
+              }}
+              type="button"
+              variant="contained"
+              size="large"
+            >
+              {isFetching ? <MiniSpinner /> : "Show More"}
+            </Button>
+          </div>
+        )}
     </BaseContainer>
   );
 }

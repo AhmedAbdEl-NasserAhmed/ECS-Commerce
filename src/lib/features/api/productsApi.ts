@@ -28,9 +28,10 @@ const productsApi = createApi({
         size,
         limit,
         subCategory,
+        sort,
       }) => {
         return {
-          url: `products?category=${categoryId}&limit=${limit}&max=${max}&min=${min}&page=${page}&size=${size}&colors=${colors}&subCategory=${subCategory}`,
+          url: `products?category=${categoryId}&limit=${limit}&max=${max}&min=${min}&page=${page}&size=${size}&sort=${sort}&colors=${colors}&subCategory=${subCategory}`,
           method: "GET",
         };
       },
@@ -63,6 +64,7 @@ const productsApi = createApi({
       }),
       providesTags: ["PRODUCTS", "CATEGORIES", "SUB-CATEGORIES"],
     }),
+
     getPaginatedProducts: builder.query({
       query: (query) => {
         const q = queryBuilder(query);

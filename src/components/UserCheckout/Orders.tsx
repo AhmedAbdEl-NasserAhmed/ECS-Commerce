@@ -21,7 +21,7 @@ function Orders() {
   return (
     <div className="p-6 bg-white shadow-md  rounded-md flex flex-col gap-8">
       <div>
-        <h2 className="text-4xl font-semibold mb-5">Your Orders </h2>
+        <h2 className="text-4xl font-semibold mb-5">Your Order </h2>
         <span className="w-full h-1 block bg-[#ed0534] ">&nbsp;</span>
       </div>
       <ProductDetailsTable totalCartItems={totalCartItems} cart={cart} />

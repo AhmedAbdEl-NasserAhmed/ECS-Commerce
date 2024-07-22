@@ -1,4 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
+import Cookies from "js-cookie";
+import { setCartItems } from "../cartSlice/cartSlice";
 
 let userToken = null;
 

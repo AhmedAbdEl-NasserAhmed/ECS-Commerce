@@ -51,7 +51,12 @@ function NavIcons() {
       {isProfileOpen && <ProfileMenu setIsProfileOpen={setIsProfileOpen} />}
 
       {user?.role !== UserType.ADMIN && !makePayment && (
-        <li className="relative" onClick={() => setIsCartOpen((open) => !open)}>
+        <li
+          className="relative"
+          onClick={() => {
+            setIsCartOpen((open) => !open);
+          }}
+        >
           <Image
             src="/cart.png"
             alt="cart"

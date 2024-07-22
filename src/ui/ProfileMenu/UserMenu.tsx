@@ -43,7 +43,7 @@ function UserMenu({ setIsProfileOpen }) {
         <button
           disabled={setCartItems.isLoading}
           onClick={() => {
-            cartItems({ cartItems: cart });
+            cartItems({ user: user["_id"], cartItems: cart });
             dispatch(logoutUser());
             localStorage.removeItem("userToken");
             localStorage.removeItem("user");

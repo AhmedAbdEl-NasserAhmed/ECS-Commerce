@@ -12,7 +12,7 @@ interface IProductList {
 }
 
 function ProductList(props: IProductList) {
-  const uniqueItems = getUniqueValues(props.products, "name");
+  const uniqueItems = getUniqueValues(props.products, ["name"]);
 
   if (props.isLoading) return <Spinner />;
 

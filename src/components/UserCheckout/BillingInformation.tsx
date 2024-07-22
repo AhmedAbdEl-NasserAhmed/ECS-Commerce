@@ -71,6 +71,7 @@ function BillingInformation() {
         dispatch(emptyCartItems());
         window.open(res.url, "_blank", "noopener,noreferrer");
         router.replace(`/${locale}`);
+        localStorage.removeItem("removedItems");
       })
       .catch(() => {
         dispatch(makePayment(false));

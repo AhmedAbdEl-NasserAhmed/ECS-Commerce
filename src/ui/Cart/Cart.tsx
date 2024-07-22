@@ -5,6 +5,7 @@ import {
   incrementProductItem,
   removeItem,
   assignCartId,
+  addExistedProduct,
 } from "@/lib/features/cartSlice/cartSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import useClickOutside from "@/hooks/useClickOutside";
@@ -13,8 +14,8 @@ import { CartItem } from "@/types/types";
 import Image from "next/image";
 import toast from "react-hot-toast";
 import { useParams, useRouter } from "next/navigation";
-import { useEffect } from "react";
 import { UserType } from "@/types/enums";
+import { useEffect } from "react";
 
 const Cart = ({ setIsCartOpen }) => {
   const { locale } = useParams();
@@ -22,6 +23,10 @@ const Cart = ({ setIsCartOpen }) => {
   const router = useRouter();
 
   const cart = useAppSelector((state) => state.cartSlice.cartItems);
+
+  const removedItems = useAppSelector(
+    (state) => state.cartSlice.existedProduct
+  );
 
   const ref = useClickOutside({ close: setIsCartOpen, value: false });
 
@@ -59,6 +64,10 @@ const Cart = ({ setIsCartOpen }) => {
   const totalCartItems = cart?.reduce((acc, cur) => {
     return acc + cur.quantity * cur.price;
   }, 0);
+
+  useEffect(() => {
+    localStorage.setItem("removedItems", JSON.stringify(removedItems));
+  }, [removedItems]);
 
   return (
     <div
@@ -151,7 +160,10 @@ const Cart = ({ setIsCartOpen }) => {
                       <button
                         disabled={user?.role === UserType.ADMIN}
                         className="text-blue-500 cursor-pointer"
-                        onClick={() => handleDeleteProduct(product)}
+                        onClick={() => {
+                          dispatch(addExistedProduct(product.cartItemId));
+                          handleDeleteProduct(product);
+                        }}
                       >
                         Remove
                       </button>

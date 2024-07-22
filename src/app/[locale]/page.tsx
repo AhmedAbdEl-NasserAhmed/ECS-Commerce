@@ -13,23 +13,36 @@ import FloatingWhatsAppComponent from "@/ui/FloatingWhatsAppIcon/FloatingWhatsAp
 import { UserType } from "@/types/enums";
 import UserProtectedRoute from "@/ui/UserProtectedRoute/UserProtectedRoute";
 import useCookie from "@/hooks/useCookie";
-import { useEffect } from "react";
-import { setCartItems } from "@/lib/features/cartSlice/cartSlice";
+import { getUniqueValues, isProductExisted } from "@/lib/helpers";
 
 function HomePage() {
-  const { data, isLoading } = useGetAllProductsQuery("products");
+  const { data, isLoading } = useGetAllProductsQuery({ limit: 4 });
 
   const user = useAppSelector((state) => state.usersSlice.user);
 
   const cart = useAppSelector((state) => state.cartSlice.cartItems);
 
-  const dispatch = useAppDispatch();
+  // const existedProducts = useAppSelector(
+  //   (state) => state.cartSlice.existedProduct
+  // );
 
-  // useEffect(() => {
-  //   dispatch(
-  //     setCartItems(user?.cart.items ? cart.concat(user?.cart.items) : cart)
-  //   );
-  // }, []);
+  // const userCookiesItems = isProductExisted(
+  //   existedProducts,
+  //   "cartItemId",
+  //   user?.cookieCart?.cartItems
+  // );
+
+  // const cartItems = user
+  //   ? getUniqueValues(cart.concat(userCookiesItems), [
+  //       "color",
+  //       "size",
+  //       "product",
+  //     ])
+  //   : cart;
+
+  const { setCookieHandler } = useCookie();
+
+  setCookieHandler("cartItems", cart);
 
   return (
     <UserProtectedRoute>

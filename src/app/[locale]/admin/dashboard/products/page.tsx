@@ -19,13 +19,13 @@ function Products() {
   const [getPaginatedProducts, getPaginatedProductsResponse] =
     useLazyGetPaginatedProductsQuery();
 
-  const { paginationControllers } = useBaseTablePagination(
-    getPaginatedProductsResponse?.data?.numPages
-  );
-
   const t = useTranslations("Dashboard");
 
   const tIndex = useTranslations("Index");
+
+  const { paginationControllers } = useBaseTablePagination(
+    getPaginatedProductsResponse?.data?.numPages
+  );
 
   useEffect(() => {
     getPaginatedProducts({

@@ -1,8 +1,7 @@
-import { useEffect, useMemo, useRef } from "react";
-
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import Cookies from "js-cookie";
 
-function useCookie(name, value) {
+function useCookie() {
   const ref = useRef(null);
 
   useEffect(() => {
@@ -25,13 +24,14 @@ function useCookie(name, value) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
+  const setCookieHandler = useCallback((name, value) => {
     Cookies.set(name, JSON.stringify(value), {
       expires: ref.current,
       path: "/",
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [value]);
+  }, []);
+
+  return { setCookieHandler };
 }
 
 export default useCookie;

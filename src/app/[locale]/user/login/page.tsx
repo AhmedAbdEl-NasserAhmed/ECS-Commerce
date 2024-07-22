@@ -10,9 +10,13 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useUserloginMutation } from "@/lib/features/api/usersApi";
 import { loginUser } from "@/lib/features/usersSlice/usersSlice";
-import { useAppDispatch } from "@/lib/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import toast from "react-hot-toast";
 import MiniSpinner from "@/ui/MiniSpinner/MiniSpinner";
+import Cookies from "js-cookie";
+import { setCartItems } from "@/lib/features/cartSlice/cartSlice";
+import { getUniqueValues, isProductExisted } from "@/lib/helpers";
+import useCookie from "@/hooks/useCookie";
 
 function LoginPage() {
   const {
@@ -25,7 +29,10 @@ function LoginPage() {
   const [loginFn, loginState] = useUserloginMutation();
 
   const dispatch = useAppDispatch();
-
+  const existedProducts = useAppSelector(
+    (state) => state.cartSlice.existedProduct
+  );
+  const cart = useAppSelector((state) => state.cartSlice.cartItems);
   const { locale } = useParams();
 
   const router = useRouter();
@@ -33,6 +40,8 @@ function LoginPage() {
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const { setCookieHandler } = useCookie();
 
   function onSubmit(data) {
     loginFn({ email: data.email, password: data.password })
@@ -46,11 +55,29 @@ function LoginPage() {
             token: res.token,
           })
         );
+        //
+        const userCookiesItems = isProductExisted(
+          existedProducts,
+          "cartItemId",
+          res.data?.cookieCart?.cartItems
+        );
+        const cartItems = res.data
+          ? getUniqueValues(cart.concat(userCookiesItems), [
+              "color",
+              "size",
+              "product",
+            ])
+          : cart;
+
+        setCookieHandler("cartItems", cartItems);
+
+        dispatch(setCartItems(cartItems));
+        //
         localStorage.setItem("userToken", res.token);
         localStorage.setItem("user", JSON.stringify(res.data));
         router.push(`/${locale}`);
       })
-      .catch((err) => toast.error(err.data.message));
+      .catch((err) => toast.error("something went wrong"));
   }
 
   return (

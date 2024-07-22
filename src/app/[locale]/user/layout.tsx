@@ -9,12 +9,17 @@ import Footer from "@/ui/Footer/Footer";
 import NavBar from "@/ui/NavBar/NavBar";
 import NotActiveMessage from "@/ui/NotActiveMessage/NotActiveMessage";
 import UserProtectedRoute from "@/ui/UserProtectedRoute/UserProtectedRoute";
+import { useEffect } from "react";
 
 function Layout({ children }) {
   const user = useAppSelector((state) => state.usersSlice.user);
   const cart = useAppSelector((state) => state.cartSlice.cartItems);
 
-  useCookie("cartItems", cart);
+  const { setCookieHandler } = useCookie();
+
+  useEffect(() => {
+    setCookieHandler("cartItems", cart);
+  }, []);
 
   return (
     <CustomErrorBoundary>

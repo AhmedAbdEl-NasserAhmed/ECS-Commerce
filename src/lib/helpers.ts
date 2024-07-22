@@ -63,29 +63,19 @@ export function getSumFrom(list, matchedList, matchedKey = "label") {
     .reduce((acc, cur) => acc + cur, 0);
 }
 
-export function getUniqueValues(arr, value) {
+export function getUniqueValues(arr, values: string[]) {
   const uniqueItems = new Set();
 
   return arr?.filter((item) => {
-    const duplicatedValue = item[value];
-    if (uniqueItems.has(duplicatedValue)) {
+    if (!item) return;
+    const compositeKey = values?.map((value) => item[value])?.join("|");
+    if (uniqueItems.has(compositeKey)) {
       return false;
     } else {
-      uniqueItems.add(duplicatedValue);
+      uniqueItems.add(compositeKey);
       return true;
     }
   });
-}
-
-export function getCookie(name) {
-  if (typeof document === "undefined") {
-    return null;
-  }
-
-  const value = `; ${document.cookie}`;
-  const parts = value.split(`; ${name}=`);
-  if (parts.length === 2) return parts.pop().split(";").shift();
-  return null;
 }
 
 export const queryBuilder = (query) => {
@@ -98,3 +88,18 @@ export const queryBuilder = (query) => {
 
   return queryString.slice(0, -1);
 };
+
+export function isProductExisted(uniquteValues: string[], value: string, arr) {
+  const uniqueProducts = [];
+
+  if (!arr) return;
+
+  arr?.map((item) => {
+    if (uniquteValues.includes(item[value])) {
+      return;
+    } else {
+      uniqueProducts.push(item);
+    }
+  });
+  return uniqueProducts;
+}

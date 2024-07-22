@@ -19,9 +19,18 @@ const productsApi = createApi({
       invalidatesTags: ["PRODUCTS"],
     }),
     getAllProducts: builder.query({
-      query: ({ categoryId, max, min, page, colors, size, subCategory }) => {
+      query: ({
+        categoryId,
+        max,
+        min,
+        page,
+        colors,
+        size,
+        limit,
+        subCategory,
+      }) => {
         return {
-          url: `products?category=${categoryId}&limit=100&max=${max}&min=${min}&page=${page}&size=${size}&colors=${colors}&subCategory=${subCategory}`,
+          url: `products?category=${categoryId}&limit=${limit}&max=${max}&min=${min}&page=${page}&size=${size}&colors=${colors}&subCategory=${subCategory}`,
           method: "GET",
         };
       },
@@ -35,7 +44,7 @@ const productsApi = createApi({
       }),
       providesTags: ["PRODUCTS", "CATEGORIES", "SUB-CATEGORIES"],
       transformResponse: (response) => {
-        const data = getUniqueValues(response.data, "name");
+        const data = getUniqueValues(response.data, ["name"]);
         return data;
       },
     }),

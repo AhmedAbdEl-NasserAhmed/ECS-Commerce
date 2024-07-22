@@ -3,14 +3,22 @@ import { createSlice } from "@reduxjs/toolkit";
 
 let cartItemCookies = Cookies.get("cartItems");
 
+let removedItems = [] as string[];
+
+if (localStorage.getItem("removedItems") !== undefined) {
+  removedItems = JSON.parse(localStorage.getItem("removedItems"));
+}
+
 interface CartSlice {
   cartItems: any;
   makePayment: boolean;
+  existedProduct: string[];
 }
 
 const initialState: CartSlice = {
   cartItems: cartItemCookies ? JSON.parse(cartItemCookies) : [],
   makePayment: false,
+  existedProduct: removedItems || [],
 };
 
 const cartSlice = createSlice({
@@ -69,6 +77,9 @@ const cartSlice = createSlice({
     setCartItems(state, action) {
       state.cartItems = action.payload;
     },
+    addExistedProduct(state, action) {
+      state.existedProduct = [...state.existedProduct, action.payload];
+    },
   },
 });
 
@@ -81,6 +92,7 @@ export const {
   makePayment,
   emptyCartItems,
   setCartItems,
+  addExistedProduct,
 } = cartSlice.actions;
 
 export default cartSlice.reducer;

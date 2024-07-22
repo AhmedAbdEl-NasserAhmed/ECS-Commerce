@@ -35,11 +35,11 @@ function Slider() {
                 <h1 className="text-5xl lg:text-6xl 2xl:text-8xl font-semibold">
                   {slide.title}
                 </h1>
-                <Link href={slide.url}>
+                {/* <Link href={slide.url}>
                   <button className="rounded-md bg-black text-white py-3 px-4">
                     Shop Now
                   </button>
-                </Link>
+                </Link> */}
               </div>
 
               <div className="relative h-1/2 xl:w-1/2 xl:h-full">

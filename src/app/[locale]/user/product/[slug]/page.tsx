@@ -48,9 +48,12 @@ function ProductDetails() {
   }
 
   const { data: reviews, isFetching: loadingReview } =
-    useGetProductReviewsQuery({
-      id: productDetailsState?.selectedProduct?.productId,
-    });
+    useGetProductReviewsQuery(
+      {
+        id: productDetailsState?.selectedProduct?.productId,
+      },
+      { skip: !productDetailsState?.selectedProduct?.productId }
+    );
 
   const dispatchRedux = useAppDispatch();
 

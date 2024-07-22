@@ -49,6 +49,7 @@ function ProductsByCategory() {
     size: size || undefined,
     colors: colors || undefined,
     subCategory: subCategory || undefined,
+    limit: 4,
     page,
   });
 

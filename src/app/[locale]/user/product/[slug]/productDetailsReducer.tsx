@@ -19,7 +19,7 @@ export const initialState = {
     label: string;
     quantity: number;
   },
-  productQuantity: 0 as number,
+  productQuantity: 1 as number,
   isColorExisted: false as boolean,
 };
 

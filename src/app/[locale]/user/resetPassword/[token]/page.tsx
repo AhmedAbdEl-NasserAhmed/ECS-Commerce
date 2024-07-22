@@ -44,8 +44,8 @@ function ResetPasswordPage() {
         toast.success("Your Password has changed");
         router.push(`/${locale}/user/login`);
       })
-      .catch(() => {
-        toast.error("something went wrong");
+      .catch((err) => {
+        toast.error(err.data.message);
       });
   }
 

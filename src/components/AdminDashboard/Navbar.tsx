@@ -19,13 +19,9 @@ interface Props {
 }
 
 function Navbar({ setExpand, setExpanded }: Props) {
-  const pathname = usePathname();
-
   const router = useRouter();
 
   const { locale } = useParams();
-
-  const [langState, setLangState] = useState(locale);
 
   const dispatch = useAppDispatch();
 
@@ -37,13 +33,6 @@ function Navbar({ setExpand, setExpanded }: Props) {
     toast.success("Do Not Be Late");
   }
 
-  const onChangeLanguage = (value: string) => {
-    setLangState(value);
-
-    const newPath = pathname.replace(`/${locale}`, `/${value}`);
-
-    router.push(newPath);
-  };
   return (
     <Box
       component="nav"
@@ -70,7 +59,10 @@ function Navbar({ setExpand, setExpanded }: Props) {
       </Box>
       <ul className="flex items-center justify-end gap-5 w-1/2   ">
         <LanguageSelector />
-        <li onClick={handleLogoutAdmin} className="text-2xl cursor-pointer">
+        <li
+          onClick={handleLogoutAdmin}
+          className="text-xl cursor-pointer font-semibold"
+        >
           LOG OUT
         </li>
       </ul>

@@ -45,7 +45,9 @@ function LanguageSelector() {
                 onClick={() => {
                   handleChangeLanguage(language.value);
                 }}
-                className="p-2 font-semibold hover:bg-gray-200 flex items-center justify-center gap-8 "
+                className={`${
+                  language.value !== locale ? "opacity-100" : "opacity-60"
+                } p-2 font-semibold hover:bg-gray-200 flex items-center justify-center gap-8 `}
               >
                 <span className="w-[3rem] h-[2rem] rounded-full inline-block">
                   {language.icon}

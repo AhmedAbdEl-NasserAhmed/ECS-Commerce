@@ -37,8 +37,8 @@ const reviewsApi = createApi({
     }),
 
     getProductReviews: builder.query({
-      query: ({ id }) => ({
-        url: `reviews/${id}/product`,
+      query: ({ id, sort, page }) => ({
+        url: `reviews/${id}/product?sort=${sort}&limit=3&page=${page}`,
         method: "GET",
       }),
       providesTags: ["REVIEWS"],

@@ -77,7 +77,9 @@ function LoginPage() {
         localStorage.setItem("user", JSON.stringify(res.data));
         router.push(`/${locale}`);
       })
-      .catch((err) => toast.error("something went wrong"));
+      .catch((err) => {
+        toast.error(err.data.message);
+      });
   }
 
   return (

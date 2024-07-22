@@ -73,8 +73,9 @@ function BillingInformation() {
         router.replace(`/${locale}`);
         localStorage.removeItem("removedItems");
       })
-      .catch(() => {
+      .catch((err) => {
         dispatch(makePayment(false));
+        toast.error(err.data.message);
       });
   }
 

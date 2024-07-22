@@ -51,6 +51,8 @@ function ProductDetails() {
     useGetProductReviewsQuery(
       {
         id: productDetailsState?.selectedProduct?.productId,
+        sort,
+        page,
       },
       { skip: !productDetailsState?.selectedProduct?.productId }
     );
@@ -146,7 +148,7 @@ function ProductDetails() {
       },
     });
 
-    action(ProductDetailsAction.SET_PRODUCT_QUANTITY, { value: 0 });
+    action(ProductDetailsAction.SET_PRODUCT_QUANTITY, { value: 1 });
   };
 
   function handleIncrementQuantity() {
@@ -292,7 +294,7 @@ function ProductDetails() {
                         value: color,
                       });
                       action(ProductDetailsAction.SET_PRODUCT_QUANTITY, {
-                        value: 0,
+                        value: 1,
                       });
                     }}
                     key={color.value}
@@ -348,7 +350,7 @@ function ProductDetails() {
                 onClick={() => {
                   handleAddCartItem();
                   action(ProductDetailsAction.SET_PRODUCT_QUANTITY, {
-                    value: 0,
+                    value: 1,
                   });
                 }}
                 className="bg-[#ed0534] hover:bg-black transition duration-500 text-white p-4 text-2xl rounded-lg w-full"

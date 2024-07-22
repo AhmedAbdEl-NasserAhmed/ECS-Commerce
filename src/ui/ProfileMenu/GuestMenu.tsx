@@ -9,6 +9,7 @@ function GuestMenu({ setIsProfileOpen }) {
   const { locale } = useParams();
 
   const ref = useClickOutside({ close: setIsProfileOpen, value: false });
+  
   return (
     <ul
       ref={ref}

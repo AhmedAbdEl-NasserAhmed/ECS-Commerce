@@ -27,6 +27,9 @@ function ForgetMyPassword() {
       .then(() => {
         toast.success("An Email has sent to you email");
         router.push(`/${locale}`);
+      })
+      .catch((err) => {
+        toast.error(err.data.message);
       });
   }
 

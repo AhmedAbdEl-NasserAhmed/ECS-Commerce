@@ -33,8 +33,8 @@ function Contact() {
         toast.success("We are always here for you");
         reset();
       })
-      .catch(() => {
-        toast.error("Something Went Wrong");
+      .catch((err) => {
+        toast.error(err.data.message);
       });
   }
 

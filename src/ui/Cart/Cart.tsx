@@ -16,6 +16,7 @@ import toast from "react-hot-toast";
 import { useParams, useRouter } from "next/navigation";
 import { UserType } from "@/types/enums";
 import { useEffect } from "react";
+import Link from "next/link";
 
 const Cart = ({ setIsCartOpen }) => {
   const { locale } = useParams();
@@ -98,9 +99,12 @@ const Cart = ({ setIsCartOpen }) => {
                     <div className="text-xl">
                       {/* TITLE */}
                       <div className="flex items-center justify-between gap-8">
-                        <h3 className="font-semibold capitalize">
+                        <Link
+                          href={`/${locale}/product`}
+                          className="font-semibold capitalize"
+                        >
                           {product.name}
-                        </h3>
+                        </Link>
                         <div className="p-1 bg-gray-50 rounded-xl flex items-center gap-2">
                           {true && (
                             <div className="text-sm font-semibold text-green-500">

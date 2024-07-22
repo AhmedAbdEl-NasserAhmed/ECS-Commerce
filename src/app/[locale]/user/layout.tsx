@@ -19,7 +19,7 @@ function Layout({ children }) {
 
   useEffect(() => {
     setCookieHandler("cartItems", cart);
-  }, []);
+  }, [cart, setCookieHandler]);
 
   return (
     <CustomErrorBoundary>

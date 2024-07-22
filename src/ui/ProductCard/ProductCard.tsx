@@ -30,6 +30,7 @@ const ProductCard = ({ product }) => {
             className="object-cover"
             fill
             sizes="25vw"
+            quality={75}
             alt="image"
           />
         </div>

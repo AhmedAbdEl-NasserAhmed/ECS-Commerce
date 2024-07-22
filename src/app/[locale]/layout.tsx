@@ -50,7 +50,7 @@ export default async function LocaleLayout({
               containerClassName=""
               containerStyle={{}}
               toastOptions={{
-                duration: 2000,
+                duration: 1000,
                 style: {
                   background: "white",
                   color: "#fff",

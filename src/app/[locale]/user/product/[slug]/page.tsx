@@ -173,6 +173,8 @@ function ProductDetails() {
     });
   }
 
+  console.log("cart", cart);
+
   const isAdmin = user?.role === UserType.ADMIN;
 
   if (isLoading || mainCategoryLoading || loadingReview) return <Spinner />;
@@ -202,8 +204,9 @@ function ProductDetails() {
                   key={image.id}
                 >
                   <Image
-                    src={image.url}
+                    src={image?.url}
                     alt="img"
+                    quality={100}
                     fill
                     className="object-contain rounded-2xl "
                   />
@@ -213,7 +216,7 @@ function ProductDetails() {
           </Box>
           <Box className="relative h-full w-full border-2 border-[#dcdbdb] rounded-2xl transition-all duration-500 ">
             <Image
-              src={data?.data?.images?.[productDetailsState.imageIndex].url}
+              src={data?.data?.images?.[productDetailsState.imageIndex]?.url}
               alt="img"
               fill
               className="object-contain rounded-2xl"

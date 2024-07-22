@@ -13,6 +13,7 @@ import FloatingWhatsAppComponent from "@/ui/FloatingWhatsAppIcon/FloatingWhatsAp
 import { UserType } from "@/types/enums";
 import UserProtectedRoute from "@/ui/UserProtectedRoute/UserProtectedRoute";
 import useCookie from "@/hooks/useCookie";
+import { useEffect } from "react";
 
 function HomePage() {
   const { data, isLoading } = useGetAllProductsQuery({ limit: 4 });
@@ -21,9 +22,15 @@ function HomePage() {
 
   const cart = useAppSelector((state) => state.cartSlice.cartItems);
 
+  console.log("user", user);
+
+  console.log("cart", cart);
+
   const { setCookieHandler } = useCookie();
 
-  setCookieHandler("cartItems", cart);
+  useEffect(() => {
+    setCookieHandler("cartItems", cart);
+  }, [cart, setCookieHandler]);
 
   return (
     <UserProtectedRoute>

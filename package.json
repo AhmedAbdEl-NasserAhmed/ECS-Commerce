@@ -39,6 +39,7 @@
     "react-table": "^7.8.0",
     "react-whatsapp-widget": "^2.2.0",
     "redux": "^5.0.1",
+    "redux-persist": "^6.0.0",
     "sass": "^1.77.2",
     "tailwindcss-rtl": "^0.9.0"
   },

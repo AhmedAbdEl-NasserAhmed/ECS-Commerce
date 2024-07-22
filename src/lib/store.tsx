@@ -1,4 +1,4 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import usersSlice from "./features/usersSlice/usersSlice";
 import usersApi from "./features/api/usersApi";
 import categoriesApi from "./features/api/categoriesApi";

@@ -22,10 +22,6 @@ function HomePage() {
 
   const cart = useAppSelector((state) => state.cartSlice.cartItems);
 
-  console.log("user", user);
-
-  console.log("cart", cart);
-
   const { setCookieHandler } = useCookie();
 
   useEffect(() => {

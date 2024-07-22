@@ -10,39 +10,47 @@ import paymentApi from "./features/api/paymentApi";
 import contactUsApi from "./features/api/contactUsApi";
 import reviewsApi from "./features/api/reviewsApi";
 import cartItemsApi from "./features/api/cartItemsApi";
+import storage from "redux-persist/lib/storage";
+import { persistReducer } from "redux-persist";
 
-export const makeStore = () => {
-  return configureStore({
-    reducer: {
-      usersSlice: usersSlice,
-      cartSlice: cartSlice,
-      [usersApi.reducerPath]: usersApi.reducer,
-      [categoriesApi.reducerPath]: categoriesApi.reducer,
-      [subCategoriesApi.reducerPath]: subCategoriesApi.reducer,
-      [productsApi.reducerPath]: productsApi.reducer,
-      [ordersApi.reducerPath]: ordersApi.reducer,
-      [paymentApi.reducerPath]: paymentApi.reducer,
-      [contactUsApi.reducerPath]: contactUsApi.reducer,
-      [reviewsApi.reducerPath]: reviewsApi.reducer,
-      [cartItemsApi.reducerPath]: cartItemsApi.reducer,
-    },
-    middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware({ serializableCheck: false }).concat(
-        usersApi.middleware,
-        categoriesApi.middleware,
-        subCategoriesApi.middleware,
-        productsApi.middleware,
-        ordersApi.middleware,
-        paymentApi.middleware,
-        contactUsApi.middleware,
-        reviewsApi.middleware,
-        cartItemsApi.middleware
-      ),
-  });
+const persistConfig = {
+  key: "root",
+  storage,
+  version: 1,
 };
 
-// Infer the type of makeStore
-export type AppStore = ReturnType<typeof makeStore>;
-// Infer the `RootState` and `AppDispatch` types from the store itself
-export type RootState = ReturnType<AppStore["getState"]>;
-export type AppDispatch = AppStore["dispatch"];
+const rootReducer = combineReducers({
+  usersSlice,
+  cartSlice,
+  [usersApi.reducerPath]: usersApi.reducer,
+  [categoriesApi.reducerPath]: categoriesApi.reducer,
+  [subCategoriesApi.reducerPath]: subCategoriesApi.reducer,
+  [productsApi.reducerPath]: productsApi.reducer,
+  [ordersApi.reducerPath]: ordersApi.reducer,
+  [paymentApi.reducerPath]: paymentApi.reducer,
+  [contactUsApi.reducerPath]: contactUsApi.reducer,
+  [reviewsApi.reducerPath]: reviewsApi.reducer,
+  [cartItemsApi.reducerPath]: cartItemsApi.reducer,
+});
+
+const persistedReducer = persistReducer<any, any>(persistConfig, rootReducer);
+
+export const store = configureStore({
+  reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({ serializableCheck: false }).concat(
+      usersApi.middleware,
+      categoriesApi.middleware,
+      subCategoriesApi.middleware,
+      productsApi.middleware,
+      ordersApi.middleware,
+      paymentApi.middleware,
+      contactUsApi.middleware,
+      reviewsApi.middleware,
+      cartItemsApi.middleware
+    ),
+});
+
+export type RootState = ReturnType<typeof store.getState>;
+
+export type AppDispatch = typeof store.dispatch;

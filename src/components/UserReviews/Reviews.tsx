@@ -1,5 +1,7 @@
+import { useAppSelector } from "@/lib/hooks";
 import ReviewForm from "./ReviewForm";
 import ReviewItem, { IReview } from "./ReviewItem";
+import { useEffect, useState } from "react";
 
 interface ReviewsProps {
   reviews: IReview[];
@@ -7,9 +9,26 @@ interface ReviewsProps {
 }
 
 const Reviews = ({ reviews, productId }: ReviewsProps) => {
+  const [isReviewed, setIsReviewed] = useState<boolean>();
+
+  const isAuthenticated = useAppSelector(
+    (state) => state.usersSlice.isAuthenticated
+  );
+  const user = useAppSelector((state) => state.usersSlice.user);
+
+  useEffect(() => {
+    reviews?.some((review) => {
+      if (review.user["_id"] === user["_id"]) {
+        setIsReviewed(true);
+      } else {
+        setIsReviewed(false);
+      }
+    });
+  }, [reviews, user]);
+
   return (
     <div>
-      <ReviewForm productId={productId} />
+      {isAuthenticated && !isReviewed && <ReviewForm productId={productId} />}
       <div className="max-h-[500px] overflow-y-auto">
         {reviews?.map((review) => {
           return <ReviewItem key={review["_id"]} review={review} />;

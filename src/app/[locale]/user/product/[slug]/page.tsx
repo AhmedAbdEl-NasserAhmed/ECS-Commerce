@@ -173,8 +173,6 @@ function ProductDetails() {
     });
   }
 
-  console.log("cart", cart);
-
   const isAdmin = user?.role === UserType.ADMIN;
 
   if (isLoading || mainCategoryLoading || loadingReview) return <Spinner />;

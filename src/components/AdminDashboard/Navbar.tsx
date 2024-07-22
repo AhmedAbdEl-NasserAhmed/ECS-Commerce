@@ -11,6 +11,7 @@ import { useParams, usePathname, useRouter } from "next/navigation";
 import { useAppDispatch } from "@/lib/hooks";
 import { logoutUser } from "@/lib/features/usersSlice/usersSlice";
 import toast from "react-hot-toast";
+import LanguageSelector from "@/ui/LanguageSelector/LanguageSelector";
 
 interface Props {
   setExpand?: (isTrue: any) => void;
@@ -65,71 +66,10 @@ function Navbar({ setExpand, setExpanded }: Props) {
           >
             <HiMenuAlt3 />
           </span>
-          <Box className="w-1/2">
-            <CustomizedTextField
-              type="text"
-              size="small"
-              placeholder="Search.."
-              variant="outlined"
-              sx={{
-                width: "100%",
-                input: {
-                  fontSize: "1.4rem",
-                },
-
-                "& .MuiOutlinedInput-root": {
-                  "& fieldset": {
-                    backgroundColor: "#ebebeb46",
-                    borderRadius: "20px",
-                  },
-
-                  "&.Mui-focused fieldset": {
-                    borderWidth: "1px",
-                    borderColor: "#dcdbdb",
-                  },
-
-                  "&:hover fieldset": {
-                    borderColor: "#dcdbdb",
-                  },
-
-                  "& .MuiInputBase-input": {
-                    paddingBlock: "0.8rem",
-                    paddingInline: "1.8rem",
-                    fontSize: "1.5rem",
-                    color: "#525151",
-
-                    "&::placeholder": {
-                      color: "#878787",
-                      fontSize: "1.5rem",
-                      opacity: 1,
-                    },
-                  },
-                },
-              }}
-              inputProps={{
-                endAdornment: (
-                  <InputAdornment
-                    style={{ fontSize: "1.25rem" }}
-                    position="end"
-                  >
-                    <FaSearch />
-                  </InputAdornment>
-                ),
-              }}
-            />
-          </Box>
         </Box>
       </Box>
       <ul className="flex items-center justify-end gap-5 w-1/2   ">
-        <li className="text-3xl">
-          <select
-            value={langState}
-            onChange={(e) => onChangeLanguage(e.target.value)}
-          >
-            <option value="en">EN</option>
-            <option value="ar">AR</option>
-          </select>
-        </li>
+        <LanguageSelector />
         <li onClick={handleLogoutAdmin} className="text-2xl cursor-pointer">
           LOG OUT
         </li>

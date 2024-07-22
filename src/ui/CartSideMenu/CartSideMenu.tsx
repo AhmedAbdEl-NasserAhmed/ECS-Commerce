@@ -1,5 +1,6 @@
 import useClickOutside from "@/hooks/useClickOutside";
 import {
+  addExistedProduct,
   assignCartId,
   decrementProductItem,
   incrementProductItem,
@@ -25,6 +26,10 @@ function CartSideMenu({ setOpenSideMenu, openSideMenu, setOpens }) {
   const dispatch = useAppDispatch();
 
   const user = useAppSelector((state) => state.usersSlice.user);
+
+  const removedItems = useAppSelector(
+    (state) => state.cartSlice.existedProduct
+  );
 
   const token = useAppSelector((state) => state.usersSlice.token);
 
@@ -56,6 +61,10 @@ function CartSideMenu({ setOpenSideMenu, openSideMenu, setOpens }) {
   const totalCartItems = cart.reduce((acc, cur) => {
     return acc + +cur.quantity * +cur.price;
   }, 0);
+
+  useEffect(() => {
+    localStorage.setItem("removedItems", JSON.stringify(removedItems));
+  }, [removedItems]);
 
   return (
     <div
@@ -149,7 +158,10 @@ function CartSideMenu({ setOpenSideMenu, openSideMenu, setOpens }) {
 
                         <span
                           className="text-blue-500 cursor-pointer"
-                          onClick={() => handleDeleteProduct(product)}
+                          onClick={() => {
+                            dispatch(addExistedProduct(product.cartItemId));
+                            handleDeleteProduct(product);
+                          }}
                         >
                           Remove
                         </span>

@@ -8,6 +8,8 @@ import toast from "react-hot-toast";
 import Cookies from "js-cookie";
 import { useSetCartItemsMutation } from "@/lib/features/api/cartItemsApi";
 import { emptyCartItems } from "@/lib/features/cartSlice/cartSlice";
+import { HiOutlineUser, HiOutlineUserCircle } from "react-icons/hi2";
+import { HiOutlineLogout } from "react-icons/hi";
 
 function UserMenu({ setIsProfileOpen }) {
   const { locale } = useParams();
@@ -32,15 +34,20 @@ function UserMenu({ setIsProfileOpen }) {
       {user?.role === UserType.USER && (
         <li className="p-2 hover:bg-gray-200 duration-200 transition-all">
           <Link
+            className=" flex items-center gap-4 justify-center"
             onClick={() => setIsProfileOpen(false)}
             href={`/${locale}/user/profile`}
           >
-            Profile
+            <span className="text-3xl">
+              <HiOutlineUserCircle />
+            </span>
+            <span>Profile</span>
           </Link>
         </li>
       )}
-      <li className="p-2 hover:bg-gray-200 duration-200 transition-all cursor-pointer">
+      <li className="p-2 hover:bg-gray-200 duration-200 transition-all cursor-pointer flex justify-center items-center ">
         <button
+          className="flex items-center justify-center gap-4 "
           disabled={setCartItems.isLoading}
           onClick={() => {
             cartItems({ user: user["_id"], cartItems: cart });
@@ -55,7 +62,10 @@ function UserMenu({ setIsProfileOpen }) {
             dispatch(emptyCartItems());
           }}
         >
-          Logout
+          <span className="text-3xl">
+            <HiOutlineLogout />
+          </span>
+          <span>Logout</span>
         </button>
       </li>
     </ul>

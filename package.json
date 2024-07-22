@@ -28,6 +28,7 @@
     "quill": "^2.0.2",
     "react": "^18",
     "react-dom": "^18",
+    "react-flag-kit": "^1.1.1",
     "react-floating-whatsapp": "^5.0.8",
     "react-hook-form": "^7.51.5",
     "react-hot-toast": "^2.4.1",

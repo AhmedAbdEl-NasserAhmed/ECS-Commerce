@@ -8,12 +8,9 @@ import ProfileMenu from "../ProfileMenu/ProfileMenu";
 import { useAppSelector } from "@/lib/hooks";
 import { UserType } from "@/types/enums";
 import UserGreeting from "../UserGreeting/UserGreeting";
+import LanguageSelector from "../LanguageSelector/LanguageSelector";
 
 function NavIcons() {
-  const { locale } = useParams();
-  const router = useRouter();
-  const pathName = usePathname();
-
   const [isProfileOpen, setIsProfileOpen] = useState<boolean>(false);
 
   const user = useAppSelector((state) => state.usersSlice.user);
@@ -21,16 +18,6 @@ function NavIcons() {
   const makePayment = useAppSelector((state) => state.cartSlice.makePayment);
 
   const [isCartOpen, setIsCartOpen] = useState<boolean>(false);
-
-  const [langState, setLangState] = useState(locale);
-
-  const onChangeLanguage = (value: string) => {
-    setLangState(value);
-
-    const newPath = pathName.replace(`/${locale}`, `/${value}`);
-
-    router.push(newPath);
-  };
 
   const cart = useAppSelector((state) => state.cartSlice.cartItems);
 
@@ -75,16 +62,7 @@ function NavIcons() {
           </span>
         </li>
       )}
-      <li className="text-2xl">
-        <select
-          value={langState}
-          onChange={(e) => onChangeLanguage(e.target.value)}
-        >
-          <option value="en">EN</option>
-          <option value="ar">AR</option>
-        </select>
-      </li>
-
+      <LanguageSelector />
       {isCartOpen && user?.role !== UserType.ADMIN && !makePayment && (
         <Cart setIsCartOpen={setIsCartOpen} />
       )}

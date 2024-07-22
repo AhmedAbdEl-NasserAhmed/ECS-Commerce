@@ -3,6 +3,7 @@
 import Link from "next/link";
 import useClickOutside from "@/hooks/useClickOutside";
 import { useParams } from "next/navigation";
+import { HiOutlineLogin, HiOutlineUserAdd } from "react-icons/hi";
 
 function GuestMenu({ setIsProfileOpen }) {
   const { locale } = useParams();
@@ -15,18 +16,26 @@ function GuestMenu({ setIsProfileOpen }) {
     >
       <li className="p-2 hover:bg-gray-200 duration-200 transition-all">
         <Link
+          className="flex items-center justify-center gap-4"
           onClick={() => setIsProfileOpen(false)}
           href={`/${locale}/user/login`}
         >
-          Log in
+          <span className="text-3xl">
+            <HiOutlineLogin />
+          </span>
+          <span>Log in</span>
         </Link>
       </li>
       <li className="p-2 hover:bg-gray-200 duration-200 transition-all">
         <Link
+          className="flex items-center justify-center gap-4"
           onClick={() => setIsProfileOpen(false)}
           href={`/${locale}/user/register`}
         >
-          Sign up{" "}
+          <span className="text-3xl">
+            <HiOutlineUserAdd />
+          </span>
+          <span>Sign Up </span>
         </Link>
       </li>
     </ul>

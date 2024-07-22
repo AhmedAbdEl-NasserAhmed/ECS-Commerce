@@ -10,6 +10,10 @@ import { useParams, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import MobileScreenCategoriesList from "../MobileScreenCategoriesList/MobileScreenCategoriesList";
 import { UserType } from "@/types/enums";
+import { emptyCartItems } from "@/lib/features/cartSlice/cartSlice";
+
+import Cookies from "js-cookie";
+import { useSetCartItemsMutation } from "@/lib/features/api/cartItemsApi";
 
 function LandingPageMenu() {
   const [opens, setOpens] = useState<boolean>(false);
@@ -25,6 +29,8 @@ function LandingPageMenu() {
   const cart = useAppSelector((state) => state.cartSlice.cartItems);
 
   const user = useAppSelector((state) => state.usersSlice.user);
+
+  const [cartItems, setCartItems] = useSetCartItemsMutation();
 
   const userRoleAdmin = user?.role === UserType.ADMIN;
 
@@ -88,12 +94,16 @@ function LandingPageMenu() {
           <li>
             <Link
               onClick={() => {
+                cartItems({ user: user["_id"], cartItems: cart });
                 dispatch(logoutUser());
                 localStorage.removeItem("userToken");
                 localStorage.removeItem("user");
-                setOpens(false);
+                localStorage.removeItem("cartItemsExpiration");
+                Cookies.remove("cartItems");
                 router.push(`/${locale}`);
                 toast.success("Do Not Be Late");
+                setOpens(false);
+                dispatch(emptyCartItems());
               }}
               href=""
             >

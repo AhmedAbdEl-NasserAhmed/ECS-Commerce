@@ -7,6 +7,7 @@ import Cart from "../Cart/Cart";
 import ProfileMenu from "../ProfileMenu/ProfileMenu";
 import { useAppSelector } from "@/lib/hooks";
 import { UserType } from "@/types/enums";
+import UserGreeting from "../UserGreeting/UserGreeting";
 
 function NavIcons() {
   const { locale } = useParams();
@@ -39,15 +40,20 @@ function NavIcons() {
 
   return (
     <ul className=" relative flex items-center justify-between gap-4 xl:gap-6 me-4">
-      <li onClick={handleLoginClick}>
-        <Image
-          src="/profile.png"
-          alt="profile"
-          width={22}
-          height={22}
-          className="cursor-pointer"
-        />
-      </li>
+      {user ? (
+        <UserGreeting onClick={handleLoginClick} />
+      ) : (
+        <li onClick={handleLoginClick}>
+          <Image
+            src="/profile.png"
+            alt="profile"
+            width={22}
+            height={22}
+            className="cursor-pointer"
+          />
+        </li>
+      )}
+
       {isProfileOpen && <ProfileMenu setIsProfileOpen={setIsProfileOpen} />}
 
       {user?.role !== UserType.ADMIN && !makePayment && (

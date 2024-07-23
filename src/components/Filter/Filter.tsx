@@ -53,7 +53,7 @@ const Filter = (props) => {
 
   const filterScrollStyles: CSSProperties = {
     position: "fixed",
-    width: "30rem",
+    width: "23rem",
     top: "0px",
     height: "100vh",
     overflowY: "scroll",

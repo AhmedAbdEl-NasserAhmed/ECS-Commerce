@@ -55,11 +55,11 @@ function FilterColorsOptions() {
           <div
             key={color}
             onClick={handleAddColorToParams.bind(null, color)}
-            className={`rounded-full cursor-pointer w-[2.3rem] h-[2.3rem] `}
+            className={`rounded-full cursor-pointer w-[2.3rem] h-[2.3rem] ${
+              isColorActive(color) ? "ring-offset-2 ring-2 ring-slate-400" : ""
+            }`}
             style={{
               background: color,
-              outline: isColorActive(color) ? "1px solid #ed0534" : "",
-              outlineOffset: isColorActive(color) ? "2px" : "",
             }}
           ></div>
         );

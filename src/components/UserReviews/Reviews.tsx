@@ -23,13 +23,19 @@ const Reviews = ({ reviews, productId }: ReviewsProps) => {
     setIsReviewed(hasReview);
   }, [reviews, user]);
 
+  const noReviewsAvailable = reviews?.length === 0;
+
   return (
     <div>
       {isAuthenticated && !isReviewed && <ReviewForm productId={productId} />}
       <div className="max-h-[500px] overflow-y-auto">
-        {reviews?.map((review) => {
-          return <ReviewItem key={review["_id"]} review={review} />;
-        })}
+        {noReviewsAvailable ? (
+          <p className="text-xl font-medium">No reviews yet</p>
+        ) : (
+          reviews?.map((review) => {
+            return <ReviewItem key={review["_id"]} review={review} />;
+          })
+        )}
       </div>
     </div>
   );

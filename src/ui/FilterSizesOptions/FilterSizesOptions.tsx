@@ -1,8 +1,13 @@
 import { sizesOptions } from "@/constants/sizeOptions";
+import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 function FilterSizesOptions({ handleFilterChange }) {
-  const [selectedSize, setSelectedSize] = useState("");
+  const params = useSearchParams();
+
+  const defaultValue = params.get("size");
+
+  const [selectedSize, setSelectedSize] = useState(defaultValue || "");
   const onSelectSizeHandler = (size) => {
     let _size = size;
     if (size === selectedSize) {
@@ -32,20 +37,6 @@ function FilterSizesOptions({ handleFilterChange }) {
         );
       })}
     </div>
-    // <select
-    //   name="size"
-    //   className="py-2 w-full px-4 rounded-2xl text-lg font-medium bg-[#EBEDED]"
-    //   onChange={handleFilterChange}
-    // >
-    //   <option value="">Size</option>
-    //   {sizesOptions.map((size) => {
-    //     return (
-    //       <option key={size.id} value={size.value}>
-    //         {size.value}
-    //       </option>
-    //     );
-    //   })}
-    // </select>
   );
 }
 

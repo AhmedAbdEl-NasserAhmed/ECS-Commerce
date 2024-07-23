@@ -80,9 +80,11 @@ const ProductCard = ({ product }) => {
       <div className="bg-white flex flex-col items-center justify-center h-[9rem] gap-[1rem]">
         <h4 className="font-normal text-[1.4rem]">{product.name}</h4>
         <div className="flex items-center gap-4 text-[1.6rem] font-medium">
-          <span className="line-through text-gray-300">
-            {`${product.price} EGP`}
-          </span>
+          {!!product.discount && (
+            <span className="line-through text-gray-300">
+              {`${product.price} EGP`}
+            </span>
+          )}
           <span className="">{`${product.saleProduct} EGP`}</span>
         </div>
       </div>

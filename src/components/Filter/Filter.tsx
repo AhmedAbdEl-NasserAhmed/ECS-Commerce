@@ -8,6 +8,7 @@ import { BsFilterLeft } from "react-icons/bs";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { CSSProperties, useEffect, useRef, useState } from "react";
+import FilterSaleOptions from "../FilterSaleOptions/FilterSaleOptions";
 
 function FilterItemContainer(props) {
   return (
@@ -74,7 +75,7 @@ const Filter = (props) => {
       {props.setShowMobileFilters && (
         <button
           onClick={() => props.setShowMobileFilters(false)}
-          className="inline-block md:hidden bg-[#161616] text-white p-8 text-2xl mb-8 sticky top-0 shadow-md "
+          className="inline-block md:hidden bg-[#161616] text-white p-8 text-2xl mb-8 sticky top-0 shadow-md z-50 "
         >
           Done
         </button>
@@ -86,6 +87,10 @@ const Filter = (props) => {
 
       <FilterItemContainer title="Sizes">
         <FilterSizesOptions handleFilterChange={handleFilterSizeChange} />
+      </FilterItemContainer>
+
+      <FilterItemContainer title="Sale">
+        <FilterSaleOptions />
       </FilterItemContainer>
 
       <FilterItemContainer title="Sub-categories">

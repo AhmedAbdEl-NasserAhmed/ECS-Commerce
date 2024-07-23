@@ -44,6 +44,7 @@ function ProductsByCategory() {
   const colors = searchParams.get("colors");
   const subCategory = searchParams.get("subCategory");
   const sort = searchParams.get("sort");
+  const sale = searchParams.get("sale");
 
   const { data, isLoading, isFetching } = useGetAllProductsQuery({
     categoryId: category,
@@ -53,6 +54,7 @@ function ProductsByCategory() {
     colors: colors || undefined,
     subCategory: subCategory || undefined,
     sort: sort || "",
+    sale: sale || "",
     limit: 4,
     page,
   });

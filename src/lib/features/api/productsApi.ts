@@ -29,9 +29,10 @@ const productsApi = createApi({
         limit,
         subCategory,
         sort,
+        sale,
       }) => {
         return {
-          url: `products?category=${categoryId}&limit=${limit}&max=${max}&min=${min}&page=${page}&size=${size}&sort=${sort}&colors=${colors}&subCategory=${subCategory}`,
+          url: `products?category=${categoryId}&limit=${limit}&max=${max}&min=${min}&page=${page}&size=${size}&sort=${sort}&colors=${colors}&subCategory=${subCategory}&sale=${sale}`,
           method: "GET",
         };
       },

@@ -11,17 +11,33 @@ import {
 import { ChangeEvent, useEffect, useState } from "react";
 
 function SubCategoriesFiltertation() {
+  const [filtredSubCategories, setFiltredSubCategories] = useState<string[]>(
+    []
+  );
+
+  const [subCategories, setSubCategories] = useState<string[]>([]);
+
   const { data } = useGetAllSubCategoriesQuery("sucCategories");
 
   const pathName = usePathname();
 
-  const params = useParams();
-
   const searchParams = useSearchParams();
+
+  const subCategoriesUrl = searchParams.get("subCategory");
 
   const { replace } = useRouter();
 
-  const [subCategories, setSubCategories] = useState<string[]>([]);
+  useEffect(() => {
+    if (subCategoriesUrl !== "") {
+      setFiltredSubCategories(subCategoriesUrl?.split(","));
+    }
+  }, [subCategoriesUrl]);
+
+  useEffect(() => {
+    if (filtredSubCategories?.length > 0) {
+      setSubCategories(filtredSubCategories);
+    }
+  }, [filtredSubCategories]);
 
   const isActiveSubCategory = (subCategory) =>
     subCategories.includes(subCategory);
@@ -78,18 +94,6 @@ function SubCategoriesFiltertation() {
         );
       })}
     </div>
-    // <select
-    //   onChange={handleAddSubCategoriesToParams}
-    //   className="py-2 px-4 w-full rounded-2xl text-lg font-medium bg-[#EBEDED]"
-    //   name="subCategory"
-    // >
-    //   <option value="">Sub Categories</option>
-    //   {data?.data?.map((subCategory) => (
-    //     <option value={subCategory["_id"]} key={subCategory["_id"]}>
-    //       {subCategory.name}
-    //     </option>
-    //   ))}
-    // </select>
   );
 }
 

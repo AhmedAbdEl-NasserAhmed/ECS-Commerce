@@ -7,6 +7,8 @@ import { ChangeEvent, useEffect, useState } from "react";
 import ColorItem from "../ColorItem/ColorItem";
 
 function FilterColorsOptions() {
+  const [filtredColors, setFiltredColors] = useState<string[]>([]);
+
   const { data } = useGetAllProductsColorsQuery("colors");
 
   const searchParams = useSearchParams();
@@ -16,6 +18,20 @@ function FilterColorsOptions() {
   const pathName = usePathname();
 
   const { replace } = useRouter();
+
+  const selectedColorsUrl = searchParams.get("colors");
+
+  useEffect(() => {
+    if (selectedColorsUrl !== "") {
+      setFiltredColors(selectedColorsUrl?.split(","));
+    }
+  }, [selectedColorsUrl]);
+
+  useEffect(() => {
+    if (filtredColors?.length > 0) {
+      setSelectedColors(filtredColors);
+    }
+  }, [filtredColors]);
 
   const isColorActive = (color) => selectedColors.includes(color);
 

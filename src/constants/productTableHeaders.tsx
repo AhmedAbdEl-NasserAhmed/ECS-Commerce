@@ -1,7 +1,12 @@
 import ProductTableMenuOptions from "@/components/AdminProduct/productTableMenuOptions";
+import Spinner from "@/ui/Spinner/Spinner";
 import Image from "next/image";
 
-export const productTableHeaders = (translate) => {
+export const productTableHeaders = (
+  translate,
+  isLoadingImages,
+  setIsloadingImages
+) => {
   return [
     {
       id: "name",
@@ -67,8 +72,14 @@ export const productTableHeaders = (translate) => {
         },
       }) => (
         <div style={{ gap: "20px" }} className="flex justify-center ">
+          {isLoadingImages && (
+            <div className="flex justify-center items-center">
+              <Spinner />
+            </div>
+          )}
           <Image
             className="rounded-xl"
+            onLoad={() => setIsloadingImages(false)}
             key={original?.images[0]?.id}
             src={original?.images[0]?.url}
             alt={`Product Image ${original?.images[0]?.id}`}

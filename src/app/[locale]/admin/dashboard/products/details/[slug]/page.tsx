@@ -26,6 +26,8 @@ function ProductDetails() {
 
   const [imageIndex, setCurrentImageIndex] = useState<number>(0);
 
+  const [isLoadingImages, setIsLoadingImages] = useState<boolean>(true);
+
   const { data: mainCategory, isLoading: mainCategoryLoading } =
     useGetCategoryByIdQuery(selectedProduct?.category, {
       skip: !selectedProduct?.category,
@@ -57,10 +59,13 @@ function ProductDetails() {
                 } relative w-full h-full border-2 border-[#dcdbdb] cursor-pointer rounded-2xl transition-all duration-500`}
                 key={image.id}
               >
+                {isLoadingImages && <Spinner />}
+
                 <Image
                   src={image.url}
                   alt="img"
                   fill
+                  onLoad={() => setIsLoadingImages(false)}
                   className="object-contain rounded-2xl "
                 />
               </Box>

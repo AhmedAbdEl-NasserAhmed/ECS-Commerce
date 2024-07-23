@@ -8,6 +8,7 @@ import {
 } from "@/lib/features/api/productsApi";
 import BaseContainer from "@/ui/Container/BaseContainer";
 import MiniSpinner from "@/ui/MiniSpinner/MiniSpinner";
+import ResponsiveMobileFilters from "@/ui/ResponsiveMobileFilters/ResponsiveMobileFilters";
 
 import Spinner from "@/ui/Spinner/Spinner";
 import { Button } from "@mui/material";
@@ -18,6 +19,7 @@ import {
   useSearchParams,
 } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { BsFilterLeft } from "react-icons/bs";
 
 function ProductsByCategory() {
   const searchParams = useSearchParams();
@@ -92,6 +94,7 @@ function ProductsByCategory() {
         setIsScrollPassedFilterEl(element.top <= 0);
       }
     };
+
     window.addEventListener("scroll", scroll);
 
     return () => {
@@ -99,14 +102,32 @@ function ProductsByCategory() {
     };
   }, []);
 
+  const [showMobileFilters, setShowMobileFilters] = useState<boolean>(false);
+
   if (!data) return <Spinner />;
   return (
     <>
       <div ref={ref}>
-        <div className="grid grid-cols-[30rem_1fr] gap-5">
-          <div>
+        <div className="relative grid grid-cols-[1fr] md:grid-cols-[30rem_1fr] gap-5">
+          <div
+            onClick={() => setShowMobileFilters(true)}
+            className=" absolute top-0 left-0 md:hidden mb-5 mt-3 flex items-center gap-3 cursor-pointer "
+          >
+            <BsFilterLeft size={"3rem"} />
+            <p className="text-[3rem] font-bold ">Filters</p>
+          </div>
+
+          <div className="block md:hidden">
+            <ResponsiveMobileFilters
+              setShowMobileFilters={setShowMobileFilters}
+              showMobileFilters={showMobileFilters}
+            />
+          </div>
+
+          <div className="hidden md:block">
             <Filter isScrollPassedFilterEl={isScrollPassedFilterEl} />
           </div>
+
           <div>
             <TitledProductList
               baseContainerClass="py-0"

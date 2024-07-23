@@ -61,15 +61,25 @@ const Filter = (props) => {
 
   return (
     <div
-      className=" flex flex-col bg-[#F5F5F5] shadow-2xl"
+      className="flex flex-col bg-[#F5F5F5] shadow-2xl "
       style={{
         ...(props.isScrollPassedFilterEl && filterScrollStyles),
       }}
     >
-      <div className="mb-5 mt-3 flex items-center gap-3 ">
+      <div className="mb-5 mt-3 hidden  md:flex items-center gap-3  ">
         <BsFilterLeft size={"3rem"} />
         <p className="text-[3rem] font-bold ">Filters</p>
       </div>
+
+      {props.setShowMobileFilters && (
+        <button
+          onClick={() => props.setShowMobileFilters(false)}
+          className="inline-block md:hidden bg-[#161616] text-white p-8 text-2xl mb-8 sticky top-0 shadow-md "
+        >
+          Done
+        </button>
+      )}
+
       <FilterItemContainer title="Colors">
         <FilterColorsOptions />
       </FilterItemContainer>

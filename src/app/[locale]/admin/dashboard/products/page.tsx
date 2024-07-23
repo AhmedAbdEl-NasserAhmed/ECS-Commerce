@@ -12,7 +12,7 @@ import Spinner from "@/ui/Spinner/Spinner";
 import { Box } from "@mui/material";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { HiChevronRight } from "react-icons/hi2";
 
 function Products() {
@@ -26,6 +26,8 @@ function Products() {
   const { paginationControllers } = useBaseTablePagination(
     getPaginatedProductsResponse?.data?.numPages
   );
+
+  const [isLoadingImages, setIsLoadingImages] = useState<boolean>(true);
 
   useEffect(() => {
     getPaginatedProducts({
@@ -63,7 +65,11 @@ function Products() {
           <BaseTable
             data={getPaginatedProductsResponse?.data?.data}
             isLoading={getPaginatedProductsResponse?.isFetching}
-            columns={productTableHeaders(t)}
+            columns={productTableHeaders(
+              t,
+              isLoadingImages,
+              setIsLoadingImages
+            )}
             paginationControllers={paginationControllers}
           />
         </Menus>

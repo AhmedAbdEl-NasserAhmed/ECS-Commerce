@@ -19,8 +19,8 @@ function FilterColorsOptions() {
 
   const isColorActive = (color) => selectedColors.includes(color);
 
-  const updateUrl = (color) => {
-    const newSelectedItems = [...selectedColors, color];
+  const updateUrl = () => {
+    const newSelectedItems = [...selectedColors];
 
     const params = new URLSearchParams(searchParams);
 
@@ -37,14 +37,15 @@ function FilterColorsOptions() {
 
   const handleAddColorToParams = (color) => {
     if (color !== "" && !isColorActive(color)) {
-      setSelectedColors((s) => s.concat(color));
+      setSelectedColors((data) => [...data, color]);
     } else {
       setSelectedColors((s) => s.filter((c) => c !== color));
     }
   };
 
   useEffect(() => {
-    updateUrl(selectedColors);
+    updateUrl();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedColors]);
 
   return (

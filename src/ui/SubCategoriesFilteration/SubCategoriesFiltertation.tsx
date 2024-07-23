@@ -26,8 +26,8 @@ function SubCategoriesFiltertation() {
   const isActiveSubCategory = (subCategory) =>
     subCategories.includes(subCategory);
 
-  const updateUrl = (subCategory) => {
-    const newSelectedItems = [...subCategories, subCategory];
+  const updateUrl = () => {
+    const newSelectedItems = [...subCategories];
 
     const params = new URLSearchParams(searchParams);
 
@@ -44,14 +44,15 @@ function SubCategoriesFiltertation() {
 
   const handleAddSubCategoryToParams = (subCategory) => {
     if (subCategory !== "" && !isActiveSubCategory(subCategory)) {
-      setSubCategories((s) => s.concat(subCategory));
+      setSubCategories((data) => [...data, subCategory]);
     } else {
       setSubCategories((s) => s.filter((c) => c !== subCategory));
     }
   };
 
   useEffect(() => {
-    updateUrl(subCategories);
+    updateUrl();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [subCategories]);
 
   return (
@@ -66,7 +67,7 @@ function SubCategoriesFiltertation() {
                 ? "#ed0534"
                 : "",
               color: isActiveSubCategory(subCategory["_id"]) ? "white" : "",
-              outline: "1px solid #ed0534",
+              outline: "1px solid #161616",
             }}
             onClick={() => {
               handleAddSubCategoryToParams(subCategory["_id"]);

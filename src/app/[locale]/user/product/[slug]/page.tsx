@@ -176,6 +176,10 @@ function ProductDetails() {
     });
   }
 
+  function handleLoadingImages() {
+    action(ProductDetailsAction.SET_ISlOADING_FALSE);
+  }
+
   const isAdmin = user?.role === UserType.ADMIN;
 
   if (isLoading || mainCategoryLoading) return <Spinner />;
@@ -204,10 +208,16 @@ function ProductDetails() {
                   } relative w-full h-full border-2 border-[#dcdbdb] cursor-pointer rounded-2xl transition-all duration-500`}
                   key={image.id}
                 >
+                  {productDetailsState.isLoadingComplete && (
+                    <div className="flex items-center justify-center">
+                      <Spinner />
+                    </div>
+                  )}
                   <Image
                     src={image?.url}
                     alt="img"
                     quality={100}
+                    onLoad={handleLoadingImages}
                     fill
                     className="object-contain rounded-2xl "
                   />

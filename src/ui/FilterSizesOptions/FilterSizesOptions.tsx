@@ -17,11 +17,11 @@ function FilterSizesOptions({ handleFilterChange }) {
         return (
           <div
             key={size.id}
-            className="cursor-pointer w-[4rem] py-5 bg-white text-center rounded-lg text-[#ed0534] uppercase"
+            className="cursor-pointer w-[4rem] py-5 bg-white text-center rounded-lg text-[#161616] uppercase font-semibold "
             style={{
-              background: selectedSize === size.value ? "#ed0534" : "",
+              background: selectedSize === size.value ? "#161616" : "",
               color: selectedSize === size.value ? "white" : "",
-              outline: "1px solid #ed0534",
+              outline: "1px solid #161616",
             }}
             onClick={() => {
               onSelectSizeHandler(size.value);

@@ -54,7 +54,7 @@ function FilterColorsOptions() {
           <div
             key={color}
             onClick={handleAddColorToParams.bind(null, color)}
-            className={`w-[2rem] h-[2rem] rounded-full cursor-pointer w-[2.3rem] h-[2.3rem] `}
+            className={`rounded-full cursor-pointer w-[2.3rem] h-[2.3rem] `}
             style={{
               background: color,
               outline: isColorActive(color) ? "1px solid #ed0534" : "",

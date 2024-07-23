@@ -37,7 +37,7 @@ function SubCategoriesFiltertation() {
 
     const newUrl = `${pathName}?${params.toString()}`;
 
-    replace(newUrl);
+    replace(newUrl, { scroll: false });
 
     return newSelectedItems;
   };
@@ -60,7 +60,7 @@ function SubCategoriesFiltertation() {
         return (
           <div
             key={subCategory["_id"]}
-            className="cursor-pointer px-3 py-5 bg-white text-center rounded-lg text-[#ed0534] uppercase"
+            className="cursor-pointer font-semibold px-3 py-5 bg-white text-center rounded-lg text-[#161616] uppercase"
             style={{
               background: isActiveSubCategory(subCategory["_id"])
                 ? "#ed0534"

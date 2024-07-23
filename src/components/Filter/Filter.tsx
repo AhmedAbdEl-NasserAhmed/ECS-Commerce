@@ -36,13 +36,19 @@ const Filter = (props) => {
     params.set("min", String(newValue[0]));
     params.set("max", String(newValue[1]));
     setValue(newValue as number[]);
-    replace(`${pathname}?${params.toString()}`);
+    replace(`${pathname}?${params.toString()}`, { scroll: false });
   };
 
-  const handleFilterChange = (value) => {
+  const handleFilterChange = (e) => {
+    const params = new URLSearchParams(searchParams);
+    params.set("sort", e.target.value);
+    replace(`${pathname}?${params.toString()}`, { scroll: false });
+  };
+
+  const handleFilterSizeChange = (value) => {
     const params = new URLSearchParams(searchParams);
     params.set("size", value);
-    replace(`${pathname}?${params.toString()}`);
+    replace(`${pathname}?${params.toString()}`, { scroll: false });
   };
 
   const filterScrollStyles: CSSProperties = {
@@ -55,12 +61,12 @@ const Filter = (props) => {
 
   return (
     <div
-      className="shadow-md flex flex-col bg-[#F5F5F5]"
+      className=" flex flex-col bg-[#F5F5F5] shadow-2xl"
       style={{
         ...(props.isScrollPassedFilterEl && filterScrollStyles),
       }}
     >
-      <div className="mb-5 mt-3 flex items-center gap-3">
+      <div className="mb-5 mt-3 flex items-center gap-3 ">
         <BsFilterLeft size={"3rem"} />
         <p className="text-[3rem] font-bold ">Filters</p>
       </div>
@@ -69,7 +75,7 @@ const Filter = (props) => {
       </FilterItemContainer>
 
       <FilterItemContainer title="Sizes">
-        <FilterSizesOptions handleFilterChange={handleFilterChange} />
+        <FilterSizesOptions handleFilterChange={handleFilterSizeChange} />
       </FilterItemContainer>
 
       <FilterItemContainer title="Sub-categories">

@@ -50,7 +50,7 @@ function CategoryTableMenuOptions({ category }) {
 
         <Modal.Window name="delete">
           <DeleteWindow
-            data={category}
+            // data={category}
             message="Are you sure that you want to delete this Category ?"
             onClick={onDeleteCategory}
           />

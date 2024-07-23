@@ -108,7 +108,7 @@ function ProductsByCategory() {
   return (
     <>
       <div ref={ref}>
-        <div className="relative grid grid-cols-[1fr] md:grid-cols-[30rem_1fr] gap-5">
+        <div className="relative grid grid-cols-[1fr] md:grid-cols-[23rem_1fr] gap-5">
           <div
             onClick={() => setShowMobileFilters(true)}
             className=" absolute top-0 left-0 md:hidden mb-5 mt-3 flex items-center gap-3 cursor-pointer "

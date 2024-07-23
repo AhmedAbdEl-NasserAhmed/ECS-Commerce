@@ -184,11 +184,16 @@ function ProductDetails() {
 
   if (isLoading || mainCategoryLoading) return <Spinner />;
 
+  const averageRatingStars =
+    reviews?.data?.reduce((acc, review) => {
+      return acc + review.ratings;
+    }, 0) / reviews?.data?.length;
+
   return (
     <BaseContainer className="p-[4rem]">
       <Box className="flex  flex-col gap-16 lg:flex-row ">
-        <Box className="flex flex-col md:flex-row gap-10 h-[600px] w-full ">
-          <Box className="flex md:flex-col flex-row w-full md:w-1/4 h-1/2 gap-10 md:order-none order-1 ">
+        <Box className="flex flex-col md:flex-row gap-5 h-[600px] w-full ">
+          <Box className="flex md:flex-col flex-row gap-10 md:order-none order-1 ">
             {data?.data?.images.map((image, index) => {
               return (
                 <Box
@@ -205,7 +210,7 @@ function ProductDetails() {
                     index === productDetailsState.imageIndex
                       ? "border-slate-400"
                       : ""
-                  } relative w-full h-full border-2 border-[#dcdbdb] cursor-pointer rounded-2xl transition-all duration-500`}
+                  } relative w-[10rem] h-[10rem] cursor-pointer transition-all duration-500`}
                   key={image.id}
                 >
                   {productDetailsState.isLoadingComplete && (
@@ -218,19 +223,21 @@ function ProductDetails() {
                     alt="img"
                     quality={100}
                     onLoad={handleLoadingImages}
-                    fill
-                    className="object-contain rounded-2xl "
+                    // fill
+                    width={100}
+                    height={100}
+                    className="object-contain rounded-2xl border-2 border-[#dcdbdb]"
                   />
                 </Box>
               );
             })}
           </Box>
-          <Box className="relative h-full w-full border-2 border-[#dcdbdb] rounded-2xl transition-all duration-500 ">
+          <Box className="relative grow transition-all duration-500 ">
             <Image
               src={data?.data?.images?.[productDetailsState.imageIndex]?.url}
               alt="img"
               fill
-              className="object-contain rounded-2xl"
+              className="object-contain border-2 border-[#dcdbdb] rounded-2xl"
             />
           </Box>
         </Box>
@@ -266,12 +273,14 @@ function ProductDetails() {
                 edit={false}
                 size={16}
                 count={5}
-                value={3}
+                value={averageRatingStars}
                 color1={"#CCC"}
                 color2={"#ffd700"}
               />
             </div>
-            <h2 className="font-semibold text-[1.4rem]">(2 Customer Review)</h2>
+            <h2 className="font-semibold text-[1.4rem]">
+              ({reviews?.data?.length} Customer Review)
+            </h2>
           </div>
           <q className="text-2xl text-gray-400 capitalize">
             {productDetailsState.selectedProduct?.description}
@@ -394,7 +403,9 @@ function ProductDetails() {
                   },
                 ]}
               />
-              <ReviewsSorting handleSortChange={handleSortChange} />
+              {reviews?.data?.length > 0 && (
+                <ReviewsSorting handleSortChange={handleSortChange} />
+              )}
             </div>
           )}
         </Menus>

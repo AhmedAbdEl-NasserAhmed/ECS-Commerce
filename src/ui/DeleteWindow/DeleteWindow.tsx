@@ -7,7 +7,7 @@ interface Props {
   message: string;
   setShowModal?: () => void;
   onClick?: any;
-  disabled: boolean;
+  disabled?: boolean;
 }
 
 function DeleteWindow({ disabled, message, setShowModal, onClick }: Props) {

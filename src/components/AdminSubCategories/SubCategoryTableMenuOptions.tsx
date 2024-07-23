@@ -51,7 +51,7 @@ function SubCategoryTableMenuOptions({ subCategory }) {
 
         <Modal.Window name="delete">
           <DeleteWindow
-            data={subCategory}
+            // data={subCategory}
             message="Are you sure that you want to delete this sub category ?"
             onClick={onDeleteSubCategory}
           />

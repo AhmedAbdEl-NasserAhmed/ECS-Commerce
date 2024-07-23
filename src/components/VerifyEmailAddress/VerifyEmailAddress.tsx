@@ -9,7 +9,7 @@ function VerifyEmailAddress() {
         <VerifyEmailAddressButton />
       </Modal.Open>
       <Modal.Window name="verifyEmail">
-        <VerifyEmailAddressPage />
+        <VerifyEmailAddressPage setShowModal={() => {}} />
       </Modal.Window>
     </Modal>
   );

@@ -100,7 +100,8 @@ const Cart = ({ setIsCartOpen }) => {
                       {/* TITLE */}
                       <div className="flex items-center justify-between gap-8">
                         <Link
-                          href={`/${locale}/product`}
+                          onClick={() => setIsCartOpen(false)}
+                          href={`/${locale}/user/product/${product.slug}`}
                           className="font-semibold capitalize"
                         >
                           {product.name}

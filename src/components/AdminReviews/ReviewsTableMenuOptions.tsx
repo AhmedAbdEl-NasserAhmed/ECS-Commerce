@@ -10,6 +10,8 @@ function ReviewsTableMenuOptions({ review }) {
 
   const { locale } = useParams();
 
+  return 1;
+
   return (
     <Modal>
       <Menus.Menu>

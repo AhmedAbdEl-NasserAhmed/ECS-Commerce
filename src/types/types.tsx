@@ -155,4 +155,5 @@ export interface CartItem {
   maxQuantity: number;
   cartItemId: string;
   colorId: string;
+  slug: string;
 }

@@ -11,7 +11,7 @@ function SearchBar() {
 
   const debounceValue = useDebounceHook(productName);
 
-  const { data, isLoading } = useGetProductByNameQuery(debounceValue);
+  const { data } = useGetProductByNameQuery(debounceValue);
 
   return (
     <div className="relative flex text-xl items-center justify-between gap-4 bg-gray-100 p-4 rounded-md grow">
@@ -25,7 +25,11 @@ function SearchBar() {
       <button className="cursor-pointer">
         <Image src="/search.png" width={16} height={16} alt="Search-logo" />
       </button>
-      <ProductsList setProductName={setProductName} data={data} />
+      <ProductsList
+        productName={productName}
+        setProductName={setProductName}
+        data={data}
+      />
     </div>
   );
 }

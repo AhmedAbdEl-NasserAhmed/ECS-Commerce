@@ -3,7 +3,7 @@ function ReviewsSorting({ handleSortChange }) {
     <div className="absolute top-0 right-0">
       <select
         name="sort"
-        className="py-2 px-4 rounded-2xl text-lg font-medium bg-white ring-1 ring-gray-400 w-full"
+        className="mt-5 lg:mt-0 py-2 px-4 rounded-2xl text-lg font-medium bg-white ring-1 ring-gray-400 w-full"
         onChange={handleSortChange}
       >
         <option value="">Sort By</option>

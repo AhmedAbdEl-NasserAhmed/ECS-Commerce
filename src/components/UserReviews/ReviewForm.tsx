@@ -32,7 +32,7 @@ const ReviewForm = (props) => {
 
   const onSubmitHandler = (data) => {
     if (data.stars < 1) {
-      toast.error("Please Review must be more than 1");
+      toast.error("Please Review must be 1 or more");
       return;
     }
 

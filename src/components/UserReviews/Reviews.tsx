@@ -18,7 +18,7 @@ const Reviews = ({ reviews, productId }: ReviewsProps) => {
 
   useEffect(() => {
     const hasReview = reviews?.some((review) => {
-      return review.user["_id"] === user?.["_id"];
+      return review.user?.["_id"] === user?.["_id"];
     });
     setIsReviewed(hasReview);
   }, [reviews, user]);

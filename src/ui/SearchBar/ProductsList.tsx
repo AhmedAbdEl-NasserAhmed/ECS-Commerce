@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
-function ProductsList({ data, setProductName }) {
+function ProductsList({ data, setProductName, productName }) {
   const { locale } = useParams();
 
   const [showList, setShowList] = useState<boolean>(true);
@@ -44,13 +44,19 @@ function ProductsList({ data, setProductName }) {
     <ul
       ref={ref}
       className={`absolute top-16 w-full left-0 bg-white shadow-xl overflow-y-scroll transition-all duration-300 flex flex-col gap-5 z-50 ${
-        data?.length > 0 && showList ? "h-96" : "h-0"
+        productName && showList ? "h-96" : "h-0"
       } `}
     >
+      {data?.length === 0 && (
+        <p className="font-semibold text-xl flex items-center justify-center h-full">
+          No Products Available
+        </p>
+      )}
+
       {data?.map((product) => {
         return (
           <li
-            className="p-6  hover:bg-gray-100 duration-300 transition-all"
+            className="p-6 text-black  hover:bg-gray-100 duration-300 transition-all"
             key={product["_id"]}
           >
             <Link href={`${locale}/user/product/${product?.slug}`}>

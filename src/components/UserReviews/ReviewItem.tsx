@@ -25,8 +25,8 @@ const ReviewItem = ({ review }: IReviewItem) => {
   return (
     <div className="bg-[#F5F5F5] p-7 rounded-md flex flex-col gap-2 mb-8 text-lg">
       <div className="flex justify-between items-center">
-        <div className="mb-3 font-bold text-3xl">{review.user.name}</div>
-        {isAuthenticated && review.user["_id"] === user["_id"] && (
+        <div className="mb-3 font-bold text-3xl">{review?.user?.name}</div>
+        {isAuthenticated && review?.user?.["_id"] === user["_id"] && (
           <UserReviewsMenuOptions review={review} />
         )}
       </div>

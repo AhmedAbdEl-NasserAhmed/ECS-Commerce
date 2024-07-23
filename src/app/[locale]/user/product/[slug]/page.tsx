@@ -129,6 +129,7 @@ function ProductDetails() {
         maxQuantity: productDetailsState.selectedColor.quantity,
         cart: user?.cart?.["_id"],
         colorId: productDetailsState.selectedColor["_id"],
+        slug: productDetailsState.selectedProduct.slug,
       })
     );
   }
@@ -177,11 +178,11 @@ function ProductDetails() {
 
   const isAdmin = user?.role === UserType.ADMIN;
 
-  if (isLoading || mainCategoryLoading || loadingReview) return <Spinner />;
+  if (isLoading || mainCategoryLoading) return <Spinner />;
 
   return (
-    <BaseContainer>
-      <Box className="flex p-[4rem] flex-col gap-16 lg:flex-row ">
+    <BaseContainer className="p-[4rem]">
+      <Box className="flex  flex-col gap-16 lg:flex-row ">
         <Box className="flex flex-col md:flex-row gap-10 h-[600px] w-full ">
           <Box className="flex md:flex-col flex-row w-full md:w-1/4 h-1/2 gap-10 md:order-none order-1 ">
             {data?.data?.images.map((image, index) => {
@@ -363,25 +364,29 @@ function ProductDetails() {
       </Box>
       {!isAdmin && (
         <Menus>
-          <div className="relative ">
-            <BaseTabs
-              orientation="horizontal"
-              tabs={[
-                {
-                  label: "Reviews",
-                  content: (
-                    <Reviews
-                      productId={
-                        productDetailsState?.selectedProduct?.productId
-                      }
-                      reviews={reviews?.data}
-                    />
-                  ),
-                },
-              ]}
-            />
-            <ReviewsSorting handleSortChange={handleSortChange} />
-          </div>
+          {loadingReview ? (
+            <Spinner />
+          ) : (
+            <div className="relative ">
+              <BaseTabs
+                orientation="horizontal"
+                tabs={[
+                  {
+                    label: "Reviews",
+                    content: (
+                      <Reviews
+                        productId={
+                          productDetailsState?.selectedProduct?.productId
+                        }
+                        reviews={reviews?.data}
+                      />
+                    ),
+                  },
+                ]}
+              />
+              <ReviewsSorting handleSortChange={handleSortChange} />
+            </div>
+          )}
         </Menus>
       )}
       {reviews?.numPages > page && (

@@ -8,8 +8,8 @@ import toast from "react-hot-toast";
 import Cookies from "js-cookie";
 import { useSetCartItemsMutation } from "@/lib/features/api/cartItemsApi";
 import { emptyCartItems } from "@/lib/features/cartSlice/cartSlice";
-import { HiOutlineUser, HiOutlineUserCircle } from "react-icons/hi2";
-import { HiOutlineLogout } from "react-icons/hi";
+import { HiOutlineUserCircle } from "react-icons/hi2";
+import { HiOutlineLogout, HiOutlineViewGrid } from "react-icons/hi";
 
 function UserMenu({ setIsProfileOpen }) {
   const { locale } = useParams();
@@ -42,6 +42,20 @@ function UserMenu({ setIsProfileOpen }) {
               <HiOutlineUserCircle />
             </span>
             <span>Profile</span>
+          </Link>
+        </li>
+      )}
+      {user?.role === UserType.ADMIN && (
+        <li className="p-2 hover:bg-gray-200 duration-200 transition-all">
+          <Link
+            className=" flex items-center gap-4 justify-center"
+            onClick={() => setIsProfileOpen(false)}
+            href={`/${locale}/admin/dashboard/products`}
+          >
+            <span className="text-3xl">
+              <HiOutlineViewGrid />
+            </span>
+            <span>Dashboard</span>
           </Link>
         </li>
       )}

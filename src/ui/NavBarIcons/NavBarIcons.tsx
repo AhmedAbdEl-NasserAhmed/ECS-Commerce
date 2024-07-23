@@ -27,7 +27,7 @@ function NavIcons() {
 
   return (
     <ul className=" relative flex items-center justify-between gap-4 xl:gap-6 me-4">
-      {user ? (
+      {user && user.isActive ? (
         <UserGreeting onClick={handleLoginClick} />
       ) : (
         <li onClick={handleLoginClick}>

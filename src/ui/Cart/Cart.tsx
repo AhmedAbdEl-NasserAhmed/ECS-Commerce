@@ -81,7 +81,7 @@ const Cart = ({ setIsCartOpen }) => {
         <>
           <h2 className="text-2xl font-semibold">Shopping Cart</h2>
           {/* LIST */}
-          <div className="flex flex-col gap-8">
+          <div className="flex flex-col gap-8 py-2 max-h-[40rem] overflow-y-auto">
             {cart.map((product: CartItem) => {
               return (
                 <div key={product.cartItemId} className="flex gap-4">

@@ -13,13 +13,21 @@ function ProductListOptions({ product }) {
   const { locale } = useParams();
 
   return (
-    <ul className="absolute top-7 -right-36 group-hover:right-8 group-hover:z-20 transition-all duration-700  flex flex-col gap-7">
+    <ul className="absolute top-7 items-center -right-36 group-hover:right-8 group-hover:z-20 transition-all duration-700  flex flex-col gap-5">
       {Layout.featureWishlist && (
-        <ProductActionItem icon={<HiOutlineHeart />} />
+        <ProductActionItem content={<HiOutlineHeart />} />
       )}
       <ProductActionItem
-        icon={<HiEye />}
+        content={<HiEye />}
         onClick={() => router.push(`/${locale}/user/product/${product?.slug}`)}
+      />
+      <ProductActionItem
+        content={
+          <p className="text-lg font-bold">
+            {product.size.value.toUpperCase()}
+          </p>
+        }
+        className={`w-[2.85rem] h-[2.85rem]`}
       />
     </ul>
   );

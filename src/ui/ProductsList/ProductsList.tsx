@@ -17,7 +17,10 @@ function ProductList(props: IProductList) {
   if (props.isLoading) return <Spinner />;
 
   return (
-    <GridContainer>
+    <GridContainer
+      className={"grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 my-0"}
+      columns={3}
+    >
       {uniqueItems?.map((product) => {
         return <ProductCard key={product["_id"]} product={product} />;
       })}

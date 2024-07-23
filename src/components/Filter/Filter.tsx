@@ -4,18 +4,34 @@ import FilterColorsOptions from "@/ui/FiltersColorOptions/FilterColorsOptions";
 import FilterSizesOptions from "@/ui/FilterSizesOptions/FilterSizesOptions";
 import RangeSlider from "@/ui/RangeSlider/RangeSlider";
 import SubCategoriesFiltertation from "@/ui/SubCategoriesFilteration/SubCategoriesFiltertation";
+import { BsFilterLeft } from "react-icons/bs";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { CSSProperties, useEffect, useRef, useState } from "react";
 
-const Filter = () => {
+function FilterItemContainer(props) {
+  return (
+    <div className="my-4">
+      {props.title && (
+        <div className="px-4 text-[1.7rem] font-medium mt-[.2rem] mb-[.5rem]">
+          {props.title}
+        </div>
+      )}
+      <div className="bg-white py-6 px-4 ">
+        <div>{props.children}</div>
+      </div>
+    </div>
+  );
+}
+
+const Filter = (props) => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const { replace } = useRouter();
 
   const [value, setValue] = useState<number[]>([1, 5000]);
 
-  const handleChange = (event: Event, newValue: number | number[]) => {
+  const handlePriceChange = (event: Event, newValue: number | number[]) => {
     const params = new URLSearchParams(searchParams);
     params.set("min", String(newValue[0]));
     params.set("max", String(newValue[1]));
@@ -23,26 +39,48 @@ const Filter = () => {
     replace(`${pathname}?${params.toString()}`);
   };
 
-  const handleFilterChange = (
-    e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>
-  ) => {
-    const { name, value } = e.target;
+  const handleFilterChange = (value) => {
     const params = new URLSearchParams(searchParams);
-    params.set(name, value);
+    params.set("size", value);
     replace(`${pathname}?${params.toString()}`);
   };
 
+  const filterScrollStyles: CSSProperties = {
+    position: "fixed",
+    width: "30rem",
+    top: "0px",
+    height: "100vh",
+    overflowY: "scroll",
+  };
+
   return (
-    <div className="p-12 flex justify-between gap-10 md:items-center lg:gap-0 flex-col md:flex-row shadow-md ">
-      <div className="flex  md:items-center flex-col md:flex-row gap-8 md:gap-6 ">
-        <FilterColorsOptions />
-        <FilterSizesOptions handleFilterChange={handleFilterChange} />
-        <SubCategoriesFiltertation />
-        <div className="w-[90%] md:w-72 m-auto">
-          <RangeSlider handleChange={handleChange} value={value} />
-        </div>
+    <div
+      className="shadow-md flex flex-col bg-[#F5F5F5]"
+      style={{
+        ...(props.isScrollPassedFilterEl && filterScrollStyles),
+      }}
+    >
+      <div className="mb-5 mt-3 flex items-center gap-3">
+        <BsFilterLeft size={"3rem"} />
+        <p className="text-[3rem] font-bold ">Filters</p>
       </div>
-      <div className="">
+      <FilterItemContainer title="Colors">
+        <FilterColorsOptions />
+      </FilterItemContainer>
+
+      <FilterItemContainer title="Sizes">
+        <FilterSizesOptions handleFilterChange={handleFilterChange} />
+      </FilterItemContainer>
+
+      <FilterItemContainer title="Sub-categories">
+        <SubCategoriesFiltertation />
+      </FilterItemContainer>
+
+      <FilterItemContainer title="Price">
+        <RangeSlider handleChange={handlePriceChange} value={value} />
+      </FilterItemContainer>
+
+      <FilterItemContainer title="Sort">
         <select
           name="sort"
           className="py-2 px-4 rounded-2xl text-lg font-medium bg-white ring-1 ring-gray-400 w-full"
@@ -54,7 +92,7 @@ const Filter = () => {
           <option value="-createdAt">Newest</option>
           <option value="createdAt">Oldest</option>
         </select>
-      </div>
+      </FilterItemContainer>
     </div>
   );
 };

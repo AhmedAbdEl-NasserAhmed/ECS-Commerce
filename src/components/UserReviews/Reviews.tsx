@@ -17,13 +17,13 @@ const Reviews = ({ reviews, productId }: ReviewsProps) => {
   const user = useAppSelector((state) => state.usersSlice.user);
 
   useEffect(() => {
-    reviews?.some((review) => {
-      if (review.user["_id"] === user["_id"]) {
-        setIsReviewed(true);
-      } else {
-        setIsReviewed(false);
-      }
-    });
+    if (user && reviews && Array.isArray(reviews)) {
+      const hasReviews = reviews?.some(
+        (review) => review.user["_id"] === user["_id"]
+      );
+
+      setIsReviewed(hasReviews);
+    }
   }, [reviews, user]);
 
   return (

@@ -80,50 +80,77 @@ function ProductsByCategory() {
     replace(`${pathName}?${params.toString()}`, { scroll: false });
   }, [page, pathName, replace, searchParams]);
 
-  if (!data) return <Spinner />;
+  const ref = useRef(null);
 
+  const [isScrollPassedFilterEl, setIsScrollPassedFilterEl] =
+    useState<boolean>(false);
+
+  useEffect(() => {
+    const scroll = (e) => {
+      if (ref.current) {
+        const element = ref.current.getBoundingClientRect();
+        setIsScrollPassedFilterEl(element.top <= 0);
+      }
+    };
+    window.addEventListener("scroll", scroll);
+
+    return () => {
+      window.removeEventListener("scroll", scroll);
+    };
+  }, []);
+
+  if (!data) return <Spinner />;
   return (
-    <BaseContainer className="py-0">
-      <div>
-        <div className="bg-white w-full sticky top-0 z-50 p-2">
-          <Filter />
-        </div>
-        <div>
-          <TitledProductList
-            baseContainerClass="py-0"
-            products={products}
-            isLoading={isLoading}
-          />
+    <>
+      <div ref={ref}>
+        <div className="grid grid-cols-[30rem_1fr] gap-5">
+          <div>
+            <Filter isScrollPassedFilterEl={isScrollPassedFilterEl} />
+          </div>
+          <div>
+            <TitledProductList
+              baseContainerClass="py-0"
+              products={products}
+              isLoading={isLoading}
+            />
+            {data?.pagesNumber !== page &&
+              data?.pagesNumber > 2 &&
+              data?.data.length > 0 && (
+                <div
+                  ref={elementRef}
+                  className="flex w-full md:w-1/2 items-center m-auto justify-center p-12"
+                >
+                  <Button
+                    disabled={isFetching}
+                    onClick={() => setPage((page) => page + 1)}
+                    sx={{
+                      width: "20rem",
+                      height: "5rem",
+                      background: "transparent",
+                      boxShadow: "none",
+                      border: "2px dashed #ed0534",
+                      padding: "0.85rem",
+                      color: "#ed0534",
+                      fontSize: "1.2rem",
+                      "&:hover": {
+                        border: "2px dashed #000",
+                        color: "#000",
+                        background: "transparent",
+                        boxShadow: "none",
+                      },
+                    }}
+                    type="button"
+                    variant="contained"
+                    size="large"
+                  >
+                    {isFetching ? <MiniSpinner /> : "Show More"}
+                  </Button>
+                </div>
+              )}
+          </div>
         </div>
       </div>
-      {data?.pagesNumber !== page &&
-        data?.pagesNumber > 2 &&
-        data?.data.length > 0 && (
-          <div
-            ref={elementRef}
-            className="flex w-full md:w-1/2 items-center m-auto justify-center p-12"
-          >
-            <Button
-              disabled={isFetching}
-              onClick={() => setPage((page) => page + 1)}
-              sx={{
-                width: "100%",
-                padding: "0.85rem",
-                fontSize: "1.2rem",
-                backgroundColor: "#ed0534",
-                "&:hover": {
-                  backgroundColor: "#161616",
-                },
-              }}
-              type="button"
-              variant="contained"
-              size="large"
-            >
-              {isFetching ? <MiniSpinner /> : "Show More"}
-            </Button>
-          </div>
-        )}
-    </BaseContainer>
+    </>
   );
 }
 

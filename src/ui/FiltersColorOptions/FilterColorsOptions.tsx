@@ -3,7 +3,8 @@
 import { useGetAllProductsColorsQuery } from "@/lib/features/api/productsApi";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
+import ColorItem from "../ColorItem/ColorItem";
 
 function FilterColorsOptions() {
   const { data } = useGetAllProductsColorsQuery("colors");
@@ -16,39 +17,53 @@ function FilterColorsOptions() {
 
   const { replace } = useRouter();
 
-  const handleAddColorToParams = (e: ChangeEvent<HTMLSelectElement>) => {
-    if (e.target.value !== "" && !selectedColors.includes(e.target.value)) {
-      const newSelectedItems = [...selectedColors, e.target.value];
-      setSelectedColors(newSelectedItems);
+  const isColorActive = (color) => selectedColors.includes(color);
 
-      const params = new URLSearchParams(searchParams);
+  const updateUrl = (color) => {
+    const newSelectedItems = [...selectedColors, color];
 
-      const query = newSelectedItems.join(",");
+    const params = new URLSearchParams(searchParams);
 
-      params.set("colors", query);
+    const query = newSelectedItems.join(",");
 
-      const newUrl = `${pathName}?${params.toString()}`;
+    params.set("colors", query);
 
-      replace(newUrl);
+    const newUrl = `${pathName}?${params.toString()}`;
+
+    replace(newUrl);
+
+    return newSelectedItems;
+  };
+
+  const handleAddColorToParams = (color) => {
+    if (color !== "" && !isColorActive(color)) {
+      setSelectedColors((s) => s.concat(color));
     } else {
-      setSelectedColors([]);
-      const params = new URLSearchParams(searchParams);
-      params.set("colors", "");
-      replace(`${pathName}?${params.toString()}`);
+      setSelectedColors((s) => s.filter((c) => c !== color));
     }
   };
 
+  useEffect(() => {
+    updateUrl(selectedColors);
+  }, [selectedColors]);
+
   return (
-    <select
-      onChange={handleAddColorToParams}
-      className="py-2 px-4 rounded-2xl text-lg font-medium bg-[#EBEDED]"
-      name="colors"
-    >
-      <option value="">colors</option>
-      {data?.data?.map((color: string) => (
-        <option key={color}>{color}</option>
-      ))}
-    </select>
+    <div className="flex gap-8 flex-wrap justify-center">
+      {data?.data?.map((color) => {
+        return (
+          <div
+            key={color}
+            onClick={handleAddColorToParams.bind(null, color)}
+            className={`w-[2rem] h-[2rem] rounded-full cursor-pointer w-[2.3rem] h-[2.3rem] `}
+            style={{
+              background: color,
+              outline: isColorActive(color) ? "1px solid #ed0534" : "",
+              outlineOffset: isColorActive(color) ? "2px" : "",
+            }}
+          ></div>
+        );
+      })}
+    </div>
   );
 }
 

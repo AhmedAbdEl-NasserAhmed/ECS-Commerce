@@ -18,7 +18,7 @@ import {
 import Spinner from "../Spinner/Spinner";
 
 export const DEFAULT_PAGE_SIZE = 10;
-export const DEFAULT_ROW_HEIGHT = 100;
+export const DEFAULT_ROW_HEIGHT = 50;
 
 function BaseReactTable({
   data,
@@ -73,11 +73,13 @@ function BaseReactTable({
   };
 
   useEffect(() => {
-    setPagination((s) => ({
-      ...s,
-      pageSize: paginationControllers?.pageSize || DEFAULT_PAGE_SIZE,
-    }));
-  }, [paginationControllers.pageSize]);
+    if (paginationControllers?.pageSize) {
+      setPagination((s) => ({
+        ...s,
+        pageSize: paginationControllers?.pageSize || DEFAULT_PAGE_SIZE,
+      }));
+    }
+  }, [paginationControllers?.pageSize]);
 
   if (!data) return <Spinner />;
 

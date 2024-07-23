@@ -31,7 +31,7 @@ const TitledProductList: React.FC<ITitledProductList> = (props) => {
           </p>
         )}
       </div>
-      <div className="pt-12">
+      <div className="pt-8">
         <ProductList products={props.products} isLoading={props.isLoading} />
       </div>
     </BaseContainer>

@@ -1,21 +1,51 @@
 import { sizesOptions } from "@/constants/sizeOptions";
+import { useState } from "react";
 
 function FilterSizesOptions({ handleFilterChange }) {
+  const [selectedSize, setSelectedSize] = useState("");
+  const onSelectSizeHandler = (size) => {
+    let _size = size;
+    if (size === selectedSize) {
+      _size = "";
+    }
+    handleFilterChange(_size);
+    setSelectedSize(_size);
+  };
   return (
-    <select
-      name="size"
-      className="py-2 px-4 rounded-2xl text-lg font-medium bg-[#EBEDED]"
-      onChange={handleFilterChange}
-    >
-      <option value="">Size</option>
+    <div className="flex gap-4 flex-wrap">
       {sizesOptions.map((size) => {
         return (
-          <option key={size.id} value={size.value}>
+          <div
+            key={size.id}
+            className="cursor-pointer w-[4rem] py-5 bg-white text-center rounded-lg text-[#ed0534] uppercase"
+            style={{
+              background: selectedSize === size.value ? "#ed0534" : "",
+              color: selectedSize === size.value ? "white" : "",
+              outline: "1px solid #ed0534",
+            }}
+            onClick={() => {
+              onSelectSizeHandler(size.value);
+            }}
+          >
             {size.value}
-          </option>
+          </div>
         );
       })}
-    </select>
+    </div>
+    // <select
+    //   name="size"
+    //   className="py-2 w-full px-4 rounded-2xl text-lg font-medium bg-[#EBEDED]"
+    //   onChange={handleFilterChange}
+    // >
+    //   <option value="">Size</option>
+    //   {sizesOptions.map((size) => {
+    //     return (
+    //       <option key={size.id} value={size.value}>
+    //         {size.value}
+    //       </option>
+    //     );
+    //   })}
+    // </select>
   );
 }
 

@@ -72,19 +72,19 @@ function CartSideMenu({ setOpenSideMenu, openSideMenu, setOpens }) {
               Shopping Cart
             </h2>
             {/* LIST */}
+
             <div className="flex flex-col gap-14">
               {cart.map((product: CartItem) => {
                 return (
                   <div key={product.cartItemId} className="flex gap-4">
-                    {true && (
-                      <Image
-                        src={product.image}
-                        alt=""
-                        width={72}
-                        height={96}
-                        className="object-cover rounded-xl"
-                      />
-                    )}
+                    <Image
+                      src={product.image}
+                      alt=""
+                      width={72}
+                      height={96}
+                      className="object-cover rounded-xl"
+                    />
+
                     <div className="flex flex-col justify-between w-full">
                       {/* TOP */}
                       <div className="text-xl">

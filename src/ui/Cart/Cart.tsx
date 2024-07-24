@@ -79,7 +79,10 @@ const Cart = ({ setIsCartOpen }) => {
         <div className="">Cart is Empty</div>
       ) : (
         <>
-          <h2 className="text-2xl font-semibold">Shopping Cart</h2>
+          <div className="flex justify-between items-center">
+            <h2 className="text-2xl font-semibold">Shopping Cart</h2>
+            <button>Clear All &times;</button>
+          </div>
           {/* LIST */}
           <div className="flex flex-col gap-8 py-2 max-h-[40rem] overflow-y-auto">
             {cart.map((product: CartItem) => {

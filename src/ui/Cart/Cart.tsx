@@ -70,6 +70,17 @@ const Cart = ({ setIsCartOpen }) => {
     localStorage.setItem("removedItems", JSON.stringify(removedItems));
   }, [removedItems]);
 
+  const removeCartItem = (product) => {
+    dispatch(addExistedProduct(product.cartItemId));
+    handleDeleteProduct(product);
+  };
+
+  const removeAllCartItems = () => {
+    cart.forEach((product) => {
+      removeCartItem(product);
+    });
+  };
+
   return (
     <div
       ref={ref}
@@ -81,7 +92,7 @@ const Cart = ({ setIsCartOpen }) => {
         <>
           <div className="flex justify-between items-center">
             <h2 className="text-2xl font-semibold">Shopping Cart</h2>
-            <button>Clear All &times;</button>
+            <button onClick={removeAllCartItems}>Clear All &times;</button>
           </div>
           {/* LIST */}
           <div className="flex flex-col gap-8 py-2 max-h-[40rem] overflow-y-auto">
@@ -168,10 +179,7 @@ const Cart = ({ setIsCartOpen }) => {
                       <button
                         disabled={user?.role === UserType.ADMIN}
                         className="text-blue-500 cursor-pointer"
-                        onClick={() => {
-                          dispatch(addExistedProduct(product.cartItemId));
-                          handleDeleteProduct(product);
-                        }}
+                        onClick={() => removeCartItem(product)}
                       >
                         Remove
                       </button>

@@ -7,6 +7,7 @@ import {
 } from "@/lib/features/api/ordersApi";
 import { OrderStatusEnum } from "@/types/enums";
 import { AdminProductProps } from "@/types/types";
+import GridContainer from "@/ui/Container/GridContainer";
 import MultiChoiceSelectMenu from "@/ui/MultiChoiceSelectMenu/MultiChoiceSelectMenu";
 import OrderStatus from "@/ui/OrderStatus/OrderStatus";
 import Spinner from "@/ui/Spinner/Spinner";
@@ -41,15 +42,15 @@ export const requestCheckupTimelineStages = [
 function ViewOrder() {
   const params = useParams();
 
-  const { locale } = useParams();
-
-  const router = useRouter();
-
   const { data: order, isFetching } = useGetOrderByIdQuery(params.id, {
     skip: !params.id,
   });
 
   const tIndex = useTranslations("Index");
+
+  const { locale } = useParams();
+
+  const router = useRouter();
 
   const { timelineData, goNextStage, goPrevStage } = useTimeline(
     requestCheckupTimelineStages
@@ -119,14 +120,17 @@ function ViewOrder() {
           type="button"
           variant="contained"
           size="large"
+          onClick={() => {
+            router.push(`/${locale}/admin/dashboard/orders/edit/${params.id}`);
+          }}
         >
-          {tIndex("View All")}
+          {t("Edit Order")}
         </Button>
       </Box>
       <Box
         sx={{
           paddingInline: "7rem",
-          marginBottom: "5rem",
+          marginBlock: "3rem 5rem",
         }}
       >
         <BaseTimeline
@@ -135,7 +139,7 @@ function ViewOrder() {
           stages={requestCheckupTimelineStages}
         />
       </Box>
-      <Box className="p-5 relative grow flex flex-col gap-8 bg-white rounded-2xl border-2 p-10 border-slate-100 shadow-md">
+      <Box className="p-5 relative bg-white rounded-2xl border-2 p-10 border-slate-100 shadow-md">
         <Box className="mb-4">
           <h2 className="text-3xl font-semibold mb-5">{t("View Order")}</h2>
           <span className=" absolute left-0 block h-[1px] w-full bg-gray-200">
@@ -143,39 +147,35 @@ function ViewOrder() {
           </span>
         </Box>
 
-        <Box className="flex gap-8 flex-col lg:flex-row justify-between ">
-          <Box className="w-full lg:w-[70%] ">
-            <Box className="relative grid grid-cols-autofill-minmax gap-12">
-              {/* DATA ITEM */}
-              <Box>
-                <p>{t("Transaction Id")}</p>
-                <p>{order?.data?.transaction_id}</p>
-              </Box>
-              {/* DATA ITEM */}
-              <Box>
-                <p>{t("Email")}</p>
-                <p>{order?.data?.user?.email}</p>
-              </Box>
-              {/* DATA ITEM */}
-              <Box>
-                <p>{t("mobile")}</p>
-                <p>{order?.data?.billingData?.[0]?.phoneNumber}</p>
-              </Box>
-              {/* DATA ITEM */}
-              <Box>
-                <p>{t("order price")}</p>
-                <p>{order?.data?.orderPrice}</p>
-              </Box>
-              {/* DATA ITEM */}
-              <Box>
-                <p>{t("order status")}</p>
-                <OrderStatus
-                  status={OrderStatusEnum[order?.data?.orderStatus]}
-                />
-              </Box>
-            </Box>
+        <GridContainer>
+          {/* DATA ITEM */}
+          <Box>
+            <p className="font-semibold text-xl">{t("transaction id")}</p>
+            <p>{order?.data?.transaction_id}</p>
           </Box>
-        </Box>
+          {/* DATA ITEM */}
+          <Box>
+            <p className="font-semibold text-xl">{t("Email")}</p>
+            <p>{order?.data?.user?.email}</p>
+          </Box>
+          {/* DATA ITEM */}
+          <Box>
+            <p className="font-semibold text-xl">{t("mobile")}</p>
+            <p>{order?.data?.billingData?.[0]?.phoneNumber}</p>
+          </Box>
+          {/* DATA ITEM */}
+          <Box>
+            <p className="font-semibold text-xl">{t("order price")}</p>
+            <p>{order?.data?.orderPrice}</p>
+          </Box>
+          {/* DATA ITEM */}
+          <Box>
+            <p className="font-semibold text-xl">{t("order status")}</p>
+            <div className="ps-5">
+              <OrderStatus status={OrderStatusEnum[order?.data?.orderStatus]} />
+            </div>
+          </Box>
+        </GridContainer>
       </Box>
     </Box>
   );

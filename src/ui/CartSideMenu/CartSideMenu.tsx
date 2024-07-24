@@ -69,7 +69,7 @@ function CartSideMenu({ setOpenSideMenu, openSideMenu, setOpens }) {
   return (
     <div
       className={`fixed top-0 ${
-        openSideMenu ? "left-0" : "-left-[550px]"
+        openSideMenu ? "start-0" : "-start-[550px]"
       } transition-all duration-300  h-screen w-full backdrop-filter backdrop-blur-sm z-50  `}
     >
       <div ref={ref} className="bg-white w-[70vw] h-full p-6 overflow-y-scroll">

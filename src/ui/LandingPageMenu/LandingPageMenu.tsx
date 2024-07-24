@@ -14,6 +14,7 @@ import { emptyCartItems } from "@/lib/features/cartSlice/cartSlice";
 
 import Cookies from "js-cookie";
 import { useSetCartItemsMutation } from "@/lib/features/api/cartItemsApi";
+import LanguageSelector from "../LanguageSelector/LanguageSelector";
 
 function LandingPageMenu() {
   const [opens, setOpens] = useState<boolean>(false);
@@ -45,7 +46,7 @@ function LandingPageMenu() {
         className="cursor-pointer"
       />
       {opens && (
-        <ul className="fixed h-screen w-full gap-12 bg-black z-[1000] text-white text-3xl flex flex-col items-center justify-center left-0 top-0 ">
+        <ul className="fixed h-screen w-full gap-12 bg-black z-[1000] text-white text-3xl flex flex-col items-center justify-center start-0 top-0 ">
           <li>
             <button
               onClick={() => {
@@ -110,14 +111,18 @@ function LandingPageMenu() {
               Logout
             </Link>
           </li>
+
           {!userRoleAdmin && (
             <li onClick={() => setOpenSideMenu(true)}>
               <Link href="">Cart ({cart.length})</Link>
             </li>
           )}
+          <li>
+            <LanguageSelector />
+          </li>
           <span
             onClick={() => setOpens(false)}
-            className="text-6xl absolute top-4 right-4 cursor-pointer"
+            className="text-6xl absolute top-4 end-4 cursor-pointer"
           >
             &times;
           </span>

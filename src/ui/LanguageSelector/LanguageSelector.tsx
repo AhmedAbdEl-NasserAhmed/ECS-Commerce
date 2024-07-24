@@ -27,7 +27,7 @@ function LanguageSelector() {
     <div
       ref={ref}
       onClick={() => setShowMenu((show) => !show)}
-      className="relative cursor-pointer"
+      className="relative cursor-pointer text-black text-xl"
     >
       <span className="w-[3rem] h-[3rem] ">
         {locale === "ar" ? (
@@ -37,7 +37,7 @@ function LanguageSelector() {
         )}
       </span>
       {showMenu && (
-        <ul className="absolute top-12 right-6 bg-white p-2  z-10 shadow-xl flex flex-col gap-4 ">
+        <ul className="absolute top-12 end-6 bg-white p-2  z-10 shadow-xl flex flex-col gap-4 ">
           {languages.map((language) => {
             return (
               <li

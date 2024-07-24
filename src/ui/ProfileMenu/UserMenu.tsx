@@ -29,7 +29,7 @@ function UserMenu({ setIsProfileOpen }) {
   return (
     <ul
       ref={ref}
-      className=" absolute text-xl left-0 top-12 bg-white  flex flex-col z-20 gap-4 shadow-[0_3px_10px_rgb(0,0,0,0.2)] p-2 w-48 font-semibold text-center  rounded-lg"
+      className=" absolute text-xl start-0 top-12 bg-white  flex flex-col z-20 gap-4 shadow-[0_3px_10px_rgb(0,0,0,0.2)] p-2 w-48 font-semibold text-center  rounded-lg"
     >
       {user?.role === UserType.USER && (
         <li className="p-2 hover:bg-gray-200 duration-200 transition-all">

@@ -1,6 +1,6 @@
 function ReviewsSorting({ handleSortChange }) {
   return (
-    <div className="absolute top-0 right-0">
+    <div className="absolute top-0 end-0">
       <select
         name="sort"
         className="mt-5 lg:mt-0 py-2 px-4 rounded-2xl text-lg font-medium bg-white ring-1 ring-gray-400 w-full"

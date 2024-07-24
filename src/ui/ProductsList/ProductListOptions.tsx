@@ -13,7 +13,7 @@ function ProductListOptions({ product }) {
   const { locale } = useParams();
 
   return (
-    <ul className="absolute top-7 items-center -right-36 group-hover:right-8 group-hover:z-20 transition-all duration-700  flex flex-col gap-5">
+    <ul className="absolute top-7 items-center -end-36 group-hover:end-8 group-hover:z-20 transition-all duration-700  flex flex-col gap-5">
       {Layout.featureWishlist && (
         <ProductActionItem content={<HiOutlineHeart />} />
       )}

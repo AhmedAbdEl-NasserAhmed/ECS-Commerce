@@ -113,7 +113,7 @@ function ProductsByCategory() {
         <div className="relative grid grid-cols-[1fr] md:grid-cols-[23rem_1fr] gap-5">
           <div
             onClick={() => setShowMobileFilters(true)}
-            className=" absolute top-0 left-0 md:hidden mb-5 mt-3 flex items-center gap-3 cursor-pointer "
+            className=" absolute top-0 start-0 md:hidden mb-5 mt-3 flex items-center gap-3 cursor-pointer "
           >
             <BsFilterLeft size={"3rem"} />
             <p className="text-[3rem] font-bold ">Filters</p>

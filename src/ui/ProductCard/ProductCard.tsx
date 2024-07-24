@@ -50,7 +50,7 @@ const ProductCard = ({ product }) => {
 
         <ProductListOptions product={product} />
         <div
-          className="absolute font-bold top-[1.5rem] left-[1.5rem] text-white z-20 py-[.3rem] px-[.8rem] text-base
+          className="absolute font-bold top-[1.5rem] start-[1.5rem] text-white z-20 py-[.3rem] px-[.8rem] text-base
           flex flex-col gap-2 text-center uppercase"
         >
           <div className="bg-[green] py-[.3rem] px-[.8rem] rounded">

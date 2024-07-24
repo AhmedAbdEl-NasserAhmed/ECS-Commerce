@@ -73,7 +73,7 @@ const Cart = ({ setIsCartOpen }) => {
   return (
     <div
       ref={ref}
-      className="w-max absolute p-4 rounded-lg shadow-[0_3px_10px_rgb(0,0,0,0.2)] bg-white top-12 right-0 flex flex-col gap-6 z-20"
+      className="w-max absolute p-4 rounded-lg shadow-[0_3px_10px_rgb(0,0,0,0.2)] bg-white top-12 end-0 flex flex-col gap-6 z-20"
     >
       {cart?.length === 0 ? (
         <div className="">Cart is Empty</div>

@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import { HiEllipsisVertical } from "react-icons/hi2";
 import styles from "./Menus.module.scss";
 import useClickOutside from "../../hooks/useClickOutside";
+import { useParams } from "next/navigation";
 
 interface MenusButton {
   children: React.ReactNode;
@@ -53,19 +54,25 @@ function Toggle({ id }) {
   const { openId, closeMenus, setPosition, openHandler } =
     useContext(MenusContext);
 
+  const { locale } = useParams();
+
   function handleClick(e) {
     e.stopPropagation();
 
     const rect = e.target.closest("button").getBoundingClientRect();
 
-    setPosition({
-      x: window.innerWidth - rect.width - rect.x + 20,
-      y: rect.y + rect.height - 15,
-    });
+    const isRTL = locale === "ar";
+
+    const x = isRTL
+      ? window.innerWidth - rect.width - rect.x - 110
+      : window.innerWidth - rect.width - rect.x + 20;
+
+    const y = rect.y + rect.height - 15;
+
+    setPosition({ x, y });
 
     openId === "" || openId !== id ? openHandler(id) : closeMenus("");
   }
-
   return (
     <button className={styles["menus__toggle"]} onClick={handleClick}>
       <HiEllipsisVertical />

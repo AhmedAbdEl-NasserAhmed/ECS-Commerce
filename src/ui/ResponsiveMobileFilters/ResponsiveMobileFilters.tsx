@@ -7,7 +7,7 @@ function ResponsiveMobileFilters({ showMobileFilters, setShowMobileFilters }) {
   return (
     <div
       className={` fixed top-0 w-[100vw] backdrop-filter backdrop-blur-md h-screen bg-opacity-30 bg-black  ${
-        !showMobileFilters ? "-left-[120vw]" : "left-0"
+        !showMobileFilters ? "-start-[120vw]" : "start-0"
       } w-50rem z-50 duration-300 transition-all `}
     >
       <div ref={ref}>

@@ -14,6 +14,7 @@ import toast from "react-hot-toast";
 import { useAppDispatch } from "@/lib/hooks";
 import { loginUser } from "@/lib/features/usersSlice/usersSlice";
 import { useTranslations } from "next-intl";
+import MiniSpinner from "@/ui/MiniSpinner/MiniSpinner";
 
 function AdminLoginForm() {
   const {
@@ -148,7 +149,7 @@ function AdminLoginForm() {
           variant="contained"
           size="large"
         >
-          {t("Login")}
+          {adminState.isLoading ? <MiniSpinner /> : t("Login")}
         </Button>
       </Box>
     </Box>

@@ -9,11 +9,25 @@ import { HiChevronRight } from "react-icons/hi2";
 import BaseTable from "@/ui/BaseReactTable";
 import { ordersTableHeaders } from "@/constants/ordersTableHeaders";
 import { useTranslations } from "next-intl";
-import { useGetAllOrdersQuery } from "@/lib/features/api/ordersApi";
+import { useLazyGetAllOrdersQuery } from "@/lib/features/api/ordersApi";
+import useBaseTablePagination from "@/hooks/useBaseTablePagination/useBaseTablePagination";
+import { useEffect } from "react";
 
 function Orders() {
   const t = useTranslations("Dashboard");
-  const { data: orders, isFetching } = useGetAllOrdersQuery("orders");
+  const [getPaginatedOrders, getPaginatedOrdersResponse] =
+    useLazyGetAllOrdersQuery();
+
+  const { paginationControllers } = useBaseTablePagination(
+    getPaginatedOrdersResponse?.data?.numPages
+  );
+
+  useEffect(() => {
+    getPaginatedOrders({
+      page: paginationControllers.page + 1,
+      limit: paginationControllers.pageSize,
+    });
+  }, [paginationControllers.page, paginationControllers.pageSize]);
 
   return (
     <Box className=" flex flex-col gap-8 px-[4rem] py-[1.2rem] bg-[#FDFDFD] ">
@@ -41,10 +55,15 @@ function Orders() {
           </span>
         </Box>
         <Menus>
-          {isFetching ? (
+          {getPaginatedOrdersResponse.isFetching ? (
             <Spinner />
           ) : (
-            <BaseTable data={orders?.data} columns={ordersTableHeaders(t)} />
+            <BaseTable
+              isLoading={getPaginatedOrdersResponse.isFetching}
+              paginationControllers={paginationControllers}
+              data={getPaginatedOrdersResponse?.data?.data}
+              columns={ordersTableHeaders(t)}
+            />
           )}
         </Menus>
       </Box>

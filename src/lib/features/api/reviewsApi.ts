@@ -1,4 +1,5 @@
 import axiosBaseQuery from "@/api";
+import { queryBuilder } from "@/lib/helpers";
 
 import { createApi } from "@reduxjs/toolkit/query/react";
 
@@ -36,6 +37,17 @@ const reviewsApi = createApi({
       providesTags: ["REVIEWS"],
     }),
 
+    getAllAdminReviews: builder.query({
+      query: (query) => {
+        const q = queryBuilder(query);
+        return {
+          url: `reviews/allReviewsAdmin?${q}`,
+          method: "GET",
+        };
+      },
+      providesTags: ["REVIEWS"],
+    }),
+
     getProductReviews: builder.query({
       query: ({ id, sort, page }) => ({
         url: `reviews/${id}/product?sort=${sort}&limit=3&page=${page}`,
@@ -61,6 +73,7 @@ export const {
   useGetAllReviewsQuery,
   useEditReviewMutation,
   useGetProductReviewsQuery,
+  useLazyGetAllAdminReviewsQuery,
 } = reviewsApi;
 
 export default reviewsApi;

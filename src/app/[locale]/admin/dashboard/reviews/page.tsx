@@ -5,28 +5,31 @@ import Spinner from "@/ui/Spinner/Spinner";
 import { Box } from "@mui/material";
 import Link from "next/link";
 import { HiChevronRight } from "react-icons/hi2";
-
 import BaseTable from "@/ui/BaseReactTable";
 import { useParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { reviewsTableHeaders } from "@/constants/reviewsTableHeaders";
-
-const data = {
-  data: [
-    {
-      _id: "1234",
-      email: "khalednasser788@gmail.com",
-      mobile: "0124561244",
-      review: "this is my review",
-      stars: 5,
-      productName: "Wide legs",
-    },
-  ],
-};
-
-const isFetching = false;
+import { useLazyGetAllAdminReviewsQuery } from "@/lib/features/api/reviewsApi";
+import useBaseTablePagination from "@/hooks/useBaseTablePagination/useBaseTablePagination";
+import { useEffect } from "react";
 
 function Reviews() {
+  const [getPaginatedReviews, getPaginatedReviewsResponse] =
+    useLazyGetAllAdminReviewsQuery();
+
+  console.log(getPaginatedReviewsResponse?.data);
+
+  const { paginationControllers } = useBaseTablePagination(
+    getPaginatedReviewsResponse?.data?.numPages
+  );
+
+  useEffect(() => {
+    getPaginatedReviews({
+      page: paginationControllers.page + 1,
+      limit: paginationControllers.pageSize,
+    });
+  }, [paginationControllers.page, paginationControllers.pageSize]);
+
   const t = useTranslations("Dashboard");
 
   return (
@@ -38,7 +41,7 @@ function Reviews() {
           </h2>
           <Box className="flex items-center gap-4 text-[1.4rem]">
             <Link className="text-blue-400" href="/">
-            {t("Home")}
+              {t("Home")}
             </Link>
             <span>
               <HiChevronRight />
@@ -55,10 +58,15 @@ function Reviews() {
           </span>
         </Box>
         <Menus>
-          {isFetching ? (
+          {getPaginatedReviewsResponse.isFetching ? (
             <Spinner />
           ) : (
-            <BaseTable data={data?.data} columns={reviewsTableHeaders(t)} />
+            <BaseTable
+              isLoading={getPaginatedReviewsResponse.isFetching}
+              paginationControllers={paginationControllers}
+              data={getPaginatedReviewsResponse?.data?.data}
+              columns={reviewsTableHeaders(t)}
+            />
           )}
         </Menus>
       </Box>

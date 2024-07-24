@@ -1,7 +1,7 @@
 "use client";
 
 import { subCategoriesTableHeaders } from "@/constants/subCategoriesTableHeaders";
-import { useGetAllSubCategoriesQuery } from "@/lib/features/api/subCategoriesApi";
+import { useLazyGetAllAdminSubCategoriesQuery } from "@/lib/features/api/subCategoriesApi";
 import Menus from "@/ui/Menus/Menus";
 import Spinner from "@/ui/Spinner/Spinner";
 import { Box } from "@mui/material";
@@ -12,9 +12,26 @@ import BaseTable from "@/ui/BaseReactTable";
 import { useGetAllCategoriesQuery } from "@/lib/features/api/categoriesApi";
 import { useParams } from "next/navigation";
 import { useTranslations } from "next-intl";
+import { useEffect } from "react";
+import useBaseTablePagination from "@/hooks/useBaseTablePagination/useBaseTablePagination";
 
 function SubCategories() {
-  const { data, isFetching } = useGetAllSubCategoriesQuery("sub-categories");
+  const [getPaginatedSubCategories, getPaginatedSubCategoriesResponse] =
+    useLazyGetAllAdminSubCategoriesQuery();
+
+  console.log(getPaginatedSubCategoriesResponse?.data);
+
+  const { paginationControllers } = useBaseTablePagination(
+    getPaginatedSubCategoriesResponse?.data?.numPages
+  );
+
+  useEffect(() => {
+    getPaginatedSubCategories({
+      page: paginationControllers.page + 1,
+      limit: paginationControllers.pageSize,
+    });
+  }, [paginationControllers.page, paginationControllers.pageSize]);
+
   const t = useTranslations("Dashboard");
   return (
     <Box className=" flex flex-col gap-8 px-[4rem] py-[1.2rem] bg-[#FDFDFD] ">
@@ -25,7 +42,7 @@ function SubCategories() {
           </h2>
           <Box className="flex items-center gap-4 text-[1.4rem]">
             <Link className="text-blue-400" href="/">
-            {t("Home")}
+              {t("Home")}
             </Link>
             <span>
               <HiChevronRight />
@@ -42,10 +59,15 @@ function SubCategories() {
           </span>
         </Box>
         <Menus>
-          {isFetching ? (
+          {getPaginatedSubCategoriesResponse.isFetching ? (
             <Spinner />
           ) : (
-            <BaseTable data={data?.data} columns={subCategoriesTableHeaders} />
+            <BaseTable
+              isLoading={getPaginatedSubCategoriesResponse.isFetching}
+              paginationControllers={paginationControllers}
+              data={getPaginatedSubCategoriesResponse?.data?.data}
+              columns={subCategoriesTableHeaders}
+            />
           )}
         </Menus>
       </Box>

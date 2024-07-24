@@ -13,10 +13,13 @@ import FloatingWhatsAppComponent from "@/ui/FloatingWhatsAppIcon/FloatingWhatsAp
 import { UserType } from "@/types/enums";
 import UserProtectedRoute from "@/ui/UserProtectedRoute/UserProtectedRoute";
 import useCookie from "@/hooks/useCookie";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 function HomePage() {
-  const { data, isLoading } = useGetAllProductsQuery({ limit: 4 });
+  const { data, isLoading } = useGetAllProductsQuery({ limit: 6 });
+
+  const { data: SaleProducts, isLoading: isLoadingSaleProducts } =
+    useGetAllProductsQuery({ sale: "true", limit: 6 });
 
   const user = useAppSelector((state) => state.usersSlice.user);
 
@@ -42,6 +45,13 @@ function HomePage() {
         description="Mauris luctus nisi sapien tristique dignissim ornare"
         products={data?.data}
         isLoading={isLoading}
+      />
+
+      <TitledProductList
+        title="Sale Products"
+        description="Mauris luctus nisi sapien tristique dignissim ornare"
+        products={SaleProducts?.data}
+        isLoading={isLoadingSaleProducts}
       />
       {user?.role !== UserType.ADMIN && <FloatingWhatsAppComponent />}
       <Footer />

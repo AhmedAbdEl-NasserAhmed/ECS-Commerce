@@ -65,7 +65,7 @@ export const ordersTableHeaders = (t) => [
       cell: {
         row: { original },
       },
-    }) => original.user.email,
+    }) => original.user?.email,
   },
   {
     id: "mobile",
@@ -96,7 +96,7 @@ export const ordersTableHeaders = (t) => [
   },
   {
     id: "actions",
-    header: () => <div>Actions</div>,
+    header: () => <div>{t("Actions")}</div>,
     cell: ({
       cell: {
         row: { original },

@@ -5,27 +5,28 @@ import { IoStarSharp } from "react-icons/io5";
 
 export const reviewsTableHeaders = (t) => [
   {
-    id: "productName",
-    header: () => <div>{t("Product name")}</div>,
-    accessorKey: "productName",
+    id: "user",
+    header: () => <div>{t("User name")}</div>,
+    cell: ({
+      cell: {
+        row: { original },
+      },
+    }) => {
+      return (
+        <div className="flex gap-2 justify-center">
+          <h2>{original?.user?.name}</h2>
+        </div>
+      );
+    },
   },
+
   {
-    id: "email",
-    header: () => <div>{t("Email")}</div>,
-    accessorKey: "email",
-  },
-  {
-    id: "mobile",
-    header: () => <div>{t("mobile")}</div>,
-    accessorKey: "mobile",
-  },
-  {
-    id: "review",
+    id: "title",
     header: () => <div>{t("review")}</div>,
-    accessorKey: "review",
+    accessorKey: "title",
   },
   {
-    id: "stars",
+    id: "ratings",
     header: () => <div>{t("stars")}</div>,
     cell: ({
       cell: {
@@ -33,7 +34,7 @@ export const reviewsTableHeaders = (t) => [
       },
     }) => {
       let stars = [];
-      for (let i = 0; i < original.stars; i++) {
+      for (let i = 0; i < original.ratings; i++) {
         stars.push(i);
       }
       return (

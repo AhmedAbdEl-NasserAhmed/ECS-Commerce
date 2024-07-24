@@ -12,10 +12,13 @@ const ordersApi = createApi({
   }),
   endpoints: (builder) => ({
     getAllOrders: builder.query({
-      query: () => ({
-        url: `orders`,
-        method: "GET",
-      }),
+      query: (query) => {
+        const q = queryBuilder(query);
+        return {
+          url: `orders?${q}`,
+          method: "GET",
+        };
+      },
       providesTags: ["ORDERS"],
     }),
     getOrderById: builder.query({
@@ -49,7 +52,7 @@ const ordersApi = createApi({
 });
 
 export const {
-  useGetAllOrdersQuery,
+  useLazyGetAllOrdersQuery,
   useGetOrderByIdQuery,
   useUpdateOrderMutation,
   useLazyGetOrderByUserIdQuery,

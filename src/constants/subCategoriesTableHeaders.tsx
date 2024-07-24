@@ -22,26 +22,8 @@ export const subCategoriesTableHeaders = [
         row: { original },
       },
     }) => {
-      // const params = useParams();
       if (!original?.category) return <div>No category available</div>;
-      return (
-        <div
-          style={{
-            background: "#eaeaea",
-            padding: "2px 10px",
-            borderRadius: "3px",
-          }}
-        >
-          {original.category.name}
-        </div>
-        // <Link
-        //   href={`/${params.locale}/admin/dashboard/categories/${original.category["_id"]}`}
-        //   className="text-[#6262ff]"
-        //   style={{ color: "#6262ff", textDecoration: "underline" }}
-        // >
-        //   {original.category.name}
-        // </Link>
-      );
+      return <div>{original.category.name}</div>;
     },
   },
 

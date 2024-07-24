@@ -1,20 +1,34 @@
 "use client";
 
 import { categoriesTableHeaders } from "@/constants/categoriesTableHeaders";
-import { useGetAllCategoriesQuery } from "@/lib/features/api/categoriesApi";
+import useBaseTablePagination from "@/hooks/useBaseTablePagination/useBaseTablePagination";
+import { useLazyGetAdminCategoryQuery } from "@/lib/features/api/categoriesApi";
 import BaseTable from "@/ui/BaseReactTable";
 import Menus from "@/ui/Menus/Menus";
 import Spinner from "@/ui/Spinner/Spinner";
 import { Box } from "@mui/material";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
+import { useEffect } from "react";
 import { HiChevronRight } from "react-icons/hi2";
 
 function Categories() {
-  const { data, isFetching } = useGetAllCategoriesQuery("categories");
-  // const { data: subCategories, isFetching: isSubCategoriesFetching } = useGetAllSubCategoriesByCategoryQuery(
-  //   original["_id"]
-  // );
+  const [getPaginatedCategories, getPaginatedCategoriesResponse] =
+    useLazyGetAdminCategoryQuery();
+
+  console.log(getPaginatedCategoriesResponse?.data);
+
+  const { paginationControllers } = useBaseTablePagination(
+    getPaginatedCategoriesResponse?.data?.numPages
+  );
+
+  useEffect(() => {
+    getPaginatedCategories({
+      page: paginationControllers.page + 1,
+      limit: paginationControllers.pageSize,
+    });
+  }, [paginationControllers.page, paginationControllers.pageSize]);
+
   const t = useTranslations("Dashboard");
   return (
     <Box className=" flex flex-col gap-8 px-[4rem] py-[1.2rem] bg-[#FDFDFD] ">
@@ -42,10 +56,15 @@ function Categories() {
           </span>
         </Box>
         <Menus>
-          {isFetching ? (
+          {getPaginatedCategoriesResponse.isFetching ? (
             <Spinner />
           ) : (
-            <BaseTable data={data?.data} columns={categoriesTableHeaders()} />
+            <BaseTable
+              data={getPaginatedCategoriesResponse?.data?.data}
+              isLoading={getPaginatedCategoriesResponse?.isFetching}
+              columns={categoriesTableHeaders()}
+              paginationControllers={paginationControllers}
+            />
           )}
         </Menus>
       </Box>

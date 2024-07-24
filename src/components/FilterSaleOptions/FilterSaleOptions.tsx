@@ -1,17 +1,37 @@
 import React, { useState } from "react";
-import Checkbox from "@mui/material/Checkbox";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormGroup from "@mui/material/FormGroup";
-import Typography from "@mui/material/Typography";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Switch } from "@mui/material";
+import { createTheme, Switch } from "@mui/material";
+
+const theme = createTheme({
+  components: {
+    MuiSwitch: {
+      styleOverrides: {
+        switchBase: {
+          "&.Mui-checked": {
+            color: "red",
+            "& + .MuiSwitch-track": {
+              backgroundColor: "red",
+            },
+          },
+        },
+        track: {
+          backgroundColor: "grey",
+          opacity: 1,
+        },
+        thumb: {
+          backgroundColor: "white",
+        },
+      },
+    },
+  },
+});
 
 const FilterSaleOptions = () => {
   const { replace } = useRouter();
 
-  const searchParams = useSearchParams();
+  const [isChecked, setIsChecked] = useState<boolean>(false);
 
-  const currentSale = searchParams.get("sale");
+  const searchParams = useSearchParams();
 
   const pathName = usePathname();
 
@@ -19,13 +39,30 @@ const FilterSaleOptions = () => {
 
   const handleChange = (_, value) => {
     const params = new URLSearchParams(searchParams);
-    params.set("sale", value);
+    params.set("sale", value ? value : "");
     replace(`${pathName}?${params.toString()}`, { scroll: false });
+    setIsChecked((prev) => !prev);
   };
 
   return (
     <div className="flex items-center justify-center">
-      <Switch {...label} onChange={handleChange} />
+      <Switch
+        {...label}
+        onChange={handleChange}
+        style={{ color: isChecked ? "red" : "grey" }}
+        sx={{
+          "& .MuiSwitch-switchBase.Mui-checked": {
+            color: "red",
+            "& + .MuiSwitch-track": {
+              backgroundColor: "#ed0534",
+            },
+          },
+          "& .MuiSwitch-track": {
+            backgroundColor: "#161616",
+            opacity: 1,
+          },
+        }}
+      />
     </div>
   );
 };

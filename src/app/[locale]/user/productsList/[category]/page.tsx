@@ -60,11 +60,11 @@ function ProductsByCategory() {
   });
 
   useEffect(() => {
-    if (minPrice || maxPrice || size || colors || subCategory || sort) {
+    if (minPrice || maxPrice || size || colors || subCategory || sort || sale) {
       setPage(1);
       setProducts([]);
     }
-  }, [minPrice, maxPrice, size, colors, subCategory, sort]);
+  }, [minPrice, maxPrice, size, colors, subCategory, sort, sale]);
 
   useEffect(() => {
     if (data?.data.length) {

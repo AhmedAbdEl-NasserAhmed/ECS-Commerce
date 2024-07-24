@@ -36,7 +36,7 @@ function ProductDetailsTable({ cart, totalCartItems }) {
           <td>TOTAL</td>
           <td></td>
           <td></td>
-          <td>{totalCartItems} EGP</td>
+          <td> {Math.ceil(totalCartItems)} EGP</td>
         </tr>
       </tfoot>
     </table>

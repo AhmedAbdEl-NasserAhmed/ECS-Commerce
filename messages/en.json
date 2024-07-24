@@ -11,6 +11,7 @@
     "of": "of"
   },
   "Dashboard": {
+    "Actions": "Actions",
     "Home": "Home",
     "Dashboard": "Dashboard",
     "Products List": "Products List",
@@ -42,7 +43,7 @@
     "order status": "Order Status",
     "Email": "Email",
     "Reviews": "Reviews",
-    "Product name": "Product name",
+    "User name": "User name",
     "review": "Review",
     "stars": "Stars",
     "Categories List": "Categories List",

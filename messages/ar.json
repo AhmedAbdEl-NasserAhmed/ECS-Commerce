@@ -11,6 +11,7 @@
     "of": "من"
   },
   "Dashboard": {
+    "Actions": "الاختيارات",
     "Home": "الرئيسيه",
     "Dashboard": "لوحة التحكم",
     "Products List": "كل المنتجات",
@@ -42,7 +43,7 @@
     "order status": "حالة الطلب",
     "Email": "البريد الالكتروني",
     "Reviews": "التقييمات",
-    "Product name": "اسم المنتج",
+    "User name": "اسم المستخدم",
     "review": "التقييم",
     "stars": "النجوم",
     "Categories List": "كل الاقسام",

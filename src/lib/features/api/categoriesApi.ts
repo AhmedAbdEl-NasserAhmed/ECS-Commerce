@@ -1,4 +1,5 @@
 import axiosBaseQuery from "@/api";
+import { queryBuilder } from "@/lib/helpers";
 
 import {
   createApi,
@@ -45,6 +46,16 @@ const categoriesApi = createApi({
       }),
       providesTags: ["CATEGORIES"],
     }),
+    getAdminCategory: builder.query({
+      query: (query) => {
+        const q = queryBuilder(query);
+        return {
+          url: `categories/allCategoriesAdmin?${q}`,
+          method: "GET",
+        };
+      },
+      providesTags: ["CATEGORIES"],
+    }),
 
     editCategory: builder.mutation({
       query: ({ id, data }) => ({
@@ -71,6 +82,7 @@ export const {
   useGetCategoryByIdQuery,
   useEditCategoryMutation,
   useDeleteCategoryMutation,
+  useLazyGetAdminCategoryQuery,
 } = categoriesApi;
 
 export default categoriesApi;

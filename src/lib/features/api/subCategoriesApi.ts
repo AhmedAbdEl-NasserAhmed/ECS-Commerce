@@ -1,4 +1,5 @@
 import axiosBaseQuery from "@/api";
+import { queryBuilder } from "@/lib/helpers";
 
 import { createApi } from "@reduxjs/toolkit/query/react";
 
@@ -27,13 +28,22 @@ const subCategoriesApi = createApi({
       providesTags: ["SUB-CATEGORY", "CATEGORIES"],
     }),
 
-    // url: `subCategories/filtered?letters=${letter}&category=${categoryId}`,
-
     getAllSubCategories: builder.query({
       query: () => ({
         url: `subCategories`,
         method: "GET",
       }),
+      providesTags: ["SUB-CATEGORY", "CATEGORIES"],
+    }),
+
+    getAllAdminSubCategories: builder.query({
+      query: (query) => {
+        const q = queryBuilder(query);
+        return {
+          url: `subCategories/allSubCategoriesAdmin?${q}`,
+          method: "GET",
+        };
+      },
       providesTags: ["SUB-CATEGORY", "CATEGORIES"],
     }),
 
@@ -80,6 +90,7 @@ export const {
   useGetSubCategoryByIdQuery,
   useGetAllSubCategoriesByCategoryQuery,
   useGetAllSubCategoriesQuery,
+  useLazyGetAllAdminSubCategoriesQuery,
 } = subCategoriesApi;
 
 export default subCategoriesApi;

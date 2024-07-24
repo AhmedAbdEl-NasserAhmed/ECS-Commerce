@@ -4,9 +4,17 @@ import { useEffect, useState } from "react";
 import { slides } from "@/constants/slides";
 import Image from "next/image";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 
 function Slider() {
   const [currentSlide, setCurrentSlide] = useState<number>(0);
+
+  const { locale } = useParams();
+
+  const slideStyle =
+    locale === "ar"
+      ? `translateX(${currentSlide * 100}vw)`
+      : `translateX(-${currentSlide * 100}vw)`;
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -20,7 +28,7 @@ function Slider() {
     <div className="relative h-[calc(100vh-90px)] overflow-hidden">
       <div
         className="w-max h-full flex transition-all ease-in-out duration-1000"
-        style={{ transform: `translateX(-${currentSlide * 100}vw)` }}
+        style={{ transform: slideStyle }}
       >
         {slides.map((slide) => {
           return (
@@ -35,11 +43,6 @@ function Slider() {
                 <h1 className="text-5xl lg:text-6xl 2xl:text-8xl font-semibold">
                   {slide.title}
                 </h1>
-                {/* <Link href={slide.url}>
-                  <button className="rounded-md bg-black text-white py-3 px-4">
-                    Shop Now
-                  </button>
-                </Link> */}
               </div>
 
               <div className="relative h-1/2 xl:w-1/2 xl:h-full">

@@ -12,4 +12,5 @@ export enum OrderStatusEnum {
   delivered = "DELIVERED",
   delivering = "DELIVERING",
   refund = "REFUND",
+  shipped = "SHIPPED",
 }

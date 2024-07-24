@@ -206,6 +206,11 @@ function EditOrder() {
                         color: "#353b48",
                       },
                       {
+                        value: OrderStatusEnum.shipped,
+                        label: OrderStatusEnum.shipped,
+                        color: "#f368e0",
+                      },
+                      {
                         value: OrderStatusEnum.delivering,
                         label: OrderStatusEnum.delivering,
                         color: "#3498db",

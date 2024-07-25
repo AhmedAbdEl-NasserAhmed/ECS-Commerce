@@ -18,6 +18,12 @@
       background-color: #2ecc71;
     }
   }
+  &--SHIPPED {
+    color: #f368e0;
+    &::before {
+      background-color: #f368e0;
+    }
+  }
   &--DELIVERED {
     color: #353b48;
     &::before {

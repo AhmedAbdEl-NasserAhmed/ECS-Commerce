@@ -52,6 +52,7 @@ const ordersApi = createApi({
 });
 
 export const {
+  useGetAllOrdersQuery,
   useLazyGetAllOrdersQuery,
   useGetOrderByIdQuery,
   useUpdateOrderMutation,

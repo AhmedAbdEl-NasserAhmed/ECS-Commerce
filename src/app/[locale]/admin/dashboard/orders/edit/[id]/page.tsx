@@ -61,7 +61,7 @@ function EditOrder() {
       .unwrap()
       .then(() => {
         toast.success("Product is updated");
-        router.push(`/${locale}/admin/dashboard/orders`);
+        router.push(`/${locale}/admin/dashboard/orders/details/${params.id}`);
         reset();
       })
       .catch((err) => {
@@ -204,6 +204,11 @@ function EditOrder() {
                         value: OrderStatusEnum.delivered,
                         label: OrderStatusEnum.delivered,
                         color: "#353b48",
+                      },
+                      {
+                        value: OrderStatusEnum.shipped,
+                        label: OrderStatusEnum.shipped,
+                        color: "#f368e0",
                       },
                       {
                         value: OrderStatusEnum.delivering,

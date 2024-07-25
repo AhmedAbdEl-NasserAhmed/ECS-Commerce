@@ -12,6 +12,7 @@ import reviewsApi from "./features/api/reviewsApi";
 import cartItemsApi from "./features/api/cartItemsApi";
 import storage from "redux-persist/lib/storage";
 import { persistReducer } from "redux-persist";
+import dashboardApi from "./features/api/dashboardApi";
 
 const persistConfig = {
   key: "root",
@@ -31,6 +32,7 @@ const rootReducer = combineReducers({
   [contactUsApi.reducerPath]: contactUsApi.reducer,
   [reviewsApi.reducerPath]: reviewsApi.reducer,
   [cartItemsApi.reducerPath]: cartItemsApi.reducer,
+  [dashboardApi.reducerPath]: dashboardApi.reducer,
 });
 
 const persistedReducer = persistReducer<any, any>(persistConfig, rootReducer);
@@ -47,7 +49,8 @@ export const store = configureStore({
       paymentApi.middleware,
       contactUsApi.middleware,
       reviewsApi.middleware,
-      cartItemsApi.middleware
+      cartItemsApi.middleware,
+      dashboardApi.middleware
     ),
 });
 

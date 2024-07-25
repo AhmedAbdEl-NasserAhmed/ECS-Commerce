@@ -19,8 +19,6 @@ function SubCategories() {
   const [getPaginatedSubCategories, getPaginatedSubCategoriesResponse] =
     useLazyGetAllAdminSubCategoriesQuery();
 
-  console.log(getPaginatedSubCategoriesResponse?.data);
-
   const { paginationControllers } = useBaseTablePagination(
     getPaginatedSubCategoriesResponse?.data?.numPages
   );

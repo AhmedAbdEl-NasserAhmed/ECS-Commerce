@@ -20,6 +20,7 @@ import {
 } from "@/lib/features/api/productsApi";
 import { useEffect, useState } from "react";
 import { Gauge } from "@mui/x-charts/Gauge";
+import { formatCurrency } from "@/lib/helpers";
 
 const TARGET_GOAL_SALES = 10000;
 const data = [
@@ -49,21 +50,6 @@ const data = [
   },
 ];
 
-const _data = {
-  data: [
-    {
-      _id: "1234",
-      email: "khalednasser788@gmail.com",
-      mobile: "0124561244",
-      orderPrice: 800,
-      status: "purchased",
-      transactionId: "#0123442211",
-    },
-  ],
-};
-
-const isFetching = false;
-
 function DashBoardPageg() {
   const t = useTranslations("Dashboard");
 
@@ -78,20 +64,6 @@ function DashBoardPageg() {
 
   const [categories_, setCategories_] = useState({});
 
-  function groupBy(groupKey = "name", list) {
-    let output = {};
-
-    for (let i = 0; i < list.length; i++) {
-      if (list[i][groupKey] in output) {
-        output[list[i][groupKey]] = output[list[i][groupKey]].concat(list[i]);
-      } else {
-        output[list[i][groupKey]] = [list[i]];
-      }
-    }
-
-    return output;
-  }
-
   useEffect(() => {
     if (categories?.data) {
       categories.data.forEach((category) => {
@@ -103,9 +75,7 @@ function DashBoardPageg() {
                 console.log("s[category?.name]", s, d.data);
                 return {
                   ...s,
-                  [category?.name]: {
-                    ...groupBy("name", d.data),
-                  },
+                  [category?.name]: d.data,
                 };
               });
             });
@@ -138,21 +108,27 @@ function DashBoardPageg() {
         })}
       </FlexWrapper>
       <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-5 mt-10">
-        <AnalysisCard title="Orders">
-          {isOrdersFetching ? (
-            <Spinner />
+        <AnalysisCard title="Products of Categories">
+          {Object.keys(categories_).length === 0 ? (
+            <h1>No products yet</h1>
           ) : (
-            <BarChart
-              series={[
+            <LineChart
+              xAxis={[
                 {
-                  data: orders.data
-                    .slice(0, 5)
-                    .map((order) => order.orderPrice),
+                  data: Object.keys(categories_)?.map((key) => key),
+                  scaleType: "point",
                 },
               ]}
-              height={290}
-              xAxis={[{ data: ["O1", "O2", "O3", "O4"], scaleType: "band" }]}
-              margin={{ top: 10, bottom: 30, left: 40, right: 10 }}
+              series={[
+                {
+                  data: Object.keys(categories_)?.map(
+                    (key) => categories_[key].length
+                  ),
+                  connectNulls: true,
+                },
+              ]}
+              height={300}
+              margin={{ top: 10, bottom: 20 }}
             />
           )}
         </AnalysisCard>
@@ -183,33 +159,30 @@ function DashBoardPageg() {
         </AnalysisCard>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-5 mt-10">
-        <AnalysisCard title="Signups">
-          <LineChart
-            xAxis={[
-              {
-                data: [
-                  "Page A",
-                  "Page B",
-                  "Page C",
-                  "Page D",
-                  "Page E",
-                  "Page F",
-                  "Page G",
-                ],
-                scaleType: "point",
-              },
-            ]}
-            series={[
-              {
-                data: [4000, 3000, 2000, null, 1890, 2390, 3490],
-                connectNulls: true,
-              },
-            ]}
-            height={300}
-            margin={{ top: 10, bottom: 20 }}
-          />
+        <AnalysisCard title="Sales">
+          {isOrdersFetching ? (
+            <Spinner />
+          ) : (
+            <BarChart
+              series={[
+                {
+                  data: orders.data
+                    .slice(0, 10)
+                    .map((order) => order.orderPrice),
+                },
+              ]}
+              height={290}
+              xAxis={[
+                {
+                  data: orders.data.slice(0, 10)?.map((c, i) => `Q${i + 1}`),
+                  scaleType: "band",
+                },
+              ]}
+              margin={{ top: 10, bottom: 30, left: 40, right: 10 }}
+            />
+          )}
         </AnalysisCard>
-        <AnalysisCard title="Categories">
+        <AnalysisCard title={`Target (${formatCurrency(TARGET_GOAL_SALES)})`}>
           {Object.keys(categories_).length !== categories?.data?.length ? (
             <Spinner />
           ) : (
@@ -220,18 +193,19 @@ function DashBoardPageg() {
               endAngle={360}
               innerRadius="80%"
               outerRadius="100%"
-              // ...
+              sx={{ fontSize: "3rem", fontWeight: "bold" }}
+              text={targetGoalSales.toFixed(2) + "%"}
             />
           )}
         </AnalysisCard>
       </div>
       <div className="grid grid-cols-1 mt-10">
         <AnalysisCard title="Recent orders">
-          {isFetching ? (
+          {isOrdersFetching ? (
             <Spinner />
           ) : (
             <BaseTable
-              data={_data?.data}
+              data={orders?.data?.slice(0, 5)}
               columns={ordersTableHeadersWithoutActions(t)}
             />
           )}

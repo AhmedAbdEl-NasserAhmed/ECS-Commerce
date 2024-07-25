@@ -103,3 +103,10 @@ export function isProductExisted(uniquteValues: string[], value: string, arr) {
   });
   return uniqueProducts;
 }
+
+export const formatCurrency = (n: number) => {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "EGP",
+  }).format(n);
+};

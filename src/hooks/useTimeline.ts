@@ -48,10 +48,15 @@ const useTimeline = (stages) => {
     if (timelineData.activeStageIndex) dispatch({ type: "PREV" });
   }, [timelineData.activeStageIndex, stages]);
 
+  const resetHandler = useCallback(() => {
+    dispatch({ type: "RESET" });
+  }, []);
+
   return {
     timelineData,
     goNextStage: nextStageHandler,
     goPrevStage: prevStageHandler,
+    reset: resetHandler,
   };
 };
 

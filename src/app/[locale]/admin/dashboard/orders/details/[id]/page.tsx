@@ -52,13 +52,14 @@ function ViewOrder() {
 
   const router = useRouter();
 
-  const { timelineData, goNextStage, goPrevStage } = useTimeline(
+  const { timelineData, goNextStage, reset } = useTimeline(
     requestCheckupTimelineStages
   );
 
   const t = useTranslations("Dashboard");
 
   useEffect(() => {
+    reset();
     switch (order?.data?.orderStatus.toUpperCase()) {
       case OrderStatusEnum.created: {
         goNextStage();

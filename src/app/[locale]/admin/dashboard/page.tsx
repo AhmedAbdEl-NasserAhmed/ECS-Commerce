@@ -12,7 +12,16 @@ import BaseTable from "@/ui/BaseReactTable";
 import Spinner from "@/ui/Spinner/Spinner";
 import { ordersTableHeadersWithoutActions } from "@/constants/ordersTableHeaders";
 import { useTranslations } from "next-intl";
+import { useGetAllOrdersQuery } from "@/lib/features/api/ordersApi";
+import { useGetAllCategoriesQuery } from "@/lib/features/api/categoriesApi";
+import {
+  useGetAllProductsQuery,
+  useLazyGetAllProductsQuery,
+} from "@/lib/features/api/productsApi";
+import { useEffect, useState } from "react";
+import { Gauge } from "@mui/x-charts/Gauge";
 
+const TARGET_GOAL_SALES = 10000;
 const data = [
   {
     value: "1,503",
@@ -58,6 +67,58 @@ const isFetching = false;
 function DashBoardPageg() {
   const t = useTranslations("Dashboard");
 
+  const { data: orders, isFetching: isOrdersFetching } =
+    useGetAllOrdersQuery("orders");
+
+  const { data: categories, isFetching: isCategoriesFetching } =
+    useGetAllCategoriesQuery("categories");
+
+  const [getProductsByCategory, getProductsResponse] =
+    useLazyGetAllProductsQuery();
+
+  const [categories_, setCategories_] = useState({});
+
+  function groupBy(groupKey = "name", list) {
+    let output = {};
+
+    for (let i = 0; i < list.length; i++) {
+      if (list[i][groupKey] in output) {
+        output[list[i][groupKey]] = output[list[i][groupKey]].concat(list[i]);
+      } else {
+        output[list[i][groupKey]] = [list[i]];
+      }
+    }
+
+    return output;
+  }
+
+  useEffect(() => {
+    if (categories?.data) {
+      categories.data.forEach((category) => {
+        if (category["_id"]) {
+          getProductsByCategory({ categoryId: category["_id"] })
+            .unwrap()
+            .then((d) => {
+              setCategories_((s) => {
+                console.log("s[category?.name]", s, d.data);
+                return {
+                  ...s,
+                  [category?.name]: {
+                    ...groupBy("name", d.data),
+                  },
+                };
+              });
+            });
+        }
+      });
+    }
+  }, [categories]);
+
+  const targetGoalSales =
+    (orders?.data?.reduce((acc, order) => acc + order.orderPrice, 0) /
+      TARGET_GOAL_SALES) *
+    100;
+
   return (
     <div className="px-[4rem] py-[1.2rem] mt-5">
       <FlexWrapper className="gap-9">
@@ -78,38 +139,47 @@ function DashBoardPageg() {
       </FlexWrapper>
       <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-5 mt-10">
         <AnalysisCard title="Orders">
-          <BarChart
-            series={[
-              { data: [35, 44, 24, 34] },
-              { data: [51, 6, 49, 30] },
-              { data: [15, 25, 30, 50] },
-              { data: [60, 50, 15, 25] },
-            ]}
-            height={290}
-            xAxis={[{ data: ["Q1", "Q2", "Q3", "Q4"], scaleType: "band" }]}
-            margin={{ top: 10, bottom: 30, left: 40, right: 10 }}
-          />
+          {isOrdersFetching ? (
+            <Spinner />
+          ) : (
+            <BarChart
+              series={[
+                {
+                  data: orders.data
+                    .slice(0, 5)
+                    .map((order) => order.orderPrice),
+                },
+              ]}
+              height={290}
+              xAxis={[{ data: ["O1", "O2", "O3", "O4"], scaleType: "band" }]}
+              margin={{ top: 10, bottom: 30, left: 40, right: 10 }}
+            />
+          )}
         </AnalysisCard>
-        <AnalysisCard title="Products">
-          <PieChart
-            sx={{
-              width: "100%",
-              ".MuiChart-root": {
+        <AnalysisCard title="Categories">
+          {isCategoriesFetching ? (
+            <Spinner />
+          ) : (
+            <PieChart
+              sx={{
                 width: "100%",
-              },
-            }}
-            series={[
-              {
-                data: [
-                  { id: 0, value: 10, label: "series A" },
-                  { id: 1, value: 15, label: "series B" },
-                  { id: 2, value: 20, label: "series C" },
-                ],
-              },
-            ]}
-            width={400}
-            height={200}
-          />
+                ".MuiChart-root": {
+                  width: "100%",
+                },
+              }}
+              series={[
+                {
+                  data: categories.data.slice(0, 3).map((category) => ({
+                    id: category["_id"],
+                    value: 10,
+                    label: category.name,
+                  })),
+                },
+              ]}
+              width={400}
+              height={200}
+            />
+          )}
         </AnalysisCard>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-5 mt-10">
@@ -140,17 +210,19 @@ function DashBoardPageg() {
           />
         </AnalysisCard>
         <AnalysisCard title="Categories">
-          <BarChart
-            series={[
-              { data: [35, 44, 24, 34] },
-              { data: [51, 6, 49, 30] },
-              { data: [15, 25, 30, 50] },
-              { data: [60, 50, 15, 25] },
-            ]}
-            height={290}
-            xAxis={[{ data: ["Q1", "Q2", "Q3", "Q4"], scaleType: "band" }]}
-            margin={{ top: 10, bottom: 30, left: 40, right: 10 }}
-          />
+          {Object.keys(categories_).length !== categories?.data?.length ? (
+            <Spinner />
+          ) : (
+            <Gauge
+              value={targetGoalSales}
+              height={290}
+              startAngle={0}
+              endAngle={360}
+              innerRadius="80%"
+              outerRadius="100%"
+              // ...
+            />
+          )}
         </AnalysisCard>
       </div>
       <div className="grid grid-cols-1 mt-10">

@@ -19,6 +19,12 @@ const usersApi = createApi({
         body,
       }),
     }),
+    getAllUsers: builder.query({
+      query: () => ({
+        url: `users`,
+        method: "GET",
+      }),
+    }),
     userSignup: builder.mutation({
       query: (body) => ({
         url: "auth/signup",
@@ -58,6 +64,7 @@ const usersApi = createApi({
 });
 
 export const {
+  useGetAllUsersQuery,
   useUserloginMutation,
   useUserSignupMutation,
   useUpdatePasswordMutation,

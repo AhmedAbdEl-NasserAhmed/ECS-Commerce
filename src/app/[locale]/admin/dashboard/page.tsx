@@ -14,15 +14,19 @@ import { ordersTableHeadersWithoutActions } from "@/constants/ordersTableHeaders
 import { useTranslations } from "next-intl";
 import { useGetAllOrdersQuery } from "@/lib/features/api/ordersApi";
 import { useGetAllCategoriesQuery } from "@/lib/features/api/categoriesApi";
-import {
-  useGetAllProductsQuery,
-  useLazyGetAllProductsQuery,
-} from "@/lib/features/api/productsApi";
+import { useLazyGetAllProductsQuery } from "@/lib/features/api/productsApi";
 import { useEffect, useState } from "react";
 import { Gauge } from "@mui/x-charts/Gauge";
-import { formatCurrency } from "@/lib/helpers";
+import {
+  formatCurrency,
+  groupBy,
+  groupByUsersByDate,
+  prepareUsersAnalyticsData,
+} from "@/lib/helpers";
+import { OrderStatusEnum } from "@/types/enums";
+import { useGetAllUsersQuery } from "@/lib/features/api/usersApi";
 
-const TARGET_GOAL_SALES = 10000;
+const TARGET_GOAL_SALES = 100000;
 const data = [
   {
     value: "1,503",
@@ -64,6 +68,9 @@ function DashBoardPageg() {
 
   const [categories_, setCategories_] = useState({});
 
+  const { data: users, isFetching: isUsersFetching } =
+    useGetAllUsersQuery("users");
+
   useEffect(() => {
     if (categories?.data) {
       categories.data.forEach((category) => {
@@ -85,9 +92,15 @@ function DashBoardPageg() {
   }, [categories]);
 
   const targetGoalSales =
-    (orders?.data?.reduce((acc, order) => acc + order.orderPrice, 0) /
+    (orders?.data
+      ?.filter(
+        (order) => order.orderStatus.toUpperCase() === OrderStatusEnum.delivered
+      )
+      ?.reduce((acc, order) => acc + order.orderPrice, 0) /
       TARGET_GOAL_SALES) *
     100;
+
+  const categorizedUsers = groupByUsersByDate(users?.data);
 
   return (
     <div className="px-[4rem] py-[1.2rem] mt-5">
@@ -108,21 +121,23 @@ function DashBoardPageg() {
         })}
       </FlexWrapper>
       <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-5 mt-10">
-        <AnalysisCard title="Products of Categories">
+        <AnalysisCard title="Users">
           {Object.keys(categories_).length === 0 ? (
             <h1>No products yet</h1>
           ) : (
             <LineChart
               xAxis={[
                 {
-                  data: Object.keys(categories_)?.map((key) => key),
+                  data: prepareUsersAnalyticsData(users?.data)?.map(
+                    (key) => `${key}`
+                  ),
                   scaleType: "point",
                 },
               ]}
               series={[
                 {
-                  data: Object.keys(categories_)?.map(
-                    (key) => categories_[key].length
+                  data: prepareUsersAnalyticsData(users?.data)?.map(
+                    (key) => categorizedUsers[key].length
                   ),
                   connectNulls: true,
                 },
@@ -145,10 +160,10 @@ function DashBoardPageg() {
               }}
               series={[
                 {
-                  data: categories.data.slice(0, 3).map((category) => ({
-                    id: category["_id"],
-                    value: 10,
-                    label: category.name,
+                  data: Object.keys(categories_)?.map((key) => ({
+                    id: key,
+                    value: categories_[key].length,
+                    label: key,
                   })),
                 },
               ]}
@@ -174,7 +189,7 @@ function DashBoardPageg() {
               height={290}
               xAxis={[
                 {
-                  data: orders.data.slice(0, 10)?.map((c, i) => `Q${i + 1}`),
+                  data: orders.data.slice(0, 10)?.map((c, i) => `O${i + 1}`),
                   scaleType: "band",
                 },
               ]}

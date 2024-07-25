@@ -110,3 +110,48 @@ export const formatCurrency = (n: number) => {
     currency: "EGP",
   }).format(n);
 };
+
+export const groupBy = function (list, groupKey = "name") {
+  if (!list) return {};
+  let output = {};
+
+  for (let i = 0; i < list.length; i++) {
+    if (list[i][groupKey] in output) {
+      output[list[i][groupKey]] = output[list[i][groupKey]].concat(list[i]);
+    } else {
+      output[list[i][groupKey]] = [list[i]];
+    }
+  }
+
+  return output;
+};
+
+export function prepareUsersAnalyticsData(users) {
+  return sortCategorizedUsersByDayMonth(groupByUsersByDate(users));
+}
+
+export function groupByUsersByDate(users) {
+  const categorizedUsers = groupBy(
+    users?.map((user) => ({
+      ...user,
+      createdAt: `${new Date(user?.createdAt).getDate()}/${
+        new Date(user?.createdAt).getMonth() + 1
+      }`,
+    })),
+    "createdAt"
+  );
+  return categorizedUsers;
+}
+function sortCategorizedUsersByDayMonth(categorizedList) {
+  return Object.keys(categorizedList)
+    ?.sort((a, b) => {
+      const dayA = +a.split("/")[0];
+      const dayB = +b.split("/")[0];
+      return dayA - dayB;
+    })
+    .sort((a, b) => {
+      const monthA = +a.split("/")[1];
+      const monthB = +b.split("/")[1];
+      return monthA - monthB;
+    });
+}

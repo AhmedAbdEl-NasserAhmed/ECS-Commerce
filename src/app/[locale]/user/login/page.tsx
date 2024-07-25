@@ -13,10 +13,14 @@ import { loginUser } from "@/lib/features/usersSlice/usersSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import toast from "react-hot-toast";
 import MiniSpinner from "@/ui/MiniSpinner/MiniSpinner";
-import Cookies from "js-cookie";
-import { setCartItems } from "@/lib/features/cartSlice/cartSlice";
-import { getUniqueValues, isProductExisted } from "@/lib/helpers";
-import useCookie from "@/hooks/useCookie";
+import {
+  concatCartItemsHandler,
+  getUniqueValues,
+  isProductExisted,
+} from "@/lib/helpers";
+import { getCookie } from "cookies-next";
+import { setCookiesThunk } from "@/lib/features/cookieSlice/cookieSlice";
+import { StorageService } from "@/services/StorageService";
 
 function LoginPage() {
   const {
@@ -41,8 +45,6 @@ function LoginPage() {
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
-  const { setCookieHandler } = useCookie();
-
   function onSubmit(data) {
     loginFn({ email: data.email, password: data.password })
       .unwrap()
@@ -55,30 +57,33 @@ function LoginPage() {
             token: res.token,
           })
         );
-        //
-        const userCookiesItems = isProductExisted(
-          existedProducts,
-          "cartItemId",
-          res.data?.cookieCart?.cartItems
+
+        const cookiesItems = getCookie("cartItems") || "[]";
+
+        const parsedCookiesItems = StorageService.parse(cookiesItems);
+
+        const responseCartItems = res.data?.cookieCart?.cartItems;
+
+        const concatedCartItems = concatCartItemsHandler(
+          parsedCookiesItems,
+          responseCartItems
         );
-        const cartItems = res.data
-          ? getUniqueValues(cart.concat(userCookiesItems), [
-              "color",
-              "size",
-              "product",
-            ])
+
+        const cartItems = res.data?.cookieCart?.cartItems
+          ? getUniqueValues(concatedCartItems, ["color", "size", "product"])
           : cart;
 
-        setCookieHandler("cartItems", cartItems);
+        dispatch(setCookiesThunk("cartItems", cartItems));
 
-        dispatch(setCartItems(cartItems));
-        //
-        localStorage.setItem("userToken", res.token);
-        localStorage.setItem("user", JSON.stringify(res.data));
+        StorageService.set("userToken", res.token);
+
+        StorageService.set("user", res.data);
+
         router.push(`/${locale}`);
       })
       .catch((err) => {
-        toast.error(err.data.message);
+        console.log("error", err);
+        toast.error(err?.data?.message);
       });
   }
 

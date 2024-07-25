@@ -15,11 +15,11 @@ function Layout({ children }) {
   const user = useAppSelector((state) => state.usersSlice.user);
   const cart = useAppSelector((state) => state.cartSlice.cartItems);
 
-  const { setCookieHandler } = useCookie();
+  // const { setCookieHandler } = useCookie();
 
-  useEffect(() => {
-    setCookieHandler("cartItems", cart);
-  }, [cart, setCookieHandler]);
+  // useEffect(() => {
+  //   setCookieHandler("cartItems", cart);
+  // }, [cart, setCookieHandler]);
 
   return (
     <CustomErrorBoundary>

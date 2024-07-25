@@ -12,7 +12,7 @@ import HomePageCategory from "@/ui/HomePageCategory/HomePageCategory";
 import FloatingWhatsAppComponent from "@/ui/FloatingWhatsAppIcon/FloatingWhatsAppIcon";
 import { UserType } from "@/types/enums";
 import UserProtectedRoute from "@/ui/UserProtectedRoute/UserProtectedRoute";
-import useCookie from "@/hooks/useCookie";
+
 import { useEffect, useState } from "react";
 
 function HomePage() {
@@ -25,11 +25,15 @@ function HomePage() {
 
   const cart = useAppSelector((state) => state.cartSlice.cartItems);
 
-  const { setCookieHandler } = useCookie();
+  // useEffect(() => {
+  //   console.log("hello");
+  // }, []);
 
-  useEffect(() => {
-    setCookieHandler("cartItems", cart);
-  }, [cart, setCookieHandler]);
+  // const { setCookieHandler } = useCookie();
+
+  // useEffect(() => {
+  //   setCookieHandler("cartItems", cart);
+  // }, [cart, setCookieHandler]);
 
   return (
     <UserProtectedRoute>

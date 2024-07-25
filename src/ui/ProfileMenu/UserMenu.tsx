@@ -5,11 +5,10 @@ import { UserType } from "@/types/enums";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import Cookies from "js-cookie";
 import { useSetCartItemsMutation } from "@/lib/features/api/cartItemsApi";
-import { emptyCartItems } from "@/lib/features/cartSlice/cartSlice";
 import { HiOutlineUserCircle } from "react-icons/hi2";
 import { HiOutlineLogout, HiOutlineViewGrid } from "react-icons/hi";
+import { clearCookiesThunk } from "@/lib/features/cookieSlice/cookieSlice";
 
 function UserMenu({ setIsProfileOpen }) {
   const { locale } = useParams();
@@ -20,7 +19,9 @@ function UserMenu({ setIsProfileOpen }) {
 
   const user = useAppSelector((state) => state.usersSlice.user);
 
-  const cart = useAppSelector((state) => state.cartSlice.cartItems);
+  const cart = useAppSelector(
+    (state) => state.cookieSlice.cookieItems.cartItems
+  );
 
   const dispatch = useAppDispatch();
 
@@ -68,12 +69,10 @@ function UserMenu({ setIsProfileOpen }) {
             dispatch(logoutUser());
             localStorage.removeItem("userToken");
             localStorage.removeItem("user");
-            localStorage.removeItem("cartItemsExpiration");
-            Cookies.remove("cartItems");
             setIsProfileOpen(false);
             router.push(`/${locale}`);
             toast.success("Do Not Be Late");
-            dispatch(emptyCartItems());
+            dispatch(clearCookiesThunk("cartItems"));
           }}
         >
           <span className="text-3xl">

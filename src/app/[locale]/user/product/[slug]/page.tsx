@@ -9,7 +9,7 @@ import { ChangeEvent, useEffect, useReducer, useState } from "react";
 import { useGetCategoryByIdQuery } from "@/lib/features/api/categoriesApi";
 import { HiOutlineHeart } from "react-icons/hi2";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { addItem } from "@/lib/features/cartSlice/cartSlice";
+
 import toast from "react-hot-toast";
 import {
   initialState,
@@ -21,7 +21,7 @@ import DropdownSizeOptions from "@/app/[locale]/admin/dashboard/products/details
 import BaseTabs from "@/ui/Tabs/Tabs";
 import Reviews from "@/components/UserReviews/Reviews";
 import BaseContainer from "@/ui/Container/BaseContainer";
-import ReactStars from "react-stars";
+import ReactStars from "react-rating-stars-component";
 import { UserType } from "@/types/enums";
 import { Layout } from "@/config/layout";
 import {
@@ -31,6 +31,8 @@ import {
 import Menus from "@/ui/Menus/Menus";
 import MiniSpinner from "@/ui/MiniSpinner/MiniSpinner";
 import ReviewsSorting from "@/components/UserReviews/ReviewsSorting";
+import useAddItemToCookie from "@/hooks/useAddItemToCart";
+import { addItemThunk } from "@/lib/features/cookieSlice/cookieSlice";
 
 function ProductDetails() {
   const params = useParams();
@@ -57,9 +59,11 @@ function ProductDetails() {
       { skip: !productDetailsState?.selectedProduct?.productId }
     );
 
-  const dispatchRedux = useAppDispatch();
+  const { addItemHandler } = useAddItemToCookie("cartItems", addItemThunk);
 
-  const cart = useAppSelector((state) => state.cartSlice.cartItems);
+  const cart = useAppSelector(
+    (state) => state.cookieSlice.cookieItems.cartItems
+  );
 
   const user = useAppSelector((state) => state.usersSlice.user);
 
@@ -115,9 +119,9 @@ function ProductDetails() {
       toast.error("This Color and Size are Already Existed");
       return;
     }
-    toast.success("An item added to your cart");
-    dispatchRedux(
-      addItem({
+
+    addItemHandler({
+      data: {
         product: productDetailsState.selectedProduct.productId,
         cartItemId: crypto.randomUUID().substring(0, 5),
         name: productDetailsState.selectedProduct.name,
@@ -130,8 +134,10 @@ function ProductDetails() {
         cart: user?.cart?.["_id"],
         colorId: productDetailsState.selectedColor["_id"],
         slug: productDetailsState.selectedProduct.slug,
-      })
-    );
+      },
+
+      message: "An item added to your cart",
+    });
   }
 
   const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
@@ -268,7 +274,7 @@ function ProductDetails() {
           </Box>
           <div className="flex items-center gap-2">
             <div className="-translate-y-0.5">
-              <ReactStars
+              {/* <ReactStars
                 className="flex gap-1"
                 edit={false}
                 size={16}
@@ -276,6 +282,14 @@ function ProductDetails() {
                 value={averageRatingStars}
                 color1={"#CCC"}
                 color2={"#ffd700"}
+              /> */}
+              <ReactStars
+                className="flex gap-1"
+                edit={false}
+                size={16}
+                count={5}
+                value={averageRatingStars}
+                activeColor={"#ffd700"}
               />
             </div>
             <h2 className="font-semibold text-[1.4rem]">

@@ -1,10 +1,15 @@
+"use client";
+
 import "../globals.scss";
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
-import StoreProvider from "../StoreProvider";
 import { Toaster } from "react-hot-toast";
-import { NextIntlClientProvider } from "next-intl";
-import { getMessages } from "next-intl/server";
+import { initThunk } from "@/lib/features/cookieSlice/cookieSlice";
+import { useAppDispatch } from "@/lib/hooks";
+import { getCookie, hasCookie } from "cookies-next";
+import { usePathname } from "next/navigation";
+import { useEffect } from "react";
+import { StorageService } from "@/services/StorageService";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -13,60 +18,63 @@ const poppins = Poppins({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
 });
 
-export const metadata: Metadata = {
-  title: "Orca  ",
-  description: "E commerce Web site",
-};
-
-export default async function LocaleLayout({
+export default function LocaleLayout({
   children,
   params: { locale },
 }: Readonly<{
   children: React.ReactNode;
   params: { locale: string };
 }>) {
-  const messages = await getMessages();
+  const pathName = usePathname();
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (hasCookie("cartItems")) {
+      console.log("cart item cookieeeeees");
+
+      let cartItemCookies = getCookie("cartItems");
+
+      dispatch(initThunk("cartItems", StorageService.parse(cartItemCookies)));
+    }
+  }, [pathName, dispatch]);
 
   return (
     <html lang={locale}>
-      <StoreProvider>
-        <NextIntlClientProvider messages={messages}>
-          <body
-            suppressHydrationWarning={true}
-            className={`${poppins.className} font-sans`}
-          >
-            {children}
-            <div id="modal"></div>
-            <Toaster
-              position="top-center"
-              reverseOrder={false}
-              gutter={8}
-              containerClassName=""
-              containerStyle={{}}
-              toastOptions={{
-                duration: 1500,
-                style: {
-                  background: "white",
-                  color: "#fff",
-                  fontSize: "1.2rem",
-                  padding: "1.4rem",
-                },
-                success: {
-                  style: {
-                    color: "green",
-                    background: "white",
-                  },
-                },
-                error: {
-                  style: {
-                    color: "red",
-                  },
-                },
-              }}
-            />
-          </body>
-        </NextIntlClientProvider>
-      </StoreProvider>
+      <body
+        suppressHydrationWarning={true}
+        className={`${poppins.className} font-sans`}
+      >
+        {children}
+        <div id="modal"></div>
+        <Toaster
+          position="top-center"
+          reverseOrder={false}
+          gutter={8}
+          containerClassName=""
+          containerStyle={{}}
+          toastOptions={{
+            duration: 1500,
+            style: {
+              background: "white",
+              color: "#fff",
+              fontSize: "1.2rem",
+              padding: "1.4rem",
+            },
+            success: {
+              style: {
+                color: "green",
+                background: "white",
+              },
+            },
+            error: {
+              style: {
+                color: "red",
+              },
+            },
+          }}
+        />
+      </body>
     </html>
   );
 }

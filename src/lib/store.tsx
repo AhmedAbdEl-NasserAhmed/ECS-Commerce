@@ -12,6 +12,8 @@ import reviewsApi from "./features/api/reviewsApi";
 import cartItemsApi from "./features/api/cartItemsApi";
 import storage from "redux-persist/lib/storage";
 import { persistReducer } from "redux-persist";
+import cookieSlice from "./features/cookieSlice/cookieSlice";
+import paymentSlice from "./features/paymentSlice/paymentSlice";
 
 const persistConfig = {
   key: "root",
@@ -22,6 +24,8 @@ const persistConfig = {
 const rootReducer = combineReducers({
   usersSlice,
   cartSlice,
+  cookieSlice,
+  paymentSlice,
   [usersApi.reducerPath]: usersApi.reducer,
   [categoriesApi.reducerPath]: categoriesApi.reducer,
   [subCategoriesApi.reducerPath]: subCategoriesApi.reducer,

@@ -10,11 +10,11 @@ import { useParams, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import MobileScreenCategoriesList from "../MobileScreenCategoriesList/MobileScreenCategoriesList";
 import { UserType } from "@/types/enums";
-import { emptyCartItems } from "@/lib/features/cartSlice/cartSlice";
 
-import Cookies from "js-cookie";
 import { useSetCartItemsMutation } from "@/lib/features/api/cartItemsApi";
 import LanguageSelector from "../LanguageSelector/LanguageSelector";
+import { deleteCookie } from "cookies-next";
+import { clearCookiesThunk } from "@/lib/features/cookieSlice/cookieSlice";
 
 function LandingPageMenu() {
   const [opens, setOpens] = useState<boolean>(false);
@@ -100,11 +100,11 @@ function LandingPageMenu() {
                 localStorage.removeItem("userToken");
                 localStorage.removeItem("user");
                 localStorage.removeItem("cartItemsExpiration");
-                Cookies.remove("cartItems");
+                deleteCookie("cartItems");
                 router.push(`/${locale}`);
                 toast.success("Do Not Be Late");
                 setOpens(false);
-                dispatch(emptyCartItems());
+                dispatch(clearCookiesThunk("cartItems"));
               }}
               href=""
             >

@@ -2,7 +2,7 @@ import { UserReviewForm } from "@/types/types";
 import CustomizedTextField from "@/ui/TextField/TextField";
 import { useTranslations } from "next-intl";
 import { Controller, useForm } from "react-hook-form";
-import ReactStars from "react-stars";
+import ReactStars from "react-rating-stars-component";
 import "./ReviewForm.css";
 import { Button } from "@mui/material";
 import { useAppSelector } from "@/lib/hooks";
@@ -100,6 +100,18 @@ const ReviewForm = (props) => {
           defaultValue={""}
           control={control}
           render={({ field }) => (
+            // <ReactStars
+            //   disabled={
+            //     user?.role === UserType.ADMIN ||
+            //     !isAuthenticated ||
+            //     reviewRes.isLoading
+            //   }
+            //   className="review-form-stars"
+            //   count={5}
+            //   onChange={field.onChange}
+            //   value={+field.value || 1}
+            //   color2={"#ffd700"}
+            // />
             <ReactStars
               disabled={
                 user?.role === UserType.ADMIN ||

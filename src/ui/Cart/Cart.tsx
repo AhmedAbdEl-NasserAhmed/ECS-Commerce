@@ -3,10 +3,9 @@
 import {
   decrementProductItem,
   incrementProductItem,
-  removeItem,
   assignCartId,
-  addExistedProduct,
 } from "@/lib/features/cartSlice/cartSlice";
+
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import useClickOutside from "@/hooks/useClickOutside";
 
@@ -17,16 +16,19 @@ import { useParams, useRouter } from "next/navigation";
 import { UserType } from "@/types/enums";
 import { useEffect } from "react";
 import Link from "next/link";
+import {
+  clearCookiesThunk,
+  removeItemThunk,
+  setCookiesThunk,
+} from "@/lib/features/cookieSlice/cookieSlice";
 
 const Cart = ({ setIsCartOpen }) => {
   const { locale } = useParams();
 
   const router = useRouter();
 
-  const cart = useAppSelector((state) => state.cartSlice.cartItems);
-
-  const removedItems = useAppSelector(
-    (state) => state.cartSlice.existedProduct
+  const cart = useAppSelector(
+    (state) => state.cookieSlice.cookieItems.cartItems
   );
 
   const ref = useClickOutside({ close: setIsCartOpen, value: false });
@@ -38,48 +40,77 @@ const Cart = ({ setIsCartOpen }) => {
   const token = useAppSelector((state) => state.usersSlice.token);
 
   function handleDeleteProduct(product) {
-    dispatch(removeItem(product.cartItemId));
+    dispatch(
+      removeItemThunk(
+        "cartItems",
+        cart.filter(
+          (existedProductId) =>
+            existedProductId.cartItemId !== product.cartItemId
+        )
+      )
+    );
   }
 
   function addCartId() {
-    dispatch(assignCartId(user?.cart["_id"]));
+    let cartArrayCopy = [...cart];
+
+    cartArrayCopy = cartArrayCopy.map((product) => {
+      return !product.cart ? { ...product, cart: user?.cart["_id"] } : product;
+    });
+
+    dispatch(setCookiesThunk("cartItems", cartArrayCopy));
   }
 
   function handleIncrementProductQuantity(product) {
+    let cartArrayCopy = [...cart];
+
     if (product.quantity !== product.maxQuantity) {
-      dispatch(
-        incrementProductItem({
-          id: product.cartItemId,
-          maxQuantity: product.maxQuantity,
-        })
+      cartArrayCopy = cartArrayCopy.map((incrementQuantityProduct) =>
+        incrementQuantityProduct.cartItemId === product.cartItemId
+          ? {
+              ...incrementQuantityProduct,
+              quantity:
+                incrementQuantityProduct.maxQuantity !==
+                incrementQuantityProduct.quantity
+                  ? incrementQuantityProduct.quantity + 1
+                  : incrementQuantityProduct.quantity,
+            }
+          : incrementQuantityProduct
       );
     } else {
       toast.error(" This is maximum Quantity for this product Color");
     }
+
+    dispatch(setCookiesThunk("cartItems", cartArrayCopy));
   }
 
   function handleDecrementProductQuantity(product) {
-    dispatch(decrementProductItem(product.cartItemId));
+    let cartArrayCopy = [...cart];
+
+    cartArrayCopy = cartArrayCopy.map((incrementQuantityProduct) =>
+      incrementQuantityProduct.cartItemId === product.cartItemId
+        ? {
+            ...incrementQuantityProduct,
+            quantity:
+              incrementQuantityProduct.quantity !== 1
+                ? incrementQuantityProduct.quantity - 1
+                : incrementQuantityProduct.quantity,
+          }
+        : incrementQuantityProduct
+    );
+
+    dispatch(setCookiesThunk("cartItems", cartArrayCopy));
   }
 
   const totalCartItems = cart?.reduce((acc, cur) => {
     return acc + cur.quantity * cur.price;
   }, 0);
 
-  useEffect(() => {
-    localStorage.setItem("removedItems", JSON.stringify(removedItems));
-  }, [removedItems]);
-
-  const removeCartItem = (product) => {
-    dispatch(addExistedProduct(product.cartItemId));
-    handleDeleteProduct(product);
-  };
-
   const removeAllCartItems = () => {
-    cart.forEach((product) => {
-      removeCartItem(product);
-    });
+    dispatch(clearCookiesThunk("cartItems"));
   };
+
+  console.log("cart", cart);
 
   return (
     <div
@@ -179,7 +210,7 @@ const Cart = ({ setIsCartOpen }) => {
                       <button
                         disabled={user?.role === UserType.ADMIN}
                         className="text-blue-500 cursor-pointer"
-                        onClick={() => removeCartItem(product)}
+                        onClick={() => handleDeleteProduct(product)}
                       >
                         Remove
                       </button>

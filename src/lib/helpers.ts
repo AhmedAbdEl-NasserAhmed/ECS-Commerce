@@ -103,3 +103,17 @@ export function isProductExisted(uniquteValues: string[], value: string, arr) {
   });
   return uniqueProducts;
 }
+
+export function concatCartItemsHandler(arr1, arr2) {
+  let validatedArray = [];
+
+  if (arr1) {
+    validatedArray = validatedArray.concat(arr1);
+  }
+
+  if (arr2) {
+    validatedArray = validatedArray.concat(arr2);
+  }
+
+  return validatedArray;
+}

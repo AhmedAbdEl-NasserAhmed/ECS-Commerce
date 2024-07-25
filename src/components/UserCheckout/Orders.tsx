@@ -2,14 +2,17 @@
 
 import { useAppSelector } from "@/lib/hooks";
 import ProductDetailsTable from "./ProductDetailsTable/ProductDetailsTable";
-import { useEffect } from "react";
 
 function Orders() {
-  const cart = useAppSelector((state) => state.cartSlice.cartItems);
+  const cart = useAppSelector(
+    (state) => state.cookieSlice.cookieItems.cartItems
+  );
 
   const totalCartItems = cart.reduce((acc, cur) => {
     return acc + cur.quantity * cur.price;
   }, 0);
+
+  console.log(cart);
 
   if (!cart.length)
     return (

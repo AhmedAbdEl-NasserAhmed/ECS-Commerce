@@ -15,11 +15,13 @@ function NavIcons() {
 
   const user = useAppSelector((state) => state.usersSlice.user);
 
-  const makePayment = useAppSelector((state) => state.cartSlice.makePayment);
+  const makePayment = useAppSelector((state) => state.paymentSlice.makePayment);
 
   const [isCartOpen, setIsCartOpen] = useState<boolean>(false);
 
-  const cart = useAppSelector((state) => state.cartSlice.cartItems);
+  const cart = useAppSelector(
+    (state) => state.cookieSlice.cookieItems.cartItems
+  );
 
   function handleLoginClick() {
     setIsProfileOpen((open) => !open);

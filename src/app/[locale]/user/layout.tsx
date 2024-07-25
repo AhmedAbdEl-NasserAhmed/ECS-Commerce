@@ -1,5 +1,4 @@
 "use client";
-import useCookie from "@/hooks/useCookie";
 import { useAppSelector } from "@/lib/hooks";
 import { UserType } from "@/types/enums";
 import BreadCrumpet from "@/ui/BreadCrumpet/BreadCrumpet";
@@ -13,13 +12,6 @@ import { useEffect } from "react";
 
 function Layout({ children }) {
   const user = useAppSelector((state) => state.usersSlice.user);
-  const cart = useAppSelector((state) => state.cartSlice.cartItems);
-
-  // const { setCookieHandler } = useCookie();
-
-  // useEffect(() => {
-  //   setCookieHandler("cartItems", cart);
-  // }, [cart, setCookieHandler]);
 
   return (
     <CustomErrorBoundary>

@@ -27,11 +27,13 @@ function LandingPageMenu() {
 
   const dispatch = useAppDispatch();
 
-  const cart = useAppSelector((state) => state.cartSlice.cartItems);
+  const cart = useAppSelector(
+    (state) => state.cookieSlice.cookieItems.cartItems
+  );
 
   const user = useAppSelector((state) => state.usersSlice.user);
 
-  const [cartItems, setCartItems] = useSetCartItemsMutation();
+  const [cartItems] = useSetCartItemsMutation();
 
   const userRoleAdmin = user?.role === UserType.ADMIN;
 

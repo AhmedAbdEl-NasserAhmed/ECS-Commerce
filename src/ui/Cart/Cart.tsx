@@ -110,8 +110,6 @@ const Cart = ({ setIsCartOpen }) => {
     dispatch(clearCookiesThunk("cartItems"));
   };
 
-  console.log("cart", cart);
-
   return (
     <div
       ref={ref}

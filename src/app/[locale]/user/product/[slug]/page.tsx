@@ -252,11 +252,9 @@ function ProductDetails() {
             <h2 className="text-4xl font-semibold capitalize">
               {productDetailsState.selectedProduct?.name}
             </h2>
-            {Layout.featureWishlist && (
-              <span className="text-4xl cursor-pointer">
-                <HiOutlineHeart />
-              </span>
-            )}
+            <span className="text-4xl cursor-pointer">
+              <HiOutlineHeart />
+            </span>
           </Box>
           <Box className="flex items-center gap-4 flex-wrap">
             <Box>

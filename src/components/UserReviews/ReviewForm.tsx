@@ -24,6 +24,7 @@ const ReviewForm = (props) => {
   const {
     handleSubmit,
     control,
+    watch,
     reset,
     formState: { errors },
   } = useForm<UserReviewForm>({ mode: "onChange" });
@@ -31,11 +32,6 @@ const ReviewForm = (props) => {
   const [sendReview, reviewRes] = useSendReviewMutation();
 
   const onSubmitHandler = (data) => {
-    if (data.stars < 1) {
-      toast.error("Please Review must be 1 or more");
-      return;
-    }
-
     sendReview({
       title: data.review,
       ratings: data.stars,

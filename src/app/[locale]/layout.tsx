@@ -31,8 +31,6 @@ export default function LocaleLayout({
 
   useEffect(() => {
     if (hasCookie("cartItems")) {
-      console.log("cart item cookieeeeees");
-
       let cartItemCookies = getCookie("cartItems");
 
       dispatch(initThunk("cartItems", StorageService.parse(cartItemCookies)));

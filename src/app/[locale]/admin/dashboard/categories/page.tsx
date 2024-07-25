@@ -16,8 +16,6 @@ function Categories() {
   const [getPaginatedCategories, getPaginatedCategoriesResponse] =
     useLazyGetAdminCategoryQuery();
 
-  console.log(getPaginatedCategoriesResponse?.data);
-
   const { paginationControllers } = useBaseTablePagination(
     getPaginatedCategoriesResponse?.data?.numPages
   );

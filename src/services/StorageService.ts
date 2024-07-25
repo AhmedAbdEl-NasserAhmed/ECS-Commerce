@@ -11,7 +11,11 @@ export const StorageService = {
     return this.parse(localStorage.getItem(key));
   },
 
-  set(key, value) {
-    return localStorage.setItem(key, this.stringify(value));
+  set(key, value, shouldStringify = true) {
+    if (shouldStringify) {
+      return localStorage.setItem(key, this.stringify(value));
+    } else {
+      return localStorage.setItem(key, value);
+    }
   },
 };

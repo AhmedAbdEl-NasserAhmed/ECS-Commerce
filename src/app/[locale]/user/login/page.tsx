@@ -33,10 +33,11 @@ function LoginPage() {
   const [loginFn, loginState] = useUserloginMutation();
 
   const dispatch = useAppDispatch();
-  const existedProducts = useAppSelector(
-    (state) => state.cartSlice.existedProduct
+
+  const cart = useAppSelector(
+    (state) => state.cookieSlice.cookieItems.cartItems
   );
-  const cart = useAppSelector((state) => state.cartSlice.cartItems);
+
   const { locale } = useParams();
 
   const router = useRouter();
@@ -75,14 +76,13 @@ function LoginPage() {
 
         dispatch(setCookiesThunk("cartItems", cartItems));
 
-        StorageService.set("userToken", res.token);
+        StorageService.set("userToken", res.token, false);
 
         StorageService.set("user", res.data);
 
         router.push(`/${locale}`);
       })
       .catch((err) => {
-        console.log("error", err);
         toast.error(err?.data?.message);
       });
   }

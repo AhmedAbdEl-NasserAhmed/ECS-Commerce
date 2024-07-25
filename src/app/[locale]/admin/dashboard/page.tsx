@@ -100,7 +100,6 @@ function DashBoardPageg() {
             .unwrap()
             .then((d) => {
               setCategories_((s) => {
-                console.log("s[category?.name]", s, d.data);
                 return {
                   ...s,
                   [category?.name]: {

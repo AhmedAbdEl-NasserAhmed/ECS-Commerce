@@ -23,18 +23,6 @@ function HomePage() {
 
   const user = useAppSelector((state) => state.usersSlice.user);
 
-  const cart = useAppSelector((state) => state.cartSlice.cartItems);
-
-  // useEffect(() => {
-  //   console.log("hello");
-  // }, []);
-
-  // const { setCookieHandler } = useCookie();
-
-  // useEffect(() => {
-  //   setCookieHandler("cartItems", cart);
-  // }, [cart, setCookieHandler]);
-
   return (
     <UserProtectedRoute>
       {!user?.isActive && user && <NotActiveMessage />}

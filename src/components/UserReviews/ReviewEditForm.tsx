@@ -2,7 +2,7 @@ import { UserReviewForm } from "@/types/types";
 import CustomizedTextField from "@/ui/TextField/TextField";
 import { useTranslations } from "next-intl";
 import { Controller, useForm } from "react-hook-form";
-import ReactStars from "react-stars";
+import ReactStars from "react-rating-stars-component";
 import "./ReviewEditForm.scss";
 import { Button } from "@mui/material";
 import { useAppSelector } from "@/lib/hooks";
@@ -34,10 +34,6 @@ const ReviewEditForm = (props) => {
   const [editReview, editReviewRes] = useEditReviewMutation();
 
   const onSubmitHandler = (data) => {
-    if (data.stars < 1) {
-      toast.error("Please Review must be more than 1");
-      return;
-    }
     editReview({
       data: {
         title: data.review,
@@ -103,6 +99,18 @@ const ReviewEditForm = (props) => {
           defaultValue={props.review.ratings}
           control={control}
           render={({ field }) => (
+            // <ReactStars
+            //   disabled={
+            //     user?.role === UserType.ADMIN ||
+            //     !isAuthenticated ||
+            //     editReviewRes.isLoading
+            //   }
+            //   className="review-form-stars"
+            //   count={5}
+            //   onChange={field.onChange}
+            //   value={+field.value || 1}
+            //   color2={"#ffd700"}
+            // />
             <ReactStars
               disabled={
                 user?.role === UserType.ADMIN ||

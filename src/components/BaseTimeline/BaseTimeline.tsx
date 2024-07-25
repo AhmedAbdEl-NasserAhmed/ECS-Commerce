@@ -36,7 +36,7 @@ const BaseTimeline = ({
 
   const timelineContentDynamic = stages.map((content, idx) => {
     return (
-      <Fragment>
+      <Fragment key={content.id}>
         <div className={`${classes["checkup-timeline__circle"]}`}>
           <span>{idx + 1}</span>
           <span className={`${classes["checkup-timeline__icon-done"]}`}>

@@ -9,6 +9,7 @@ import { useAppSelector } from "@/lib/hooks";
 import { UserType } from "@/types/enums";
 import UserGreeting from "../UserGreeting/UserGreeting";
 import LanguageSelector from "../LanguageSelector/LanguageSelector";
+import { HiOutlineHeart } from "react-icons/hi2";
 
 function NavIcons() {
   const [isProfileOpen, setIsProfileOpen] = useState<boolean>(false);
@@ -21,6 +22,10 @@ function NavIcons() {
 
   const cart = useAppSelector(
     (state) => state.cookieSlice.cookieItems.cartItems
+  );
+
+  const wishList = useAppSelector(
+    (state) => state.cookieSlice.cookieItems.whistListItems
   );
 
   function handleLoginClick() {
@@ -45,6 +50,17 @@ function NavIcons() {
 
       {isProfileOpen && <ProfileMenu setIsProfileOpen={setIsProfileOpen} />}
 
+      {user?.role !== UserType.ADMIN && (
+        <li className="relative" onClick={() => {}}>
+          <span className="text-4xl">
+            <HiOutlineHeart />
+          </span>
+          <span className="absolute w-6 h-6  rounded-full text-sm bg-red-500 -top-3 z-10 flex items-center justify-center text-white  -right-3">
+            {wishList?.length}
+          </span>
+        </li>
+      )}
+
       {user?.role !== UserType.ADMIN && !makePayment && (
         <li
           className="relative"
@@ -65,6 +81,7 @@ function NavIcons() {
         </li>
       )}
       <LanguageSelector />
+
       {isCartOpen && user?.role !== UserType.ADMIN && !makePayment && (
         <Cart setIsCartOpen={setIsCartOpen} />
       )}

@@ -1,11 +1,9 @@
 import useClickOutside from "@/hooks/useClickOutside";
 import {
-  addExistedProduct,
-  assignCartId,
-  decrementProductItem,
-  incrementProductItem,
-  removeItem,
-} from "@/lib/features/cartSlice/cartSlice";
+  clearCookiesThunk,
+  removeItemThunk,
+  setCookiesThunk,
+} from "@/lib/features/cookieSlice/cookieSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { UserType } from "@/types/enums";
 import { CartItem } from "@/types/types";
@@ -19,7 +17,9 @@ function CartSideMenu({ setOpenSideMenu, openSideMenu, setOpens }) {
 
   const router = useRouter();
 
-  const cart = useAppSelector((state) => state.cartSlice.cartItems);
+  const cart = useAppSelector(
+    (state) => state.cookieSlice.cookieItems.cartItems
+  );
 
   const ref = useClickOutside({ close: setOpenSideMenu, value: false });
 
@@ -27,59 +27,101 @@ function CartSideMenu({ setOpenSideMenu, openSideMenu, setOpens }) {
 
   const user = useAppSelector((state) => state.usersSlice.user);
 
-  const removedItems = useAppSelector(
-    (state) => state.cartSlice.existedProduct
-  );
-
   const token = useAppSelector((state) => state.usersSlice.token);
 
   function handleDeleteProduct(product) {
-    dispatch(removeItem(product.cartItemId));
+    dispatch(
+      removeItemThunk(
+        "cartItems",
+        cart.filter(
+          (existedProductId) =>
+            existedProductId.cartItemId !== product.cartItemId
+        )
+      )
+    );
   }
 
   function addCartId() {
-    dispatch(assignCartId(user?.cart["_id"]));
+    let cartArrayCopy = [...cart];
+
+    cartArrayCopy = cartArrayCopy.map((product) => {
+      return !product.cart ? { ...product, cart: user?.cart["_id"] } : product;
+    });
+
+    dispatch(setCookiesThunk("cartItems", cartArrayCopy));
   }
 
   function handleIncrementProductQuantity(product) {
+    let cartArrayCopy = [...cart];
+
     if (product.quantity !== product.maxQuantity) {
-      dispatch(
-        incrementProductItem({
-          id: product.cartItemId,
-          maxQuantity: product.maxQuantity,
-        })
+      cartArrayCopy = cartArrayCopy.map((incrementQuantityProduct) =>
+        incrementQuantityProduct.cartItemId === product.cartItemId
+          ? {
+              ...incrementQuantityProduct,
+              quantity:
+                incrementQuantityProduct.maxQuantity !==
+                incrementQuantityProduct.quantity
+                  ? incrementQuantityProduct.quantity + 1
+                  : incrementQuantityProduct.quantity,
+            }
+          : incrementQuantityProduct
       );
     } else {
       toast.error(" This is maximum Quantity for this product Color");
     }
+
+    dispatch(setCookiesThunk("cartItems", cartArrayCopy));
   }
 
   function handleDecrementProductQuantity(product) {
-    dispatch(decrementProductItem(product.cartItemId));
+    let cartArrayCopy = [...cart];
+
+    cartArrayCopy = cartArrayCopy.map((incrementQuantityProduct) =>
+      incrementQuantityProduct.cartItemId === product.cartItemId
+        ? {
+            ...incrementQuantityProduct,
+            quantity:
+              incrementQuantityProduct.quantity !== 1
+                ? incrementQuantityProduct.quantity - 1
+                : incrementQuantityProduct.quantity,
+          }
+        : incrementQuantityProduct
+    );
+
+    dispatch(setCookiesThunk("cartItems", cartArrayCopy));
   }
+
+  const removeAllCartItems = () => {
+    dispatch(clearCookiesThunk("cartItems"));
+  };
 
   const totalCartItems = cart.reduce((acc, cur) => {
     return acc + +cur.quantity * +cur.price;
   }, 0);
 
-  useEffect(() => {
-    localStorage.setItem("removedItems", JSON.stringify(removedItems));
-  }, [removedItems]);
-
   return (
     <div
       className={`fixed top-0 ${
-        openSideMenu ? "start-0" : "-start-[550px]"
-      } transition-all duration-300  h-screen w-full backdrop-filter backdrop-blur-sm z-50  `}
+        openSideMenu ? "start-0" : "-start-[900px]"
+      } transition-all duration-300 text-xl  h-screen w-full backdrop-filter backdrop-blur-sm z-50  `}
     >
       <div ref={ref} className="bg-white w-[70vw] h-full p-6 overflow-y-scroll">
         {cart.length === 0 ? (
-          <div className="text-black  font-bold text-4xl">Cart is Empty</div>
+          <div className="text-black  font-bold text-2xl">Cart is Empty</div>
         ) : (
           <>
-            <h2 className="text-2xl font-semibold text-black capitalize mb-10">
-              Shopping Cart
-            </h2>
+            <div className="flex justify-between items-center mb-10">
+              <h2 className="text-2xl font-semibold text-black capitalize ">
+                Shopping Cart
+              </h2>
+              <button
+                className="p-2 bg-red-500 text-white rounded-lg"
+                onClick={removeAllCartItems}
+              >
+                Clear All
+              </button>
+            </div>
             {/* LIST */}
 
             <div className="flex flex-col gap-14">
@@ -159,7 +201,6 @@ function CartSideMenu({ setOpenSideMenu, openSideMenu, setOpens }) {
                         <span
                           className="text-blue-500 cursor-pointer"
                           onClick={() => {
-                            dispatch(addExistedProduct(product.cartItemId));
                             handleDeleteProduct(product);
                           }}
                         >

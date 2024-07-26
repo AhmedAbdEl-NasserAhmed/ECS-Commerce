@@ -10,11 +10,12 @@ import { useParams, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import MobileScreenCategoriesList from "../MobileScreenCategoriesList/MobileScreenCategoriesList";
 import { UserType } from "@/types/enums";
-import { emptyCartItems } from "@/lib/features/cartSlice/cartSlice";
 
-import Cookies from "js-cookie";
 import { useSetCartItemsMutation } from "@/lib/features/api/cartItemsApi";
 import LanguageSelector from "../LanguageSelector/LanguageSelector";
+import { deleteCookie } from "cookies-next";
+import { clearCookiesThunk } from "@/lib/features/cookieSlice/cookieSlice";
+import WishListSideMenu from "../WishListSideMenu/WishListSideMenu";
 
 function LandingPageMenu() {
   const [opens, setOpens] = useState<boolean>(false);
@@ -25,13 +26,21 @@ function LandingPageMenu() {
 
   const [openSideMenu, setOpenSideMenu] = useState<boolean>(false);
 
+  const [openWishListMenu, setOpenWishListMenu] = useState<boolean>(false);
+
   const dispatch = useAppDispatch();
 
-  const cart = useAppSelector((state) => state.cartSlice.cartItems);
+  const cart = useAppSelector(
+    (state) => state.cookieSlice.cookieItems.cartItems
+  );
 
   const user = useAppSelector((state) => state.usersSlice.user);
 
-  const [cartItems, setCartItems] = useSetCartItemsMutation();
+  const wishList = useAppSelector(
+    (state) => state.cookieSlice.cookieItems.wishListItems
+  );
+
+  const [cartItems] = useSetCartItemsMutation();
 
   const userRoleAdmin = user?.role === UserType.ADMIN;
 
@@ -100,11 +109,11 @@ function LandingPageMenu() {
                 localStorage.removeItem("userToken");
                 localStorage.removeItem("user");
                 localStorage.removeItem("cartItemsExpiration");
-                Cookies.remove("cartItems");
+                deleteCookie("cartItems");
                 router.push(`/${locale}`);
                 toast.success("Do Not Be Late");
                 setOpens(false);
-                dispatch(emptyCartItems());
+                dispatch(clearCookiesThunk("cartItems"));
               }}
               href=""
             >
@@ -115,6 +124,12 @@ function LandingPageMenu() {
           {!userRoleAdmin && (
             <li onClick={() => setOpenSideMenu(true)}>
               <Link href="">Cart ({cart.length})</Link>
+            </li>
+          )}
+
+          {!userRoleAdmin && (
+            <li onClick={() => setOpenWishListMenu(true)}>
+              <Link href="">Wish List ({wishList.length})</Link>
             </li>
           )}
           <li>
@@ -131,6 +146,12 @@ function LandingPageMenu() {
             setOpens={setOpens}
             setOpenSideMenu={setOpenSideMenu}
             openSideMenu={openSideMenu}
+          />
+
+          <WishListSideMenu
+            setOpens={setOpens}
+            openWishListMenu={openWishListMenu}
+            setOpenWishListMenu={setOpenWishListMenu}
           />
         </ul>
       )}

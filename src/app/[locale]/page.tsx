@@ -12,7 +12,7 @@ import HomePageCategory from "@/ui/HomePageCategory/HomePageCategory";
 import FloatingWhatsAppComponent from "@/ui/FloatingWhatsAppIcon/FloatingWhatsAppIcon";
 import { UserType } from "@/types/enums";
 import UserProtectedRoute from "@/ui/UserProtectedRoute/UserProtectedRoute";
-import useCookie from "@/hooks/useCookie";
+
 import { useEffect, useState } from "react";
 
 function HomePage() {
@@ -22,14 +22,6 @@ function HomePage() {
     useGetAllProductsQuery({ sale: "true", limit: 6 });
 
   const user = useAppSelector((state) => state.usersSlice.user);
-
-  const cart = useAppSelector((state) => state.cartSlice.cartItems);
-
-  const { setCookieHandler } = useCookie();
-
-  useEffect(() => {
-    setCookieHandler("cartItems", cart);
-  }, [cart, setCookieHandler]);
 
   return (
     <UserProtectedRoute>

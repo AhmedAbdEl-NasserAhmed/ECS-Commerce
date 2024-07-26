@@ -1,11 +1,25 @@
-"use client";
+import StoreProvider from "./StoreProvider";
+import { getMessages } from "next-intl/server";
+import { NextIntlClientProvider } from "next-intl";
+import { Metadata } from "next";
 
-import CustomErrorBoundary from "@/ui/ErrorBoundary/ErrorBoundary";
+export const metadata: Metadata = {
+  title: "Orca  ",
+  description: "E commerce Web site",
+};
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return children;
+  const messages = await getMessages();
+
+  return (
+    <StoreProvider>
+      <NextIntlClientProvider messages={messages}>
+        {children}
+      </NextIntlClientProvider>
+    </StoreProvider>
+  );
 }

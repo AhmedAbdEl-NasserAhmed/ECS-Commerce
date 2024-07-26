@@ -5,11 +5,18 @@ import Spinner from "@/ui/Spinner/Spinner";
 import { Box, Button } from "@mui/material";
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import { ChangeEvent, useEffect, useReducer, useState } from "react";
+import {
+  ChangeEvent,
+  useEffect,
+  useMemo,
+  useReducer,
+  useRef,
+  useState,
+} from "react";
 import { useGetCategoryByIdQuery } from "@/lib/features/api/categoriesApi";
-import { HiOutlineHeart } from "react-icons/hi2";
+import { HiHeart, HiOutlineHeart } from "react-icons/hi2";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { addItem } from "@/lib/features/cartSlice/cartSlice";
+
 import toast from "react-hot-toast";
 import {
   initialState,
@@ -21,21 +28,24 @@ import DropdownSizeOptions from "@/app/[locale]/admin/dashboard/products/details
 import BaseTabs from "@/ui/Tabs/Tabs";
 import Reviews from "@/components/UserReviews/Reviews";
 import BaseContainer from "@/ui/Container/BaseContainer";
-import ReactStars from "react-stars";
+import ReactStars from "react-rating-stars-component";
 import { UserType } from "@/types/enums";
-import { Layout } from "@/config/layout";
-import {
-  useGetAllReviewsQuery,
-  useGetProductReviewsQuery,
-} from "@/lib/features/api/reviewsApi";
+import { useGetProductReviewsQuery } from "@/lib/features/api/reviewsApi";
 import Menus from "@/ui/Menus/Menus";
 import MiniSpinner from "@/ui/MiniSpinner/MiniSpinner";
 import ReviewsSorting from "@/components/UserReviews/ReviewsSorting";
+import useAddItemToCookie from "@/hooks/useAddItemToCart";
+import {
+  addItemThunk,
+  removeItemThunk,
+} from "@/lib/features/cookieSlice/cookieSlice";
 
 function ProductDetails() {
   const params = useParams();
 
   const [productDetailsState, dispatch] = useReducer(reducerFn, initialState);
+
+  const dispatchRedux = useAppDispatch();
 
   const { data, isLoading } = useGetSingleProductBySlugQuery(params.slug);
 
@@ -57,9 +67,23 @@ function ProductDetails() {
       { skip: !productDetailsState?.selectedProduct?.productId }
     );
 
-  const dispatchRedux = useAppDispatch();
+  const { addItemHandler: addCartItemHandler } = useAddItemToCookie(
+    "cartItems",
+    addItemThunk
+  );
 
-  const cart = useAppSelector((state) => state.cartSlice.cartItems);
+  const { addItemHandler: addWishListItemHandler } = useAddItemToCookie(
+    "wishListItems",
+    addItemThunk
+  );
+
+  const cart = useAppSelector(
+    (state) => state.cookieSlice.cookieItems.cartItems
+  );
+
+  const wishList = useAppSelector(
+    (state) => state.cookieSlice.cookieItems.wishListItems
+  );
 
   const user = useAppSelector((state) => state.usersSlice.user);
 
@@ -68,70 +92,134 @@ function ProductDetails() {
   }
 
   const { data: mainCategory, isLoading: mainCategoryLoading } =
-    useGetCategoryByIdQuery(productDetailsState.selectedProduct?.category, {
-      skip: !productDetailsState.selectedProduct?.category,
+    useGetCategoryByIdQuery(productDetailsState?.selectedProduct?.category, {
+      skip: !productDetailsState?.selectedProduct?.category,
     });
 
   useEffect(() => {
     action(ProductDetailsAction.SET_SELECTED_PRODUCT, {
-      value: data?.data?.products[productDetailsState.currentProductIndex],
+      value: data?.data?.products[productDetailsState?.currentProductIndex],
     });
     // setSelectedProduct(data?.data?.products[productDetailsState.currentProductIndex]);
-  }, [data?.data?.products, productDetailsState.currentProductIndex]);
+  }, [data?.data?.products, productDetailsState?.currentProductIndex]);
 
   useEffect(() => {
     action(ProductDetailsAction.SET_SELECTED_COLOR, {
-      value: productDetailsState.selectedProduct?.colors?.[0],
+      value: productDetailsState?.selectedProduct?.colors?.[0],
     });
-  }, [productDetailsState.selectedProduct?.colors]);
+  }, [productDetailsState?.selectedProduct?.colors]);
 
   useEffect(() => {
     const colorExists = cart.some(
       (product) =>
-        product.color === productDetailsState.selectedColor?.color &&
-        product.size === productDetailsState.selectedProduct.size &&
-        product.product === productDetailsState.selectedProduct.productId
+        product.color === productDetailsState?.selectedColor?.color &&
+        product.size === productDetailsState?.selectedProduct?.size &&
+        product.product === productDetailsState?.selectedProduct.productId
     );
 
     action(ProductDetailsAction.SET_COLOR_EXISTED, { value: colorExists });
   }, [
-    productDetailsState.selectedColor,
+    productDetailsState?.selectedColor,
     cart,
-    productDetailsState.selectedProduct,
+    productDetailsState?.selectedProduct,
   ]);
 
-  function handleAddCartItem() {
-    if (!productDetailsState.selectedColor.value) {
-      toast.error("Please select color");
-      return;
-    } else if (
-      productDetailsState.productQuantity === 0 ||
-      productDetailsState.productQuantity >
-        productDetailsState.selectedProduct.quantity
-    ) {
-      toast.error("Quanity must be more than 0");
-      return;
-    } else if (productDetailsState.isColorExisted) {
+  function handleAddCartItem(selectedProduct) {
+    if (productDetailsState?.isColorExisted) {
       toast.error("This Color and Size are Already Existed");
       return;
     }
-    toast.success("An item added to your cart");
-    dispatchRedux(
-      addItem({
-        product: productDetailsState.selectedProduct.productId,
-        cartItemId: crypto.randomUUID().substring(0, 5),
-        name: productDetailsState.selectedProduct.name,
-        size: productDetailsState.selectedProduct.size,
-        quantity: productDetailsState.productQuantity,
-        image: data?.data?.images[0].url,
-        color: productDetailsState.selectedColor.color,
-        price: productDetailsState.selectedProduct.saleProduct,
-        maxQuantity: productDetailsState.selectedColor.quantity,
-        cart: user?.cart?.["_id"],
-        colorId: productDetailsState.selectedColor["_id"],
-        slug: productDetailsState.selectedProduct.slug,
-      })
-    );
+
+    const isExistedInCart = cart.some((cartItem) => {
+      return (
+        cartItem.product === selectedProduct.productId &&
+        cartItem.colorId === productDetailsState.selectedColor["_id"] &&
+        cartItem.size === selectedProduct.size
+      );
+    });
+
+    if (!isExistedInCart) {
+      addCartItemHandler({
+        data: {
+          product: productDetailsState?.selectedProduct.productId,
+          cartItemId: crypto.randomUUID().substring(0, 5),
+          name: productDetailsState?.selectedProduct.name,
+          size: productDetailsState?.selectedProduct.size,
+          quantity: productDetailsState?.productQuantity,
+          image: data?.data?.images[0].url,
+          color: productDetailsState?.selectedColor.color,
+          price: productDetailsState?.selectedProduct.saleProduct,
+          maxQuantity: productDetailsState?.selectedColor.quantity,
+          cart: user?.cart?.["_id"],
+          colorId: productDetailsState?.selectedColor["_id"],
+          slug: productDetailsState?.selectedProduct.slug,
+        },
+        message: "An item added to your cart",
+      });
+
+      dispatchRedux(
+        removeItemThunk(
+          "wishListItems",
+          wishList.filter(
+            (wistListItem) =>
+              wistListItem.colorId !== productDetailsState?.selectedColor["_id"]
+          )
+        )
+      );
+    }
+  }
+
+  useEffect(() => {
+    action(ProductDetailsAction.SET_EXISTED_WISHlIST_ITEM, {
+      value: wishList.map((wishListItem) => wishListItem.colorId),
+    });
+  }, [wishList]);
+
+  function addWishListProducthandler() {
+    if (
+      productDetailsState.existedWishListItems.includes(
+        productDetailsState.selectedColor["_id"]
+      )
+    ) {
+      const filtredWishList = wishList.filter((wishListItem) => {
+        return (
+          wishListItem.colorId !== productDetailsState?.selectedColor["_id"]
+        );
+      });
+
+      dispatchRedux(removeItemThunk("wishListItems", filtredWishList));
+
+      toast.success("Item removed from whist List ");
+    } else {
+      const isExistedInCart = cart.some((carItem) => {
+        return (
+          carItem.product === productDetailsState?.selectedProduct.productId &&
+          carItem.colorId === productDetailsState?.selectedColor?.["_id"] &&
+          carItem.size === productDetailsState?.selectedProduct.size
+        );
+      });
+
+      if (!isExistedInCart) {
+        addWishListItemHandler({
+          data: {
+            product: productDetailsState?.selectedProduct.productId,
+            cartItemId: crypto.randomUUID().substring(0, 5),
+            name: productDetailsState?.selectedProduct.name,
+            size: productDetailsState?.selectedProduct.size,
+            quantity: productDetailsState?.productQuantity,
+            image: data?.data?.images[0].url,
+            color: productDetailsState?.selectedColor.color,
+            price: productDetailsState?.selectedProduct.saleProduct,
+            maxQuantity: productDetailsState?.selectedColor.quantity,
+            colorId: productDetailsState?.selectedColor["_id"],
+            slug: productDetailsState?.selectedProduct.slug,
+          },
+          message: "An item added to your Wish List",
+        });
+      } else {
+        toast.error("This Item is Already in the Cart");
+      }
+    }
   }
 
   const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
@@ -154,25 +242,25 @@ function ProductDetails() {
 
   function handleIncrementQuantity() {
     if (
-      productDetailsState.productQuantity ===
-        productDetailsState.selectedColor.quantity ||
-      !productDetailsState.selectedColor.label
+      productDetailsState?.productQuantity ===
+        productDetailsState?.selectedColor.quantity ||
+      !productDetailsState?.selectedColor.label
     )
       return;
 
     action(ProductDetailsAction.SET_PRODUCT_QUANTITY, {
-      value: productDetailsState.productQuantity + 1,
+      value: productDetailsState?.productQuantity + 1,
     });
   }
 
   function handleDecrementQuantity() {
     if (
-      productDetailsState.productQuantity === 0 ||
-      !productDetailsState.selectedColor.label
+      productDetailsState?.productQuantity === 1 ||
+      !productDetailsState?.selectedColor.label
     )
       return;
     action(ProductDetailsAction.SET_PRODUCT_QUANTITY, {
-      value: productDetailsState.productQuantity - 1,
+      value: productDetailsState?.productQuantity - 1,
     });
   }
 
@@ -182,12 +270,12 @@ function ProductDetails() {
 
   const isAdmin = user?.role === UserType.ADMIN;
 
-  if (isLoading || mainCategoryLoading) return <Spinner />;
-
   const averageRatingStars =
     reviews?.data?.reduce((acc, review) => {
       return acc + review.ratings;
     }, 0) / reviews?.data?.length;
+
+  if (isLoading || mainCategoryLoading) return <Spinner />;
 
   return (
     <BaseContainer className="p-[4rem]">
@@ -203,17 +291,17 @@ function ProductDetails() {
                     })
                   }
                   className={`${
-                    index === productDetailsState.imageIndex
+                    index === productDetailsState?.imageIndex
                       ? "opacity-70"
                       : "opacity-40"
                   } ${
-                    index === productDetailsState.imageIndex
+                    index === productDetailsState?.imageIndex
                       ? "border-slate-400"
                       : ""
                   } relative w-[10rem] h-[10rem] cursor-pointer transition-all duration-500`}
                   key={image.id}
                 >
-                  {productDetailsState.isLoadingComplete && (
+                  {productDetailsState?.isLoadingComplete && (
                     <div className="flex items-center justify-center">
                       <Spinner />
                     </div>
@@ -234,7 +322,7 @@ function ProductDetails() {
           </Box>
           <Box className="relative grow transition-all duration-500 ">
             <Image
-              src={data?.data?.images?.[productDetailsState.imageIndex]?.url}
+              src={data?.data?.images?.[productDetailsState?.imageIndex]?.url}
               alt="img"
               fill
               className="object-contain border-2 border-[#dcdbdb] rounded-2xl"
@@ -242,13 +330,29 @@ function ProductDetails() {
           </Box>
         </Box>
         <Box className="flex flex-col gap-10 w-full ">
-          <Box className="flex justify-between items-center ">
+          <Box className="flex justify-between items-center  ">
             <h2 className="text-4xl font-semibold capitalize">
-              {productDetailsState.selectedProduct?.name}
+              {productDetailsState?.selectedProduct?.name}
             </h2>
-            {Layout.featureWishlist && (
-              <span className="text-4xl cursor-pointer">
-                <HiOutlineHeart />
+
+            {productDetailsState?.isColorExisted && (
+              <p className="text-xl font-semibold capitalize">
+                Item added to cart
+              </p>
+            )}
+
+            {!productDetailsState?.isColorExisted && (
+              <span
+                onClick={addWishListProducthandler}
+                className="text-5xl cursor-pointer text-[#ed0534]"
+              >
+                {productDetailsState.existedWishListItems.includes(
+                  productDetailsState.selectedColor?.["_id"]
+                ) ? (
+                  <HiHeart />
+                ) : (
+                  <HiOutlineHeart />
+                )}
               </span>
             )}
           </Box>
@@ -261,7 +365,7 @@ function ProductDetails() {
             <Box className="flex items-center gap-4 flex-wrap">
               <SubCategoriesList
                 subCategoriesIds={
-                  productDetailsState.selectedProduct?.subCategory
+                  productDetailsState?.selectedProduct?.subCategory
                 }
               />
             </Box>
@@ -274,8 +378,7 @@ function ProductDetails() {
                 size={16}
                 count={5}
                 value={averageRatingStars}
-                color1={"#CCC"}
-                color2={"#ffd700"}
+                activeColor={"#ffd700"}
               />
             </div>
             <h2 className="font-semibold text-[1.4rem]">
@@ -283,15 +386,15 @@ function ProductDetails() {
             </h2>
           </div>
           <q className="text-2xl text-gray-400 capitalize">
-            {productDetailsState.selectedProduct?.description}
+            {productDetailsState?.selectedProduct?.description}
           </q>
           <Box className="flex items-center gap-5">
             <h2 className="text-3xl font-semibold ">
-              {productDetailsState.selectedProduct?.saleProduct} EGP
+              {productDetailsState?.selectedProduct?.saleProduct} EGP
             </h2>
-            {productDetailsState.selectedProduct?.discount > 0 && (
+            {productDetailsState?.selectedProduct?.discount > 0 && (
               <h2 className="text-3xl font-semibold text-gray-400 line-through">
-                {productDetailsState.selectedProduct?.price} EGP
+                {productDetailsState?.selectedProduct?.price} EGP
               </h2>
             )}
           </Box>
@@ -306,7 +409,7 @@ function ProductDetails() {
           <Box>
             <h2 className="text-2xl mb-5">Available Colors:</h2>
             <div className="flex gap-4">
-              {productDetailsState.selectedProduct?.colors?.map((color) => {
+              {productDetailsState?.selectedProduct?.colors?.map((color) => {
                 return (
                   <div
                     onClick={() => {
@@ -319,7 +422,7 @@ function ProductDetails() {
                     }}
                     key={color.value}
                     className={`cursor-pointer w-14 h-14 rounded-full ${
-                      productDetailsState.selectedColor?.value === color.value
+                      productDetailsState?.selectedColor?.value === color.value
                         ? "ring-offset-2 ring-2 ring-slate-400"
                         : ""
                     } `}
@@ -343,7 +446,7 @@ function ProductDetails() {
               <input
                 className="text-center p-4 rounded-xl grow md:grow-0 text-2xl w-[15%] border-2 border-gray-200"
                 type="number"
-                value={productDetailsState.productQuantity}
+                value={productDetailsState?.productQuantity}
                 readOnly
               />
 
@@ -356,9 +459,9 @@ function ProductDetails() {
               </button>
             </Box>
           )}
-          {productDetailsState.productQuantity ===
-            productDetailsState.selectedColor?.quantity &&
-            productDetailsState.selectedColor?.value && (
+          {productDetailsState?.productQuantity ===
+            productDetailsState?.selectedColor?.quantity &&
+            productDetailsState?.selectedColor?.value && (
               <p className="text-2xl text-red-600">
                 This is maximum Quantity for this product Color
               </p>
@@ -368,8 +471,8 @@ function ProductDetails() {
               <button
                 disabled={isAdmin}
                 onClick={() => {
-                  handleAddCartItem();
-                  action(ProductDetailsAction.SET_PRODUCT_QUANTITY, {
+                  handleAddCartItem(productDetailsState?.selectedProduct);
+                  action(ProductDetailsAction?.SET_PRODUCT_QUANTITY, {
                     value: 1,
                   });
                 }}

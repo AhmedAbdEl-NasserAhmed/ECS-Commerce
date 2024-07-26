@@ -157,3 +157,16 @@ export interface CartItem {
   colorId: string;
   slug: string;
 }
+
+export interface WishListItemProps {
+  id: string;
+  name: string;
+  size: string;
+  quantity: number;
+  image: string;
+  color: string;
+  price: number;
+  maxQuantity: number;
+  colorId: string;
+  slug: string;
+}

@@ -9,17 +9,27 @@ import { useAppSelector } from "@/lib/hooks";
 import { UserType } from "@/types/enums";
 import UserGreeting from "../UserGreeting/UserGreeting";
 import LanguageSelector from "../LanguageSelector/LanguageSelector";
+import { HiOutlineHeart } from "react-icons/hi2";
+import WishListMenu from "../WishListMenu/WishListMenu";
 
 function NavIcons() {
   const [isProfileOpen, setIsProfileOpen] = useState<boolean>(false);
 
   const user = useAppSelector((state) => state.usersSlice.user);
 
-  const makePayment = useAppSelector((state) => state.cartSlice.makePayment);
+  const makePayment = useAppSelector((state) => state.paymentSlice.makePayment);
 
   const [isCartOpen, setIsCartOpen] = useState<boolean>(false);
 
-  const cart = useAppSelector((state) => state.cartSlice.cartItems);
+  const [isWishListOpen, setIsWishListOpen] = useState<boolean>(false);
+
+  const cart = useAppSelector(
+    (state) => state.cookieSlice.cookieItems.cartItems
+  );
+
+  const wishList = useAppSelector(
+    (state) => state.cookieSlice.cookieItems.wishListItems
+  );
 
   function handleLoginClick() {
     setIsProfileOpen((open) => !open);
@@ -43,6 +53,22 @@ function NavIcons() {
 
       {isProfileOpen && <ProfileMenu setIsProfileOpen={setIsProfileOpen} />}
 
+      {user?.role !== UserType.ADMIN && (
+        <li
+          className="relative"
+          onClick={() => {
+            setIsWishListOpen((wishList) => !wishList);
+          }}
+        >
+          <span className="text-[2.4rem] cursor-pointer">
+            <HiOutlineHeart />
+          </span>
+          <span className="absolute w-6 h-6  rounded-full text-sm bg-red-500 -top-3 z-10 flex items-center justify-center text-white  -right-3">
+            {wishList?.length}
+          </span>
+        </li>
+      )}
+
       {user?.role !== UserType.ADMIN && !makePayment && (
         <li
           className="relative"
@@ -63,8 +89,13 @@ function NavIcons() {
         </li>
       )}
       <LanguageSelector />
+
       {isCartOpen && user?.role !== UserType.ADMIN && !makePayment && (
         <Cart setIsCartOpen={setIsCartOpen} />
+      )}
+
+      {isWishListOpen && user?.role !== UserType.ADMIN && (
+        <WishListMenu setIsWishListOpen={setIsWishListOpen} />
       )}
     </ul>
   );

@@ -17,7 +17,6 @@ function Reviews() {
   const [getPaginatedReviews, getPaginatedReviewsResponse] =
     useLazyGetAllAdminReviewsQuery();
 
-
   const { paginationControllers } = useBaseTablePagination(
     getPaginatedReviewsResponse?.data?.numPages
   );

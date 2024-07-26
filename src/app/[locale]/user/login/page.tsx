@@ -13,10 +13,14 @@ import { loginUser } from "@/lib/features/usersSlice/usersSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import toast from "react-hot-toast";
 import MiniSpinner from "@/ui/MiniSpinner/MiniSpinner";
-import Cookies from "js-cookie";
-import { setCartItems } from "@/lib/features/cartSlice/cartSlice";
-import { getUniqueValues, isProductExisted } from "@/lib/helpers";
-import useCookie from "@/hooks/useCookie";
+import {
+  concatCartItemsHandler,
+  getUniqueValues,
+  isProductExisted,
+} from "@/lib/helpers";
+import { getCookie } from "cookies-next";
+import { setCookiesThunk } from "@/lib/features/cookieSlice/cookieSlice";
+import { StorageService } from "@/services/StorageService";
 
 function LoginPage() {
   const {
@@ -29,10 +33,15 @@ function LoginPage() {
   const [loginFn, loginState] = useUserloginMutation();
 
   const dispatch = useAppDispatch();
-  const existedProducts = useAppSelector(
-    (state) => state.cartSlice.existedProduct
+
+  const cart = useAppSelector(
+    (state) => state.cookieSlice.cookieItems.cartItems
   );
-  const cart = useAppSelector((state) => state.cartSlice.cartItems);
+
+  const wishList = useAppSelector(
+    (state) => state.cookieSlice.cookieItems.wishListItems
+  );
+
   const { locale } = useParams();
 
   const router = useRouter();
@@ -40,8 +49,6 @@ function LoginPage() {
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
-
-  const { setCookieHandler } = useCookie();
 
   function onSubmit(data) {
     loginFn({ email: data.email, password: data.password })
@@ -55,30 +62,53 @@ function LoginPage() {
             token: res.token,
           })
         );
-        //
-        const userCookiesItems = isProductExisted(
-          existedProducts,
-          "cartItemId",
-          res.data?.cookieCart?.cartItems
+
+        console.log("USER", res.data);
+
+        const cookiesItems = getCookie("cartItems") || "[]";
+
+        const parsedCookiesItems = StorageService.parse(cookiesItems);
+
+        const responseCartItems = res.data?.cookieCart?.cartItems;
+
+        const wishListCookieitems = getCookie("wishListItems") || "[]";
+
+        const parsedWishListItems = StorageService.parse(wishListCookieitems);
+
+        const responseWishListItems = res.data?.cookieCart?.wishListItems;
+
+        const concatedCartItems = concatCartItemsHandler(
+          parsedCookiesItems,
+          responseCartItems
         );
-        const cartItems = res.data
-          ? getUniqueValues(cart.concat(userCookiesItems), [
-              "color",
-              "size",
-              "product",
-            ])
+
+        console.log("concatedCartItems", concatedCartItems);
+
+        const concatedWishListItems = concatCartItemsHandler(
+          parsedWishListItems,
+          responseWishListItems
+        );
+
+        const cartItems = res.data?.cookieCart?.cartItems
+          ? getUniqueValues(concatedCartItems, ["color", "size", "product"])
           : cart;
 
-        setCookieHandler("cartItems", cartItems);
+        const wishListItems = res.data?.cookieCart?.wishListItems
+          ? getUniqueValues(concatedWishListItems, ["color", "size", "product"])
+          : wishList;
 
-        dispatch(setCartItems(cartItems));
-        //
-        localStorage.setItem("userToken", res.token);
-        localStorage.setItem("user", JSON.stringify(res.data));
+        dispatch(setCookiesThunk("cartItems", cartItems));
+
+        dispatch(setCookiesThunk("wishListItems", wishListItems));
+
+        StorageService.set("userToken", res.token, false);
+
+        StorageService.set("user", res.data);
+
         router.push(`/${locale}`);
       })
       .catch((err) => {
-        toast.error(err.data.message);
+        toast.error(err?.data?.message);
       });
   }
 

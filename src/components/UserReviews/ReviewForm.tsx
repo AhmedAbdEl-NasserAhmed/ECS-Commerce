@@ -2,7 +2,7 @@ import { UserReviewForm } from "@/types/types";
 import CustomizedTextField from "@/ui/TextField/TextField";
 import { useTranslations } from "next-intl";
 import { Controller, useForm } from "react-hook-form";
-import ReactStars from "react-stars";
+import ReactStars from "react-rating-stars-component";
 import "./ReviewForm.css";
 import { Button } from "@mui/material";
 import { useAppSelector } from "@/lib/hooks";
@@ -24,6 +24,7 @@ const ReviewForm = (props) => {
   const {
     handleSubmit,
     control,
+    watch,
     reset,
     formState: { errors },
   } = useForm<UserReviewForm>({ mode: "onChange" });
@@ -31,11 +32,6 @@ const ReviewForm = (props) => {
   const [sendReview, reviewRes] = useSendReviewMutation();
 
   const onSubmitHandler = (data) => {
-    if (data.stars < 1) {
-      toast.error("Please Review must be 1 or more");
-      return;
-    }
-
     sendReview({
       title: data.review,
       ratings: data.stars,
@@ -95,25 +91,26 @@ const ReviewForm = (props) => {
             />
           )}
         />
-        <Controller
-          name={"stars"}
-          defaultValue={""}
-          control={control}
-          render={({ field }) => (
-            <ReactStars
-              disabled={
-                user?.role === UserType.ADMIN ||
-                !isAuthenticated ||
-                reviewRes.isLoading
-              }
-              className="review-form-stars"
-              count={5}
-              onChange={field.onChange}
-              value={+field.value || 1}
-              color2={"#ffd700"}
-            />
-          )}
-        />
+        <div className="review-form-stars">
+          <Controller
+            name={"stars"}
+            defaultValue={"1"}
+            control={control}
+            render={({ field }) => (
+              <ReactStars
+                disabled={
+                  user?.role === UserType.ADMIN ||
+                  !isAuthenticated ||
+                  reviewRes.isLoading
+                }
+                count={5}
+                onChange={field.onChange}
+                value={+field.value || 1}
+                color2={"#ffd700"}
+              />
+            )}
+          />
+        </div>
       </div>
       <div className="flex justify-end">
         <Button

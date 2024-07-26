@@ -1,37 +1,37 @@
-import { useCallback, useEffect, useMemo, useRef } from "react";
-import Cookies from "js-cookie";
+// import { useCallback, useEffect, useMemo, useRef } from "react";
+// import Cookies from "js-cookie";
 
-function useCookie() {
-  const ref = useRef(null);
+// function useCookie() {
+//   const ref = useRef(null);
 
-  useEffect(() => {
-    const isCookiesExisted = Cookies.get(name);
+//   useEffect(() => {
+//     const isCookiesExisted = Cookies.get(name);
 
-    if (!isCookiesExisted) {
-      localStorage.removeItem("cartItemsExpiration");
-    }
+//     if (!isCookiesExisted) {
+//       localStorage.removeItem("cartItemsExpiration");
+//     }
 
-    const savedExpiration = localStorage.getItem("cartItemsExpiration");
+//     const savedExpiration = localStorage.getItem("cartItemsExpiration");
 
-    if (savedExpiration) {
-      ref.current = new Date(savedExpiration);
-    } else {
-      const expirationDate = new Date();
-      expirationDate.setMinutes(expirationDate.getMinutes() + 1440);
-      ref.current = expirationDate;
-      localStorage.setItem("cartItemsExpiration", expirationDate.toISOString());
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+//     if (savedExpiration) {
+//       ref.current = new Date(savedExpiration);
+//     } else {
+//       const expirationDate = new Date();
+//       expirationDate.setMinutes(expirationDate.getMinutes() + 1440);
+//       ref.current = expirationDate;
+//       localStorage.setItem("cartItemsExpiration", expirationDate.toISOString());
+//     }
+//     // eslint-disable-next-line react-hooks/exhaustive-deps
+//   }, []);
 
-  const setCookieHandler = useCallback((name, value) => {
-    Cookies.set(name, JSON.stringify(value), {
-      expires: ref.current,
-      path: "/",
-    });
-  }, []);
+//   const setCookieHandler = useCallback((name, value) => {
+//     // Cookies.set(name, JSON.stringify(value), {
+//     //   expires: ref.current,
+//     //   path: "/",
+//     // });
+//   }, []);
 
-  return { setCookieHandler };
-}
+//   return { setCookieHandler };
+// }
 
-export default useCookie;
+// export default useCookie;

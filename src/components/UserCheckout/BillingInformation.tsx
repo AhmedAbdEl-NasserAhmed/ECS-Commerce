@@ -12,13 +12,10 @@ import ErrorMessage from "@/ui/ErrorMessage/ErrorMessage";
 import { usePaymentCheckoutMutation } from "@/lib/features/api/paymentApi";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import MiniSpinner from "@/ui/MiniSpinner/MiniSpinner";
-import {
-  emptyCartItems,
-  makePayment,
-} from "@/lib/features/cartSlice/cartSlice";
-import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { clearCookiesThunk } from "@/lib/features/cookieSlice/cookieSlice";
+import { makePayment } from "@/lib/features/paymentSlice/paymentSlice";
 
 function BillingInformation() {
   const {
@@ -35,7 +32,9 @@ function BillingInformation() {
 
   const dispatch = useAppDispatch();
 
-  const cart = useAppSelector((state) => state.cartSlice.cartItems);
+  const cart = useAppSelector(
+    (state) => state.cookieSlice.cookieItems.cartItems
+  );
 
   const countries = getNames().map((country) => ({
     label: country,
@@ -50,6 +49,7 @@ function BillingInformation() {
     }
 
     dispatch(makePayment(true));
+
     paymentFn({
       billing_data: {
         firstName: data.firstName,
@@ -68,10 +68,9 @@ function BillingInformation() {
       .unwrap()
       .then((res) => {
         dispatch(makePayment(false));
-        dispatch(emptyCartItems());
+        dispatch(clearCookiesThunk("cartItems"));
         window.open(res.url, "_blank", "noopener,noreferrer");
         router.replace(`/${locale}`);
-        localStorage.removeItem("removedItems");
       })
       .catch((err) => {
         dispatch(makePayment(false));

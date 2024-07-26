@@ -89,6 +89,20 @@ export const queryBuilder = (query) => {
   return queryString.slice(0, -1);
 };
 
+export function concatCartItemsHandler(arr1, arr2) {
+  let concatedArr = [];
+
+  if (arr1) {
+    concatedArr = concatedArr.concat(arr1);
+  }
+
+  if (arr2) {
+    concatedArr = concatedArr.concat(arr2);
+  }
+
+  return concatedArr;
+}
+
 export function isProductExisted(uniquteValues: string[], value: string, arr) {
   const uniqueProducts = [];
 

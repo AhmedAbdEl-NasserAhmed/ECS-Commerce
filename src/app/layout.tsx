@@ -1,6 +1,4 @@
 import StoreProvider from "./StoreProvider";
-import { getMessages } from "next-intl/server";
-import { NextIntlClientProvider } from "next-intl";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -13,13 +11,5 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const messages = await getMessages();
-
-  return (
-    <StoreProvider>
-      <NextIntlClientProvider messages={messages}>
-        {children}
-      </NextIntlClientProvider>
-    </StoreProvider>
-  );
+  return <StoreProvider>{children}</StoreProvider>;
 }

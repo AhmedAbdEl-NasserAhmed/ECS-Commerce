@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import Cart from "../Cart/Cart";
 import ProfileMenu from "../ProfileMenu/ProfileMenu";
@@ -21,6 +21,12 @@ function NavIcons() {
 
   const [isCartOpen, setIsCartOpen] = useState<boolean>(false);
 
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   const [isWishListOpen, setIsWishListOpen] = useState<boolean>(false);
 
   const cart = useAppSelector(
@@ -34,6 +40,8 @@ function NavIcons() {
   function handleLoginClick() {
     setIsProfileOpen((open) => !open);
   }
+
+  if (!isClient) return;
 
   return (
     <ul className=" relative flex items-center justify-between gap-8 xl:gap-6">

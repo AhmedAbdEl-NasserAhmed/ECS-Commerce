@@ -1,3 +1,5 @@
+"use client";
+
 import { Dispatch, SetStateAction } from "react";
 import { Box } from "@mui/material";
 import Link from "next/link";

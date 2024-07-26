@@ -14,6 +14,10 @@ import { UserType } from "@/types/enums";
 import UserProtectedRoute from "@/ui/UserProtectedRoute/UserProtectedRoute";
 
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+import { getCookie, hasCookie } from "cookies-next";
+import { initThunk } from "@/lib/features/cookieSlice/cookieSlice";
+import { StorageService } from "@/services/StorageService";
 
 function HomePage() {
   const { data, isLoading } = useGetAllProductsQuery({ limit: 6 });
@@ -22,6 +26,25 @@ function HomePage() {
     useGetAllProductsQuery({ sale: "true", limit: 6 });
 
   const user = useAppSelector((state) => state.usersSlice.user);
+
+  const pathName = usePathname();
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (hasCookie("cartItems")) {
+      let cartItemCookies = getCookie("cartItems");
+
+      dispatch(initThunk("cartItems", StorageService.parse(cartItemCookies)));
+    }
+    if (hasCookie("wishListItems")) {
+      let wishListCookies = getCookie("wishListItems");
+
+      dispatch(
+        initThunk("wishListItems", StorageService.parse(wishListCookies))
+      );
+    }
+  }, [pathName, dispatch]);
 
   return (
     <UserProtectedRoute>

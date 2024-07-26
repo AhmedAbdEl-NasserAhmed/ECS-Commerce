@@ -5,14 +5,7 @@ import Spinner from "@/ui/Spinner/Spinner";
 import { Box, Button } from "@mui/material";
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import {
-  ChangeEvent,
-  useEffect,
-  useMemo,
-  useReducer,
-  useRef,
-  useState,
-} from "react";
+import { ChangeEvent, useEffect, useReducer, useState } from "react";
 import { useGetCategoryByIdQuery } from "@/lib/features/api/categoriesApi";
 import { HiHeart, HiOutlineHeart } from "react-icons/hi2";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
@@ -302,7 +295,7 @@ function ProductDetails() {
                   key={image.id}
                 >
                   {productDetailsState?.isLoadingComplete && (
-                    <div className="flex items-center justify-center flex-col">
+                    <div className="flex items-center justify-center flex-col h-full">
                       <Spinner />
                     </div>
                   )}
@@ -319,10 +312,16 @@ function ProductDetails() {
             })}
           </Box>
           <Box className="relative grow transition-all duration-500 ">
+            {productDetailsState?.isLoadingComplete && (
+              <div className="flex items-center justify-center flex-col h-full">
+                <Spinner />
+              </div>
+            )}
             <Image
               src={data?.data?.images?.[productDetailsState?.imageIndex]?.url}
               alt="img"
               fill
+              onLoad={handleLoadingImages}
               className="object-contain border-2 border-[#dcdbdb] rounded-2xl"
             />
           </Box>

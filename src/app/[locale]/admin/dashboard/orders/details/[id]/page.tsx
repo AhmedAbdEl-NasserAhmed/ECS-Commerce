@@ -1,4 +1,5 @@
 "use client";
+
 import BaseTimeline from "@/components/BaseTimeline/BaseTimeline";
 import useTimeline from "@/hooks/useTimeline";
 import {
@@ -19,7 +20,7 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { HiChevronRight } from "react-icons/hi2";
 
-export const requestCheckupTimelineStages = [
+const requestCheckupTimelineStages = [
   {
     id: 1,
     name: "CREATED",

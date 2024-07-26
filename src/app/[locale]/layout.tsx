@@ -1,5 +1,3 @@
-"use client";
-
 import "../globals.scss";
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
@@ -10,6 +8,8 @@ import { getCookie, hasCookie } from "cookies-next";
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 import { StorageService } from "@/services/StorageService";
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages } from "next-intl/server";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -18,31 +18,14 @@ const poppins = Poppins({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
 });
 
-export default function LocaleLayout({
+export default async function LocaleLayout({
   children,
   params: { locale },
 }: Readonly<{
   children: React.ReactNode;
   params: { locale: string };
 }>) {
-  const pathName = usePathname();
-
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    if (hasCookie("cartItems")) {
-      let cartItemCookies = getCookie("cartItems");
-
-      dispatch(initThunk("cartItems", StorageService.parse(cartItemCookies)));
-    }
-    if (hasCookie("wishListItems")) {
-      let wishListCookies = getCookie("wishListItems");
-
-      dispatch(
-        initThunk("wishListItems", StorageService.parse(wishListCookies))
-      );
-    }
-  }, [pathName, dispatch]);
+  const messages = await getMessages();
 
   return (
     <html lang={locale}>
@@ -50,7 +33,9 @@ export default function LocaleLayout({
         suppressHydrationWarning={true}
         className={`${poppins.className} font-sans`}
       >
-        {children}
+        <NextIntlClientProvider messages={messages}>
+          {children}
+        </NextIntlClientProvider>
         <div id="modal"></div>
         <Toaster
           position="top-center"

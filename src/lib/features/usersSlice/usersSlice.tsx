@@ -1,17 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit";
-import Cookies from "js-cookie";
-import { setCartItems } from "../cartSlice/cartSlice";
 
 let userToken = null;
 
-if (typeof localStorage !== undefined) {
-  userToken = localStorage.getItem("userToken");
+if (typeof window !== "undefined") {
+  // Check if window is available
+  if (localStorage.getItem("userToken")) {
+    userToken = localStorage.getItem("userToken");
+  }
 }
 
 let user = null;
 
-if (typeof localStorage !== undefined) {
-  user = JSON.parse(localStorage.getItem("user"));
+if (typeof window !== "undefined") {
+  // Check if window is available
+  if (localStorage.getItem("user")) {
+    user = JSON.parse(localStorage.getItem("user"));
+  }
 }
 
 const initialState = {

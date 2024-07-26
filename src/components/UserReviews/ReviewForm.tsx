@@ -1,3 +1,5 @@
+"use client";
+
 import { UserReviewForm } from "@/types/types";
 import CustomizedTextField from "@/ui/TextField/TextField";
 import { useTranslations } from "next-intl";

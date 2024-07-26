@@ -1,4 +1,3 @@
-import useClickOutside from "@/hooks/useClickOutside";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -38,6 +37,7 @@ function ProductsList({ data, setProductName, productName }) {
         observer.disconnect();
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

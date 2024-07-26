@@ -55,7 +55,7 @@ function UserMenu({ setIsProfileOpen }) {
           <Link
             className=" flex items-center gap-4 justify-center"
             onClick={() => setIsProfileOpen(false)}
-            href={`/${locale}/admin/dashboard/products`}
+            href={`/${locale}/admin/dashboard`}
           >
             <span className="text-3xl">
               <HiOutlineViewGrid />

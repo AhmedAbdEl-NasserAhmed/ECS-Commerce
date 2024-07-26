@@ -84,6 +84,7 @@ function ViewOrder() {
         break;
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [order?.data?.orderStatus]);
 
   if (isFetching) return <Spinner />;
@@ -140,7 +141,7 @@ function ViewOrder() {
           stages={requestCheckupTimelineStages}
         />
       </Box>
-      <Box className="p-5 relative bg-white rounded-2xl border-2 p-10 border-slate-100 shadow-md">
+      <Box className="relative bg-white rounded-2xl border-2 p-10 border-slate-100 shadow-md">
         <Box className="mb-4">
           <h2 className="text-3xl font-semibold mb-5">{t("View Order")}</h2>
           <span className=" absolute left-0 block h-[1px] w-full bg-gray-200">

@@ -63,6 +63,7 @@ function BaseReactTable({
 
   useEffect(() => {
     getTableBodyHeight();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   const getTableHeaderColumnWidth = () => {

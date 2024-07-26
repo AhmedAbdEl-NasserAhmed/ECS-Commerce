@@ -45,6 +45,7 @@ function EditCategoryPage() {
       setValue("name", categoryData?.data?.name || "");
       setValue("description", categoryData?.data?.description || "");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [categoryData, isSuccess]);
 
   const formData = watch();

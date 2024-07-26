@@ -57,6 +57,7 @@ function EditSubCategoryPage() {
       setValue("name", subCategoryData?.data?.name);
       setValue("description", subCategoryData?.data?.description);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [subCategoryData]);
 
   const { data, isLoading } = useGetCategoryQuery(debounceValue);

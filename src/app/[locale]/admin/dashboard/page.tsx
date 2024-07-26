@@ -13,18 +13,11 @@ import Spinner from "@/ui/Spinner/Spinner";
 import { ordersTableHeadersWithoutActions } from "@/constants/ordersTableHeaders";
 import { useTranslations } from "next-intl";
 import { useGetAllOrdersQuery } from "@/lib/features/api/ordersApi";
-import { useGetAllCategoriesQuery } from "@/lib/features/api/categoriesApi";
-import { useLazyGetAllProductsQuery } from "@/lib/features/api/productsApi";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import { Gauge } from "@mui/x-charts/Gauge";
-import {
-  formatCurrency,
-  groupBy,
-  groupByUsersByDate,
-  prepareUsersAnalyticsData,
-} from "@/lib/helpers";
+import { formatCurrency } from "@/lib/helpers";
 import { OrderStatusEnum } from "@/types/enums";
-import { useGetAllUsersQuery } from "@/lib/features/api/usersApi";
+
 import { useGetAnalyticsDataQuery } from "@/lib/features/api/dashboardApi";
 
 const TARGET_GOAL_SALES = 100000;

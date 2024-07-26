@@ -26,6 +26,7 @@ function SubCategories() {
       page: paginationControllers.page + 1,
       limit: paginationControllers.pageSize,
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [paginationControllers.page, paginationControllers.pageSize]);
 
   const t = useTranslations("Dashboard");

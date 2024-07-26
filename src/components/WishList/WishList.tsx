@@ -20,7 +20,7 @@ function WishList() {
   if (!wishList.length)
     return (
       <div className="text-2xl bg-white text-black flex items-center justify-center font-semibold p-4">
-        <p>Start Adding Product To your Wish List</p>
+        <p>Start Adding Products To your Wish List</p>
       </div>
     );
 

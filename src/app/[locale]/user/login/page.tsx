@@ -63,8 +63,6 @@ function LoginPage() {
           })
         );
 
-        console.log("USER", res.data);
-
         const cookiesItems = getCookie("cartItems") || "[]";
 
         const parsedCookiesItems = StorageService.parse(cookiesItems);
@@ -81,8 +79,6 @@ function LoginPage() {
           parsedCookiesItems,
           responseCartItems
         );
-
-        console.log("concatedCartItems", concatedCartItems);
 
         const concatedWishListItems = concatCartItemsHandler(
           parsedWishListItems,

@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+
 import { useAppSelector } from "@/lib/hooks";
 import { UserType } from "@/types/enums";
 import { usePathname, useRouter } from "next/navigation";
@@ -31,6 +33,7 @@ function UserProtectedRoute({ children }) {
     ) {
       router.back();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [forbiddenRoutes, isAuthenticated, pathName, router, user?.role]);
 
   return children;

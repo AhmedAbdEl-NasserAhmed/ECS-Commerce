@@ -46,6 +46,7 @@ const useTimeline = (stages) => {
 
   const prevStageHandler = useCallback(() => {
     if (timelineData.activeStageIndex) dispatch({ type: "PREV" });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timelineData.activeStageIndex, stages]);
 
   const resetHandler = useCallback(() => {

@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+
 "use client";
 
 import { useAppSelector } from "@/lib/hooks";
@@ -46,6 +48,7 @@ function ProtectedRoute({ children }) {
         }
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [typeof window, router, locale, user, pathname, searchParams, authRoutes]);
 
   return children;

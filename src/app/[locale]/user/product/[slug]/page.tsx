@@ -281,7 +281,7 @@ function ProductDetails() {
     <BaseContainer className="p-[4rem]">
       <Box className="flex  flex-col gap-16 lg:flex-row ">
         <Box className="flex flex-col md:flex-row gap-5 h-[600px] w-full ">
-          <Box className="flex md:flex-col flex-row gap-10 md:order-none order-1 ">
+          <Box className="flex md:flex-col flex-row md:order-none order-1 gap-14 ">
             {data?.data?.images.map((image, index) => {
               return (
                 <Box
@@ -302,7 +302,7 @@ function ProductDetails() {
                   key={image.id}
                 >
                   {productDetailsState?.isLoadingComplete && (
-                    <div className="flex items-center justify-center">
+                    <div className="flex items-center justify-center flex-col">
                       <Spinner />
                     </div>
                   )}
@@ -311,10 +311,8 @@ function ProductDetails() {
                     alt="img"
                     quality={100}
                     onLoad={handleLoadingImages}
-                    // fill
-                    width={100}
-                    height={100}
-                    className="object-contain rounded-2xl border-2 border-[#dcdbdb]"
+                    fill
+                    className="object-cover rounded-2xl border-2 border-[#dcdbdb]"
                   />
                 </Box>
               );

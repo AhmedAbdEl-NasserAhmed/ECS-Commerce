@@ -108,12 +108,14 @@ function BaseColorPicker({
     if (field.value.length === 0) {
       onSelectColorHandler(undefined, "clear");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [field.value]);
 
   useEffect(() => {
     if (selectedColors.length > 0) {
       onChange(selectedColors);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedColors]);
 
   const addToList = (color) => {

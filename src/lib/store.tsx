@@ -13,7 +13,8 @@ import storage from "redux-persist/lib/storage";
 import { persistReducer } from "redux-persist";
 import cookieSlice from "./features/cookieSlice/cookieSlice";
 import paymentSlice from "./features/paymentSlice/paymentSlice";
-import wishListApi from "./features/api/wishlistApi";
+import dashboardApi from "./features/api/dashboardApi";
+import wishListApi from "./features/api/wishListApi";
 
 const persistConfig = {
   key: "root",
@@ -35,6 +36,7 @@ const rootReducer = combineReducers({
   [reviewsApi.reducerPath]: reviewsApi.reducer,
   [cartItemsApi.reducerPath]: cartItemsApi.reducer,
   [wishListApi.reducerPath]: wishListApi.reducer,
+  [dashboardApi.reducerPath]: dashboardApi.reducer,
 });
 
 const persistedReducer = persistReducer<any, any>(persistConfig, rootReducer);
@@ -52,7 +54,8 @@ export const store = configureStore({
       contactUsApi.middleware,
       reviewsApi.middleware,
       cartItemsApi.middleware,
-      wishListApi.middleware
+      wishListApi.middleware,
+      dashboardApi.middleware
     ),
 });
 

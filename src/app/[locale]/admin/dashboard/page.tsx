@@ -14,110 +14,69 @@ import { ordersTableHeadersWithoutActions } from "@/constants/ordersTableHeaders
 import { useTranslations } from "next-intl";
 import { useGetAllOrdersQuery } from "@/lib/features/api/ordersApi";
 import { useGetAllCategoriesQuery } from "@/lib/features/api/categoriesApi";
-import {
-  useGetAllProductsQuery,
-  useLazyGetAllProductsQuery,
-} from "@/lib/features/api/productsApi";
-import { useEffect, useState } from "react";
+import { useLazyGetAllProductsQuery } from "@/lib/features/api/productsApi";
+import { useEffect, useMemo, useState } from "react";
 import { Gauge } from "@mui/x-charts/Gauge";
+import {
+  formatCurrency,
+  groupBy,
+  groupByUsersByDate,
+  prepareUsersAnalyticsData,
+} from "@/lib/helpers";
+import { OrderStatusEnum } from "@/types/enums";
+import { useGetAllUsersQuery } from "@/lib/features/api/usersApi";
+import { useGetAnalyticsDataQuery } from "@/lib/features/api/dashboardApi";
 
-const TARGET_GOAL_SALES = 10000;
-const data = [
-  {
-    value: "1,503",
-    title: "Daily Signups",
-    icon: <RiUserSharedFill />,
-    className: "bg-gradient-to-r from-cyan-500 to-blue-500",
-  },
-  {
-    value: "2,201",
-    title: "Daily Order",
-    icon: <BsFillCartCheckFill />,
-    className: "bg-gradient-to-r from-sky-500 to-indigo-500",
-  },
-  {
-    value: "31,503",
-    title: "Products",
-    icon: <HiCube />,
-    className: "bg-gradient-to-r from-violet-500 to-fuchsia-500",
-  },
-  {
-    value: "11,503",
-    title: "Categories",
-    icon: <HiFolder />,
-    className: "bg-gradient-to-r from-purple-500 to-pink-500",
-  },
-];
-
-const _data = {
-  data: [
-    {
-      _id: "1234",
-      email: "khalednasser788@gmail.com",
-      mobile: "0124561244",
-      orderPrice: 800,
-      status: "purchased",
-      transactionId: "#0123442211",
-    },
-  ],
-};
-
-const isFetching = false;
+const TARGET_GOAL_SALES = 100000;
 
 function DashBoardPageg() {
   const t = useTranslations("Dashboard");
 
-  const { data: orders, isFetching: isOrdersFetching } =
-    useGetAllOrdersQuery("orders");
+  const { data: orders } = useGetAllOrdersQuery("orders");
 
-  const { data: categories, isFetching: isCategoriesFetching } =
-    useGetAllCategoriesQuery("categories");
-
-  const [getProductsByCategory, getProductsResponse] =
-    useLazyGetAllProductsQuery();
-
-  const [categories_, setCategories_] = useState({});
-
-  function groupBy(groupKey = "name", list) {
-    let output = {};
-
-    for (let i = 0; i < list.length; i++) {
-      if (list[i][groupKey] in output) {
-        output[list[i][groupKey]] = output[list[i][groupKey]].concat(list[i]);
-      } else {
-        output[list[i][groupKey]] = [list[i]];
-      }
-    }
-
-    return output;
-  }
-
-  useEffect(() => {
-    if (categories?.data) {
-      categories.data.forEach((category) => {
-        if (category["_id"]) {
-          getProductsByCategory({ categoryId: category["_id"] })
-            .unwrap()
-            .then((d) => {
-              setCategories_((s) => {
-                return {
-                  ...s,
-                  [category?.name]: {
-                    ...groupBy("name", d.data),
-                  },
-                };
-              });
-            });
-        }
-      });
-    }
-  }, [categories]);
+  const { data: analytics, isFetching: isAnalyticsFetching } =
+    useGetAnalyticsDataQuery("analytics");
 
   const targetGoalSales =
-    (orders?.data?.reduce((acc, order) => acc + order.orderPrice, 0) /
+    (orders?.data
+      ?.filter(
+        (order) => order.orderStatus.toUpperCase() === OrderStatusEnum.delivered
+      )
+      ?.reduce((acc, order) => acc + order.orderPrice, 0) /
       TARGET_GOAL_SALES) *
     100;
 
+  const data = useMemo(() => {
+    return [
+      {
+        value: analytics?.userCount || 0,
+        title: "Users",
+        icon: <RiUserSharedFill />,
+        className: "bg-gradient-to-r from-cyan-500 to-blue-500",
+      },
+      {
+        value: analytics?.orderCount || 0,
+        title: "Orders",
+        icon: <BsFillCartCheckFill />,
+        className: "bg-gradient-to-r from-sky-500 to-indigo-500",
+      },
+      {
+        value: analytics?.productCount || 0,
+        title: "Products",
+        icon: <HiCube />,
+        className: "bg-gradient-to-r from-violet-500 to-fuchsia-500",
+      },
+      {
+        value: analytics?.categoryCount || 0,
+        title: "Categories",
+        icon: <HiFolder />,
+        className: "bg-gradient-to-r from-purple-500 to-pink-500",
+      },
+    ];
+  }, [analytics]);
+
+  if (isAnalyticsFetching) return <Spinner />;
+  if (!analytics) return <p>Something went wrong!</p>;
   return (
     <div className="px-[4rem] py-[1.2rem] mt-5">
       <FlexWrapper className="gap-9">
@@ -137,70 +96,17 @@ function DashBoardPageg() {
         })}
       </FlexWrapper>
       <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-5 mt-10">
-        <AnalysisCard title="Orders">
-          {isOrdersFetching ? (
-            <Spinner />
-          ) : (
-            <BarChart
-              series={[
-                {
-                  data: orders.data
-                    .slice(0, 5)
-                    .map((order) => order.orderPrice),
-                },
-              ]}
-              height={290}
-              xAxis={[{ data: ["O1", "O2", "O3", "O4"], scaleType: "band" }]}
-              margin={{ top: 10, bottom: 30, left: 40, right: 10 }}
-            />
-          )}
-        </AnalysisCard>
-        <AnalysisCard title="Categories">
-          {isCategoriesFetching ? (
-            <Spinner />
-          ) : (
-            <PieChart
-              sx={{
-                width: "100%",
-                ".MuiChart-root": {
-                  width: "100%",
-                },
-              }}
-              series={[
-                {
-                  data: categories.data.slice(0, 3).map((category) => ({
-                    id: category["_id"],
-                    value: 10,
-                    label: category.name,
-                  })),
-                },
-              ]}
-              width={400}
-              height={200}
-            />
-          )}
-        </AnalysisCard>
-      </div>
-      <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-5 mt-10">
-        <AnalysisCard title="Signups">
+        <AnalysisCard title="Users">
           <LineChart
             xAxis={[
               {
-                data: [
-                  "Page A",
-                  "Page B",
-                  "Page C",
-                  "Page D",
-                  "Page E",
-                  "Page F",
-                  "Page G",
-                ],
+                data: analytics?.users?.map((user) => user["_id"]),
                 scaleType: "point",
               },
             ]}
             series={[
               {
-                data: [4000, 3000, 2000, null, 1890, 2390, 3490],
+                data: analytics?.users?.map((user) => user.users.length),
                 connectNulls: true,
               },
             ]}
@@ -209,31 +115,60 @@ function DashBoardPageg() {
           />
         </AnalysisCard>
         <AnalysisCard title="Categories">
-          {Object.keys(categories_).length !== categories?.data?.length ? (
-            <Spinner />
-          ) : (
-            <Gauge
-              value={targetGoalSales}
-              height={290}
-              startAngle={0}
-              endAngle={360}
-              innerRadius="80%"
-              outerRadius="100%"
-              // ...
-            />
-          )}
+          <PieChart
+            sx={{
+              width: "100%",
+              ".MuiChart-root": {
+                width: "100%",
+              },
+            }}
+            series={[
+              {
+                data: analytics?.productCountForLast10Categories,
+              },
+            ]}
+            width={400}
+            height={200}
+          />
+        </AnalysisCard>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-5 mt-10">
+        <AnalysisCard title="Sales">
+          <BarChart
+            series={[
+              {
+                data: analytics?.last10Orders?.map((order) => order.orderPrice),
+              },
+            ]}
+            height={290}
+            xAxis={[
+              {
+                data: analytics?.last10Orders?.map((c, i) => `O${i + 1}`),
+                scaleType: "band",
+              },
+            ]}
+            margin={{ top: 10, bottom: 30, left: 40, right: 10 }}
+          />
+        </AnalysisCard>
+        <AnalysisCard title={`Target (${formatCurrency(TARGET_GOAL_SALES)})`}>
+          <Gauge
+            value={targetGoalSales}
+            height={290}
+            startAngle={0}
+            endAngle={360}
+            innerRadius="80%"
+            outerRadius="100%"
+            sx={{ fontSize: "3rem", fontWeight: "bold" }}
+            text={targetGoalSales.toFixed(2) + "%"}
+          />
         </AnalysisCard>
       </div>
       <div className="grid grid-cols-1 mt-10">
         <AnalysisCard title="Recent orders">
-          {isFetching ? (
-            <Spinner />
-          ) : (
-            <BaseTable
-              data={_data?.data}
-              columns={ordersTableHeadersWithoutActions(t)}
-            />
-          )}
+          <BaseTable
+            data={analytics?.last10Orders?.slice(0, 5)}
+            columns={ordersTableHeadersWithoutActions(t)}
+          />
         </AnalysisCard>
       </div>
     </div>

@@ -104,16 +104,54 @@ export function isProductExisted(uniquteValues: string[], value: string, arr) {
   return uniqueProducts;
 }
 
-export function concatCartItemsHandler(arr1, arr2) {
-  let validatedArray = [];
+export const formatCurrency = (n: number) => {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "EGP",
+  }).format(n);
+};
 
-  if (arr1) {
-    validatedArray = validatedArray.concat(arr1);
+export const groupBy = function (list, groupKey = "name") {
+  if (!list) return {};
+  let output = {};
+
+  for (let i = 0; i < list.length; i++) {
+    if (list[i][groupKey] in output) {
+      output[list[i][groupKey]] = output[list[i][groupKey]].concat(list[i]);
+    } else {
+      output[list[i][groupKey]] = [list[i]];
+    }
   }
 
-  if (arr2) {
-    validatedArray = validatedArray.concat(arr2);
-  }
+  return output;
+};
 
-  return validatedArray;
+export function prepareUsersAnalyticsData(users) {
+  return sortCategorizedUsersByDayMonth(groupByUsersByDate(users));
+}
+
+export function groupByUsersByDate(users) {
+  const categorizedUsers = groupBy(
+    users?.map((user) => ({
+      ...user,
+      createdAt: `${new Date(user?.createdAt).getDate()}/${
+        new Date(user?.createdAt).getMonth() + 1
+      }`,
+    })),
+    "createdAt"
+  );
+  return categorizedUsers;
+}
+function sortCategorizedUsersByDayMonth(categorizedList) {
+  return Object.keys(categorizedList)
+    ?.sort((a, b) => {
+      const dayA = +a.split("/")[0];
+      const dayB = +b.split("/")[0];
+      return dayA - dayB;
+    })
+    .sort((a, b) => {
+      const monthA = +a.split("/")[1];
+      const monthB = +b.split("/")[1];
+      return monthA - monthB;
+    });
 }

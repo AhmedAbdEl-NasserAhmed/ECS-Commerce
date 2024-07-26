@@ -1,6 +1,7 @@
 "use client";
 
 import OrdersTableMenuOptions from "@/components/AdminOrders/OrdersTableMenuOptions";
+import { formatCurrency } from "@/lib/helpers";
 import { OrderStatusEnum } from "@/types/enums";
 import OrderStatus from "@/ui/OrderStatus/OrderStatus";
 
@@ -108,31 +109,49 @@ export const ordersTableHeadersWithoutActions = (t) => [
   {
     id: "transactionId",
     header: () => <div>{t("transaction id")}</div>,
-    accessorKey: "transactionId",
-    enableColumnFilter: false, // disable column filtering for this column
+    accessorKey: "transaction_id",
   },
   {
     id: "email",
     header: () => <div>{t("Email")}</div>,
-    accessorKey: "email",
-    enableColumnFilter: false, // disable column filtering for this column
+    cell: ({
+      cell: {
+        row: { original },
+      },
+    }) => original.user?.email,
   },
   {
     id: "mobile",
     header: () => <div>{t("mobile")}</div>,
-    accessorKey: "mobile",
-    enableColumnFilter: false, // disable column filtering for this column
+    cell: ({
+      cell: {
+        row: { original },
+      },
+    }) => {
+      return original.billingData[0].phoneNumber;
+    },
   },
   {
     id: "orderPrice",
     header: () => <div>{t("order price")}</div>,
     accessorKey: "orderPrice",
-    enableColumnFilter: false, // disable column filtering for this column
+    cell: ({
+      cell: {
+        row: { original },
+      },
+    }) => {
+      return formatCurrency(original.orderPrice);
+    },
   },
   {
     id: "orderStatus",
     header: () => <div>{t("order status")}</div>,
-    accessorKey: "status",
-    enableColumnFilter: false, // disable column filtering for this column
+    cell: ({
+      cell: {
+        row: { original },
+      },
+    }) => {
+      return <OrderStatus status={OrderStatusEnum[original.orderStatus]} />;
+    },
   },
 ];

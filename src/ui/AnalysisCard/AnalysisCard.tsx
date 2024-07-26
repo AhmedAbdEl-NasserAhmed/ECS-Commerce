@@ -1,7 +1,7 @@
 const AnalysisCard = (props) => {
   return (
     <div
-      className={`bg-white border-2 border-slate-600 rounded-2xl ${
+      className={`bg-white border-2 border-slate-100 rounded-2xl ${
         props.className || ""
       }`}
     >

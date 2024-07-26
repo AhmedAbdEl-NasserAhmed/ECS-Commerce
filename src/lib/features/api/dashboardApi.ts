@@ -18,7 +18,7 @@ const dashboardApi = createApi({
   }),
   endpoints: (builder) => ({
     getAnalyticsData: builder.query({
-      query: (q) => ({
+      query: () => ({
         url: `analytics`,
         method: "GET",
       }),

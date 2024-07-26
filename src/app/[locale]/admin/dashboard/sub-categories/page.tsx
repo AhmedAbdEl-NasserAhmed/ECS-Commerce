@@ -9,8 +9,6 @@ import Link from "next/link";
 import { HiChevronRight } from "react-icons/hi2";
 
 import BaseTable from "@/ui/BaseReactTable";
-import { useGetAllCategoriesQuery } from "@/lib/features/api/categoriesApi";
-import { useParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useEffect } from "react";
 import useBaseTablePagination from "@/hooks/useBaseTablePagination/useBaseTablePagination";

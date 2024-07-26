@@ -5,7 +5,14 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 // RTK Query
 const dashboardApi = createApi({
   reducerPath: "dashboardApi",
-  tagTypes: ["PAYMENT"],
+  tagTypes: [
+    "PAYMENT",
+    "CARTITEMS",
+    "ORDERS",
+    "CATEGORIES",
+    "PRODUCTS",
+    "USERS",
+  ],
   baseQuery: axiosBaseQuery({
     baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
   }),
@@ -15,6 +22,14 @@ const dashboardApi = createApi({
         url: `analytics`,
         method: "GET",
       }),
+      providesTags: [
+        "PAYMENT",
+        "CARTITEMS",
+        "ORDERS",
+        "CATEGORIES",
+        "PRODUCTS",
+        "USERS",
+      ],
     }),
   }),
 });

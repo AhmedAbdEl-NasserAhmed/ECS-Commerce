@@ -341,7 +341,7 @@ function ProductDetails() {
               </p>
             )}
 
-            {!productDetailsState?.isColorExisted && (
+            {!productDetailsState?.isColorExisted && !isAdmin && (
               <span
                 onClick={addWishListProducthandler}
                 className="text-5xl cursor-pointer text-[#ed0534]"

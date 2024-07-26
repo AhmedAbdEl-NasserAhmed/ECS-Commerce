@@ -277,8 +277,6 @@ function ProductDetails() {
 
   if (isLoading || mainCategoryLoading) return <Spinner />;
 
-  console.log(productDetailsState?.isColorExisted);
-
   return (
     <BaseContainer className="p-[4rem]">
       <Box className="flex  flex-col gap-16 lg:flex-row ">

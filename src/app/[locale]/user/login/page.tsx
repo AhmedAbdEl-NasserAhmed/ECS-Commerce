@@ -82,6 +82,8 @@ function LoginPage() {
           responseCartItems
         );
 
+        console.log("concatedCartItems", concatedCartItems);
+
         const concatedWishListItems = concatCartItemsHandler(
           parsedWishListItems,
           responseWishListItems

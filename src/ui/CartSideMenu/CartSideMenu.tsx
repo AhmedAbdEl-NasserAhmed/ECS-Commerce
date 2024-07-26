@@ -70,6 +70,8 @@ function CartSideMenu({ setOpenSideMenu, openSideMenu, setOpens }) {
     } else {
       toast.error(" This is maximum Quantity for this product Color");
     }
+
+    dispatch(setCookiesThunk("cartItems", cartArrayCopy));
   }
 
   function handleDecrementProductQuantity(product) {
@@ -101,19 +103,24 @@ function CartSideMenu({ setOpenSideMenu, openSideMenu, setOpens }) {
   return (
     <div
       className={`fixed top-0 ${
-        openSideMenu ? "start-0" : "-start-[550px]"
-      } transition-all duration-300  h-screen w-full backdrop-filter backdrop-blur-sm z-50  `}
+        openSideMenu ? "start-0" : "-start-[900px]"
+      } transition-all duration-300 text-xl  h-screen w-full backdrop-filter backdrop-blur-sm z-50  `}
     >
       <div ref={ref} className="bg-white w-[70vw] h-full p-6 overflow-y-scroll">
         {cart.length === 0 ? (
-          <div className="text-black  font-bold text-4xl">Cart is Empty</div>
+          <div className="text-black  font-bold text-2xl">Cart is Empty</div>
         ) : (
           <>
-            <div>
-              <h2 className="text-2xl font-semibold text-black capitalize mb-10">
+            <div className="flex justify-between items-center mb-10">
+              <h2 className="text-2xl font-semibold text-black capitalize ">
                 Shopping Cart
               </h2>
-              <button onClick={removeAllCartItems}>Clear All &times;</button>
+              <button
+                className="p-2 bg-red-500 text-white rounded-lg"
+                onClick={removeAllCartItems}
+              >
+                Clear All
+              </button>
             </div>
             {/* LIST */}
 

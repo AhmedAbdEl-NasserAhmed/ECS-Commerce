@@ -4,6 +4,7 @@
 
 .css-lfwcke-MuiTabs-flexContainer {
   display: flex;
+  gap: 2rem;
   flex-direction: row !important;
 }
 @media (min-width: 900px) {

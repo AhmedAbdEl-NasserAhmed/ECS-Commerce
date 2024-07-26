@@ -28,8 +28,8 @@ function UserOrders() {
   }, []);
 
   return (
-    <div className=" p-8 bg-white shadow-[0px_0px_7px_5px_#0000000a] w-full ">
-      <h2 className="text-3xl font-semibold">Orders</h2>
+    <div className=" p-8 bg-white shadow-[0px_0px_7px_5px_#0000000a] w-full text-center capitalize ">
+      <h2 className="text-3xl font-semibold mb-10">Orders</h2>
       <BaseTable
         data={getPaginatedOrdersResponse?.data?.data}
         columns={useOrderHeaders()}

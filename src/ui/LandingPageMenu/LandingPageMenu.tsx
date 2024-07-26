@@ -15,6 +15,7 @@ import { useSetCartItemsMutation } from "@/lib/features/api/cartItemsApi";
 import LanguageSelector from "../LanguageSelector/LanguageSelector";
 import { deleteCookie } from "cookies-next";
 import { clearCookiesThunk } from "@/lib/features/cookieSlice/cookieSlice";
+import WishListSideMenu from "../WishListSideMenu/WishListSideMenu";
 
 function LandingPageMenu() {
   const [opens, setOpens] = useState<boolean>(false);
@@ -25,6 +26,8 @@ function LandingPageMenu() {
 
   const [openSideMenu, setOpenSideMenu] = useState<boolean>(false);
 
+  const [openWishListMenu, setOpenWishListMenu] = useState<boolean>(false);
+
   const dispatch = useAppDispatch();
 
   const cart = useAppSelector(
@@ -32,6 +35,10 @@ function LandingPageMenu() {
   );
 
   const user = useAppSelector((state) => state.usersSlice.user);
+
+  const wishList = useAppSelector(
+    (state) => state.cookieSlice.cookieItems.wishListItems
+  );
 
   const [cartItems] = useSetCartItemsMutation();
 
@@ -119,6 +126,12 @@ function LandingPageMenu() {
               <Link href="">Cart ({cart.length})</Link>
             </li>
           )}
+
+          {!userRoleAdmin && (
+            <li onClick={() => setOpenWishListMenu(true)}>
+              <Link href="">Wish List ({wishList.length})</Link>
+            </li>
+          )}
           <li>
             <LanguageSelector />
           </li>
@@ -133,6 +146,12 @@ function LandingPageMenu() {
             setOpens={setOpens}
             setOpenSideMenu={setOpenSideMenu}
             openSideMenu={openSideMenu}
+          />
+
+          <WishListSideMenu
+            setOpens={setOpens}
+            openWishListMenu={openWishListMenu}
+            setOpenWishListMenu={setOpenWishListMenu}
           />
         </ul>
       )}

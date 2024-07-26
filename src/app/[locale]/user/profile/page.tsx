@@ -11,6 +11,7 @@ function ProfilePage() {
       <BaseTabs
         parentStyle={{
           display: "flex",
+          gap: "2rem",
           flexDirection: {
             xs: "column",
             md: "row",
@@ -19,8 +20,8 @@ function ProfilePage() {
         childStyle={{ border: "none" }}
         orientation="vertical"
         tabs={[
-          // { label: "Wish List", content: <WishList />, sx: { flexGrow: 1 } },
           { label: "Settings", content: <UserSettings />, sx: { flexGrow: 1 } },
+          { label: "Wish List", content: <WishList />, sx: { flexGrow: 1 } },
           { label: "Orders", content: <UserOrders />, sx: { flexGrow: 1 } },
         ]}
       />

@@ -3,7 +3,7 @@
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import useClickOutside from "@/hooks/useClickOutside";
 
-import { CartItem } from "@/types/types";
+import { CartItem, WishListItemProps } from "@/types/types";
 import Image from "next/image";
 import toast from "react-hot-toast";
 import { useParams, useRouter } from "next/navigation";
@@ -93,9 +93,9 @@ const WishListMenu = ({ setIsWishListOpen }) => {
           </div>
           {/* LIST */}
           <div className="flex flex-col gap-8 py-2 max-h-[40rem] overflow-y-auto">
-            {wishList.map((product: CartItem) => {
+            {wishList.map((product: WishListItemProps) => {
               return (
-                <div key={product.cartItemId} className="flex flex-col gap-5">
+                <div key={product.id} className="flex flex-col gap-5">
                   <div className="flex gap-4">
                     <Image
                       src={product.image}

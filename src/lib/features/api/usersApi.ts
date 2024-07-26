@@ -8,6 +8,7 @@ import {
 // RTK Query
 const usersApi = createApi({
   reducerPath: "usersApi",
+  tagTypes: ["USERS"],
   baseQuery: axiosBaseQuery({
     baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
   }),

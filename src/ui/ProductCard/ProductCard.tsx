@@ -7,10 +7,9 @@ import Spinner from "../Spinner/Spinner";
 import ColorItem from "../ColorItem/ColorItem";
 
 const ProductCard = ({ product }) => {
-  const { data: category, isFetching } = useGetCategoryByIdQuery(
-    product?.category,
-    { skip: !product?.category }
-  );
+  const { data: category } = useGetCategoryByIdQuery(product?.category, {
+    skip: !product?.category,
+  });
 
   if (!product) return <Spinner />;
 

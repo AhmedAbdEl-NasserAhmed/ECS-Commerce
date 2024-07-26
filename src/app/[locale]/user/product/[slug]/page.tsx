@@ -32,6 +32,7 @@ import {
   addItemThunk,
   removeItemThunk,
 } from "@/lib/features/cookieSlice/cookieSlice";
+import useImagesLoadingSpinner from "@/hooks/useImagesLoadingSpinner";
 
 function ProductDetails() {
   const params = useParams();
@@ -79,6 +80,8 @@ function ProductDetails() {
   );
 
   const user = useAppSelector((state) => state.usersSlice.user);
+
+  const { isLoadingImages, setIsLoadingImages } = useImagesLoadingSpinner();
 
   function action(type, payload = null) {
     dispatch({ type, payload });
@@ -258,7 +261,7 @@ function ProductDetails() {
   }
 
   function handleLoadingImages() {
-    action(ProductDetailsAction.SET_ISlOADING_FALSE);
+    setIsLoadingImages(false);
   }
 
   const isAdmin = user?.role === UserType.ADMIN;
@@ -294,7 +297,7 @@ function ProductDetails() {
                   } relative w-[10rem] h-[10rem] cursor-pointer transition-all duration-500`}
                   key={image.id}
                 >
-                  {productDetailsState?.isLoadingComplete && (
+                  {isLoadingImages && (
                     <div className="flex items-center justify-center flex-col h-full">
                       <Spinner />
                     </div>
@@ -312,7 +315,7 @@ function ProductDetails() {
             })}
           </Box>
           <Box className="relative grow transition-all duration-500 ">
-            {productDetailsState?.isLoadingComplete && (
+            {isLoadingImages && (
               <div className="flex items-center justify-center flex-col h-full">
                 <Spinner />
               </div>

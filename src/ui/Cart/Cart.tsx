@@ -15,6 +15,8 @@ import {
   removeItemThunk,
   setCookiesThunk,
 } from "@/lib/features/cookieSlice/cookieSlice";
+import useImagesLoadingSpinner from "@/hooks/useImagesLoadingSpinner";
+import Spinner from "../Spinner/Spinner";
 
 const Cart = ({ setIsCartOpen }) => {
   const { locale } = useParams();
@@ -24,6 +26,8 @@ const Cart = ({ setIsCartOpen }) => {
   const cart = useAppSelector(
     (state) => state.cookieSlice.cookieItems.cartItems
   );
+
+  const { isLoadingImages, setIsLoadingImages } = useImagesLoadingSpinner();
 
   const ref = useClickOutside({ close: setIsCartOpen, value: false });
 
@@ -128,11 +132,18 @@ const Cart = ({ setIsCartOpen }) => {
             {cart.map((product: CartItem) => {
               return (
                 <div key={product.cartItemId} className="flex gap-4">
+                  {isLoadingImages && (
+                    <div className="flex items-center justify-center flex-col h-full">
+                      <Spinner />
+                    </div>
+                  )}
+
                   <Image
                     src={product.image}
                     alt=""
                     width={60}
                     height={60}
+                    onLoad={() => setIsLoadingImages(false)}
                     className="object-cover rounded-xl"
                   />
 

@@ -7,7 +7,6 @@ export enum ProductDetailsAction {
   SET_SELECTED_COLOR = "SET_SELECTED_COLOR",
   SET_PRODUCT_QUANTITY = "SET_PRODUCT_QUANTITY",
   SET_COLOR_EXISTED = "SET_COLOR_EXISTED",
-  SET_ISlOADING_FALSE = " SET_ISlOADING_FALSE ",
   SET_EXISTED_WISHlIST_ITEM = " ET_EXISTED_WISHlIST_ITEM ",
 }
 
@@ -23,7 +22,6 @@ export const initialState = {
   },
   productQuantity: 1 as number,
   isColorExisted: false as boolean,
-  isLoadingComplete: true as boolean,
   existedWishListItems: [] as string[],
 };
 
@@ -50,9 +48,6 @@ export function reducerFn(state = initialState, action) {
 
   if (action.type === ProductDetailsAction.SET_COLOR_EXISTED) {
     return { ...state, isColorExisted: action.payload.value };
-  }
-  if (action.type === ProductDetailsAction.SET_ISlOADING_FALSE) {
-    return { ...state, isLoadingComplete: false };
   }
 
   if (action.type === ProductDetailsAction.SET_EXISTED_WISHlIST_ITEM) {

@@ -14,6 +14,8 @@ import {
   clearCookiesThunk,
   removeItemThunk,
 } from "@/lib/features/cookieSlice/cookieSlice";
+import useImagesLoadingSpinner from "@/hooks/useImagesLoadingSpinner";
+import Spinner from "../Spinner/Spinner";
 
 const WishListSideMenu = ({
   setOpens,
@@ -33,6 +35,8 @@ const WishListSideMenu = ({
   const ref = useClickOutside({ close: setOpenWishListMenu, value: false });
 
   const dispatch = useAppDispatch();
+
+  const { isLoadingImages, setIsLoadingImages } = useImagesLoadingSpinner();
 
   function addToCartHandler(product) {
     const isExistedInCart = cart.some((cartItem) => {
@@ -104,11 +108,17 @@ const WishListSideMenu = ({
                 return (
                   <div key={product.id} className="flex flex-col gap-5">
                     <div className="flex gap-4">
+                      {isLoadingImages && (
+                        <div className="flex items-center justify-center flex-col h-full">
+                          <Spinner />
+                        </div>
+                      )}
                       <Image
                         src={product.image}
                         alt=""
                         width={60}
                         height={60}
+                        onLoad={() => setIsLoadingImages(false)}
                         className="object-cover rounded-xl"
                       />
 

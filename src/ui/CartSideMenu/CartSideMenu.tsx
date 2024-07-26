@@ -1,4 +1,5 @@
 import useClickOutside from "@/hooks/useClickOutside";
+import useImagesLoadingSpinner from "@/hooks/useImagesLoadingSpinner";
 import {
   clearCookiesThunk,
   removeItemThunk,
@@ -11,6 +12,7 @@ import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
+import Spinner from "../Spinner/Spinner";
 
 function CartSideMenu({ setOpenSideMenu, openSideMenu, setOpens }) {
   const { locale } = useParams();
@@ -20,6 +22,8 @@ function CartSideMenu({ setOpenSideMenu, openSideMenu, setOpens }) {
   const cart = useAppSelector(
     (state) => state.cookieSlice.cookieItems.cartItems
   );
+
+  const { isLoadingImages, setIsLoadingImages } = useImagesLoadingSpinner();
 
   const ref = useClickOutside({ close: setOpenSideMenu, value: false });
 
@@ -128,11 +132,18 @@ function CartSideMenu({ setOpenSideMenu, openSideMenu, setOpens }) {
               {cart.map((product: CartItem) => {
                 return (
                   <div key={product.cartItemId} className="flex gap-4">
+                    {isLoadingImages && (
+                      <div className="flex items-center justify-center flex-col h-full">
+                        <Spinner />
+                      </div>
+                    )}
+
                     <Image
                       src={product.image}
                       alt=""
-                      width={72}
-                      height={96}
+                      width={60}
+                      height={60}
+                      onLoad={() => setIsLoadingImages(false)}
                       className="object-cover rounded-xl"
                     />
 

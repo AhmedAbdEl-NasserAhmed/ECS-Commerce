@@ -15,6 +15,8 @@ import {
   removeItemThunk,
   setCookiesThunk,
 } from "@/lib/features/cookieSlice/cookieSlice";
+import useImagesLoadingSpinner from "@/hooks/useImagesLoadingSpinner";
+import Spinner from "../Spinner/Spinner";
 
 const WishListMenu = ({ setIsWishListOpen }) => {
   const { locale } = useParams();
@@ -26,6 +28,8 @@ const WishListMenu = ({ setIsWishListOpen }) => {
   const cart = useAppSelector(
     (state) => state.cookieSlice.cookieItems.cartItems
   );
+
+  const { isLoadingImages, setIsLoadingImages } = useImagesLoadingSpinner();
 
   const ref = useClickOutside({ close: setIsWishListOpen, value: false });
 
@@ -97,14 +101,19 @@ const WishListMenu = ({ setIsWishListOpen }) => {
               return (
                 <div key={product.id} className="flex flex-col gap-5">
                   <div className="flex gap-4">
+                    {isLoadingImages && (
+                      <div className="flex items-center justify-center flex-col h-full">
+                        <Spinner />
+                      </div>
+                    )}
                     <Image
                       src={product.image}
                       alt=""
                       width={60}
                       height={60}
+                      onLoad={() => setIsLoadingImages(false)}
                       className="object-cover rounded-xl"
                     />
-
                     <div className="flex flex-col justify-between w-full">
                       {/* TOP */}
                       <div className="text-xl">

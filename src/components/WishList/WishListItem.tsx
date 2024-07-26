@@ -1,5 +1,6 @@
 "use client";
 
+import useImagesLoadingSpinner from "@/hooks/useImagesLoadingSpinner";
 import {
   addItemThunk,
   clearCookiesThunk,
@@ -7,6 +8,7 @@ import {
 } from "@/lib/features/cookieSlice/cookieSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { WishListItemProps } from "@/types/types";
+import Spinner from "@/ui/Spinner/Spinner";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -18,6 +20,8 @@ interface Props {
 
 function WishListItem({ wishListItem }: Props) {
   const { locale } = useParams();
+
+  const { isLoadingImages, setIsLoadingImages } = useImagesLoadingSpinner();
 
   const cart = useAppSelector(
     (state) => state.cookieSlice.cookieItems.cartItems
@@ -72,11 +76,18 @@ function WishListItem({ wishListItem }: Props) {
       <div className="flex flex-col gap-8 py-2 max-h-[40rem] overflow-y-auto">
         <div key={wishListItem.id} className="flex flex-col gap-5">
           <div className="flex gap-4">
+            {isLoadingImages && (
+              <div className="flex items-center justify-center flex-col h-full">
+                <Spinner />
+              </div>
+            )}
+
             <Image
               src={wishListItem.image}
               alt=""
               width={80}
               height={80}
+              onLoad={() => setIsLoadingImages(false)}
               className="object-cover rounded-xl"
             />
 

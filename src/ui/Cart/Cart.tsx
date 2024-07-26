@@ -1,11 +1,5 @@
 "use client";
 
-import {
-  decrementProductItem,
-  incrementProductItem,
-  assignCartId,
-} from "@/lib/features/cartSlice/cartSlice";
-
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import useClickOutside from "@/hooks/useClickOutside";
 
@@ -108,6 +102,7 @@ const Cart = ({ setIsCartOpen }) => {
 
   const removeAllCartItems = () => {
     dispatch(clearCookiesThunk("cartItems"));
+    toast.success("You Cart is Empty 🥲 ");
   };
 
   return (
@@ -121,22 +116,26 @@ const Cart = ({ setIsCartOpen }) => {
         <>
           <div className="flex justify-between items-center">
             <h2 className="text-2xl font-semibold">Shopping Cart</h2>
-            <button onClick={removeAllCartItems}>Clear All &times;</button>
+            <button
+              className="p-2 bg-red-500 text-white rounded-lg"
+              onClick={removeAllCartItems}
+            >
+              Clear All
+            </button>
           </div>
           {/* LIST */}
           <div className="flex flex-col gap-8 py-2 max-h-[40rem] overflow-y-auto">
             {cart.map((product: CartItem) => {
               return (
                 <div key={product.cartItemId} className="flex gap-4">
-                  {true && (
-                    <Image
-                      src={product.image}
-                      alt=""
-                      width={60}
-                      height={60}
-                      className="object-cover rounded-xl"
-                    />
-                  )}
+                  <Image
+                    src={product.image}
+                    alt=""
+                    width={60}
+                    height={60}
+                    className="object-cover rounded-xl"
+                  />
+
                   <div className="flex flex-col justify-between w-full">
                     {/* TOP */}
                     <div className="text-xl">
@@ -150,11 +149,10 @@ const Cart = ({ setIsCartOpen }) => {
                           {product.name}
                         </Link>
                         <div className="p-1 bg-gray-50 rounded-xl flex items-center gap-2">
-                          {true && (
-                            <div className="text-sm font-semibold text-green-500">
-                              {product.quantity} x{" "}
-                            </div>
-                          )}
+                          <div className="text-sm font-semibold text-green-500">
+                            {product.quantity} x{" "}
+                          </div>
+
                           {product.price}
                         </div>
                       </div>

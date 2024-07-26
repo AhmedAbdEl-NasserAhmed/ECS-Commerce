@@ -23,6 +23,10 @@ function UserMenu({ setIsProfileOpen }) {
     (state) => state.cookieSlice.cookieItems.cartItems
   );
 
+  const wishList = useAppSelector(
+    (state) => state.cookieSlice.cookieItems.wishListItems
+  );
+
   const dispatch = useAppDispatch();
 
   const [cartItems, setCartItems] = useSetCartItemsMutation();
@@ -65,13 +69,18 @@ function UserMenu({ setIsProfileOpen }) {
           className="flex items-center justify-center gap-4 "
           disabled={setCartItems.isLoading}
           onClick={() => {
-            cartItems({ user: user["_id"], cartItems: cart });
+            cartItems({
+              user: user["_id"],
+              cartItems: cart,
+              wishListItems: wishList,
+            });
             dispatch(logoutUser());
             localStorage.removeItem("userToken");
             localStorage.removeItem("user");
             setIsProfileOpen(false);
             router.push(`/${locale}`);
             toast.success("Do Not Be Late");
+            dispatch(clearCookiesThunk("wishListItems"));
             dispatch(clearCookiesThunk("cartItems"));
           }}
         >

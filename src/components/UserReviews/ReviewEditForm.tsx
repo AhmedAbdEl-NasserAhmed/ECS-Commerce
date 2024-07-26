@@ -94,37 +94,26 @@ const ReviewEditForm = (props) => {
             />
           )}
         />
-        <Controller
-          name={"stars"}
-          defaultValue={props.review.ratings}
-          control={control}
-          render={({ field }) => (
-            // <ReactStars
-            //   disabled={
-            //     user?.role === UserType.ADMIN ||
-            //     !isAuthenticated ||
-            //     editReviewRes.isLoading
-            //   }
-            //   className="review-form-stars"
-            //   count={5}
-            //   onChange={field.onChange}
-            //   value={+field.value || 1}
-            //   color2={"#ffd700"}
-            // />
-            <ReactStars
-              disabled={
-                user?.role === UserType.ADMIN ||
-                !isAuthenticated ||
-                editReviewRes.isLoading
-              }
-              className="review-form-stars"
-              count={5}
-              onChange={field.onChange}
-              value={+field.value || 1}
-              color2={"#ffd700"}
-            />
-          )}
-        />
+        <div className="review-form-stars">
+          <Controller
+            name={"stars"}
+            defaultValue={props.review.ratings}
+            control={control}
+            render={({ field }) => (
+              <ReactStars
+                disabled={
+                  user?.role === UserType.ADMIN ||
+                  !isAuthenticated ||
+                  editReviewRes.isLoading
+                }
+                count={5}
+                onChange={field.onChange}
+                value={+field.value || 1}
+                color2={"#ffd700"}
+              />
+            )}
+          />
+        </div>
       </div>
       <div className="flex justify-end">
         <Button

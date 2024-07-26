@@ -9,7 +9,7 @@ interface CookieSlice {
 const initialState: CookieSlice = {
   cookieItems: {
     cartItems: [],
-    whistListItems: [],
+    wishListItems: [],
   },
 };
 
@@ -47,7 +47,7 @@ function cookiesSetter(cookieId, getState) {
     cookieId,
     JSON.stringify(getState().cookieSlice.cookieItems[cookieId]),
     {
-      maxAge: 60,
+      maxAge: 86400,
     }
   );
 }

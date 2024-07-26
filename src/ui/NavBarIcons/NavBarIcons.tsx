@@ -10,6 +10,7 @@ import { UserType } from "@/types/enums";
 import UserGreeting from "../UserGreeting/UserGreeting";
 import LanguageSelector from "../LanguageSelector/LanguageSelector";
 import { HiOutlineHeart } from "react-icons/hi2";
+import WishListMenu from "../WishListMenu/WishListMenu";
 
 function NavIcons() {
   const [isProfileOpen, setIsProfileOpen] = useState<boolean>(false);
@@ -20,12 +21,14 @@ function NavIcons() {
 
   const [isCartOpen, setIsCartOpen] = useState<boolean>(false);
 
+  const [isWishListOpen, setIsWishListOpen] = useState<boolean>(false);
+
   const cart = useAppSelector(
     (state) => state.cookieSlice.cookieItems.cartItems
   );
 
   const wishList = useAppSelector(
-    (state) => state.cookieSlice.cookieItems.whistListItems
+    (state) => state.cookieSlice.cookieItems.wishListItems
   );
 
   function handleLoginClick() {
@@ -51,8 +54,13 @@ function NavIcons() {
       {isProfileOpen && <ProfileMenu setIsProfileOpen={setIsProfileOpen} />}
 
       {user?.role !== UserType.ADMIN && (
-        <li className="relative" onClick={() => {}}>
-          <span className="text-4xl">
+        <li
+          className="relative"
+          onClick={() => {
+            setIsWishListOpen((wishList) => !wishList);
+          }}
+        >
+          <span className="text-[2.4rem] cursor-pointer">
             <HiOutlineHeart />
           </span>
           <span className="absolute w-6 h-6  rounded-full text-sm bg-red-500 -top-3 z-10 flex items-center justify-center text-white  -right-3">
@@ -84,6 +92,10 @@ function NavIcons() {
 
       {isCartOpen && user?.role !== UserType.ADMIN && !makePayment && (
         <Cart setIsCartOpen={setIsCartOpen} />
+      )}
+
+      {isWishListOpen && user?.role !== UserType.ADMIN && (
+        <WishListMenu setIsWishListOpen={setIsWishListOpen} />
       )}
     </ul>
   );

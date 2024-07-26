@@ -35,6 +35,13 @@ export default function LocaleLayout({
 
       dispatch(initThunk("cartItems", StorageService.parse(cartItemCookies)));
     }
+    if (hasCookie("wishListItems")) {
+      let wishListCookies = getCookie("wishListItems");
+
+      dispatch(
+        initThunk("wishListItems", StorageService.parse(wishListCookies))
+      );
+    }
   }, [pathName, dispatch]);
 
   return (

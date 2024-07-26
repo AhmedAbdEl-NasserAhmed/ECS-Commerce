@@ -38,6 +38,10 @@ function LoginPage() {
     (state) => state.cookieSlice.cookieItems.cartItems
   );
 
+  const wishList = useAppSelector(
+    (state) => state.cookieSlice.cookieItems.wishListItems
+  );
+
   const { locale } = useParams();
 
   const router = useRouter();
@@ -59,22 +63,41 @@ function LoginPage() {
           })
         );
 
+        console.log("USER", res.data);
+
         const cookiesItems = getCookie("cartItems") || "[]";
 
         const parsedCookiesItems = StorageService.parse(cookiesItems);
 
         const responseCartItems = res.data?.cookieCart?.cartItems;
 
+        const wishListCookieitems = getCookie("wishListItems") || "[]";
+
+        const parsedWishListItems = StorageService.parse(wishListCookieitems);
+
+        const responseWishListItems = res.data?.cookieCart?.wishListItems;
+
         const concatedCartItems = concatCartItemsHandler(
           parsedCookiesItems,
           responseCartItems
+        );
+
+        const concatedWishListItems = concatCartItemsHandler(
+          parsedWishListItems,
+          responseWishListItems
         );
 
         const cartItems = res.data?.cookieCart?.cartItems
           ? getUniqueValues(concatedCartItems, ["color", "size", "product"])
           : cart;
 
+        const wishListItems = res.data?.cookieCart?.wishListItems
+          ? getUniqueValues(concatedWishListItems, ["color", "size", "product"])
+          : wishList;
+
         dispatch(setCookiesThunk("cartItems", cartItems));
+
+        dispatch(setCookiesThunk("wishListItems", wishListItems));
 
         StorageService.set("userToken", res.token, false);
 

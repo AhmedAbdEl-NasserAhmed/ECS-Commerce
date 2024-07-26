@@ -6,12 +6,11 @@ import {
   useUpdateOrderMutation,
 } from "@/lib/features/api/ordersApi";
 import { OrderStatusEnum } from "@/types/enums";
-import { AdminProductProps } from "@/types/types";
 import GridContainer from "@/ui/Container/GridContainer";
-import MultiChoiceSelectMenu from "@/ui/MultiChoiceSelectMenu/MultiChoiceSelectMenu";
+
 import OrderStatus from "@/ui/OrderStatus/OrderStatus";
 import Spinner from "@/ui/Spinner/Spinner";
-import CustomizedTextField from "@/ui/TextField/TextField";
+
 import { Box, Button } from "@mui/material";
 import { useTranslations } from "next-intl";
 import Link from "next/link";

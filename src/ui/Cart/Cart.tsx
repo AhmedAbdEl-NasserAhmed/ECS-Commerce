@@ -137,15 +137,15 @@ const Cart = ({ setIsCartOpen }) => {
                       <Spinner />
                     </div>
                   )}
-
-                  <Image
-                    src={product.image}
-                    alt=""
-                    width={60}
-                    height={60}
-                    onLoad={() => setIsLoadingImages(false)}
-                    className="object-cover rounded-xl"
-                  />
+                  <div className="w-24 h-24 relative">
+                    <Image
+                      src={product.image}
+                      alt=""
+                      fill
+                      onLoad={() => setIsLoadingImages(false)}
+                      className="object-cover rounded-xl"
+                    />
+                  </div>
 
                   <div className="flex flex-col justify-between w-full">
                     {/* TOP */}
@@ -241,7 +241,7 @@ const Cart = ({ setIsCartOpen }) => {
               <button
                 disabled={user?.role === UserType.ADMIN}
                 onClick={() => {
-                  if (token) {
+                  if (token && user.isActive) {
                     setIsCartOpen(false);
                     addCartId();
                     router.push(`/${locale}/user/checkout`);

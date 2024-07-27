@@ -138,14 +138,15 @@ function CartSideMenu({ setOpenSideMenu, openSideMenu, setOpens }) {
                       </div>
                     )}
 
-                    <Image
-                      src={product.image}
-                      alt=""
-                      width={60}
-                      height={60}
-                      onLoad={() => setIsLoadingImages(false)}
-                      className="object-cover rounded-xl"
-                    />
+                    <div className="w-24 h-24 relative">
+                      <Image
+                        src={product.image}
+                        alt=""
+                        fill
+                        onLoad={() => setIsLoadingImages(false)}
+                        className="object-cover rounded-xl"
+                      />
+                    </div>
 
                     <div className="flex flex-col justify-between w-full">
                       {/* TOP */}
@@ -236,7 +237,7 @@ function CartSideMenu({ setOpenSideMenu, openSideMenu, setOpens }) {
               <div className="flex justify-end text-xl">
                 <button
                   onClick={() => {
-                    if (token) {
+                    if (token && user.isActive) {
                       setOpenSideMenu(false);
                       setOpens(false);
                       addCartId();

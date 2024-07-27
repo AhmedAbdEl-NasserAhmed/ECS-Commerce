@@ -81,7 +81,7 @@ function BillingInformation() {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="p-6 bg-white shadow-md w-full md:w-1/2 rounded-md  flex flex-col gap-8"
+      className="p-6 bg-white shadow-md w-full lg:w-1/2 rounded-md  flex flex-col gap-8"
     >
       <div>
         <h2 className="text-4xl font-semibold mb-5">Billings Information</h2>

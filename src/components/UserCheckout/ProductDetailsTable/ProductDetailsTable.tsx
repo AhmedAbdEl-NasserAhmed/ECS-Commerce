@@ -5,7 +5,8 @@ function ProductDetailsTable({ cart, totalCartItems }) {
     <table className={styles.table}>
       <thead>
         <tr>
-          <th>PRODUCT</th>
+          <th>Product</th>
+          <th>Quantity</th>
           <th>Size</th>
           <th>Color</th>
           <th>TOTAL</th>
@@ -15,10 +16,8 @@ function ProductDetailsTable({ cart, totalCartItems }) {
         {cart.map((product) => {
           return (
             <tr key={product.cartItemId}>
-              <td>
-                {" "}
-                {product.name} * {product.quantity}
-              </td>
+              <td>{product.name}</td>
+              <td> {product.quantity}</td>
               <td>{product.size}</td>
               <td>
                 <span
@@ -34,6 +33,7 @@ function ProductDetailsTable({ cart, totalCartItems }) {
       <tfoot>
         <tr>
           <td>TOTAL</td>
+          <td></td>
           <td></td>
           <td></td>
           <td> {Math.ceil(totalCartItems)} EGP</td>

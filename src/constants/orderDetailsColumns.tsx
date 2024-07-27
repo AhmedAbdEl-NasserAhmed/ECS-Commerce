@@ -12,7 +12,6 @@ export function orderDetailsColumns() {
           row: { original },
         },
       }) => {
-        console.log(original);
         return (
           <div className="flex justify-center">
             <Image
@@ -35,7 +34,6 @@ export function orderDetailsColumns() {
           row: { original },
         },
       }) => {
-        console.log(original);
         return <h2>{original.product.name}</h2>;
       },
     },

@@ -15,7 +15,7 @@ import { Box, Button } from "@mui/material";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { HiChevronRight } from "react-icons/hi2";
@@ -24,6 +24,7 @@ function AddSubCategoriesPage() {
   const {
     handleSubmit,
     control,
+    setError,
     reset,
     watch,
     formState: { errors },
@@ -37,16 +38,31 @@ function AddSubCategoriesPage() {
   }>({ id: "", name: "" });
 
   const debounceValue = useDebounceHook(smartSeachvalue.name);
-  // const throttledValue = useThrottle(smartSeachvalue.name, 2000);
 
-  const { data, isLoading } = useGetCategoryQuery(debounceValue);
+  const { data, isLoading, isFetching } = useGetCategoryQuery(debounceValue);
 
   const { data: AllCategories } = useGetAllCategoriesQuery("categories");
+
   const t = useTranslations("Dashboard");
 
   const params = useParams();
 
   const [addSubCategoryFn, subCategoryResponse] = useAddSubCategoryMutation();
+
+  useEffect(() => {
+    const allCategories = data?.data.map((category) => category.name);
+
+    if (
+      allCategories &&
+      smartSeachvalue.name !== "" &&
+      !allCategories?.includes(formData?.category)
+    ) {
+      setError("category", {
+        type: "manual",
+        message: "You Have to choose from available categories",
+      });
+    }
+  }, [data?.data, formData?.category, setError, smartSeachvalue.name]);
 
   function handleAddSubCategorySubmit() {
     addSubCategoryFn({
@@ -156,8 +172,10 @@ function AddSubCategoriesPage() {
             rules={{ required: "This field is required" }}
             render={({ field }) => (
               <SmartSearchInput
+                isFetching={isFetching}
+                notAvailableMessage="No Categories Available"
                 errors={errors}
-                disabled={subCategoryResponse.isLoading}
+                disabled={subCategoryResponse.isLoading || isFetching}
                 shouldReset={subCategoryResponse.isSuccess}
                 getSmartSearchValue={setSmartSeachValue}
                 textLabel={t("Main Category")}

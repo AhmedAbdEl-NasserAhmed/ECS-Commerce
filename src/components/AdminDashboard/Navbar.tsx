@@ -12,6 +12,7 @@ import { useAppDispatch } from "@/lib/hooks";
 import { logoutUser } from "@/lib/features/usersSlice/usersSlice";
 import toast from "react-hot-toast";
 import LanguageSelector from "@/ui/LanguageSelector/LanguageSelector";
+import AdminProfileMenu from "./AdminProfileMenu";
 
 interface Props {
   setExpand?: (isTrue: any) => void;
@@ -21,24 +22,14 @@ interface Props {
 function Navbar({ setExpand, setExpanded }: Props) {
   const router = useRouter();
 
-  const { locale } = useParams();
-
-  const dispatch = useAppDispatch();
-
-  function handleLogoutAdmin() {
-    dispatch(logoutUser());
-    localStorage.removeItem("userToken");
-    localStorage.removeItem("user");
-    router.push(`/${locale}/admin`);
-    toast.success("Do Not Be Late");
-  }
+  const [isProfileOpen, setIsProfileOpen] = useState<boolean>(false);
 
   return (
     <Box
       component="nav"
       display="flex"
       alignItems="center"
-      className="h-[10vh] px-8 border-b-2 py-12 bg-[#FFFFFF] sticky top-0 z-50 border-gray-100 justify-between"
+      className=" h-[10vh] px-8 border-b-2 py-12 bg-[#FFFFFF] sticky top-0 z-50 border-gray-100 justify-between"
     >
       <Box
         display="flex"
@@ -59,11 +50,21 @@ function Navbar({ setExpand, setExpanded }: Props) {
       </Box>
       <ul className="flex items-center justify-end gap-5 w-1/2   ">
         <LanguageSelector />
+
         <li
-          onClick={handleLogoutAdmin}
-          className="text-xl cursor-pointer font-semibold"
+          className="relative"
+          onClick={() => setIsProfileOpen((open) => !open)}
         >
-          LOG OUT
+          <Image
+            src="/profile.png"
+            alt="profile"
+            width={22}
+            height={22}
+            className=" cursor-pointer"
+          />
+          {isProfileOpen && (
+            <AdminProfileMenu setIsProfileOpen={setIsProfileOpen} />
+          )}
         </li>
       </ul>
     </Box>

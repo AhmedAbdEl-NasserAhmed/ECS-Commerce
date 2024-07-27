@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { UserReviewForm } from "@/types/types";
 import CustomizedTextField from "@/ui/TextField/TextField";
@@ -16,7 +16,7 @@ import {
 import toast from "react-hot-toast";
 import MiniSpinner from "@/ui/MiniSpinner/MiniSpinner";
 
-const ReviewEditForm = (props) => {
+const ReviewEditForm = ({ review }) => {
   const t = useTranslations("User");
 
   const user = useAppSelector((state) => state.usersSlice.user);
@@ -41,17 +41,17 @@ const ReviewEditForm = (props) => {
         title: data.review,
         ratings: data.stars,
       },
-      id: props.review["_id"],
+      id: review.review["_id"],
     })
       .unwrap()
       .then(() => {
         toast.success("your review has been Edited");
         reset();
-        props.setShowModal();
+        review.setShowModal();
       })
       .catch(() => {
         toast.error("Something went wrong");
-        props.setShowModal();
+        review.setShowModal();
       });
   };
 
@@ -63,7 +63,7 @@ const ReviewEditForm = (props) => {
       <div className="relative">
         <Controller
           name={"review"}
-          defaultValue={props.review.title}
+          defaultValue={review.review.title}
           control={control}
           rules={{
             required: "This field is required",
@@ -99,7 +99,7 @@ const ReviewEditForm = (props) => {
         <div className="review-form-stars">
           <Controller
             name={"stars"}
-            defaultValue={props.review.ratings}
+            defaultValue={review.review.ratings}
             control={control}
             render={({ field }) => (
               <ReactStars

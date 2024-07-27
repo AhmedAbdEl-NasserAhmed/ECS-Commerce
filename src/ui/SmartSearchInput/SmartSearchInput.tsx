@@ -7,6 +7,7 @@ import {
   initialState,
   reducerFn,
 } from "./smartSearchInputReducer";
+import MiniSpinner from "../MiniSpinner/MiniSpinner";
 
 function SmartSearchInput({
   data,
@@ -17,8 +18,10 @@ function SmartSearchInput({
   textLabel,
   getSmartSearchValue,
   shouldReset,
+  notAvailableMessage,
   value = "",
   disabled,
+  isFetching,
 }) {
   const [smartSearchState, dispatch] = useReducer(reducerFn, initialState);
 
@@ -48,7 +51,6 @@ function SmartSearchInput({
 
   useEffect(() => {
     if (
-      data?.length > 0 &&
       smartSearchState.inputValue !== "" &&
       smartSearchState.userSelectedValue === ""
     ) {
@@ -141,7 +143,17 @@ function SmartSearchInput({
           }}
           inputProps={{ readOnly: smartSearchState.userSelectedValue !== "" }}
         />
-        {smartSearchState.userSelectedValue !== "" && (
+
+        {isFetching && (
+          <span
+            className="absolute w-6 h-6 "
+            style={{ top: "60%", right: "15px" }}
+          >
+            <MiniSpinner />
+          </span>
+        )}
+
+        {smartSearchState.userSelectedValue !== "" && !isFetching && (
           <span
             onClick={
               disabled
@@ -168,9 +180,16 @@ function SmartSearchInput({
         style={{ height: smartSearchState.openMenu ? "150px" : "0" }}
         className={styles["smartSearchList"]}
       >
+        {!data?.length && (
+          <div className="flex justify-center items-center h-full font-semibold text-xl">
+            <p>{notAvailableMessage}</p>
+          </div>
+        )}
+
         {data?.map((user) => {
           return (
             <li
+              className="text-[#161616} font-semibold capitalize"
               key={user.name}
               onClick={
                 disabled

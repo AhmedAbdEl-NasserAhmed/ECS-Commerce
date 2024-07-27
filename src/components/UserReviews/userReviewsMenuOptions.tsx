@@ -7,7 +7,6 @@ import DeleteWindow from "@/ui/DeleteWindow/DeleteWindow";
 import { useDeleteReviewMutation } from "@/lib/features/api/reviewsApi";
 import ReviewEditForm from "./ReviewEditForm";
 import toast from "react-hot-toast";
-import Spinner from "@/ui/Spinner/Spinner";
 
 function UserReviewsMenuOptions({ review }) {
   const [deleteReviewFn, reviewResponse] = useDeleteReviewMutation();

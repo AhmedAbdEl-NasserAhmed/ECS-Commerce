@@ -70,26 +70,30 @@ function LandingPageMenu() {
             <MobileScreenCategoriesList setOpens={setOpens} />
           </li>
 
-          <li>
-            <button
-              onClick={() => {
-                router.replace(`/${locale}/user/register`);
-                setOpens(false);
-              }}
-            >
-              Sign up
-            </button>
-          </li>
-          <li>
-            <button
-              onClick={() => {
-                router.replace(`/${locale}/user/login`);
-                setOpens(false);
-              }}
-            >
-              Log in
-            </button>
-          </li>
+          {!user.isActive && (
+            <li>
+              <button
+                onClick={() => {
+                  router.replace(`/${locale}/user/register`);
+                  setOpens(false);
+                }}
+              >
+                Sign up
+              </button>
+            </li>
+          )}
+          {!user.isActive && (
+            <li>
+              <button
+                onClick={() => {
+                  router.replace(`/${locale}/user/login`);
+                  setOpens(false);
+                }}
+              >
+                Log in
+              </button>
+            </li>
+          )}
           <li>
             <button
               onClick={() => {
@@ -101,25 +105,40 @@ function LandingPageMenu() {
             </button>
           </li>
 
-          <li>
-            <Link
-              onClick={() => {
-                cartItems({ user: user["_id"], cartItems: cart });
-                dispatch(logoutUser());
-                localStorage.removeItem("userToken");
-                localStorage.removeItem("user");
-                localStorage.removeItem("cartItemsExpiration");
-                deleteCookie("cartItems");
-                router.push(`/${locale}`);
-                toast.success("Do Not Be Late");
-                setOpens(false);
-                dispatch(clearCookiesThunk("cartItems"));
-              }}
-              href=""
-            >
-              Logout
-            </Link>
-          </li>
+          {user.isActive && (
+            <li>
+              <button
+                onClick={() => {
+                  router.replace(`/${locale}/user/profile`);
+                  setOpens(false);
+                }}
+              >
+                Profile
+              </button>
+            </li>
+          )}
+
+          {user.isActive && (
+            <li>
+              <Link
+                onClick={() => {
+                  cartItems({ user: user["_id"], cartItems: cart });
+                  dispatch(logoutUser());
+                  localStorage.removeItem("userToken");
+                  localStorage.removeItem("user");
+                  localStorage.removeItem("cartItemsExpiration");
+                  deleteCookie("cartItems");
+                  router.push(`/${locale}`);
+                  toast.success("Do Not Be Late");
+                  setOpens(false);
+                  dispatch(clearCookiesThunk("cartItems"));
+                }}
+                href=""
+              >
+                Logout
+              </Link>
+            </li>
+          )}
 
           {!userRoleAdmin && (
             <li onClick={() => setOpenSideMenu(true)}>
@@ -133,7 +152,8 @@ function LandingPageMenu() {
             </li>
           )}
           <li>
-            <LanguageSelector />
+            {" "}
+            <LanguageSelector />{" "}
           </li>
           <span
             onClick={() => setOpens(false)}

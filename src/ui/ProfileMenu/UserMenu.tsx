@@ -64,6 +64,7 @@ function UserMenu({ setIsProfileOpen }) {
           </Link>
         </li>
       )}
+
       <li className="p-2 hover:bg-gray-200 duration-200 transition-all cursor-pointer flex justify-center items-center ">
         <button
           className="flex items-center justify-center gap-4 "

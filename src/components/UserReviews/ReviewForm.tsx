@@ -12,9 +12,8 @@ import { UserType } from "@/types/enums";
 import { useSendReviewMutation } from "@/lib/features/api/reviewsApi";
 import toast from "react-hot-toast";
 import MiniSpinner from "@/ui/MiniSpinner/MiniSpinner";
-import Spinner from "@/ui/Spinner/Spinner";
 
-const ReviewForm = (props) => {
+const ReviewForm = ({ productId }) => {
   const t = useTranslations("User");
 
   const user = useAppSelector((state) => state.usersSlice.user);
@@ -26,7 +25,6 @@ const ReviewForm = (props) => {
   const {
     handleSubmit,
     control,
-    watch,
     reset,
     formState: { errors },
   } = useForm<UserReviewForm>({ mode: "onChange" });
@@ -38,7 +36,7 @@ const ReviewForm = (props) => {
       title: data.review,
       ratings: data.stars,
       user: user["_id"],
-      product: props.productId,
+      product: productId.productId,
     })
       .unwrap()
       .then(() => {

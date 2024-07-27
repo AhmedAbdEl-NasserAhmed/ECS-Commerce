@@ -106,7 +106,7 @@ const WishListSideMenu = ({
             <div className="flex flex-col gap-8 py-2 max-h-[40rem] overflow-y-auto">
               {wishList.map((product: WishListItemProps) => {
                 return (
-                  <div key={product.id} className="flex flex-col gap-5">
+                  <div key={product.colorId} className="flex flex-col gap-5">
                     <div className="flex gap-4">
                       {isLoadingImages && (
                         <div className="flex items-center justify-center flex-col h-full">

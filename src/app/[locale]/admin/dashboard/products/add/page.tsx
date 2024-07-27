@@ -7,7 +7,6 @@ import {
 } from "@/lib/features/api/categoriesApi";
 import {
   useAddProductMutation,
-  useGetAllProductsQuery,
   useGetProductByNameQuery,
 } from "@/lib/features/api/productsApi";
 import { useGetSubCategoryQuery } from "@/lib/features/api/subCategoriesApi";
@@ -25,8 +24,8 @@ import { Box, Button, Stack } from "@mui/material";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
+
+import { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import toast from "react-hot-toast";
 import { HiChevronRight } from "react-icons/hi2";
@@ -37,6 +36,7 @@ function AddProductPage() {
     control,
     reset,
     watch,
+    setError,
     setValue,
     formState: { errors },
   } = useForm<AdminProductProps>({ mode: "onChange" });
@@ -59,10 +59,10 @@ function AddProductPage() {
 
   const { data: AllCategories } = useGetAllCategoriesQuery("categories");
 
-  const { data: mainCategory } = useGetCategoryQuery(
-    mainCategorydebounceValue,
-    { skip: !mainCategorydebounceValue }
-  );
+  const { data: mainCategory, isFetching: isFetchingMainCategory } =
+    useGetCategoryQuery(mainCategorydebounceValue, {
+      skip: !mainCategorydebounceValue,
+    });
 
   const { data: subCategory } = useGetSubCategoryQuery(
     { letter: subCategorydebounceValue, categoryId: smartSeachvalue["_id"] },
@@ -75,10 +75,10 @@ function AddProductPage() {
 
   const productNameDebounceValue = useDebounceHook(productSearchName?.name);
 
-  const { data: productName } = useGetProductByNameQuery(
-    productNameDebounceValue,
-    { skip: !productNameDebounceValue }
-  );
+  const { data: productName, isFetching: isFetchingProduct } =
+    useGetProductByNameQuery(productNameDebounceValue, {
+      skip: !productNameDebounceValue,
+    });
 
   const [addProductFn, productResponse] = useAddProductMutation();
 
@@ -135,6 +135,17 @@ function AddProductPage() {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formData.price, formData.discount]);
+
+  useEffect(() => {
+    const allCategories = mainCategory?.data.map((category) => category.name);
+
+    if (allCategories && !allCategories?.includes(formData?.category)) {
+      setError("category", {
+        type: "manual",
+        message: "You Have to choose from available categories",
+      });
+    }
+  }, [mainCategory?.data, formData?.category, setError]);
 
   const tIndex = useTranslations("Index");
 
@@ -254,8 +265,12 @@ function AddProductPage() {
                 rules={{ required: "This field is required" }}
                 render={({ field }) => (
                   <SmartSearchInput
+                    isFetching={isFetchingMainCategory}
+                    notAvailableMessage="No Categories Available"
                     errors={errors}
-                    disabled={productResponse.isLoading}
+                    disabled={
+                      productResponse.isLoading || isFetchingMainCategory
+                    }
                     shouldReset={productResponse.isSuccess}
                     getSmartSearchValue={setSmartSeachValue}
                     textLabel={t("Main Category")}
@@ -297,8 +312,10 @@ function AddProductPage() {
                   rules={{ required: "This field is required" }}
                   render={({ field }) => (
                     <SmartSearchInput
+                      isFetching={isFetchingProduct}
+                      notAvailableMessage="No Products Available But you can write a new Product Name"
                       errors={errors}
-                      disabled={productResponse.isLoading}
+                      disabled={productResponse.isLoading || isFetchingProduct}
                       shouldReset={productResponse.isSuccess}
                       getSmartSearchValue={setProductSearchName}
                       textLabel={t("Product Name")}
@@ -354,12 +371,12 @@ function AddProductPage() {
                       <Controller
                         name={`colors-quantity.${color.label}`}
                         control={control}
-                        defaultValue={0}
+                        defaultValue={1}
                         rules={{
                           required: "This field is required",
                           min: {
-                            value: 1,
-                            message: "",
+                            value: 0,
+                            message: "This number should be more than 0",
                           },
                         }}
                         render={({ field }) => (

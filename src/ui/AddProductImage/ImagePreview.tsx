@@ -2,9 +2,13 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { HiOutlineTrash } from "react-icons/hi2";
 import MiniSpinner from "../MiniSpinner/MiniSpinner";
+import useImagesLoadingSpinner from "@/hooks/useImagesLoadingSpinner";
+import Spinner from "../Spinner/Spinner";
 
 function ImagePreview(props) {
   const [imageUrl, setImageUrl] = useState(props.imageUrl);
+
+  const { isLoadingImages, setIsLoadingImages } = useImagesLoadingSpinner();
 
   useEffect(() => {
     if (props.imageUrl && props.imageUrl instanceof File) {
@@ -22,6 +26,12 @@ function ImagePreview(props) {
 
   return (
     <div className="relative w-full h-full ">
+      {isLoadingImages && (
+        <div className="flex items-center justify-center flex-col h-full">
+          <Spinner />
+        </div>
+      )}
+
       {props.imageUrl && (
         <Image src={imageUrl} alt="img" fill objectFit="contain" />
       )}

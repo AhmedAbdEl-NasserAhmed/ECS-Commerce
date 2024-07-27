@@ -62,7 +62,12 @@ function ColorPickerInput({ options, disabled, onSelectColorHandler }) {
       </div>
 
       <div style={{ fontSize: "18px", lineHeight: "0" }}>
-        <button style={{ color: color }} onClick={handleAddColor} type="button">
+        <button
+          disabled={disabled}
+          style={{ color: color }}
+          onClick={handleAddColor}
+          type="button"
+        >
           <HiMiniPlusCircle />
         </button>
       </div>

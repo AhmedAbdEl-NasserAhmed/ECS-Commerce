@@ -40,10 +40,10 @@ function MobileScreenCategoriesList({ setOpens }) {
             borderRadius: "5px",
           }}
         >
-          <ul className=" flex flex-col gap-12  items-center justify-center h-[100px] overflow-y-scroll  ">
+          <ul className=" flex flex-col gap-8  items-center justify-center h-[100px] overflow-y-scroll  ">
             {data?.data.map((category) => (
               <li
-                className="hover:bg-black hover:text-white duration-300 transition-all py-2 px-4"
+                className="hover:bg-black hover:text-white duration-300 transition-all p-2"
                 key={category["_id"]}
               >
                 <button

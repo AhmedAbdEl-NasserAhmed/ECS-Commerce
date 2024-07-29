@@ -8,6 +8,7 @@ export enum ProductDetailsAction {
   SET_PRODUCT_QUANTITY = "SET_PRODUCT_QUANTITY",
   SET_COLOR_EXISTED = "SET_COLOR_EXISTED",
   SET_EXISTED_WISHlIST_ITEM = " ET_EXISTED_WISHlIST_ITEM ",
+  SET_AVERAGE_RATING_STAR = " SET_AVERAGE_RATING_STAR ",
 }
 
 export const initialState = {
@@ -23,6 +24,7 @@ export const initialState = {
   productQuantity: 1 as number,
   isColorExisted: false as boolean,
   existedWishListItems: [] as string[],
+  averageRatingStar: 0 as number,
 };
 
 export function reducerFn(state = initialState, action) {
@@ -54,6 +56,12 @@ export function reducerFn(state = initialState, action) {
     return {
       ...state,
       existedWishListItems: action.payload.value,
+    };
+  }
+  if (action.type === ProductDetailsAction.SET_AVERAGE_RATING_STAR) {
+    return {
+      ...state,
+      averageRatingStar: action.payload.value,
     };
   }
 }

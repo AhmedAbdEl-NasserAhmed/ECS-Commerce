@@ -51,14 +51,13 @@ function AddSubCategoriesPage() {
 
   useEffect(() => {
     const allCategories = data?.data.map((category) => category.name);
-
     if (
       allCategories &&
       smartSeachvalue.name !== "" &&
       !allCategories?.includes(formData?.category)
     ) {
       setError("category", {
-        type: "manual",
+        type: "required",
         message: "You Have to choose from available categories",
       });
     }
@@ -197,7 +196,7 @@ function AddSubCategoriesPage() {
                   backgroundColor:
                     isLoading || formData.category === "" ? "#f5f5f5" : "",
                 }}
-                disabled={isLoading || formData.category === ""}
+                disabled={isLoading || !!errors.category}
                 textLabelClass={"font-semibold text-xl"}
                 placeholder={t("Sub Category Name")}
                 textlabel={t("Sub Category Name")}
@@ -217,7 +216,7 @@ function AddSubCategoriesPage() {
             rules={{ required: "This field is required" }}
             render={({ field }) => (
               <CustomizedTextField
-                disabled={isLoading || formData.category === ""}
+                disabled={isLoading || !!errors.category}
                 textLabelClass={"font-semibold text-xl"}
                 placeholder={t("Sub Category Description")}
                 textlabel={t("Sub Category Description")}
@@ -247,7 +246,8 @@ function AddSubCategoriesPage() {
             disabled={
               isLoading ||
               formData.category === "" ||
-              subCategoryResponse.isLoading
+              subCategoryResponse.isLoading ||
+              !!errors.category
             }
             sx={{
               paddingInline: "1.6rem",

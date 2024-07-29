@@ -14,3 +14,9 @@ export enum OrderStatusEnum {
   refund = "REFUND",
   shipped = "SHIPPED",
 }
+
+export enum HomeCategory {
+  MAIN_CATEGORY = "pants",
+  MALE_JEANS = "Male jeans",
+  FEMALE_JEANS = "Female jeans",
+}

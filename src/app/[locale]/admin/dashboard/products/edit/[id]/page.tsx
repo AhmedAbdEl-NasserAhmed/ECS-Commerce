@@ -46,6 +46,7 @@ function EditProduct() {
     control,
     reset,
     watch,
+    setError,
     setValue,
     formState: { errors },
   } = useForm<AdminProductProps>({
@@ -53,7 +54,6 @@ function EditProduct() {
   });
 
   const formData = watch();
-
 
   const [updateProductFn, updateProductResponse] =
     useUpdateSingleProductMutation();
@@ -72,18 +72,19 @@ function EditProduct() {
 
   const { data: AllCategories } = useGetAllCategoriesQuery("categories");
 
-  const { data: mainCategory } = useGetCategoryQuery(
-    mainCategorydebounceValue,
-    { skip: !mainCategorydebounceValue }
-  );
+  const { data: mainCategory, isFetching: isFetchingMainCategory } =
+    useGetCategoryQuery(mainCategorydebounceValue, {
+      skip: !mainCategorydebounceValue,
+    });
 
-  const { data: subCategory } = useGetSubCategoryQuery(
-    {
-      letter: subCategorydebounceValue,
-      categoryId: smartSeachvalue["_id"],
-    },
-    { skip: !subCategorydebounceValue }
-  );
+  const { data: subCategory, isFetching: isFetchingSubCategories } =
+    useGetSubCategoryQuery(
+      {
+        letter: subCategorydebounceValue,
+        categoryId: smartSeachvalue["_id"],
+      },
+      { skip: !subCategorydebounceValue }
+    );
 
   useEffect(() => {
     if (currentProduct?.images) {
@@ -118,6 +119,12 @@ function EditProduct() {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formData.price, formData.discount]);
+
+  const [allCategories, setAllCategories] = useState<string[]>([]);
+
+  useEffect(() => {
+    setAllCategories(mainCategory?.data.map((category) => category.name));
+  }, [mainCategory?.data]);
 
   const tIndex = useTranslations("Index");
 
@@ -246,9 +253,17 @@ function EditProduct() {
                 name={"category"}
                 control={control}
                 defaultValue={""}
-                rules={{ required: "This field is required" }}
+                rules={{
+                  required: "This field is required",
+                  validate(value) {
+                    if (!allCategories?.includes(value))
+                      return "You Have to choose from available categories";
+                  },
+                }}
                 render={({ field }) => (
                   <SmartSearchInput
+                    isFetching={isFetchingMainCategory}
+                    notAvailableMessage="No Categories Available"
                     errors={errors}
                     disabled={updateProductResponse.isLoading}
                     shouldReset={updateProductResponse.isSuccess}
@@ -268,6 +283,7 @@ function EditProduct() {
                 defaultValue={""}
                 render={({ field }) => (
                   <SmartSearchMultipleInput
+                    isFetching={isFetchingSubCategories}
                     existedItems={currentProduct?.subCategory}
                     shouldReset={
                       updateProductResponse.isSuccess ||
@@ -275,7 +291,8 @@ function EditProduct() {
                     }
                     disabled={
                       updateProductResponse.isLoading ||
-                      smartSeachvalue.name === ""
+                      smartSeachvalue.name === "" ||
+                      isFetchingSubCategories
                     }
                     getSmartSearchValue={setSmartSeachSubCategoryValue}
                     textLabel={t("Sub Category")}
@@ -356,7 +373,7 @@ function EditProduct() {
                           required: "This field is required",
                           min: {
                             value: 1,
-                            message: "",
+                            message: "This number should be more than 1",
                           },
                         }}
                         render={({ field }) => (

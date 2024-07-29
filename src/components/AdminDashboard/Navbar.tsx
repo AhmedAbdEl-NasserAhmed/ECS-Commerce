@@ -49,8 +49,6 @@ function Navbar({ setExpand, setExpanded }: Props) {
         </Box>
       </Box>
       <ul className="flex items-center justify-end gap-5 w-1/2   ">
-        <LanguageSelector />
-
         <li
           className="relative"
           onClick={() => setIsProfileOpen((open) => !open)}
@@ -66,6 +64,7 @@ function Navbar({ setExpand, setExpanded }: Props) {
             <AdminProfileMenu setIsProfileOpen={setIsProfileOpen} />
           )}
         </li>
+        <LanguageSelector />
       </ul>
     </Box>
   );

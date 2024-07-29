@@ -2,6 +2,7 @@ import { useAppSelector } from "@/lib/hooks";
 import ReviewForm from "./ReviewForm";
 import ReviewItem, { IReview } from "./ReviewItem";
 import { useEffect, useState } from "react";
+import { UserType } from "@/types/enums";
 
 interface ReviewsProps {
   reviews: IReview[];
@@ -27,7 +28,9 @@ const Reviews = ({ reviews, productId }: ReviewsProps) => {
 
   return (
     <div>
-      {isAuthenticated && !isReviewed && <ReviewForm productId={productId} />}
+      {isAuthenticated && !isReviewed && user.role !== UserType.ADMIN && (
+        <ReviewForm productId={productId} />
+      )}
       <div className="max-h-[500px] overflow-y-auto">
         {noReviewsAvailable ? (
           <p className="text-xl font-medium">No reviews yet</p>

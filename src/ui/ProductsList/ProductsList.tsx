@@ -14,6 +14,13 @@ interface IProductList {
 function ProductList(props: IProductList) {
   const uniqueItems = getUniqueValues(props.products, ["name"]);
 
+  if (!props?.products?.length)
+    return (
+      <div className="flex justify-center items-center h-[50vh]">
+        <p className="text-3xl font-semibold">No Products Available</p>
+      </div>
+    );
+
   if (props.isLoading) return <Spinner />;
 
   return (

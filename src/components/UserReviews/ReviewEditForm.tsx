@@ -15,8 +15,11 @@ import {
 } from "@/lib/features/api/reviewsApi";
 import toast from "react-hot-toast";
 import MiniSpinner from "@/ui/MiniSpinner/MiniSpinner";
+import Spinner from "@/ui/Spinner/Spinner";
 
 const ReviewEditForm = ({ review }) => {
+  console.log("review", review);
+
   const t = useTranslations("User");
 
   const user = useAppSelector((state) => state.usersSlice.user);
@@ -41,19 +44,19 @@ const ReviewEditForm = ({ review }) => {
         title: data.review,
         ratings: data.stars,
       },
-      id: review.review["_id"],
+      id: review["_id"],
     })
       .unwrap()
       .then(() => {
         toast.success("your review has been Edited");
         reset();
-        review.setShowModal();
       })
       .catch(() => {
         toast.error("Something went wrong");
-        review.setShowModal();
       });
   };
+
+  if (editReviewRes.isLoading) return <Spinner />;
 
   return (
     <form
@@ -63,7 +66,7 @@ const ReviewEditForm = ({ review }) => {
       <div className="relative">
         <Controller
           name={"review"}
-          defaultValue={review.review.title}
+          defaultValue={review?.title}
           control={control}
           rules={{
             required: "This field is required",
@@ -99,7 +102,7 @@ const ReviewEditForm = ({ review }) => {
         <div className="review-form-stars">
           <Controller
             name={"stars"}
-            defaultValue={review.review.ratings}
+            defaultValue={review?.ratings}
             control={control}
             render={({ field }) => (
               <ReactStars

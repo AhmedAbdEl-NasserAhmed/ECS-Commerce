@@ -20,7 +20,9 @@ function UserGreeting({ onClick }) {
       className="text-2xl font-semibold cursor-pointer flex items-center gap-4"
       onClick={onClick}
     >
-      <h2>Hey , {user?.name} </h2>
+      <h2>
+        Hey , <span className="capitalize">{user?.name}</span>{" "}
+      </h2>
       <span>
         <HiChevronDown />
       </span>

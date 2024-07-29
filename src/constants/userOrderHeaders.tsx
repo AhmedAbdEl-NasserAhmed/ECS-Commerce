@@ -28,7 +28,7 @@ export const useOrderHeaders = () => {
 
     {
       id: "billingData",
-      header: () => "Product Bill Details",
+      header: () => "  Name",
       cell: ({
         cell: {
           row: { original },
@@ -37,9 +37,28 @@ export const useOrderHeaders = () => {
         <div style={{ gap: "10px" }} className="flex justify-center">
           {original?.billingData.map((data) => {
             return (
-              <div key={data["_id"]}>
-                <h2>Name : {data.firstName}</h2>
-                <h2> Number : {data.phoneNumber}</h2>
+              <div key={data.firstName}>
+                <h2>{data.firstName}</h2>
+              </div>
+            );
+          })}
+        </div>
+      ),
+    },
+
+    {
+      id: "billingData",
+      header: () => "  Phone Number",
+      cell: ({
+        cell: {
+          row: { original },
+        },
+      }) => (
+        <div style={{ gap: "10px" }} className="flex justify-center">
+          {original?.billingData.map((data) => {
+            return (
+              <div key={data.phoneNumber}>
+                <h2> {data.phoneNumber}</h2>
               </div>
             );
           })}

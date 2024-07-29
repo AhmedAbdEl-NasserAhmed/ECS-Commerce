@@ -3,14 +3,20 @@
 import { useActivateEmailMutation } from "@/lib/features/api/usersApi";
 import { loginUser } from "@/lib/features/usersSlice/usersSlice";
 import { useAppDispatch } from "@/lib/hooks";
+import { StorageService } from "@/services/StorageService";
 import MiniSpinner from "@/ui/MiniSpinner/MiniSpinner";
 import CustomizedTextField from "@/ui/TextField/TextField";
 import { Button } from "@mui/material";
+import { useParams, useRouter } from "next/navigation";
 import { ChangeEvent, useState } from "react";
 import toast from "react-hot-toast";
 
 function VerifyEmailAddressPage({ setShowModal }) {
   const [otp, setOtp] = useState<string>("");
+
+  const router = useRouter();
+
+  const { locale } = useParams();
 
   const dispatch = useAppDispatch();
 
@@ -27,10 +33,17 @@ function VerifyEmailAddressPage({ setShowModal }) {
         dispatch(
           loginUser({
             user: res.data,
+            isAuthenticated: res.token,
+            token: res.token,
           })
         );
+
         setShowModal();
         localStorage.setItem("user", JSON.stringify(res.data));
+
+        StorageService.set("userToken", res.token, false);
+
+        router.push(`/${locale}`);
       })
       .catch(() => {
         toast.error("something went wrong");

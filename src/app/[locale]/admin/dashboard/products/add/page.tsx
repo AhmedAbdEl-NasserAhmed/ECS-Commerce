@@ -64,10 +64,13 @@ function AddProductPage() {
       skip: !mainCategorydebounceValue,
     });
 
-  const { data: subCategory } = useGetSubCategoryQuery(
-    { letter: subCategorydebounceValue, categoryId: smartSeachvalue["_id"] },
-    { skip: !subCategorydebounceValue || !smartSeachvalue["_id"] }
-  );
+  const { data: subCategory, isFetching: isFetchingSubCategories } =
+    useGetSubCategoryQuery(
+      { letter: subCategorydebounceValue, categoryId: smartSeachvalue["_id"] },
+      { skip: !subCategorydebounceValue || !smartSeachvalue["_id"] }
+    );
+
+  const [allCategories, setAllCategories] = useState<string[]>([]);
 
   const [productSearchName, setProductSearchName] = useState<{
     name: string;
@@ -137,15 +140,8 @@ function AddProductPage() {
   }, [formData.price, formData.discount]);
 
   useEffect(() => {
-    const allCategories = mainCategory?.data.map((category) => category.name);
-
-    if (allCategories && !allCategories?.includes(formData?.category)) {
-      setError("category", {
-        type: "manual",
-        message: "You Have to choose from available categories",
-      });
-    }
-  }, [mainCategory?.data, formData?.category, setError]);
+    setAllCategories(mainCategory?.data.map((category) => category.name));
+  }, [mainCategory?.data]);
 
   const tIndex = useTranslations("Index");
 
@@ -262,7 +258,13 @@ function AddProductPage() {
                 name={"category"}
                 control={control}
                 defaultValue={""}
-                rules={{ required: "This field is required" }}
+                rules={{
+                  required: "This field is required",
+                  validate(value) {
+                    if (!allCategories?.includes(value))
+                      return "You Have to choose from available categories";
+                  },
+                }}
                 render={({ field }) => (
                   <SmartSearchInput
                     isFetching={isFetchingMainCategory}
@@ -287,9 +289,12 @@ function AddProductPage() {
                 defaultValue={""}
                 render={({ field }) => (
                   <SmartSearchMultipleInput
+                    isFetching={isFetchingSubCategories}
                     existedItems={[]}
                     disabled={
-                      productResponse.isLoading || !smartSeachvalue["_id"]
+                      productResponse.isLoading ||
+                      !smartSeachvalue["_id"] ||
+                      isFetchingSubCategories
                     }
                     shouldReset={
                       productResponse.isSuccess ||
@@ -375,8 +380,8 @@ function AddProductPage() {
                         rules={{
                           required: "This field is required",
                           min: {
-                            value: 0,
-                            message: "This number should be more than 0",
+                            value: 1,
+                            message: "This number should be more than 1",
                           },
                         }}
                         render={({ field }) => (

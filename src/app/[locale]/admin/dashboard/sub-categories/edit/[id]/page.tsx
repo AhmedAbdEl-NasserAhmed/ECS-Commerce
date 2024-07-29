@@ -30,6 +30,7 @@ function EditSubCategoryPage() {
     handleSubmit,
     control,
     reset,
+    setError,
     watch,
     setValue,
     formState: { errors },
@@ -61,6 +62,20 @@ function EditSubCategoryPage() {
   }, [subCategoryData]);
 
   const { data, isLoading } = useGetCategoryQuery(debounceValue);
+
+  useEffect(() => {
+    const allCategories = data?.data.map((category) => category.name);
+    if (
+      allCategories &&
+      smartSeachvalue.name !== "" &&
+      !allCategories?.includes(formData?.category)
+    ) {
+      setError("category", {
+        type: "required",
+        message: "You Have to choose from available categories",
+      });
+    }
+  }, [data?.data, formData?.category, setError, smartSeachvalue.name]);
 
   function handleEditSubCategorySubmit() {
     editSubCategory({
@@ -149,6 +164,8 @@ function EditSubCategoryPage() {
             rules={{ required: "This field is required" }}
             render={({ field }) => (
               <SmartSearchInput
+                isFetching={isSubCategoryFetching}
+                notAvailableMessage="No Categories Available"
                 errors={errors}
                 disabled={editSubCategoryResponse.isLoading}
                 shouldReset={editSubCategoryResponse.isSuccess}
@@ -176,7 +193,9 @@ function EditSubCategoryPage() {
                   backgroundColor:
                     isLoading || formData.category === "" ? "#f5f5f5" : "",
                 }}
-                disabled={isLoading || formData.category === ""}
+                disabled={
+                  isLoading || formData.category === "" || !!errors.category
+                }
                 textLabelClass={"font-semibold text-xl"}
                 placeholder={t("Sub Category Name")}
                 textlabel={t("Sub Category Name")}
@@ -199,7 +218,9 @@ function EditSubCategoryPage() {
             rules={{ required: "This field is required" }}
             render={({ field }) => (
               <CustomizedTextField
-                disabled={isLoading || formData.category === ""}
+                disabled={
+                  isLoading || formData.category === "" || !!errors.category
+                }
                 textLabelClass={"font-semibold text-xl"}
                 placeholder={t("Sub Category Description")}
                 textlabel={t("Sub Category Description")}
@@ -230,7 +251,8 @@ function EditSubCategoryPage() {
               isLoading ||
               formData.category === "" ||
               isSubCategoryFetching ||
-              editSubCategoryResponse.isLoading
+              editSubCategoryResponse.isLoading ||
+              !!errors.category
             }
             sx={{
               paddingInline: "1.6rem",

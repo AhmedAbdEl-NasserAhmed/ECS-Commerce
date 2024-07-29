@@ -22,6 +22,8 @@ const ReviewForm = ({ productId }) => {
     (state) => state.usersSlice.isAuthenticated
   );
 
+  const [sendReview, reviewRes] = useSendReviewMutation();
+
   const {
     handleSubmit,
     control,
@@ -29,14 +31,12 @@ const ReviewForm = ({ productId }) => {
     formState: { errors },
   } = useForm<UserReviewForm>({ mode: "onChange" });
 
-  const [sendReview, reviewRes] = useSendReviewMutation();
-
   const onSubmitHandler = (data) => {
     sendReview({
       title: data.review,
       ratings: data.stars,
       user: user["_id"],
-      product: productId.productId,
+      product: productId,
     })
       .unwrap()
       .then(() => {
@@ -47,8 +47,6 @@ const ReviewForm = ({ productId }) => {
         toast.error("Something went wrong");
       });
   };
-
-  if (reviewRes.isLoading) return;
 
   return (
     <form

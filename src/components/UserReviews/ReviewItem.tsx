@@ -1,4 +1,4 @@
-import ReactStars from "react-stars";
+import ReactStars from "react-rating-stars-component";
 import UserReviewsMenuOptions from "./userReviewsMenuOptions";
 import { useAppSelector } from "@/lib/hooks";
 

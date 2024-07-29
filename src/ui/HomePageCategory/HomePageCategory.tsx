@@ -3,9 +3,48 @@
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import GridContainer from "../Container/GridContainer";
+import { useGetCategoryQuery } from "@/lib/features/api/categoriesApi";
+import Spinner from "../Spinner/Spinner";
+import { useGetSubCategoryQuery } from "@/lib/features/api/subCategoriesApi";
+import { HomeCategory } from "@/types/enums";
+import { useEffect, useState } from "react";
 
 function HomePageCategory() {
   const { locale } = useParams();
+
+  const { data: mainCategory, isLoading } = useGetCategoryQuery(
+    HomeCategory.MAIN_CATEGORY
+  );
+
+  const [maleJeans, setMaleJeans] = useState({ _id: "" });
+
+  const [femaleJeans, setFemaleJeans] = useState({ _id: "" });
+
+  const { data: subCategories, isLoading: subCategoriesLoading } =
+    useGetSubCategoryQuery(
+      {
+        letter: HomeCategory.MALE_JEANS,
+        categoryId: mainCategory?.data[0]["_id"],
+      },
+      { skip: !mainCategory?.data[0]["_id"] }
+    );
+
+  useEffect(() => {
+    setMaleJeans(
+      subCategories?.data.find(
+        (subCategory) => subCategory.name === HomeCategory.MALE_JEANS
+      )
+    );
+    setFemaleJeans(
+      subCategories?.data.find(
+        (subCategory) => subCategory.name === HomeCategory.FEMALE_JEANS
+      )
+    );
+  }, [subCategories?.data]);
+
+  if (isLoading || subCategoriesLoading) return <Spinner />;
+
+  if (!maleJeans?._id || !femaleJeans?._id) return;
 
   return (
     <>
@@ -24,9 +63,10 @@ function HomePageCategory() {
             <h3 className="text-white text-4xl uppercase tracking-[1rem] font-medium">
               Male Jeans
             </h3>
+
             <Link
               className="text-3xl bg-white text-black p-6 rounded-md transition-all duration-400"
-              href={`/${locale}/user/productsList/6696d2e5498de05bd22375b9?&subCategory=669da7c5ba39b5d2a32b0352`}
+              href={`/${locale}/user/productsList/${mainCategory?.data[0]["_id"]}?&subCategory=${maleJeans?.["_id"]}`}
             >
               Start Shopping
             </Link>
@@ -39,7 +79,7 @@ function HomePageCategory() {
             </h3>
             <Link
               className="text-3xl bg-white text-black p-6 rounded-md transition-all duration-400"
-              href={`/${locale}/user/productsList/6696d2e5498de05bd22375b9?&subCategory=669da7d8ba39b5d2a32b0355`}
+              href={`/${locale}/user/productsList/${mainCategory?.data[0]["_id"]}?&subCategory=${femaleJeans?.["_id"]}`}
             >
               Start Shopping
             </Link>

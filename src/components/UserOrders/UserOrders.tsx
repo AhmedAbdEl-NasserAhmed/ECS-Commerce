@@ -28,6 +28,8 @@ function UserOrders() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  console.log(getPaginatedOrdersResponse?.data?.data);
+
   return (
     <div className=" p-8 bg-white shadow-[0px_0px_7px_5px_#0000000a] w-full text-center capitalize ">
       <h2 className="text-3xl font-semibold mb-10">ORDERS</h2>

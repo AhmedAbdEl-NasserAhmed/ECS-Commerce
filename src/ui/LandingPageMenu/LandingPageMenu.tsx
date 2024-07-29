@@ -70,7 +70,7 @@ function LandingPageMenu() {
             <MobileScreenCategoriesList setOpens={setOpens} />
           </li>
 
-          {!user.isActive && (
+          {!user?.isActive && (
             <li>
               <button
                 onClick={() => {
@@ -82,7 +82,7 @@ function LandingPageMenu() {
               </button>
             </li>
           )}
-          {!user.isActive && (
+          {!user?.isActive && (
             <li>
               <button
                 onClick={() => {
@@ -105,7 +105,7 @@ function LandingPageMenu() {
             </button>
           </li>
 
-          {user.isActive && (
+          {user?.isActive && user?.role !== UserType.ADMIN && (
             <li>
               <button
                 onClick={() => {
@@ -118,7 +118,7 @@ function LandingPageMenu() {
             </li>
           )}
 
-          {user.isActive && (
+          {user?.isActive && (
             <li>
               <Link
                 onClick={() => {

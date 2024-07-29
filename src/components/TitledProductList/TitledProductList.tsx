@@ -10,13 +10,6 @@ interface ITitledProductList {
 }
 
 const TitledProductList: React.FC<ITitledProductList> = (props) => {
-  if (!props?.products?.length)
-    return (
-      <div className="flex justify-center items-center h-[50vh]">
-        <p className="text-3xl font-semibold">No Products Available</p>
-      </div>
-    );
-
   return (
     <BaseContainer className={`${props.baseContainerClass} py-20`}>
       <div className="text-center ">

@@ -10,7 +10,6 @@ import CustomizedTextField from "@/ui/TextField/TextField";
 import { Box, Button } from "@mui/material";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { HiChevronRight } from "react-icons/hi2";
@@ -20,6 +19,7 @@ function CategoryPage() {
     handleSubmit,
     control,
     watch,
+
     reset,
     formState: { errors },
   } = useForm<AdminMainCategory>({ mode: "onChange" });
@@ -48,21 +48,7 @@ function CategoryPage() {
         }
       });
   }
-  const pathname = usePathname();
 
-  const [deleteCategory, deleteCategoryResponse] = useDeleteCategoryMutation();
-
-  const deleteCategoryHandler = () => {
-    const id = "6681eeba9397b4412be678d3";
-    deleteCategory(id)
-      .unwrap()
-      .then((res) => {
-        toast.success(`Your category has been deleted!`);
-      })
-      .catch((err) => {
-        toast.error("This Category is not exists");
-      });
-  };
   return (
     <form
       onSubmit={handleSubmit(handleAddCategorySubmit)}
@@ -77,7 +63,7 @@ function CategoryPage() {
           </h2>
           <Box className="flex items-center gap-4 text-[1.4rem]">
             <Link className="text-blue-400" href="/">
-            {t("Home")}
+              {t("Home")}
             </Link>
             <span>
               <HiChevronRight />

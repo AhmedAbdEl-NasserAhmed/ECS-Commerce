@@ -8,6 +8,7 @@ import {
 } from "./MultipleSearchInputReducer";
 import useClickOutside from "@/hooks/useClickOutside";
 import SelectedItem from "./SelectedItem/SelectedItem";
+import MiniSpinner from "../MiniSpinner/MiniSpinner";
 
 function SmartSearchMultipleInput({
   data,
@@ -19,6 +20,7 @@ function SmartSearchMultipleInput({
   disabled,
   shouldReset,
   existedItems,
+  isFetching,
 }) {
   const [smartSearchMultipleState, dispatch] = useReducer(
     reducerFn,
@@ -51,12 +53,12 @@ function SmartSearchMultipleInput({
   }, [smartSearchMultipleState.multipleItemsId, onChange]);
 
   useEffect(() => {
-    if (data?.length > 0) {
+    if (smartSearchMultipleState.inputValue) {
       action(SmartSearchActions.OPEN_MENU);
     } else {
       action(SmartSearchActions.CLOSE_MENU);
     }
-  }, [data?.length]);
+  }, [smartSearchMultipleState.inputValue]);
 
   useEffect(() => {
     if (getSmartSearchValue) {
@@ -74,6 +76,8 @@ function SmartSearchMultipleInput({
       name: item.name,
       value: item["_id"],
     });
+
+    action(SmartSearchActions.RESET_INPUT_VALUE);
 
     action(SmartSearchActions.ADD_ID, { value: item["_id"] });
   }
@@ -133,6 +137,15 @@ function SmartSearchMultipleInput({
             },
           }}
         />
+
+        {isFetching && (
+          <span
+            className="absolute w-6 h-6 "
+            style={{ top: "60%", right: "15px" }}
+          >
+            <MiniSpinner />
+          </span>
+        )}
       </div>
 
       <ul
@@ -140,9 +153,16 @@ function SmartSearchMultipleInput({
         style={{ height: smartSearchMultipleState.openMenu ? "150px" : "0" }}
         className={styles["smartSearchList"]}
       >
+        {!data?.length && (
+          <div className="flex justify-center items-center h-full font-semibold text-xl">
+            <p>No Sub Categories Available</p>
+          </div>
+        )}
+
         {data?.map((item) => {
           return (
             <li
+              className="text-[#161616} font-semibold capitalize"
               style={{
                 backgroundColor:
                   smartSearchMultipleState.multipleItemsId?.includes(

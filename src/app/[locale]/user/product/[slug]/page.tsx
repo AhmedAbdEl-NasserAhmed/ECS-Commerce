@@ -23,7 +23,10 @@ import Reviews from "@/components/UserReviews/Reviews";
 import BaseContainer from "@/ui/Container/BaseContainer";
 import ReactStars from "react-rating-stars-component";
 import { UserType } from "@/types/enums";
-import { useGetProductReviewsQuery } from "@/lib/features/api/reviewsApi";
+import {
+  useGetProductReviewsQuery,
+  useSendReviewMutation,
+} from "@/lib/features/api/reviewsApi";
 import Menus from "@/ui/Menus/Menus";
 import MiniSpinner from "@/ui/MiniSpinner/MiniSpinner";
 import ReviewsSorting from "@/components/UserReviews/ReviewsSorting";
@@ -33,6 +36,7 @@ import {
   removeItemThunk,
 } from "@/lib/features/cookieSlice/cookieSlice";
 import useImagesLoadingSpinner from "@/hooks/useImagesLoadingSpinner";
+import ReactStarsFallBack from "@/ui/ReactStarsFallBack/ReactStarsFallBack";
 
 function ProductDetails() {
   const params = useParams();
@@ -51,7 +55,7 @@ function ProductDetails() {
     setSort(e.target.value);
   }
 
-  const { data: reviews, isFetching: loadingReview } =
+  const { data: reviews, isFetching: fetchingReviews } =
     useGetProductReviewsQuery(
       {
         id: productDetailsState?.selectedProduct?.productId,
@@ -266,10 +270,16 @@ function ProductDetails() {
 
   const isAdmin = user?.role === UserType.ADMIN;
 
-  const averageRatingStars =
-    reviews?.data?.reduce((acc, review) => {
-      return acc + review.ratings;
-    }, 0) / reviews?.data?.length;
+  useEffect(() => {
+    action(ProductDetailsAction.SET_AVERAGE_RATING_STAR, {
+      value:
+        reviews?.data?.reduce((acc, review) => {
+          return acc + review.ratings;
+        }, 0) / reviews?.data?.length,
+    });
+  }, [reviews?.data]);
+
+  console.log("Average Star", productDetailsState.averageRatingStar);
 
   if (isLoading || mainCategoryLoading) return <Spinner />;
 
@@ -372,14 +382,18 @@ function ProductDetails() {
           </Box>
           <div className="flex items-center gap-2">
             <div className="-translate-y-0.5">
-              <ReactStars
-                className="flex gap-1"
-                edit={false}
-                size={16}
-                count={5}
-                value={averageRatingStars}
-                activeColor={"#ffd700"}
-              />
+              {productDetailsState.averageRatingStar ? (
+                <ReactStars
+                  className="flex gap-1"
+                  edit={false}
+                  size={16}
+                  count={5}
+                  value={productDetailsState.averageRatingStar}
+                  activeColor={"#ffd700"}
+                />
+              ) : (
+                <ReactStarsFallBack />
+              )}
             </div>
             <h2 className="font-semibold text-[1.4rem]">
               ({reviews?.data?.length} Customer Review)
@@ -486,7 +500,7 @@ function ProductDetails() {
       </Box>
       {!isAdmin && (
         <Menus>
-          {loadingReview ? (
+          {fetchingReviews ? (
             <Spinner />
           ) : (
             <div className="relative ">
@@ -515,7 +529,7 @@ function ProductDetails() {
       )}
       {reviews?.numPages > page && (
         <Button
-          disabled={loadingReview}
+          disabled={fetchingReviews}
           onClick={() => setPage((page) => page + 1)}
           sx={{
             marginBottom: "2rem",
@@ -531,7 +545,7 @@ function ProductDetails() {
           variant="contained"
           size="large"
         >
-          {loadingReview ? <MiniSpinner /> : "Show More"}
+          {fetchingReviews ? <MiniSpinner /> : "Show More"}
         </Button>
       )}
     </BaseContainer>

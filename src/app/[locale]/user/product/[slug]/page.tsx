@@ -21,7 +21,6 @@ import DropdownSizeOptions from "@/app/[locale]/admin/dashboard/products/details
 import BaseTabs from "@/ui/Tabs/Tabs";
 import Reviews from "@/components/UserReviews/Reviews";
 import BaseContainer from "@/ui/Container/BaseContainer";
-import ReactStars from "react-rating-stars-component";
 import { UserType } from "@/types/enums";
 import {
   useGetProductReviewsQuery,
@@ -36,7 +35,7 @@ import {
   removeItemThunk,
 } from "@/lib/features/cookieSlice/cookieSlice";
 import useImagesLoadingSpinner from "@/hooks/useImagesLoadingSpinner";
-import ReactStarsFallBack from "@/ui/ReactStarsFallBack/ReactStarsFallBack";
+import ReactStars from "@/ui/ReactStars/ReactStars";
 
 function ProductDetails() {
   const params = useParams();
@@ -279,9 +278,7 @@ function ProductDetails() {
     });
   }, [reviews?.data]);
 
-  console.log("Average Star", productDetailsState.averageRatingStar);
-
-  if (isLoading || mainCategoryLoading) return <Spinner />;
+  if (isLoading || mainCategoryLoading || fetchingReviews) return <Spinner />;
 
   return (
     <BaseContainer className="p-[4rem]">
@@ -382,18 +379,11 @@ function ProductDetails() {
           </Box>
           <div className="flex items-center gap-2">
             <div className="-translate-y-0.5">
-              {productDetailsState.averageRatingStar ? (
-                <ReactStars
-                  className="flex gap-1"
-                  edit={false}
-                  size={16}
-                  count={5}
-                  value={productDetailsState.averageRatingStar}
-                  activeColor={"#ffd700"}
-                />
-              ) : (
-                <ReactStarsFallBack />
-              )}
+              <ReactStars
+                readOnly={true}
+                size={"large"}
+                value={productDetailsState.averageRatingStar}
+              />
             </div>
             <h2 className="font-semibold text-[1.4rem]">
               ({reviews?.data?.length} Customer Review)

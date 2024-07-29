@@ -1,4 +1,4 @@
-import ReactStars from "react-rating-stars-component";
+import ReactStars from "@/ui/ReactStars/ReactStars";
 import UserReviewsMenuOptions from "./userReviewsMenuOptions";
 import { useAppSelector } from "@/lib/hooks";
 
@@ -31,15 +31,12 @@ const ReviewItem = ({ review }: IReviewItem) => {
         )}
       </div>
       <div>
-        {
-          <ReactStars
-            edit={false}
-            count={5}
-            value={review.ratings}
-            size={18}
-            color2={"#ffd700"}
-          />
-        }
+        <ReactStars
+          disabled={false}
+          readOnly={true}
+          size={"large"}
+          value={review.ratings}
+        />
       </div>
       <div className="text-2xl text-[#666] mt-2 leading-8">{review.title}</div>
     </div>

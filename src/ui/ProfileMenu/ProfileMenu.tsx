@@ -6,8 +6,6 @@ import { UserType } from "@/types/enums";
 function ProfileMenu({ setIsProfileOpen }) {
   const token = useAppSelector((state) => state.usersSlice.token);
 
-  console.log("token", token);
-
   switch (!!token) {
     case true:
       return <UserMenu setIsProfileOpen={setIsProfileOpen} />;

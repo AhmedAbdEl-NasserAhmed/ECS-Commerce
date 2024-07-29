@@ -25,8 +25,6 @@ const WishListMenu = ({ setIsWishListOpen }) => {
     (state) => state.cookieSlice.cookieItems.wishListItems
   );
 
-  console.log("wishList", wishList);
-
   const cart = useAppSelector(
     (state) => state.cookieSlice.cookieItems.cartItems
   );

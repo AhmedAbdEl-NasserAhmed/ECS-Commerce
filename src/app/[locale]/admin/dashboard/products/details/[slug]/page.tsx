@@ -11,7 +11,7 @@ import DropdownSizeOptions from "./DropdownSizeOptions";
 import { useGetCategoryByIdQuery } from "@/lib/features/api/categoriesApi";
 import SubCategoriesList from "./SubCategoriesList";
 import useImagesLoadingSpinner from "@/hooks/useImagesLoadingSpinner";
-import ReactStars from "react-rating-stars-component";
+
 import {
   initialState,
   ProductViewActions,
@@ -23,7 +23,7 @@ import MiniSpinner from "@/ui/MiniSpinner/MiniSpinner";
 import BaseTabs from "@/ui/Tabs/Tabs";
 import Reviews from "@/components/UserReviews/Reviews";
 import ReviewsSorting from "@/components/UserReviews/ReviewsSorting";
-import ReactStarsFallBack from "@/ui/ReactStarsFallBack/ReactStarsFallBack";
+import ReactStars from "@/ui/ReactStars/ReactStars";
 
 function ProductDetails() {
   const params = useParams();
@@ -101,8 +101,6 @@ function ProductDetails() {
     });
   }, [reviews?.data, reviews?.data.length]);
 
-  console.log("productState.averageRatingSta", productState.averageRatingStar);
-
   if (isLoading || mainCategoryLoading) return <Spinner />;
 
   return (
@@ -177,18 +175,12 @@ function ProductDetails() {
           </Box>
           <div className="flex items-center gap-2">
             <div className="-translate-y-0.5 flex items-center">
-              {productState.averageRatingStar ? (
-                <ReactStars
-                  className="flex gap-1"
-                  edit={false}
-                  size={16}
-                  count={5}
-                  value={productState.averageRatingStar}
-                  activeColor={"#ffd700"}
-                />
-              ) : (
-                <ReactStarsFallBack />
-              )}
+              <ReactStars
+                disabled={false}
+                readOnly={true}
+                size={"large"}
+                value={productState.averageRatingStar}
+              />
             </div>
             <h2 className="font-semibold text-[1.4rem]">
               ({reviews?.data?.length} Customer Review)

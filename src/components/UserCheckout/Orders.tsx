@@ -8,8 +8,6 @@ function Orders() {
     (state) => state.cookieSlice.cookieItems.cartItems
   );
 
-  console.log("Cart", cart);
-
   const totalCartItems = cart.reduce((acc, cur) => {
     return acc + cur.quantity * cur.price;
   }, 0);

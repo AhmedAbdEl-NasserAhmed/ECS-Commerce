@@ -4,7 +4,7 @@ import { UserReviewForm } from "@/types/types";
 import CustomizedTextField from "@/ui/TextField/TextField";
 import { useTranslations } from "next-intl";
 import { Controller, useForm } from "react-hook-form";
-import ReactStars from "react-rating-stars-component";
+
 import "./ReviewEditForm.scss";
 import { Button } from "@mui/material";
 import { useAppSelector } from "@/lib/hooks";
@@ -16,10 +16,9 @@ import {
 import toast from "react-hot-toast";
 import MiniSpinner from "@/ui/MiniSpinner/MiniSpinner";
 import Spinner from "@/ui/Spinner/Spinner";
+import ReactStars from "@/ui/ReactStars/ReactStars";
 
 const ReviewEditForm = ({ review }) => {
-  console.log("review", review);
-
   const t = useTranslations("User");
 
   const user = useAppSelector((state) => state.usersSlice.user);
@@ -106,15 +105,15 @@ const ReviewEditForm = ({ review }) => {
             control={control}
             render={({ field }) => (
               <ReactStars
+                readOnly={false}
                 disabled={
                   user?.role === UserType.ADMIN ||
                   !isAuthenticated ||
                   editReviewRes.isLoading
                 }
-                count={5}
+                size={"large"}
+                value={+field.value}
                 onChange={field.onChange}
-                value={+field.value || 1}
-                color2={"#ffd700"}
               />
             )}
           />

@@ -41,6 +41,8 @@ function OrderDetails() {
     requestCheckupTimelineStages
   );
 
+  console.log("DATA", data?.data);
+
   useEffect(() => {
     reset();
     switch (data?.data?.orderStatus.toUpperCase()) {

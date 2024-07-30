@@ -336,7 +336,7 @@ function AddProductPage() {
                 />
               </Box>
 
-              <Box className="relative col-span-full flex gap-2 items-center">
+              <Box className="relative col-span-full flex flex-wrap  gap-4 items-center">
                 {formData.colors?.map((color) => {
                   return (
                     <Stack

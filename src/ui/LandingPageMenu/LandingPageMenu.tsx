@@ -16,6 +16,7 @@ import LanguageSelector from "../LanguageSelector/LanguageSelector";
 import { deleteCookie } from "cookies-next";
 import { clearCookiesThunk } from "@/lib/features/cookieSlice/cookieSlice";
 import WishListSideMenu from "../WishListSideMenu/WishListSideMenu";
+import { HiOutlineViewGrid } from "react-icons/hi";
 
 function LandingPageMenu() {
   const [opens, setOpens] = useState<boolean>(false);
@@ -69,6 +70,18 @@ function LandingPageMenu() {
           <li>
             <MobileScreenCategoriesList setOpens={setOpens} />
           </li>
+
+          {user?.role === UserType.ADMIN && (
+            <li>
+              <Link
+                className=" flex items-center gap-4 justify-center"
+                onClick={() => setOpens(false)}
+                href={`/${locale}/admin/dashboard`}
+              >
+                <span>Dashboard</span>
+              </Link>
+            </li>
+          )}
 
           {!user?.isActive && (
             <li>

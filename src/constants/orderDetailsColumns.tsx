@@ -16,7 +16,7 @@ export function orderDetailsColumns() {
           <div className="flex justify-center">
             <Image
               className="rounded-md"
-              src={original.product.images[0].url}
+              src={original?.product?.images[0].url}
               alt="product-image"
               width={50}
               height={50}
@@ -34,7 +34,7 @@ export function orderDetailsColumns() {
           row: { original },
         },
       }) => {
-        return <h2>{original.product.name}</h2>;
+        return <h2>{original.product?.name}</h2>;
       },
     },
 
@@ -47,7 +47,7 @@ export function orderDetailsColumns() {
           row: { original },
         },
       }) => {
-        return formatCurrency(original.product.saleProduct);
+        return formatCurrency(original.product?.saleProduct);
       },
     },
     {
@@ -71,7 +71,7 @@ export function orderDetailsColumns() {
           row: { original },
         },
       }) => {
-        return <h2>{original.product.size.value}</h2>;
+        return <h2>{original?.product?.size.value}</h2>;
       },
     },
     {

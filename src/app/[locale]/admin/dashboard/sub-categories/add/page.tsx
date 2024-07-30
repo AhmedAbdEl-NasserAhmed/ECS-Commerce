@@ -134,25 +134,6 @@ function AddSubCategoriesPage() {
             <h4>{t("Sub Categories")}</h4>
           </Box>
         </Box>
-        <Button
-          sx={{
-            paddingInline: "1.6rem",
-            paddingBlock: "1rem",
-            fontSize: "1.3rem",
-            borderRadius: "5px",
-            backgroundColor: "#5b93ff",
-            boxShadow: "none",
-            "&:hover": {
-              backgroundColor: "black",
-              boxShadow: "none",
-            },
-          }}
-          type="button"
-          variant="contained"
-          size="large"
-        >
-          {t("View All")}
-        </Button>
       </Box>
       <Box className="relative grow flex flex-col gap-8 bg-white rounded-2xl border-2 p-10 border-slate-100 shadow-md">
         <Box className="mb-4">

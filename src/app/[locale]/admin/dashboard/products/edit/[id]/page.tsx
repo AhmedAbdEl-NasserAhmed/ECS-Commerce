@@ -217,25 +217,6 @@ function EditProduct() {
             <h4>{t("Products")}</h4>
           </Box>
         </Box>
-        <Button
-          sx={{
-            paddingInline: "1.6rem",
-            paddingBlock: "1rem",
-            fontSize: "1.3rem",
-            borderRadius: "5px",
-            backgroundColor: "#ed0534",
-            boxShadow: "none",
-            "&:hover": {
-              backgroundColor: "gray",
-              boxShadow: "none",
-            },
-          }}
-          type="button"
-          variant="contained"
-          size="large"
-        >
-          {tIndex("View All")}
-        </Button>
       </Box>
       <Box className="relative grow flex flex-col gap-8 bg-white rounded-2xl border-2 p-10 border-slate-100 shadow-md">
         <Box className="mb-4">
@@ -255,11 +236,7 @@ function EditProduct() {
                 rules={{
                   required: "This field is required",
                   validate(value) {
-                    console.log("VALUE", value);
-                    if (
-                      !!allCategories?.length &&
-                      !allCategories?.includes(value)
-                    )
+                    if (!!allCategories && !allCategories?.includes(value))
                       return "You Have to choose from available categories";
                   },
                 }}

@@ -17,6 +17,6 @@ export enum OrderStatusEnum {
 
 export enum HomeCategory {
   MAIN_CATEGORY = "pants",
-  MALE_JEANS = "Male jeans",
-  FEMALE_JEANS = "Female jeans",
+  MALE_JEANS = "male jeans",
+  FEMALE_JEANS = "female jeans",
 }

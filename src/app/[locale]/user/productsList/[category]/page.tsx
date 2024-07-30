@@ -135,6 +135,7 @@ function ProductsByCategory() {
               baseContainerClass="py-0"
               products={products}
               isLoading={isLoading}
+              isFetching={isFetching}
             />
             {data?.pagesNumber !== page &&
               data?.pagesNumber > 2 &&

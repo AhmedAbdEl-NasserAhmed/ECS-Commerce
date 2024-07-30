@@ -8,7 +8,7 @@ import Spinner from "../Spinner/Spinner";
 function ImagePreview(props) {
   const [imageUrl, setImageUrl] = useState(props.imageUrl);
 
-  const { isLoadingImages, setIsLoadingImages } = useImagesLoadingSpinner();
+  const { isLoadingImages } = useImagesLoadingSpinner();
 
   useEffect(() => {
     if (props.imageUrl && props.imageUrl instanceof File) {
@@ -33,7 +33,7 @@ function ImagePreview(props) {
       )}
 
       {props.imageUrl && (
-        <Image src={imageUrl} alt="img" fill objectFit="contain" />
+        <Image src={imageUrl} alt="" fill objectFit="contain" />
       )}
       {props.disabled ? null : (
         <div

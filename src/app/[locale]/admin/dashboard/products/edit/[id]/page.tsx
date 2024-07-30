@@ -46,7 +46,6 @@ function EditProduct() {
     control,
     reset,
     watch,
-    setError,
     setValue,
     formState: { errors },
   } = useForm<AdminProductProps>({
@@ -256,7 +255,11 @@ function EditProduct() {
                 rules={{
                   required: "This field is required",
                   validate(value) {
-                    if (!allCategories?.includes(value))
+                    console.log("VALUE", value);
+                    if (
+                      !!allCategories?.length &&
+                      !allCategories?.includes(value)
+                    )
                       return "You Have to choose from available categories";
                   },
                 }}
@@ -330,7 +333,9 @@ function EditProduct() {
                   name={"colors"}
                   defaultValue={currentProduct?.colors}
                   control={control}
-                  rules={{ required: "This field is required" }}
+                  rules={{
+                    required: "This field is required",
+                  }}
                   render={({ field }) => (
                     <BaseColorPicker
                       existedColors={currentProduct?.colors}
@@ -368,12 +373,12 @@ function EditProduct() {
                       <Controller
                         name={`colors-quantity.${color.label}`}
                         control={control}
-                        defaultValue={color.quantity}
+                        defaultValue={color.quantity ? color.quantity : 0}
                         rules={{
                           required: "This field is required",
                           min: {
                             value: 1,
-                            message: "This number should be more than 1",
+                            message: "Quantity should be more than 1",
                           },
                         }}
                         render={({ field }) => (

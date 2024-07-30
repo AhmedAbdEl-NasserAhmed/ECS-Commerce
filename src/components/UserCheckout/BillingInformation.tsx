@@ -68,7 +68,6 @@ function BillingInformation() {
       .unwrap()
       .then((res) => {
         dispatch(makePayment(false));
-        dispatch(clearCookiesThunk("cartItems"));
         window.open(res.url, "_blank", "noopener,noreferrer");
         router.replace(`/${locale}`);
       })

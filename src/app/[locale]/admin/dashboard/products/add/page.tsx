@@ -376,12 +376,12 @@ function AddProductPage() {
                       <Controller
                         name={`colors-quantity.${color.label}`}
                         control={control}
-                        defaultValue={1}
+                        defaultValue={0}
                         rules={{
                           required: "This field is required",
                           min: {
                             value: 1,
-                            message: "This number should be more than 1",
+                            message: "Quantity should be more than 1",
                           },
                         }}
                         render={({ field }) => (
@@ -391,7 +391,9 @@ function AddProductPage() {
                             placeholder={t("quantity")}
                             field={field}
                             formerHelperStyles={{ style: { fontSize: "1rem" } }}
-                            errors={errors}
+                            customError={
+                              errors?.["colors-quantity"]?.[color.label]
+                            }
                             type={"number"}
                             variant={"outlined"}
                             size={"small"}

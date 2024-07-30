@@ -195,6 +195,7 @@ function SmartSearchMultipleInput({
         {smartSearchMultipleState.multipleItems.map((item) => {
           return (
             <SelectedItem
+              disabled={disabled}
               onClick={
                 disabled
                   ? null
@@ -215,7 +216,9 @@ function SmartSearchMultipleInput({
         {smartSearchMultipleState.multipleItems.length > 0 && (
           <span
             onClick={disabled ? null : () => action(SmartSearchActions.RESET)}
-            className={styles["smartSearchList__close"]}
+            className={`${styles["smartSearchList__close"]} ${
+              disabled ? "opacity-50" : "opacity-100"
+            } `}
           >
             clear All
           </span>

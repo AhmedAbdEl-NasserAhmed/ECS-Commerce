@@ -4,12 +4,10 @@ import { useGetAllCategoriesQuery } from "@/lib/features/api/categoriesApi";
 import Link from "next/link";
 import { useParams, usePathname, useRouter } from "next/navigation";
 
-function NavBarCategoriesList({ showCategoriesMenu }) {
+function NavBarCategoriesList({ showCategoriesMenu, data, isLoading }) {
   const { locale } = useParams();
 
   const { replace } = useRouter();
-
-  const { data, isLoading } = useGetAllCategoriesQuery("categories");
 
   if (isLoading) return;
 

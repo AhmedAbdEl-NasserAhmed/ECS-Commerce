@@ -60,13 +60,13 @@ function ProductsList({ data, setProductName, productName }) {
             key={product["_id"]}
           >
             <Link href={`${locale}/user/product/${product?.slug}`}>
-              <div className="flex justify-between items-center">
-                <div className="flex items-center gap-2">
+              <div className="flex justify-between items-start">
+                <div className="flex items-start gap-5">
                   <div className="relative">
                     <Image
                       className="rounded-md"
-                      width={24}
-                      height={24}
+                      width={60}
+                      height={60}
                       src={product?.images[0]?.url}
                       alt="iamge"
                     />

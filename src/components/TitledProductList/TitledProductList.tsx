@@ -1,5 +1,6 @@
 import BaseContainer from "@/ui/Container/BaseContainer";
 import ProductList from "@/ui/ProductsList/ProductsList";
+import Spinner from "@/ui/Spinner/Spinner";
 
 interface ITitledProductList {
   title?: string;
@@ -7,9 +8,16 @@ interface ITitledProductList {
   products: any[];
   isLoading: boolean;
   baseContainerClass?: string;
+  isFetching?: boolean;
 }
 
 const TitledProductList: React.FC<ITitledProductList> = (props) => {
+  if (props.isFetching)
+    return (
+      <div className="h-screen flex items-center justify-center">
+        <Spinner />
+      </div>
+    );
   return (
     <BaseContainer className={`${props.baseContainerClass} py-20`}>
       <div className="text-center ">

@@ -27,6 +27,8 @@ const Cart = ({ setIsCartOpen }) => {
     (state) => state.cookieSlice.cookieItems.cartItems
   );
 
+  console.log("cart", cart);
+
   const { isLoadingImages, setIsLoadingImages } = useImagesLoadingSpinner();
 
   const ref = useClickOutside({ close: setIsCartOpen, value: false });

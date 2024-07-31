@@ -357,17 +357,11 @@ function ProductDetails() {
 
         <meta property="og:type" content="article" />
         <meta property="og:url" content={`${dynamicHref}`} />
-        <meta
-          property="og:title"
-          content={productDetailsState?.selectedProduct?.name}
-        />
-        <meta
-          property="og:description"
-          content={productDetailsState?.selectedProduct?.description}
-        />
+        <meta property="og:title" content={data?.data?.name} />
+        <meta property="og:description" content={data?.data?.description} />
         <meta property="twitter:title" content="Twitter title" />
         <meta property="twitter:description" content="Twitter desc" />
-        <meta property="twitter:image" content="" />
+        <meta property="twitter:image" content={data?.data?.images?.[0]?.url} />
         <meta property="twitter:card" content="summary" />
         <meta name="twitter:card" content="summary_large_image" />
       </Head>

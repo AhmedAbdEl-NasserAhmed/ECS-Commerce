@@ -8,6 +8,7 @@ import { HiFolder } from "react-icons/hi";
 import { PiFoldersFill } from "react-icons/pi";
 import { BsFillCartCheckFill } from "react-icons/bs";
 import { MdReviews } from "react-icons/md";
+import { MdFeedback } from "react-icons/md";
 
 export const productLinks = (locale: string): AdminDashboardLink[] => {
   return [
@@ -91,17 +92,17 @@ export const AdminSubmenuLinks = (locale, { tDashboard }) => [
     ],
   },
   {
-    menuName: tDashboard("Sub Categories"),
-    id: "sub-categories",
+    menuName: tDashboard("Collections"),
+    id: "collections",
     icon: <PiFoldersFill />,
     children: [
       {
-        href: `/${locale}/admin/dashboard/sub-categories`,
-        linkName: tDashboard("All Sub Categories"),
+        href: `/${locale}/admin/dashboard/collections`,
+        linkName: tDashboard("All Collections"),
       },
       {
-        href: `/${locale}/admin/dashboard/sub-categories/add`,
-        linkName: tDashboard("Add Sub Category"),
+        href: `/${locale}/admin/dashboard/collections/add`,
+        linkName: tDashboard("Add Collection"),
       },
     ],
   },
@@ -124,6 +125,17 @@ export const AdminSubmenuLinks = (locale, { tDashboard }) => [
       {
         href: `/${locale}/admin/dashboard/reviews`,
         linkName: tDashboard("All Reviews"),
+      },
+    ],
+  },
+  {
+    menuName: tDashboard("Feedbacks"),
+    id: "feedbacks",
+    icon: <MdFeedback />,
+    children: [
+      {
+        href: `/${locale}/admin/dashboard/feedbacks`,
+        linkName: tDashboard("All Feedbacks"),
       },
     ],
   },

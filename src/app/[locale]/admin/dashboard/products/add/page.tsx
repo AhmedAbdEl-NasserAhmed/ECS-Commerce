@@ -282,9 +282,9 @@ function AddProductPage() {
                       (formData.category === "" && smartSeachvalue.name === "")
                     }
                     getSmartSearchValue={setSmartSeachSubCategoryValue}
-                    textLabel={t("Sub Category")}
+                    textLabel={t("Collection")}
                     data={subCategory?.data}
-                    placeholder={t("sub category placeholder")}
+                    placeholder={t("Collection placeholder")}
                     name={field.name}
                     onChange={field.onChange}
                   />

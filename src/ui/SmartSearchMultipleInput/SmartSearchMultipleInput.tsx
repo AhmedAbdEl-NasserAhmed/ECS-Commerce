@@ -155,7 +155,7 @@ function SmartSearchMultipleInput({
       >
         {!data?.length && (
           <div className="flex justify-center items-center h-full font-semibold text-xl">
-            <p>No Sub Categories Available</p>
+            <p>No Collections Available</p>
           </div>
         )}
 
@@ -217,7 +217,7 @@ function SmartSearchMultipleInput({
           <span
             onClick={disabled ? null : () => action(SmartSearchActions.RESET)}
             className={`${styles["smartSearchList__close"]} ${
-              disabled ? "opacity-50" : "opacity-100"
+              disabled ? "opacity-30" : "opacity-100"
             } `}
           >
             clear All

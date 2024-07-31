@@ -20,7 +20,7 @@ function SubCategoryTableMenuOptions({ subCategory }) {
     deleteSubCategory(subCategory["_id"])
       .unwrap()
       .then((res) => {
-        toast.success(`Your sub category has been deleted!`);
+        toast.success(`Your Collection has been deleted!`);
       })
       .catch((err) => {
         toast.error("Something went wrong!");
@@ -37,7 +37,7 @@ function SubCategoryTableMenuOptions({ subCategory }) {
             icon={<HiMiniPencilSquare />}
             onClick={() => {
               router.push(
-                `/${locale}/admin/dashboard/sub-categories/edit/${subCategory?.["_id"]}`
+                `/${locale}/admin/dashboard/collections/edit/${subCategory?.["_id"]}`
               );
             }}
           >
@@ -52,7 +52,7 @@ function SubCategoryTableMenuOptions({ subCategory }) {
         <Modal.Window name="delete">
           <DeleteWindow
             // data={subCategory}
-            message="Are you sure that you want to delete this sub category ?"
+            message="Are you sure that you want to delete this Collection ?"
             onClick={onDeleteSubCategory}
           />
         </Modal.Window>

@@ -48,7 +48,11 @@ const Filter = (props) => {
 
   const handleFilterSizeChange = (value) => {
     const params = new URLSearchParams(searchParams);
-    params.set("size", value);
+    if (!value) {
+      params.delete("size");
+    } else {
+      params.set("size", value);
+    }
     replace(`${pathname}?${params.toString()}`, { scroll: false });
   };
 
@@ -93,7 +97,7 @@ const Filter = (props) => {
         <FilterSaleOptions />
       </FilterItemContainer>
 
-      <FilterItemContainer title="Sub-categories">
+      <FilterItemContainer title="Collections">
         <SubCategoriesFiltertation />
       </FilterItemContainer>
 

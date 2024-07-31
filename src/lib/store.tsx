@@ -6,7 +6,6 @@ import subCategoriesApi from "./features/api/subCategoriesApi";
 import productsApi from "./features/api/productsApi";
 import ordersApi from "./features/api/ordersApi";
 import paymentApi from "./features/api/paymentApi";
-import contactUsApi from "./features/api/contactUsApi";
 import reviewsApi from "./features/api/reviewsApi";
 import cartItemsApi from "./features/api/cartItemsApi";
 import storage from "redux-persist/lib/storage";
@@ -15,6 +14,7 @@ import cookieSlice from "./features/cookieSlice/cookieSlice";
 import paymentSlice from "./features/paymentSlice/paymentSlice";
 import dashboardApi from "./features/api/dashboardApi";
 import wishListApi from "./features/api/wishListApi";
+import feedbackApi from "./features/api/feedbacks";
 
 const persistConfig = {
   key: "root",
@@ -32,7 +32,7 @@ const rootReducer = combineReducers({
   [productsApi.reducerPath]: productsApi.reducer,
   [ordersApi.reducerPath]: ordersApi.reducer,
   [paymentApi.reducerPath]: paymentApi.reducer,
-  [contactUsApi.reducerPath]: contactUsApi.reducer,
+  [feedbackApi.reducerPath]: feedbackApi.reducer,
   [reviewsApi.reducerPath]: reviewsApi.reducer,
   [cartItemsApi.reducerPath]: cartItemsApi.reducer,
   [wishListApi.reducerPath]: wishListApi.reducer,
@@ -51,7 +51,7 @@ export const store = configureStore({
       productsApi.middleware,
       ordersApi.middleware,
       paymentApi.middleware,
-      contactUsApi.middleware,
+      feedbackApi.middleware,
       reviewsApi.middleware,
       cartItemsApi.middleware,
       wishListApi.middleware,

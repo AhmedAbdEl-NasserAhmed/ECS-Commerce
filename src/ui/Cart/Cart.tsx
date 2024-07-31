@@ -192,9 +192,20 @@ const Cart = ({ setIsCartOpen }) => {
                       <div className="flex items-center gap-5">
                         <button
                           disabled={user?.role === UserType.ADMIN}
-                          className={` ${
+                          className={`${
+                            product.quantity <= 1 ? "opacity-30" : ""
+                          } w-7 h-7 bg-black rounded-full text-white flex items-center justify-center`}
+                          onClick={() =>
+                            handleDecrementProductQuantity(product)
+                          }
+                        >
+                          -
+                        </button>
+                        <button
+                          disabled={user?.role === UserType.ADMIN}
+                          className={`${
                             product.quantity === product.maxQuantity
-                              ? "bg-red-500"
+                              ? "opacity-30"
                               : ""
                           } w-7 h-7 bg-black rounded-full text-white flex items-center justify-center`}
                           onClick={() =>
@@ -202,15 +213,6 @@ const Cart = ({ setIsCartOpen }) => {
                           }
                         >
                           +
-                        </button>
-                        <button
-                          disabled={user?.role === UserType.ADMIN}
-                          className="w-7 h-7 bg-black rounded-full text-white flex items-center justify-center"
-                          onClick={() =>
-                            handleDecrementProductQuantity(product)
-                          }
-                        >
-                          -
                         </button>
                       </div>
 

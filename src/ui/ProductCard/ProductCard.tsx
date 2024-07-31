@@ -20,11 +20,11 @@ const ProductCard = ({ product }) => {
         boxShadow: "0px 3px 15px 0px #0000000f",
       }}
     >
-      <div className="relative w-full cursor-pointer group overflow-hidden h-[40rem]">
+      <div className="relative w-full group overflow-hidden h-[40rem]">
         <div
           className={`${
             product.images[0] && product.images[1] ? "hover:opacity-0 " : ""
-          }  easy transition-opacity duration-500 rounded-md absolute z-10 h-full w-full overflow-hidden`}
+          } easy transition-opacity duration-500 rounded-md absolute z-10 h-full w-full overflow-hidden`}
         >
           <Image
             src={product.images[0]?.url}

@@ -48,13 +48,13 @@ export const reviewsTableHeaders = (t) => [
       );
     },
   },
-  // {
-  //   id: "actions",
-  //   header: () => <div>Actions</div>,
-  //   cell: ({
-  //     cell: {
-  //       row: { original },
-  //     },
-  //   }) => <ReviewsTableMenuOptions review={original} />,
-  // },
+  {
+    id: "actions",
+    header: () => <div>Actions</div>,
+    cell: ({
+      cell: {
+        row: { original },
+      },
+    }) => <ReviewsTableMenuOptions review={original} />,
+  },
 ];

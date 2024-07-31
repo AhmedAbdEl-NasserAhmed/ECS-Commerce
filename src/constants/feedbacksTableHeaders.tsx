@@ -38,7 +38,7 @@ export const feedbacksTableHeaders = (t) => [
 
   {
     id: "title",
-    header: () => <div>{t("review")}</div>,
+    header: () => <div>{t("feedback")}</div>,
     accessorKey: "title",
   },
   // {

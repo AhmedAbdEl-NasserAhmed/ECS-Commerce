@@ -119,11 +119,22 @@ function EditProduct() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formData.price, formData.discount]);
 
-  const [allCategories, setAllCategories] = useState<string[]>([]);
+  const [isMainCategoryIncluded, setIsMainCategoryIncluded] =
+    useState<boolean>(false);
+
+  const [allCategories, setALlCategories] = useState<string[]>([]);
 
   useEffect(() => {
-    setAllCategories(mainCategory?.data.map((category) => category.name));
+    setALlCategories(mainCategory?.data.map((category) => category.name));
   }, [mainCategory?.data]);
+
+  useEffect(() => {
+    if (mainCategory?.data.length) {
+      const isIncluded = !allCategories?.includes(smartSeachvalue.name);
+
+      setIsMainCategoryIncluded(isIncluded);
+    }
+  }, [mainCategory?.data, smartSeachvalue.name, allCategories]);
 
   const tIndex = useTranslations("Index");
 
@@ -236,7 +247,10 @@ function EditProduct() {
                 rules={{
                   required: "This field is required",
                   validate(value) {
-                    if (!!allCategories && !allCategories?.includes(value))
+                    if (
+                      isMainCategoryIncluded &&
+                      !allCategories?.includes(value)
+                    )
                       return "You Have to choose from available categories";
                   },
                 }}

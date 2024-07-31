@@ -49,6 +49,9 @@ function EditSubCategoryPage() {
     name: string;
   }>({ id: "", name: "" });
 
+  const [isMainCategoryIncluded, setIsMainCategoryIncluded] =
+    useState<boolean>(false);
+
   const [allCategories, setAllCategories] = useState<string[]>([]);
 
   const debounceValue = useDebounceHook(smartSeachvalue.name);
@@ -63,6 +66,14 @@ function EditSubCategoryPage() {
   useEffect(() => {
     setAllCategories(data?.data.map((category) => category.name));
   }, [data?.data]);
+
+  useEffect(() => {
+    if (data?.data.length) {
+      const isIncluded = !allCategories?.includes(smartSeachvalue.name);
+
+      setIsMainCategoryIncluded(isIncluded);
+    }
+  }, [data?.data, smartSeachvalue.name, allCategories]);
 
   function handleEditSubCategorySubmit() {
     editSubCategory({
@@ -131,7 +142,7 @@ function EditSubCategoryPage() {
             rules={{
               required: "This field is required",
               validate(value) {
-                if (!!allCategories && !allCategories?.includes(value))
+                if (isMainCategoryIncluded && !allCategories?.includes(value))
                   return "You Have to choose from available categories";
               },
             }}

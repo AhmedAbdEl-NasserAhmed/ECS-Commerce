@@ -3,6 +3,7 @@ import { Poppins } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
+import ScrollToTop from "@/ui/ScrollToTop/ScrollToTop";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -27,7 +28,7 @@ export default async function LocaleLayout({
         className={`${poppins.className} font-sans`}
       >
         <NextIntlClientProvider messages={messages}>
-          {children}
+          <ScrollToTop>{children}</ScrollToTop>
         </NextIntlClientProvider>
         <div id="modal"></div>
         <Toaster

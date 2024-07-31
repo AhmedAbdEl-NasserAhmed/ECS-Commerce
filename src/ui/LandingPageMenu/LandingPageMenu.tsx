@@ -107,16 +107,6 @@ function LandingPageMenu() {
               </button>
             </li>
           )}
-          <li>
-            <button
-              onClick={() => {
-                router.replace(`/${locale}/user/contact`);
-                setOpens(false);
-              }}
-            >
-              Contact Us
-            </button>
-          </li>
 
           {user?.isActive && user?.role !== UserType.ADMIN && (
             <li>
@@ -127,26 +117,6 @@ function LandingPageMenu() {
                 }}
               >
                 Profile
-              </button>
-            </li>
-          )}
-
-          {user?.isActive && (
-            <li>
-              <button
-                onClick={() => {
-                  cartItems({ user: user["_id"], cartItems: cart });
-                  dispatch(logoutUser());
-                  localStorage.removeItem("userToken");
-                  localStorage.removeItem("user");
-                  dispatch(clearCookiesThunk("cartItems"));
-                  dispatch(clearCookiesThunk("wishListItems"));
-                  router.push(`/${locale}`);
-                  toast.success("Do Not Be Late");
-                  setOpens(false);
-                }}
-              >
-                Logout
               </button>
             </li>
           )}
@@ -163,9 +133,46 @@ function LandingPageMenu() {
             </li>
           )}
           <li>
+            <button
+              onClick={() => {
+                router.replace(`/${locale}/user/contact`);
+                setOpens(false);
+              }}
+            >
+              Contact Us
+            </button>
+          </li>
+
+          {user?.isActive && (
+            <li>
+              <button
+                onClick={() => {
+                  cartItems({
+                    user: user["_id"],
+                    cartItems: cart,
+                    wishListItems: wishList,
+                  });
+                  cartItems({ user: user["_id"], cartItems: cart });
+                  dispatch(logoutUser());
+                  localStorage.removeItem("userToken");
+                  localStorage.removeItem("user");
+                  dispatch(clearCookiesThunk("cartItems"));
+                  dispatch(clearCookiesThunk("wishListItems"));
+                  router.push(`/${locale}`);
+                  toast.success("Do Not Be Late");
+                  setOpens(false);
+                }}
+              >
+                Logout
+              </button>
+            </li>
+          )}
+
+          <li>
             {" "}
             <LanguageSelector />{" "}
           </li>
+
           <span
             onClick={() => setOpens(false)}
             className="text-6xl absolute top-4 end-4 cursor-pointer"

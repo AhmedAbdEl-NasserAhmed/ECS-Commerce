@@ -343,7 +343,7 @@ function ProductDetails() {
 
   if (isLoading || mainCategoryLoading || fetchingReviews) return <Spinner />;
 
-  if (!_singleProduct || !data?.data) return null;
+  if (!_singleProduct && !data?.data.images) return null;
 
   const isExceededMaxQuantity =
     productDetailsState?.productQuantity ===

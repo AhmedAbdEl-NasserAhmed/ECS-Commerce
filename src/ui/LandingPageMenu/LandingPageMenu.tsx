@@ -41,10 +41,6 @@ function LandingPageMenu() {
     (state) => state.cookieSlice.cookieItems.wishListItems
   );
 
-  console.log("cart", cart);
-
-  console.log("wishList", wishList);
-
   const [cartItems] = useSetCartItemsMutation();
 
   const userRoleAdmin = user?.role === UserType.ADMIN;

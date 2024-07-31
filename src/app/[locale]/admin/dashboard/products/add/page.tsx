@@ -528,6 +528,7 @@ function AddProductPage() {
                       sx={{
                         "& .MuiInputBase-input": {
                           fontSize: "1.4rem",
+                          lineHeight: "2.4rem",
                         },
                         "& .MuiInputBase-inputMultiline": {
                           fontSize: "1.4rem",

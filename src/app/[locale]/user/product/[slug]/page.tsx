@@ -48,6 +48,7 @@ import TitledProductList from "@/components/TitledProductList/TitledProductList"
 import useWindowResize from "@/hooks/useWindowResize";
 import Head from "next/head";
 import SharableSocialLinks from "@/components/SharableSocialLinks/SharableSocialLinks";
+import { Helmet } from "react-helmet";
 
 function ProductDetails() {
   const params = useParams();
@@ -349,7 +350,7 @@ function ProductDetails() {
 
   return (
     <>
-      <Head>
+      <Helmet>
         <title>{data?.data?.name}</title>
         <meta
           property="og:image"
@@ -368,7 +369,7 @@ function ProductDetails() {
         <meta property="twitter:image" content={data?.data?.images?.[0]?.url} />
         <meta property="twitter:card" content="summary" />
         <meta name="twitter:card" content="summary_large_image" />
-      </Head>
+      </Helmet>
 
       <BaseContainer className="p-[4rem]">
         <Box className="flex  flex-col gap-16 lg:flex-row ">

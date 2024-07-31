@@ -1,15 +1,9 @@
 import "../globals.scss";
-import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import { Toaster } from "react-hot-toast";
-import { initThunk } from "@/lib/features/cookieSlice/cookieSlice";
-import { useAppDispatch } from "@/lib/hooks";
-import { getCookie, hasCookie } from "cookies-next";
-import { usePathname } from "next/navigation";
-import { useEffect } from "react";
-import { StorageService } from "@/services/StorageService";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
+import ScrollToTop from "@/ui/ScrollToTop/ScrollToTop";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -34,7 +28,7 @@ export default async function LocaleLayout({
         className={`${poppins.className} font-sans`}
       >
         <NextIntlClientProvider messages={messages}>
-          {children}
+          <ScrollToTop>{children}</ScrollToTop>
         </NextIntlClientProvider>
         <div id="modal"></div>
         <Toaster

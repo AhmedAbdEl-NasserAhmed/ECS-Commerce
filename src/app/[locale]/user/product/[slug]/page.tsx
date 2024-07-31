@@ -343,14 +343,12 @@ function ProductDetails() {
 
   if (isLoading || mainCategoryLoading || fetchingReviews) return <Spinner />;
 
-  if (!_singleProduct) return null;
+  if (!_singleProduct || !data?.data) return null;
 
   const isExceededMaxQuantity =
     productDetailsState?.productQuantity ===
       productDetailsState?.selectedColor?.quantity &&
     productDetailsState?.selectedColor?.value;
-
-  console.log("data?.data", data?.data);
 
   return (
     <>
@@ -366,7 +364,7 @@ function ProductDetails() {
 
         <meta property="og:type" content="article" />
         <meta property="og:site_name" content="ORCA" />
-        <meta property="og:image" content={_singleProduct.images?.[0]?.url} />
+        <meta property="og:image" content={data?.data.images?.[0]?.url} />
         <meta property="og:url" content={`${dynamicHref}`} />
         <meta property="og:title" content={_singleProduct.name} />
         <meta property="og:description" content={_singleProduct.description} />

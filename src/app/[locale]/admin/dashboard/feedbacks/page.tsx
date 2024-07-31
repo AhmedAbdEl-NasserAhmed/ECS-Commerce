@@ -16,8 +16,6 @@ function Feedbacks() {
   const [getPaginatedFeedbacks, getPaginatedFeedbacksResponse] =
     useLazyGetAllFeedBacksQuery();
 
-  console.log("getPaginatedFeedbacksResponse", getPaginatedFeedbacksResponse);
-
   const { paginationControllers } = useBaseTablePagination(
     getPaginatedFeedbacksResponse?.data?.numPages
   );

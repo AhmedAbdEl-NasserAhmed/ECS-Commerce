@@ -81,16 +81,6 @@ function ProductDetails() {
       { skip: !_singleProduct }
     );
 
-  console.log("_singleProduct", _singleProduct);
-  console.log("relatedProductsData", relatedProductsData);
-  console.log(
-    "XXXX",
-    relatedProductsData?.data?.filter(
-      (product) =>
-        product.name !== _singleProduct?.name &&
-        product.size !== _singleProduct?.size
-    )
-  );
   const relatedProducts = relatedProductsData?.data?.filter(
     (product) =>
       product.name !== _singleProduct?.name &&

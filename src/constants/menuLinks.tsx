@@ -93,15 +93,15 @@ export const AdminSubmenuLinks = (locale, { tDashboard }) => [
   },
   {
     menuName: tDashboard("Collections"),
-    id: "sub-categories",
+    id: "collections",
     icon: <PiFoldersFill />,
     children: [
       {
-        href: `/${locale}/admin/dashboard/sub-categories`,
+        href: `/${locale}/admin/dashboard/collections`,
         linkName: tDashboard("All Collections"),
       },
       {
-        href: `/${locale}/admin/dashboard/sub-categories/add`,
+        href: `/${locale}/admin/dashboard/collections/add`,
         linkName: tDashboard("Add Collection"),
       },
     ],

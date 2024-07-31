@@ -16,7 +16,6 @@ function ReviewsTableMenuOptions({ review }) {
   const [deleteReviewFn, reviewResponse] = useDeleteReviewMutation();
 
   function onDeleteReview() {
-    console.log("review", review);
     deleteReviewFn(review["_id"]);
   }
 

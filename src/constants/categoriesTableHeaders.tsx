@@ -15,7 +15,7 @@ export const categoriesTableHeaders = () => {
       accessorKey: "description",
     },
     // {
-    //   id: "sub-categories",
+    //   id: "collections",
     //   header: () => "Collections",
     //   cell: ({
     //     cell: {

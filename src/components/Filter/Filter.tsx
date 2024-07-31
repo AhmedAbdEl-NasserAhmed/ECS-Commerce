@@ -97,7 +97,7 @@ const Filter = (props) => {
         <FilterSaleOptions />
       </FilterItemContainer>
 
-      <FilterItemContainer title="Sub-categories">
+      <FilterItemContainer title="Collections">
         <SubCategoriesFiltertation />
       </FilterItemContainer>
 

@@ -2,20 +2,15 @@
 
 import Menus from "@/ui/Menus/Menus";
 import Modal from "@/ui/Modal/Modal";
-import { HiEye, HiTrash } from "react-icons/hi2";
+import { HiTrash } from "react-icons/hi2";
 import { useParams, useRouter } from "next/navigation";
 import DeleteWindow from "@/ui/DeleteWindow/DeleteWindow";
 import { useDeleteReviewMutation } from "@/lib/features/api/reviewsApi";
 
 function FeedbacksTableMenuOptions({ feedback }) {
-  const router = useRouter();
-
-  const { locale } = useParams();
-
   const [deleteFeedbackFn, feedbackResponse] = useDeleteReviewMutation();
 
   function onDeleteFeedback() {
-    console.log("feedback", feedback);
     deleteFeedbackFn(feedback["_id"]);
   }
 

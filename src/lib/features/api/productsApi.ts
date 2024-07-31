@@ -5,7 +5,7 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 
 const productsApi = createApi({
   reducerPath: "productsApi",
-  tagTypes: ["PRODUCTS", "CATEGORIES", "SUB-CATEGORIES"],
+  tagTypes: ["PRODUCTS", "CATEGORIES", "COLLECTIONS"],
   baseQuery: axiosBaseQuery({
     baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
   }),
@@ -36,7 +36,7 @@ const productsApi = createApi({
           method: "GET",
         };
       },
-      providesTags: ["PRODUCTS", "CATEGORIES", "SUB-CATEGORIES"],
+      providesTags: ["PRODUCTS", "CATEGORIES", "COLLECTIONS"],
     }),
 
     getProductByName: builder.query({
@@ -44,7 +44,7 @@ const productsApi = createApi({
         url: `products/filtered?letters=${letter}`,
         method: "GET",
       }),
-      providesTags: ["PRODUCTS", "CATEGORIES", "SUB-CATEGORIES"],
+      providesTags: ["PRODUCTS", "CATEGORIES", "COLLECTIONS"],
       transformResponse: (response) => {
         const data = getUniqueValues(response.data, ["name"]);
         return data;
@@ -55,7 +55,7 @@ const productsApi = createApi({
         url: "products/colors",
         method: "GET",
       }),
-      providesTags: ["PRODUCTS", "CATEGORIES", "SUB-CATEGORIES"],
+      providesTags: ["PRODUCTS", "CATEGORIES", "COLLECTIONS"],
     }),
 
     getSingleProductBySlug: builder.query({
@@ -63,7 +63,7 @@ const productsApi = createApi({
         url: `products/slug/${slug}`,
         method: "GET",
       }),
-      providesTags: ["PRODUCTS", "CATEGORIES", "SUB-CATEGORIES"],
+      providesTags: ["PRODUCTS", "CATEGORIES", "COLLECTIONS"],
     }),
 
     getPaginatedProducts: builder.query({
@@ -74,7 +74,7 @@ const productsApi = createApi({
           method: "GET",
         };
       },
-      providesTags: ["PRODUCTS", "CATEGORIES", "SUB-CATEGORIES"],
+      providesTags: ["PRODUCTS", "CATEGORIES", "COLLECTIONS"],
     }),
 
     getSingleProductByID: builder.query({
@@ -82,7 +82,7 @@ const productsApi = createApi({
         url: `products/id/${id}`,
         method: "GET",
       }),
-      providesTags: ["PRODUCTS", "CATEGORIES", "SUB-CATEGORIES"],
+      providesTags: ["PRODUCTS", "CATEGORIES", "COLLECTIONS"],
     }),
 
     updateSingleProduct: builder.mutation({
@@ -91,7 +91,7 @@ const productsApi = createApi({
         method: "PUT",
         body: data,
       }),
-      invalidatesTags: ["PRODUCTS", "CATEGORIES", "SUB-CATEGORIES"],
+      invalidatesTags: ["PRODUCTS", "CATEGORIES", "COLLECTIONS"],
     }),
 
     deleteSingleProduct: builder.mutation({
@@ -99,7 +99,7 @@ const productsApi = createApi({
         url: `products/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["PRODUCTS", "CATEGORIES", "SUB-CATEGORIES"],
+      invalidatesTags: ["PRODUCTS", "CATEGORIES", "COLLECTIONS"],
     }),
   }),
 });

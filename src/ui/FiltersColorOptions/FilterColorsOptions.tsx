@@ -38,8 +38,6 @@ function FilterColorsOptions() {
   const updateUrl = () => {
     const newSelectedItems = [...selectedColors];
 
-    console.log("selectedColors", selectedColors);
-
     const params = new URLSearchParams(searchParams);
 
     const query = newSelectedItems.join(",");

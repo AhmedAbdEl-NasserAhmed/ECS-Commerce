@@ -341,7 +341,7 @@ function ProductDetails() {
     <BaseContainer className="p-[4rem]">
       <Box className="flex  flex-col gap-16 lg:flex-row ">
         <Box
-          className="flex flex-col md:flex-row gap-5 h-[600px] w-full"
+          className="flex flex-col md:flex-row gap-5 h-[70rem] w-full"
           sx={{
             position: windowWidth > 1050 ? "sticky" : "",
             top: "1rem",

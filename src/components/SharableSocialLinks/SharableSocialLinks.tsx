@@ -56,21 +56,21 @@ const SharableSocialLinks = ({ data, dynamicHref }) => {
     : "https://web.whatsapp.com/send";
 
   const socialLinks = [
-    {
-      href: `https://www.linkedin.com/shareArticle?url=${dynamicHref}&title=${data.title}`,
-      className: "text-linkedin",
-      icon: <FaLinkedin color="#0077B5" fontSize={"2rem"} />,
-      size: "xs",
-      tooltip: "Share on Linkedin",
-    },
-    {
-      href: `https://twitter.com/intent/tweet?url=${dynamicHref}&text=${data.title}`,
+    // {
+    //   href: `https://www.linkedin.com/shareArticle?url=${dynamicHref}&title=${data.title}`,
+    //   className: "text-linkedin",
+    //   icon: <FaLinkedin color="#0077B5" fontSize={"2rem"} />,
+    //   size: "xs",
+    //   tooltip: "Share on Linkedin",
+    // },
+    // {
+    //   href: `https://twitter.com/intent/tweet?url=${dynamicHref}&text=${data.title}`,
 
-      className: "text-twitter",
-      icon: <FaTwitter color="#1DA1F2" fontSize={"2rem"} />,
-      size: "xs",
-      tooltip: "Share on Twitter",
-    },
+    //   className: "text-twitter",
+    //   icon: <FaTwitter color="#1DA1F2" fontSize={"2rem"} />,
+    //   size: "xs",
+    //   tooltip: "Share on Twitter",
+    // },
     {
       href: whatsappHref + "?text=" + data.title + ` ${dynamicHref}`,
       action: `share/whatsapp/share`,

@@ -352,7 +352,7 @@ function ProductDetails() {
 
   return (
     <>
-      <Helmet>
+      <Head>
         <title>{_singleProduct.name}</title>
         <meta
           property="og:image"
@@ -376,7 +376,7 @@ function ProductDetails() {
         />
         <meta property="twitter:card" content="summary" />
         <meta name="twitter:card" content="summary_large_image" />
-      </Helmet>
+      </Head>
 
       <BaseContainer className="p-[4rem]">
         <Box className="flex  flex-col gap-16 lg:flex-row ">

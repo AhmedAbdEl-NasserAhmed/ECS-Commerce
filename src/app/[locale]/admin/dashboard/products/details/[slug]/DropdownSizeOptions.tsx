@@ -1,4 +1,3 @@
-import { Box } from "@mui/material";
 import styles from "./DropdownSizeOptions.module.scss";
 
 function DropdownSizeOptions({ handleChange, data }) {

@@ -9,6 +9,7 @@ interface ITitledProductList {
   isLoading: boolean;
   baseContainerClass?: string;
   isFetching?: boolean;
+  columns?: number;
 }
 
 const TitledProductList: React.FC<ITitledProductList> = (props) => {
@@ -33,7 +34,11 @@ const TitledProductList: React.FC<ITitledProductList> = (props) => {
         )}
       </div>
       <div className="pt-8">
-        <ProductList products={props.products} isLoading={props.isLoading} />
+        <ProductList
+          products={props.products}
+          isLoading={props.isLoading}
+          columns={props.columns}
+        />
       </div>
     </BaseContainer>
   );

@@ -38,6 +38,7 @@ function HomePage() {
         description="Mauris luctus nisi sapien tristique dignissim ornare"
         products={data?.data}
         isLoading={isLoading}
+        columns={4}
       />
 
       <TitledProductList
@@ -45,6 +46,7 @@ function HomePage() {
         description="Mauris luctus nisi sapien tristique dignissim ornare"
         products={SaleProducts?.data}
         isLoading={isLoadingSaleProducts}
+        columns={4}
       />
       {user?.role !== UserType.ADMIN && <FloatingWhatsAppComponent />}
       <Footer />

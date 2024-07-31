@@ -9,6 +9,7 @@ import GridContainer from "@/ui/Container/GridContainer";
 interface IProductList {
   products: any[];
   isLoading: boolean;
+  columns?: number;
 }
 
 function ProductList(props: IProductList) {
@@ -26,7 +27,7 @@ function ProductList(props: IProductList) {
   return (
     <GridContainer
       className={"grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 my-0"}
-      columns={3}
+      columns={props.columns || 3}
     >
       {uniqueItems?.map((product) => {
         return <ProductCard key={product["_id"]} product={product} />;

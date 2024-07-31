@@ -1,11 +1,21 @@
 "use client";
 
-import { useGetSingleProductBySlugQuery } from "@/lib/features/api/productsApi";
+import {
+  useGetAllProductsQuery,
+  useGetSingleProductBySlugQuery,
+} from "@/lib/features/api/productsApi";
 import Spinner from "@/ui/Spinner/Spinner";
 import { Box, Button } from "@mui/material";
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import { ChangeEvent, useEffect, useReducer, useState } from "react";
+import {
+  ChangeEvent,
+  CSSProperties,
+  useEffect,
+  useReducer,
+  useRef,
+  useState,
+} from "react";
 import { useGetCategoryByIdQuery } from "@/lib/features/api/categoriesApi";
 import { HiHeart, HiOutlineHeart } from "react-icons/hi2";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
@@ -17,15 +27,11 @@ import {
   reducerFn,
 } from "./productDetailsReducer";
 import SubCategoriesList from "@/app/[locale]/admin/dashboard/products/details/[slug]/SubCategoriesList";
-import DropdownSizeOptions from "@/app/[locale]/admin/dashboard/products/details/[slug]/DropdownSizeOptions";
 import BaseTabs from "@/ui/Tabs/Tabs";
 import Reviews from "@/components/UserReviews/Reviews";
 import BaseContainer from "@/ui/Container/BaseContainer";
 import { UserType } from "@/types/enums";
-import {
-  useGetProductReviewsQuery,
-  useSendReviewMutation,
-} from "@/lib/features/api/reviewsApi";
+import { useGetProductReviewsQuery } from "@/lib/features/api/reviewsApi";
 import Menus from "@/ui/Menus/Menus";
 import MiniSpinner from "@/ui/MiniSpinner/MiniSpinner";
 import ReviewsSorting from "@/components/UserReviews/ReviewsSorting";
@@ -36,6 +42,9 @@ import {
 } from "@/lib/features/cookieSlice/cookieSlice";
 import useImagesLoadingSpinner from "@/hooks/useImagesLoadingSpinner";
 import ReactStars from "@/ui/ReactStars/ReactStars";
+
+import { FaCartPlus } from "react-icons/fa6";
+import TitledProductList from "@/components/TitledProductList/TitledProductList";
 
 function ProductDetails() {
   const params = useParams();
@@ -50,9 +59,14 @@ function ProductDetails() {
 
   const [sort, setSort] = useState<string>("");
 
+  const [selectedSize, setSelectedSize] = useState(null);
+
   function handleSortChange(e: ChangeEvent<HTMLSelectElement>) {
     setSort(e.target.value);
   }
+
+  const { data: relatedProductsData, isLoading: isRelatedProductsLoading } =
+    useGetAllProductsQuery({ limit: 4 });
 
   const { data: reviews, isFetching: fetchingReviews } =
     useGetProductReviewsQuery(
@@ -122,6 +136,10 @@ function ProductDetails() {
     cart,
     productDetailsState?.selectedProduct,
   ]);
+
+  useEffect(() => {
+    setSelectedSize(data?.data?.products?.[0]?.size);
+  }, [data?.data?.products]);
 
   function handleAddCartItem(selectedProduct) {
     if (productDetailsState?.isColorExisted) {
@@ -221,8 +239,7 @@ function ProductDetails() {
     }
   }
 
-  const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    const selectedIndex = event.target.selectedIndex;
+  const handleChange = (selectedIndex) => {
     action(ProductDetailsAction.SET_CURRENT_PRODUCT_INDEX, {
       value: selectedIndex,
     });
@@ -283,7 +300,13 @@ function ProductDetails() {
   return (
     <BaseContainer className="p-[4rem]">
       <Box className="flex  flex-col gap-16 lg:flex-row ">
-        <Box className="flex flex-col md:flex-row gap-5 h-[600px] w-full ">
+        <Box
+          className="flex flex-col md:flex-row gap-5 h-[600px] w-full"
+          sx={{
+            position: "sticky",
+            top: "1rem",
+          }}
+        >
           <Box className="flex md:flex-col flex-row md:order-none order-1 gap-14 ">
             {data?.data?.images.map((image, index) => {
               return (
@@ -332,7 +355,7 @@ function ProductDetails() {
               alt="img"
               fill
               onLoad={handleLoadingImages}
-              className="object-contain border-2 border-[#dcdbdb] rounded-2xl"
+              className="object-cover border-2 border-[#dcdbdb] rounded-2xl"
             />
           </Box>
         </Box>
@@ -389,9 +412,6 @@ function ProductDetails() {
               ({reviews?.data?.length} Customer Review)
             </h2>
           </div>
-          <q className="text-2xl text-gray-400 capitalize">
-            {productDetailsState?.selectedProduct?.description}
-          </q>
           <Box className="flex items-center gap-5">
             <h2 className="text-3xl font-semibold ">
               {productDetailsState?.selectedProduct?.saleProduct} EGP
@@ -402,16 +422,35 @@ function ProductDetails() {
               </h2>
             )}
           </Box>
-          <Box className="md:w-1/2">
+          <q className="text-2xl text-gray-400 capitalize leading-10">
+            {productDetailsState?.selectedProduct?.description}
+          </q>
+          <Box className="md:w-1/2 my-5">
             <h2 className="text-2xl mb-5">Select Your Size</h2>
-            <DropdownSizeOptions
-              handleChange={handleChange}
-              data={data?.data?.products}
-            />
-            {/* ed0534 */}
+
+            {data?.data?.products?.map((product, idx) => {
+              return (
+                <div
+                  key={product.size}
+                  className="cursor-pointer w-[4rem] py-5 bg-white text-center rounded-lg text-[#161616] uppercase font-semibold "
+                  style={{
+                    background: selectedSize === product.size ? "#161616" : "",
+                    color: selectedSize === product.size ? "white" : "",
+                    outline: "1px solid #161616",
+                  }}
+                  onClick={() => {
+                    if (selectedSize === product.size) return;
+                    handleChange(idx);
+                    setSelectedSize(product.size);
+                  }}
+                >
+                  {product.size}
+                </div>
+              );
+            })}
           </Box>
-          <Box>
-            <h2 className="text-2xl mb-5">Available Colors:</h2>
+          <Box className="my-5">
+            <h2 className="text-2xl mb-5">Available Colors</h2>
             <div className="flex gap-4">
               {productDetailsState?.selectedProduct?.colors?.map((color) => {
                 return (
@@ -425,7 +464,7 @@ function ProductDetails() {
                       });
                     }}
                     key={color.value}
-                    className={`cursor-pointer w-14 h-14 rounded-full ${
+                    className={`cursor-pointer w-8 h-8 rounded-full ${
                       productDetailsState?.selectedColor?.value === color.value
                         ? "ring-offset-2 ring-2 ring-slate-400"
                         : ""
@@ -439,7 +478,7 @@ function ProductDetails() {
             </div>
           </Box>
           {!isAdmin && (
-            <Box className="flex items-center gap-5 ">
+            <Box className="flex items-center gap-5 my-5">
               <button
                 disabled={isAdmin}
                 onClick={handleDecrementQuantity}
@@ -482,41 +521,60 @@ function ProductDetails() {
                 }}
                 className="bg-[#ed0534] hover:bg-black transition duration-500 text-white p-4 text-2xl rounded-lg w-full"
               >
-                Add To Cart
+                <div className="flex justify-center items-center gap-5">
+                  <FaCartPlus color="white" />
+                  <span>Add To Cart</span>
+                </div>
               </button>
             </Box>
           )}
         </Box>
       </Box>
+
+      <hr className="my-20" />
+
+      <Box className="mt-30">
+        <TitledProductList
+          title="Related Products"
+          description="Mauris luctus nisi sapien tristique dignissim ornare"
+          products={relatedProductsData?.data}
+          isLoading={isLoading}
+          columns={4}
+        />
+      </Box>
+
       {!isAdmin && (
-        <Menus>
-          {fetchingReviews ? (
-            <Spinner />
-          ) : (
-            <div className="relative ">
-              <BaseTabs
-                orientation="horizontal"
-                tabs={[
-                  {
-                    label: "Reviews",
-                    content: (
-                      <Reviews
-                        productId={
-                          productDetailsState?.selectedProduct?.productId
-                        }
-                        reviews={reviews?.data}
-                      />
-                    ),
-                  },
-                ]}
-              />
-              {reviews?.data?.length > 0 && (
-                <ReviewsSorting handleSortChange={handleSortChange} />
-              )}
-            </div>
-          )}
-        </Menus>
+        <Box className="mt-30">
+          <Menus>
+            {fetchingReviews ? (
+              <Spinner />
+            ) : (
+              <div className="relative ">
+                <BaseTabs
+                  orientation="horizontal"
+                  tabs={[
+                    {
+                      label: "Reviews",
+                      content: (
+                        <Reviews
+                          productId={
+                            productDetailsState?.selectedProduct?.productId
+                          }
+                          reviews={reviews?.data}
+                        />
+                      ),
+                    },
+                  ]}
+                />
+                {reviews?.data?.length > 0 && (
+                  <ReviewsSorting handleSortChange={handleSortChange} />
+                )}
+              </div>
+            )}
+          </Menus>
+        </Box>
       )}
+
       {reviews?.numPages > page && (
         <Button
           disabled={fetchingReviews}

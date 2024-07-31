@@ -341,32 +341,40 @@ function ProductDetails() {
     }
   }, [typeof window]);
 
-  if (isLoading || mainCategoryLoading || fetchingReviews) return <Spinner />;
+  if (!_singleProduct || isLoading || mainCategoryLoading || fetchingReviews)
+    return <Spinner />;
 
   const isExceededMaxQuantity =
     productDetailsState?.productQuantity ===
       productDetailsState?.selectedColor?.quantity &&
     productDetailsState?.selectedColor?.value;
 
+  console.log("data?.data", data?.data);
+
   return (
     <>
       <Helmet>
-        <title>{data?.data?.name}</title>
+        <title>{_singleProduct?.name}</title>
         <meta
           property="og:image"
           content="https://res.cloudinary.com/practicaldev/image/fetch/s--0qQ47wTC--/c_imagga_scale,f_auto,fl_progressive,h_500,q_auto,w_1000/https://dev-to-uploads.s3.amazonaws.com/uploads/articles/wcg9dbu0z2ca1e9dxy1g.png"
         />
 
-        <meta name="title" content={data?.data?.name} />
-        <meta name="description" content={data?.data?.description} />
+        <meta name="title" content={_singleProduct?.name} />
+        <meta name="description" content={_singleProduct?.description} />
 
         <meta property="og:type" content="article" />
+        <meta property="og:site_name" content="ORCA" />
+        <meta property="og:image" content={_singleProduct?.images?.[0]?.url} />
         <meta property="og:url" content={`${dynamicHref}`} />
-        <meta property="og:title" content={data?.data?.name} />
-        <meta property="og:description" content={data?.data?.description} />
+        <meta property="og:title" content={_singleProduct?.name} />
+        <meta property="og:description" content={_singleProduct?.description} />
         <meta property="twitter:title" content="Twitter title" />
         <meta property="twitter:description" content="Twitter desc" />
-        <meta property="twitter:image" content={data?.data?.images?.[0]?.url} />
+        <meta
+          property="twitter:image"
+          content={_singleProduct?.images?.[0]?.url}
+        />
         <meta property="twitter:card" content="summary" />
         <meta name="twitter:card" content="summary_large_image" />
       </Helmet>

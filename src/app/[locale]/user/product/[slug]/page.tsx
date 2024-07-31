@@ -442,7 +442,10 @@ function ProductDetails() {
             </Box>
           </Box>
           <Box className="flex flex-col gap-10 w-full ">
-            <SharableSocialLinks dynamicHref={dynamicHref} data={data} />
+            <SharableSocialLinks
+              dynamicHref={dynamicHref}
+              data={_singleProduct}
+            />
             <Box className="flex justify-between items-center  ">
               <h2 className="text-4xl font-semibold capitalize">
                 {productDetailsState?.selectedProduct?.name}

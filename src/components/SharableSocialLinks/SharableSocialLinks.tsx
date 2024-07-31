@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react";
-import { FaLink, FaLinkedin, FaTwitter, FaWhatsapp } from "react-icons/fa";
+import {
+  FaFacebook,
+  FaLink,
+  FaLinkedin,
+  FaTwitter,
+  FaWhatsapp,
+} from "react-icons/fa";
 
 const SocialLink = (props) => {
   let icon = props.icon;
@@ -55,16 +61,20 @@ const SharableSocialLinks = ({ data, dynamicHref }) => {
     ? "whatsapp://send"
     : "https://web.whatsapp.com/send";
 
+  const url = encodeURIComponent(dynamicHref);
+
   const socialLinks = [
+    // const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(productUrl)}`;
+
+    {
+      href: `https://www.facebook.com/sharer/sharer.php?u=${url}`,
+      className: "text-linkedin",
+      icon: <FaFacebook color="#1877F2" fontSize={"2rem"} />,
+      size: "xs",
+      tooltip: "Share on Facebook",
+    },
     // {
-    //   href: `https://www.linkedin.com/shareArticle?url=${dynamicHref}&title=${data.title}`,
-    //   className: "text-linkedin",
-    //   icon: <FaLinkedin color="#0077B5" fontSize={"2rem"} />,
-    //   size: "xs",
-    //   tooltip: "Share on Linkedin",
-    // },
-    // {
-    //   href: `https://twitter.com/intent/tweet?url=${dynamicHref}&text=${data.title}`,
+    //   href: `https://twitter.com/intent/tweet?url=${dynamicHref}&text=${data.name}`,
 
     //   className: "text-twitter",
     //   icon: <FaTwitter color="#1DA1F2" fontSize={"2rem"} />,
@@ -72,7 +82,7 @@ const SharableSocialLinks = ({ data, dynamicHref }) => {
     //   tooltip: "Share on Twitter",
     // },
     {
-      href: whatsappHref + "?text=" + data.title + ` ${dynamicHref}`,
+      href: whatsappHref + "?text=" + data.name + ` ${dynamicHref}`,
       action: `share/whatsapp/share`,
       className: "text-whatsapp",
       icon: <FaWhatsapp color="#25D366" fontSize={"2rem"} />,

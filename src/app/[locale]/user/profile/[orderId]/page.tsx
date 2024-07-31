@@ -82,7 +82,7 @@ function OrderDetails() {
         ORDER DETAILS
       </h2>
 
-      <div className="mb-20 px-40">
+      <div className="mb-20 px-8 md:px-20">
         <BaseTimeline
           activeStageIndex={timelineData.activeStageIndex}
           completedStagesIndexes={timelineData.completedStagesIndexes}

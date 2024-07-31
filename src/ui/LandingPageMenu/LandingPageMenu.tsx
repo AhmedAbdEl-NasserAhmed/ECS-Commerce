@@ -133,23 +133,21 @@ function LandingPageMenu() {
 
           {user?.isActive && (
             <li>
-              <Link
+              <button
                 onClick={() => {
                   cartItems({ user: user["_id"], cartItems: cart });
                   dispatch(logoutUser());
                   localStorage.removeItem("userToken");
                   localStorage.removeItem("user");
-                  localStorage.removeItem("cartItemsExpiration");
-                  deleteCookie("cartItems");
+                  dispatch(clearCookiesThunk("cartItems"));
+                  dispatch(clearCookiesThunk("wishListItems"));
                   router.push(`/${locale}`);
                   toast.success("Do Not Be Late");
                   setOpens(false);
-                  dispatch(clearCookiesThunk("cartItems"));
                 }}
-                href=""
               >
                 Logout
-              </Link>
+              </button>
             </li>
           )}
 

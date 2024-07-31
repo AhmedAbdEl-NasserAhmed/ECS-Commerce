@@ -5,6 +5,7 @@ import { useAppDispatch } from "@/lib/hooks";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { FaCheckCircle } from "react-icons/fa";
 
 function SuccessPayment() {
@@ -23,6 +24,7 @@ function SuccessPayment() {
       }, 1000);
     }
     if (redirectNumber === 0) {
+      toast.success("Your Order is Completed Successfully ");
       dispatch(clearCookiesThunk("cartItems"));
       router.replace(`/${locale}`);
     }

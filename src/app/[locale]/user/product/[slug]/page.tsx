@@ -357,7 +357,7 @@ function ProductDetails() {
 
         <meta property="og:type" content="article" />
         <meta property="og:site_name" content="ORCA" />
-        <meta property="og:image" content={imageUrl} />
+        <meta property="og:image" itemProp="image" content={imageUrl} />
         <meta property="og:image:width" content="600" />
         <meta property="og:image:height" content="800" />
         <meta property="og:url" content={`${dynamicHref}`} />
@@ -367,6 +367,7 @@ function ProductDetails() {
         <meta property="twitter:description" content="Twitter desc" />
         <meta property="twitter:image" content={imageUrl} />
         <meta property="twitter:card" content="summary" />
+        <meta property="og:updated_time" content="1440432930" />
         <meta name="twitter:card" content="summary_large_image" />
       </Helmet>
 

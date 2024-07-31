@@ -1,6 +1,5 @@
 "use client";
 import { useGetAllCategoriesQuery } from "@/lib/features/api/categoriesApi";
-import MiniSpinner from "@/ui/MiniSpinner/MiniSpinner";
 import Spinner from "@/ui/Spinner/Spinner";
 import { Box } from "@mui/material";
 import { useTranslations } from "next-intl";

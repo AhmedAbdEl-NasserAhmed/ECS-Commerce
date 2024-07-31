@@ -22,7 +22,7 @@ const reviewsApi = createApi({
     }),
 
     deleteReview: builder.mutation({
-      query: ({ id }) => ({
+      query: (id) => ({
         url: `reviews/${id}`,
         method: "DELETE",
       }),

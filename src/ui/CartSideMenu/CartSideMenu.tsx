@@ -191,7 +191,7 @@ function CartSideMenu({ setOpenSideMenu, openSideMenu, setOpens }) {
                           <button
                             className={` ${
                               product.quantity === product.maxQuantity
-                                ? "bg-red-500"
+                                ? "opacity-30"
                                 : ""
                             } w-7 h-7 bg-black rounded-full text-white flex items-center justify-center`}
                             onClick={() =>

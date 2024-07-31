@@ -2,34 +2,33 @@
 
 import Menus from "@/ui/Menus/Menus";
 import Modal from "@/ui/Modal/Modal";
-import { HiEye, HiMiniPencilSquare, HiTrash } from "react-icons/hi2";
+import { HiEye, HiTrash } from "react-icons/hi2";
 import { useParams, useRouter } from "next/navigation";
 import DeleteWindow from "@/ui/DeleteWindow/DeleteWindow";
-import { useDeleteSingleProductMutation } from "@/lib/features/api/productsApi";
 import { useDeleteReviewMutation } from "@/lib/features/api/reviewsApi";
 
-function ReviewsTableMenuOptions({ review }) {
+function FeedbacksTableMenuOptions({ feedback }) {
   const router = useRouter();
 
   const { locale } = useParams();
 
-  const [deleteReviewFn, reviewResponse] = useDeleteReviewMutation();
+  const [deleteFeedbackFn, feedbackResponse] = useDeleteReviewMutation();
 
-  function onDeleteReview() {
-    console.log("review", review);
-    deleteReviewFn(review["_id"]);
+  function onDeleteFeedback() {
+    console.log("feedback", feedback);
+    deleteFeedbackFn(feedback["_id"]);
   }
 
   return (
     <Modal>
       <Menus.Menu>
-        <Menus.Toggle id={review["_id"]} />
+        <Menus.Toggle id={feedback["_id"]} />
 
-        <Menus.List id={review["_id"]}>
+        <Menus.List id={feedback["_id"]}>
           {/* <Menus.Button
             onClick={() => {
               router.push(
-                `/${locale}/admin/dashboard/reviews/details/${review?.["_id"]}`
+                `/${locale}/admin/dashboard/feedbacks/details/${feedback?.["_id"]}`
               );
             }}
             icon={<HiEye />}
@@ -43,9 +42,9 @@ function ReviewsTableMenuOptions({ review }) {
         </Menus.List>
         <Modal.Window name="delete">
           <DeleteWindow
-            onClick={onDeleteReview}
-            disabled={reviewResponse.isLoading}
-            message="Are you sure that you want to delete this Review ?"
+            onClick={onDeleteFeedback}
+            disabled={feedbackResponse.isLoading}
+            message="Are you sure that you want to delete this feedback ?"
           />
         </Modal.Window>
       </Menus.Menu>
@@ -53,4 +52,4 @@ function ReviewsTableMenuOptions({ review }) {
   );
 }
 
-export default ReviewsTableMenuOptions;
+export default FeedbacksTableMenuOptions;

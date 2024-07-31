@@ -20,6 +20,7 @@ function ProductListOptions({ product }) {
       <ProductActionItem
         content={<HiEye />}
         onClick={() => router.push(`/${locale}/user/product/${product?.slug}`)}
+        className="cursor-pointer"
       />
       <ProductActionItem
         content={

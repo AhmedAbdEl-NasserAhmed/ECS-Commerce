@@ -45,6 +45,7 @@ import ReactStars from "@/ui/ReactStars/ReactStars";
 
 import { FaCartPlus } from "react-icons/fa6";
 import TitledProductList from "@/components/TitledProductList/TitledProductList";
+import useWindowResize from "@/hooks/useWindowResize";
 
 function ProductDetails() {
   const params = useParams();
@@ -65,8 +66,40 @@ function ProductDetails() {
     setSort(e.target.value);
   }
 
+  const _singleProduct = data?.data?.products?.[0];
+
   const { data: relatedProductsData, isLoading: isRelatedProductsLoading } =
-    useGetAllProductsQuery({ limit: 4 });
+    useGetAllProductsQuery(
+      {
+        limit: 4,
+        categoryId: _singleProduct?.category,
+        subCategory: _singleProduct?.subCategory?.join(","),
+      },
+      { skip: !_singleProduct }
+    );
+
+  console.log("_singleProduct", _singleProduct);
+  console.log("relatedProductsData", relatedProductsData);
+  console.log(
+    "XXXX",
+    relatedProductsData?.data?.filter(
+      (product) =>
+        product.name !== _singleProduct?.name &&
+        product.size !== _singleProduct?.size
+    )
+  );
+  const relatedProducts = relatedProductsData?.data?.filter(
+    (product) =>
+      product.name !== _singleProduct?.name &&
+      product.size !== _singleProduct?.size
+  );
+
+  const areRelatedProductsEmpty =
+    relatedProductsData?.data?.filter(
+      (product) =>
+        product.name !== _singleProduct?.name &&
+        product.size !== _singleProduct?.size
+    )?.length === 0;
 
   const { data: reviews, isFetching: fetchingReviews } =
     useGetProductReviewsQuery(
@@ -295,7 +328,14 @@ function ProductDetails() {
     });
   }, [reviews?.data]);
 
+  const windowWidth = useWindowResize();
+
   if (isLoading || mainCategoryLoading || fetchingReviews) return <Spinner />;
+
+  const isExceededMaxQuantity =
+    productDetailsState?.productQuantity ===
+      productDetailsState?.selectedColor?.quantity &&
+    productDetailsState?.selectedColor?.value;
 
   return (
     <BaseContainer className="p-[4rem]">
@@ -303,7 +343,7 @@ function ProductDetails() {
         <Box
           className="flex flex-col md:flex-row gap-5 h-[600px] w-full"
           sx={{
-            position: "sticky",
+            position: windowWidth > 1050 ? "sticky" : "",
             top: "1rem",
           }}
         >
@@ -426,31 +466,33 @@ function ProductDetails() {
             {productDetailsState?.selectedProduct?.description}
           </q>
           <Box className="md:w-1/2 my-5">
-            <h2 className="text-2xl mb-5">Select Your Size</h2>
-
-            {data?.data?.products?.map((product, idx) => {
-              return (
-                <div
-                  key={product.size}
-                  className="cursor-pointer w-[4rem] py-5 bg-white text-center rounded-lg text-[#161616] uppercase font-semibold "
-                  style={{
-                    background: selectedSize === product.size ? "#161616" : "",
-                    color: selectedSize === product.size ? "white" : "",
-                    outline: "1px solid #161616",
-                  }}
-                  onClick={() => {
-                    if (selectedSize === product.size) return;
-                    handleChange(idx);
-                    setSelectedSize(product.size);
-                  }}
-                >
-                  {product.size}
-                </div>
-              );
-            })}
+            <h2 className="text-2xl mb-5">Pick Your Size</h2>
+            <div className="flex items-center gap-5">
+              {data?.data?.products?.map((product, idx) => {
+                return (
+                  <div
+                    key={product.size}
+                    className="cursor-pointer w-[4rem] py-5 bg-white text-center rounded-lg text-[#161616] uppercase font-semibold "
+                    style={{
+                      background:
+                        selectedSize === product.size ? "#161616" : "",
+                      color: selectedSize === product.size ? "white" : "",
+                      outline: "1px solid #161616",
+                    }}
+                    onClick={() => {
+                      if (selectedSize === product.size) return;
+                      handleChange(idx);
+                      setSelectedSize(product.size);
+                    }}
+                  >
+                    {product.size}
+                  </div>
+                );
+              })}
+            </div>
           </Box>
           <Box className="my-5">
-            <h2 className="text-2xl mb-5">Available Colors</h2>
+            <h2 className="text-2xl mb-5">Pick Your Color</h2>
             <div className="flex gap-4">
               {productDetailsState?.selectedProduct?.colors?.map((color) => {
                 return (
@@ -480,9 +522,9 @@ function ProductDetails() {
           {!isAdmin && (
             <Box className="flex items-center gap-5 my-5">
               <button
-                disabled={isAdmin}
+                disabled={productDetailsState?.productQuantity <= 1}
                 onClick={handleDecrementQuantity}
-                className="bg-black w-10 h-10 text-2xl flex items-center justify-center text-white p-2 rounded-full"
+                className="bg-black w-10 h-10 text-2xl flex items-center justify-center text-white p-2 rounded-full disabled:opacity-30"
               >
                 -
               </button>
@@ -494,21 +536,19 @@ function ProductDetails() {
               />
 
               <button
-                disabled={isAdmin}
+                disabled={isExceededMaxQuantity}
                 onClick={handleIncrementQuantity}
-                className="bg-black w-10 h-10 text-2xl flex items-center justify-center text-white p-2 rounded-full"
+                className="bg-black w-10 h-10 text-2xl flex items-center justify-center text-white p-2 rounded-full disabled:opacity-30"
               >
                 +
               </button>
             </Box>
           )}
-          {productDetailsState?.productQuantity ===
-            productDetailsState?.selectedColor?.quantity &&
-            productDetailsState?.selectedColor?.value && (
-              <p className="text-2xl text-red-600">
-                This is maximum Quantity for this product Color
-              </p>
-            )}
+          {isExceededMaxQuantity && (
+            <p className="text-2xl text-red-600">
+              This is maximum Quantity for this product Color
+            </p>
+          )}
           {!isAdmin && (
             <Box className="md:w-1/2">
               <button
@@ -533,15 +573,17 @@ function ProductDetails() {
 
       <hr className="my-20" />
 
-      <Box className="mt-30">
-        <TitledProductList
-          title="Related Products"
-          description="Mauris luctus nisi sapien tristique dignissim ornare"
-          products={relatedProductsData?.data}
-          isLoading={isLoading}
-          columns={4}
-        />
-      </Box>
+      {!areRelatedProductsEmpty && (
+        <Box className="mt-30">
+          <TitledProductList
+            title="Related Products"
+            description="Mauris luctus nisi sapien tristique dignissim ornare"
+            products={relatedProducts}
+            isLoading={isLoading}
+            columns={4}
+          />
+        </Box>
+      )}
 
       {!isAdmin && (
         <Box className="mt-30">

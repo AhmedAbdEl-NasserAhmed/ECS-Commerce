@@ -5,13 +5,13 @@ function SelectedItem({ item, onClick, disabled }) {
     <li
       key={item.name}
       className={`${styles["selected-item"]} ${
-        disabled ? "opacity-50" : "opacity-100"
+        disabled ? "opacity-30" : "opacity-100"
       }`}
     >
       <span>{item.name}</span>
       <span
         className={`${styles["close-btn"]} ${
-          disabled ? "opacity-50" : "opacity-100"
+          disabled ? "opacity-30" : "opacity-100"
         }`}
         onClick={onClick}
       >

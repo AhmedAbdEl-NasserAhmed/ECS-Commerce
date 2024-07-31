@@ -1,7 +1,7 @@
 "use client";
 
 import { emailRegex } from "@/constants/regx";
-import { useSendFeedBackMutation } from "@/lib/features/api/contactUsApi";
+import { useSendFeedBackMutation } from "@/lib/features/api/feedbacks";
 import { useAppSelector } from "@/lib/hooks";
 import { UserType } from "@/types/enums";
 import MiniSpinner from "@/ui/MiniSpinner/MiniSpinner";
@@ -148,7 +148,7 @@ function Contact() {
           variant="contained"
           size="large"
         >
-          {feedBackResponse.isLoading ? <MiniSpinner /> : "Submit"}
+          {feedBackResponse.isLoading ? <MiniSpinner /> : "Send your feedback"}
         </Button>
       </div>
     </form>

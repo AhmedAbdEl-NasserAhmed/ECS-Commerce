@@ -38,11 +38,16 @@ function FilterColorsOptions() {
   const updateUrl = () => {
     const newSelectedItems = [...selectedColors];
 
+    console.log("selectedColors", selectedColors);
+
     const params = new URLSearchParams(searchParams);
 
     const query = newSelectedItems.join(",");
-
-    params.set("colors", query);
+    if (!selectedColors) {
+      params.delete("colors");
+    } else {
+      params.set("colors", query);
+    }
 
     const newUrl = `${pathName}?${params.toString()}`;
 
@@ -80,6 +85,18 @@ function FilterColorsOptions() {
           ></div>
         );
       })}
+      <div
+        onClick={() => setSelectedColors([])}
+        className={`relative rounded-full cursor-pointer w-[2.3rem] h-[2.3rem] border-2`}
+      >
+        <span
+          className="absolute w-full h-1 top-1/2 left-1/2"
+          style={{
+            background: "#f99797",
+            transform: "translate(-50%, -50%) rotate(-45deg)",
+          }}
+        ></span>
+      </div>
     </div>
   );
 }

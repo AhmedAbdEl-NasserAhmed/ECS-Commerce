@@ -3,9 +3,9 @@ import axiosBaseQuery from "@/api";
 import { createApi } from "@reduxjs/toolkit/query/react";
 
 // RTK Query
-const contactUsApi = createApi({
-  reducerPath: "contactUsApi",
-  tagTypes: ["CONTACTUS"],
+const feedbackApi = createApi({
+  reducerPath: "feedbackApi",
+  tagTypes: ["FEEDBACKS"],
   baseQuery: axiosBaseQuery({
     baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
   }),
@@ -17,18 +17,22 @@ const contactUsApi = createApi({
         method: "POST",
         body,
       }),
-      invalidatesTags: ["CONTACTUS"],
+      invalidatesTags: ["FEEDBACKS"],
     }),
-    getAllFeedBack: builder.query({
+    getAllFeedBacks: builder.query({
       query: () => ({
         url: `feedBacks`,
         method: "GET",
       }),
-      providesTags: ["CONTACTUS"],
+      providesTags: ["FEEDBACKS"],
     }),
   }),
 });
 
-export const { useSendFeedBackMutation, useGetAllFeedBackQuery } = contactUsApi;
+export const {
+  useSendFeedBackMutation,
+  useGetAllFeedBacksQuery,
+  useLazyGetAllFeedBacksQuery,
+} = feedbackApi;
 
-export default contactUsApi;
+export default feedbackApi;

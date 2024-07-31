@@ -16,14 +16,14 @@ export const categoriesTableHeaders = () => {
     },
     // {
     //   id: "sub-categories",
-    //   header: () => "Sub categories",
+    //   header: () => "Collections",
     //   cell: ({
     //     cell: {
     //       row: { original },
     //     },
     //   }) => {
     //     if (isFetching || !data || data?.data?.length === 0)
-    //       return <div>No Sub Categories</div>;
+    //       return <div>No Collections</div>;
     //     return (
     //       <ul className="flex gap-2 items-cneter justify-center flex-wrap">
     //         {data?.data?.map((subCategory) => {

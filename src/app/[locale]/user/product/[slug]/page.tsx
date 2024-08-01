@@ -358,8 +358,16 @@ function ProductDetails() {
         <meta property="og:type" content="article" />
         <meta property="og:site_name" content="ORCA" />
         <meta property="og:image" itemProp="image" content={imageUrl} />
+        <meta
+          property="og:image:secure_url"
+          itemProp="image"
+          content={imageUrl}
+        />
         <meta property="og:image:width" content="600" />
         <meta property="og:image:height" content="800" />
+        <meta property="og:image:alt" content={_singleProduct.name} />
+        <meta property="og:image:type" content="image/png" />
+
         <meta property="og:url" content={`${dynamicHref}`} />
         <meta property="og:title" content={_singleProduct.name} />
         <meta property="og:description" content={_singleProduct.description} />

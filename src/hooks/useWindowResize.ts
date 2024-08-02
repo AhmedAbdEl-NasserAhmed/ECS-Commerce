@@ -22,6 +22,7 @@ const useWindowResize = () => {
     if (typeof window != undefined) {
       setWindowWidth(window.innerWidth);
     }
+    // eslint-disable-next-line
   }, [typeof window]);
 
   return windowWidth;

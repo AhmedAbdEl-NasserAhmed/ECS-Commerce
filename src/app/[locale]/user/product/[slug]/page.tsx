@@ -48,6 +48,7 @@ import TitledProductList from "@/components/TitledProductList/TitledProductList"
 import useWindowResize from "@/hooks/useWindowResize";
 import Head from "next/head";
 import SharableSocialLinks from "@/components/SharableSocialLinks/SharableSocialLinks";
+import { Helmet } from "react-helmet";
 
 function ProductDetails() {
   const params = useParams();
@@ -328,6 +329,7 @@ function ProductDetails() {
     if (typeof window !== "undefined") {
       setDynamicHref(window.location.href);
     }
+    // eslint-disable-next-line
   }, [typeof window]);
 
   if (isLoading || mainCategoryLoading || fetchingReviews) return <Spinner />;

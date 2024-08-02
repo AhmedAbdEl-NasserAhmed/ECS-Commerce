@@ -55,6 +55,7 @@ const SharableSocialLinks = ({ data, dynamicHref }) => {
     if (typeof window !== "undefined") {
       setIsSmallScreen(window.innerWidth < 500);
     }
+    // eslint-disable-next-line
   }, [typeof window]);
 
   const whatsappHref = isSmallScreen

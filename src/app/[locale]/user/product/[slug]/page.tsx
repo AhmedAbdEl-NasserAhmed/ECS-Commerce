@@ -339,9 +339,12 @@ function ProductDetails() {
       productDetailsState?.selectedColor?.quantity &&
     productDetailsState?.selectedColor?.value;
 
+  const imageUrl =
+    data?.data.images?.[0]?.url || "https://via.placeholder.com/1200x630";
+
   return (
     <>
-      <Head>
+      <Helmet>
         <title>{_singleProduct.name}</title>
         <meta
           property="og:image"
@@ -353,19 +356,27 @@ function ProductDetails() {
 
         <meta property="og:type" content="article" />
         <meta property="og:site_name" content="ORCA" />
-        <meta property="og:image" content={data?.data.images?.[0]?.url} />
+        <meta property="og:image" itemProp="image" content={imageUrl} />
+        <meta
+          property="og:image:secure_url"
+          itemProp="image"
+          content={imageUrl}
+        />
+        <meta property="og:image:width" content="600" />
+        <meta property="og:image:height" content="800" />
+        <meta property="og:image:alt" content={_singleProduct.name} />
+        <meta property="og:image:type" content="image/png" />
+
         <meta property="og:url" content={`${dynamicHref}`} />
         <meta property="og:title" content={_singleProduct.name} />
         <meta property="og:description" content={_singleProduct.description} />
         <meta property="twitter:title" content="Twitter title" />
         <meta property="twitter:description" content="Twitter desc" />
-        <meta
-          property="twitter:image"
-          content={_singleProduct.images?.[0]?.url}
-        />
+        <meta property="twitter:image" content={imageUrl} />
         <meta property="twitter:card" content="summary" />
+        <meta property="og:updated_time" content="1440432930" />
         <meta name="twitter:card" content="summary_large_image" />
-      </Head>
+      </Helmet>
 
       <BaseContainer className="p-[4rem]">
         <Box className="flex  flex-col gap-16 lg:flex-row ">

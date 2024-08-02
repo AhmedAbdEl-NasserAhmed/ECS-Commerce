@@ -17,6 +17,7 @@ import { deleteCookie } from "cookies-next";
 import { clearCookiesThunk } from "@/lib/features/cookieSlice/cookieSlice";
 import WishListSideMenu from "../WishListSideMenu/WishListSideMenu";
 import { HiOutlineViewGrid } from "react-icons/hi";
+import { HiChevronDown, HiChevronUp } from "react-icons/hi2";
 
 function LandingPageMenu() {
   const [opens, setOpens] = useState<boolean>(false);
@@ -28,6 +29,8 @@ function LandingPageMenu() {
   const [openSideMenu, setOpenSideMenu] = useState<boolean>(false);
 
   const [openWishListMenu, setOpenWishListMenu] = useState<boolean>(false);
+
+  const [openCategoriesMenu, setOpenCategoriesMenu] = useState<boolean>(false);
 
   const dispatch = useAppDispatch();
 
@@ -67,8 +70,18 @@ function LandingPageMenu() {
               Home Page
             </button>
           </li>
-          <li>
-            <MobileScreenCategoriesList setOpens={setOpens} />
+          <li
+            className="flex items-center cursor-pointer"
+            onClick={() => setOpenCategoriesMenu((prev) => !prev)}
+          >
+            Shop
+            <span>
+              {openCategoriesMenu ? <HiChevronUp /> : <HiChevronDown />}
+            </span>
+            <MobileScreenCategoriesList
+              setOpenCategoriesMenu={setOpenCategoriesMenu}
+              openCategoriesMenu={openCategoriesMenu}
+            />
           </li>
 
           {user?.role === UserType.ADMIN && (

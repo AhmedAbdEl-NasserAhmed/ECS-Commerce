@@ -23,7 +23,10 @@ function CollectionList({ id }) {
     <ul className="flex flex-col gap-7">
       {data?.data.map((subCategory) => {
         return (
-          <li key={subCategory["_id"]}>
+          <li
+            className="px-4 py-2 hover:bg-white hover:text-black duration-100 rounded-sm transition-all"
+            key={subCategory["_id"]}
+          >
             <button onClick={() => handleClick(subCategory["_id"])}>
               {subCategory.name}
             </button>

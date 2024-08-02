@@ -8,12 +8,12 @@ import useClickOutside from "@/hooks/useClickOutside";
 function MobileScreenCategoriesList({
   setOpenCategoriesMenu,
   openCategoriesMenu,
+  data,
+  isLoading,
 }) {
   const { locale } = useParams();
 
   const { replace } = useRouter();
-
-  const { data, isLoading } = useGetAllCategoriesQuery("categories");
 
   const handleClick = (id: string) => {
     replace(`/${locale}/user/productsList/${id}`);
@@ -28,7 +28,7 @@ function MobileScreenCategoriesList({
       ref={ref}
       className={`fixed top-0 ${
         openCategoriesMenu ? "start-0" : "-start-[900px]"
-      } transition-all  duration-300 w-full  h-screen  backdrop-filter backdrop-blur-sm z-50 text-black  text-center text-[1.6rem] font-semibold `}
+      } transition-all  duration-300 w-full  h-screen  backdrop-filter backdrop-blur-sm z-50 text-black  text-center text-[1.6rem] font-semibold overflow-y-scroll `}
     >
       <ul className=" p-8 w-[70vw]  h-full  flex flex-col items-center  text-center  bg-[#f1e5cd] text-[#333]">
         <div className="grid grid-cols-2 items-center gap-36 mb-16 w-full ">

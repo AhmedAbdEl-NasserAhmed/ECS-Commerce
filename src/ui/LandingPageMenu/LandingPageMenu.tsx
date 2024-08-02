@@ -18,6 +18,7 @@ import { clearCookiesThunk } from "@/lib/features/cookieSlice/cookieSlice";
 import WishListSideMenu from "../WishListSideMenu/WishListSideMenu";
 import { HiOutlineViewGrid } from "react-icons/hi";
 import { HiChevronDown, HiChevronUp } from "react-icons/hi2";
+import { useGetAllCategoriesQuery } from "@/lib/features/api/categoriesApi";
 
 function LandingPageMenu() {
   const [opens, setOpens] = useState<boolean>(false);
@@ -31,6 +32,8 @@ function LandingPageMenu() {
   const [openWishListMenu, setOpenWishListMenu] = useState<boolean>(false);
 
   const [openCategoriesMenu, setOpenCategoriesMenu] = useState<boolean>(false);
+
+  const { data, isLoading } = useGetAllCategoriesQuery("categories");
 
   const dispatch = useAppDispatch();
 
@@ -70,19 +73,24 @@ function LandingPageMenu() {
               Home Page
             </button>
           </li>
-          <li
-            className="flex items-center cursor-pointer"
-            onClick={() => setOpenCategoriesMenu((prev) => !prev)}
-          >
-            Shop
-            <span>
-              {openCategoriesMenu ? <HiChevronUp /> : <HiChevronDown />}
-            </span>
-            <MobileScreenCategoriesList
-              setOpenCategoriesMenu={setOpenCategoriesMenu}
-              openCategoriesMenu={openCategoriesMenu}
-            />
-          </li>
+
+          {data?.data.length > 0 && (
+            <li
+              className="flex items-center cursor-pointer"
+              onClick={() => setOpenCategoriesMenu((prev) => !prev)}
+            >
+              Shop
+              <span>
+                {openCategoriesMenu ? <HiChevronUp /> : <HiChevronDown />}
+              </span>
+              <MobileScreenCategoriesList
+                data={data}
+                isLoading={isLoading}
+                setOpenCategoriesMenu={setOpenCategoriesMenu}
+                openCategoriesMenu={openCategoriesMenu}
+              />
+            </li>
+          )}
 
           {user?.role === UserType.ADMIN && (
             <li>

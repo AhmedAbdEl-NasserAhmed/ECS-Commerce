@@ -18,16 +18,13 @@ function NavBarCategoriesList({
     replace(`/${locale}/user/productsList/${id}`);
   };
 
-  const ref = useClickOutside({ close: setShowCategoriesMenu, value: false });
-
   if (isLoading) return;
 
   return (
     <div
-      ref={ref}
       className={` ${
         showCategoriesMenu ? "h-[38rem]" : "h-0"
-      } absolute  w-screen bg-[#f1e5cd] text-white text-[1.6rem]  shadow-2xl top-32 z-10  -start-5 transition-all duration-300 flex flex-col items-center gap-6 text-center overflow-hidden overflow-y-scroll text-[#333]`}
+      } absolute  w-screen bg-[#f1e5cd]  text-[1.6rem]  shadow-2xl top-32 z-10  -start-5 transition-all duration-300 flex flex-col items-center gap-6 text-center overflow-hidden overflow-y-scroll text-[#333]`}
     >
       <ul className=" p-8  w-3/4 m-auto h-full flex flex-col items-center">
         <div className="grid grid-cols-2 items-center mb-10 w-1/2">

@@ -5,6 +5,7 @@ import { slides } from "@/constants/slides";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 function Slider() {
   const [currentSlide, setCurrentSlide] = useState<number>(0);
@@ -16,9 +17,13 @@ function Slider() {
       ? `translateX(${currentSlide * 100}vw)`
       : `translateX(-${currentSlide * 100}vw)`;
 
+  const t = useTranslations("user");
+
+  const slider = slides(t);
+
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
+      setCurrentSlide((prev) => (prev === slider.length - 1 ? 0 : prev + 1));
     }, 3000);
 
     return () => clearInterval(interval);
@@ -30,7 +35,7 @@ function Slider() {
         className="w-max h-full flex transition-all ease-in-out duration-1000"
         style={{ transform: slideStyle }}
       >
-        {slides.map((slide) => {
+        {slides(t).map((slide) => {
           return (
             <div
               className={`${slide.bg} w-screen h-full flex flex-col gap-16 xl:flex-row`}
@@ -59,7 +64,7 @@ function Slider() {
         })}
       </div>
       <ul className="absolute left-1/2 m-auto bottom-8 flex gap-4">
-        {slides.map((slide, index) => (
+        {slides(t).map((slide, index) => (
           <li
             className={`w-3 h-3 rounded-full ring-1 ring-gray-600 cursor-pointer flex justify-center items-center ${
               currentSlide === index ? "scale-150" : ""

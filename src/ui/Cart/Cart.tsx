@@ -17,6 +17,7 @@ import {
 } from "@/lib/features/cookieSlice/cookieSlice";
 import useImagesLoadingSpinner from "@/hooks/useImagesLoadingSpinner";
 import Spinner from "../Spinner/Spinner";
+import { useTranslations } from "next-intl";
 
 const Cart = ({ setIsCartOpen }) => {
   const { locale } = useParams();
@@ -36,6 +37,8 @@ const Cart = ({ setIsCartOpen }) => {
   const user = useAppSelector((state) => state.usersSlice.user);
 
   const token = useAppSelector((state) => state.usersSlice.token);
+
+  const t = useTranslations("user");
 
   function handleDeleteProduct(product) {
     dispatch(
@@ -115,11 +118,11 @@ const Cart = ({ setIsCartOpen }) => {
       className="w-max absolute p-4 rounded-lg shadow-[0_3px_10px_rgb(0,0,0,0.2)] bg-white top-12 end-0 flex flex-col gap-6 z-20"
     >
       {cart?.length === 0 ? (
-        <div className="">Cart is Empty</div>
+        <div className="">{t("Cart is Empty")}</div>
       ) : (
         <>
           <div className="flex justify-between items-center">
-            <h2 className="text-2xl font-semibold">Shopping Cart</h2>
+            <h2 className="text-2xl font-semibold">{t("Shopping Cart")}</h2>
             <button
               className="p-2 bg-red-500 text-white rounded-lg"
               onClick={removeAllCartItems}

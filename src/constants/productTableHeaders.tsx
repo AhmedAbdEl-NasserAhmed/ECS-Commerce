@@ -82,7 +82,7 @@ export const productTableHeaders = (
             onLoad={() => setIsloadingImages(false)}
             key={original?.images[0]?.id}
             src={original?.images[0]?.url}
-            alt={`Product Image ${original?.images[0]?.id}`}
+            alt={`Product Image ${original?.images[0]?.id || ""}`}
             height={55}
             width={55}
           />

@@ -1,8 +1,19 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import BaseContainer from "../Container/BaseContainer";
+import { useEffect, useState } from "react";
 
 function Footer() {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient) return;
+
   return (
     <div className="py-28 bg-gray-100 text-xl">
       <BaseContainer>

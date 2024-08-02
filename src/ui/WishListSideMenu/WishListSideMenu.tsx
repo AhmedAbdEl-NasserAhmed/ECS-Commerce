@@ -16,6 +16,7 @@ import {
 } from "@/lib/features/cookieSlice/cookieSlice";
 import useImagesLoadingSpinner from "@/hooks/useImagesLoadingSpinner";
 import Spinner from "../Spinner/Spinner";
+import { useTranslations } from "next-intl";
 
 const WishListSideMenu = ({
   setOpens,
@@ -33,6 +34,8 @@ const WishListSideMenu = ({
   );
 
   const ref = useClickOutside({ close: setOpenWishListMenu, value: false });
+
+  const t = useTranslations("user");
 
   const dispatch = useAppDispatch();
 
@@ -89,7 +92,7 @@ const WishListSideMenu = ({
       <div ref={ref} className="bg-white w-[70vw] h-full p-6 overflow-y-scroll">
         {wishList?.length === 0 ? (
           <div className="text-black  font-bold text-2xl">
-            Wish List is Empty
+            {t("Wish List is Empty")}
           </div>
         ) : (
           <>

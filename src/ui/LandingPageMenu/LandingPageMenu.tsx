@@ -19,6 +19,7 @@ import WishListSideMenu from "../WishListSideMenu/WishListSideMenu";
 import { HiOutlineViewGrid } from "react-icons/hi";
 import { HiChevronDown, HiChevronUp } from "react-icons/hi2";
 import { useGetAllCategoriesQuery } from "@/lib/features/api/categoriesApi";
+import { useTranslations } from "next-intl";
 
 function LandingPageMenu() {
   const [opens, setOpens] = useState<boolean>(false);
@@ -47,6 +48,8 @@ function LandingPageMenu() {
     (state) => state.cookieSlice.cookieItems.wishListItems
   );
 
+  const userTranslation = useTranslations("user");
+
   const [cartItems] = useSetCartItemsMutation();
 
   const userRoleAdmin = user?.role === UserType.ADMIN;
@@ -70,7 +73,7 @@ function LandingPageMenu() {
                 setOpens(false);
               }}
             >
-              Home Page
+              {userTranslation("Home Page")}
             </button>
           </li>
 
@@ -79,7 +82,8 @@ function LandingPageMenu() {
               className="flex items-center cursor-pointer"
               onClick={() => setOpenCategoriesMenu((prev) => !prev)}
             >
-              Shop
+              {userTranslation("Shop")}
+
               <span>
                 {openCategoriesMenu ? <HiChevronUp /> : <HiChevronDown />}
               </span>
@@ -112,7 +116,7 @@ function LandingPageMenu() {
                   setOpens(false);
                 }}
               >
-                Sign up
+                {userTranslation("Sign up")}
               </button>
             </li>
           )}
@@ -124,7 +128,7 @@ function LandingPageMenu() {
                   setOpens(false);
                 }}
               >
-                Log in
+                {userTranslation("Log in")}
               </button>
             </li>
           )}
@@ -137,20 +141,24 @@ function LandingPageMenu() {
                   setOpens(false);
                 }}
               >
-                Profile
+                {userTranslation("Profile")}
               </button>
             </li>
           )}
 
           {!userRoleAdmin && (
             <li onClick={() => setOpenSideMenu(true)}>
-              <Link href="">Cart ({cart.length})</Link>
+              <Link href="">
+                {userTranslation("Cart")}({cart.length})
+              </Link>
             </li>
           )}
 
           {!userRoleAdmin && (
             <li onClick={() => setOpenWishListMenu(true)}>
-              <Link href="">Wish List ({wishList.length})</Link>
+              <Link href="">
+                {userTranslation("Wish List")}({wishList.length})
+              </Link>
             </li>
           )}
           <li>
@@ -160,7 +168,7 @@ function LandingPageMenu() {
                 setOpens(false);
               }}
             >
-              Contact Us
+              {userTranslation("Contact Us")}
             </button>
           </li>
 
@@ -168,11 +176,14 @@ function LandingPageMenu() {
             <li className="border-2 border-white py-2.5 px-20">
               <button
                 onClick={() => {
-                  cartItems({
-                    user: user["_id"],
-                    cartItems: cart,
-                    wishListItems: wishList,
-                  });
+                  if (user && user?.role === UserType.USER) {
+                    cartItems({
+                      user: user["_id"],
+                      cartItems: cart,
+                      wishListItems: wishList,
+                    });
+                  }
+
                   cartItems({ user: user["_id"], cartItems: cart });
                   dispatch(logoutUser());
                   localStorage.removeItem("userToken");
@@ -184,13 +195,12 @@ function LandingPageMenu() {
                   setOpens(false);
                 }}
               >
-                Logout
+                {userTranslation("Log out")}
               </button>
             </li>
           )}
 
           <li>
-            {" "}
             <LanguageSelector />{" "}
           </li>
 

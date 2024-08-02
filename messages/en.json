@@ -88,5 +88,38 @@
     "password": "password",
     "Password": "Password",
     "Enter password": "Enter password"
+  },
+
+  "user": {
+    "Shop": "Shop",
+    "Home Page": "Home Page",
+    "Profile": "Profile",
+    "Cart": "Cart ",
+    "Contact Us": "Contact Us",
+    "Wish List": "Wish List ",
+    "Log out": "Log out",
+    "Best Sale Categories": "Best Sale Categories",
+    "Have a Tour in our amazing offers": "Have a Tour in our amazing offers",
+    "Start Shopping": "Start Shopping",
+    "male Jeans": "male Jeans",
+    "Female Jeans": "Female Jeans",
+    "Hot Products": "Hot Products",
+    "Sale Products": "Sale Products",
+    "Categories": "Categories",
+    "Collections": "Collections",
+    "Spring Sale Collections": "Spring Sale Collections",
+    "Winter Sale Collections": "Winter Sale Collections",
+    "Summer Sale Collections": "Summer Sale Collections",
+    "Sale! Up to 50% off!": "Sale! Up to 50% off!",
+    "Contact": "Contact",
+    "Search": "Search",
+    "Hey": "Hey",
+    "Wish List is Empty": "Wish List is Empty",
+    "Cart is Empty": "Cart is Empty",
+    "English": "English",
+    "Arabic": "Arabic",
+    "Shopping Cart": "Shopping Cart",
+    "Log in": "Log in",
+    "Sign up": "sign up"
   }
 }

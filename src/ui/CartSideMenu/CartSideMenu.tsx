@@ -13,6 +13,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
 import Spinner from "../Spinner/Spinner";
+import { useTranslations } from "next-intl";
 
 function CartSideMenu({ setOpenSideMenu, openSideMenu, setOpens }) {
   const { locale } = useParams();
@@ -32,6 +33,8 @@ function CartSideMenu({ setOpenSideMenu, openSideMenu, setOpens }) {
   const user = useAppSelector((state) => state.usersSlice.user);
 
   const token = useAppSelector((state) => state.usersSlice.token);
+
+  const t = useTranslations("user");
 
   function handleDeleteProduct(product) {
     dispatch(
@@ -112,7 +115,9 @@ function CartSideMenu({ setOpenSideMenu, openSideMenu, setOpens }) {
     >
       <div ref={ref} className="bg-white w-[70vw] h-full p-6 overflow-y-scroll">
         {cart.length === 0 ? (
-          <div className="text-black  font-bold text-2xl">Cart is Empty</div>
+          <div className="text-black  font-bold text-2xl">
+            {t("Cart is Empty")}
+          </div>
         ) : (
           <>
             <div className="flex justify-between items-center mb-10">

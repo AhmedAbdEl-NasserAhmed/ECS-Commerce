@@ -4,11 +4,14 @@ import Link from "next/link";
 import useClickOutside from "@/hooks/useClickOutside";
 import { useParams } from "next/navigation";
 import { HiOutlineLogin, HiOutlineUserAdd } from "react-icons/hi";
+import { useTranslations } from "next-intl";
 
 function GuestMenu({ setIsProfileOpen }) {
   const { locale } = useParams();
 
   const ref = useClickOutside({ close: setIsProfileOpen, value: false });
+
+  const user = useTranslations("user");
 
   return (
     <ul
@@ -24,7 +27,7 @@ function GuestMenu({ setIsProfileOpen }) {
           <span className="text-3xl">
             <HiOutlineLogin />
           </span>
-          <span>Log in</span>
+          <span>{user("Log in")}</span>
         </Link>
       </li>
       <li className="p-2 hover:bg-gray-200 duration-200 transition-all">
@@ -36,7 +39,7 @@ function GuestMenu({ setIsProfileOpen }) {
           <span className="text-3xl">
             <HiOutlineUserAdd />
           </span>
-          <span>Sign Up </span>
+          <span>{user("Sign up")}</span>
         </Link>
       </li>
     </ul>

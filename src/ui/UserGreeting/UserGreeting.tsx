@@ -1,6 +1,7 @@
 "use client";
 
 import { useAppSelector } from "@/lib/hooks";
+import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { HiChevronDown } from "react-icons/hi2";
 
@@ -13,6 +14,8 @@ function UserGreeting({ onClick }) {
     setIsClient(true);
   }, []);
 
+  const userTranslation = useTranslations("user");
+
   if (!isClient) return;
 
   return (
@@ -21,7 +24,8 @@ function UserGreeting({ onClick }) {
       onClick={onClick}
     >
       <h2>
-        Hey , <span className="capitalize">{user?.name}</span>{" "}
+        {userTranslation("Hey")} ,{" "}
+        <span className="capitalize">{user?.name}</span>{" "}
       </h2>
       <span>
         <HiChevronDown />

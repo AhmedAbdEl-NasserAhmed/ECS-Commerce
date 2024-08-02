@@ -33,7 +33,7 @@ function ImagePreview(props) {
       )}
 
       {props.imageUrl && (
-        <Image src={imageUrl} alt="" fill objectFit="contain" />
+        <Image src={imageUrl || ""} alt="" fill objectFit="contain" />
       )}
       {props.disabled ? null : (
         <div

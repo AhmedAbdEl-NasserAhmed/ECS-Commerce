@@ -2,10 +2,11 @@
 
 import { languages } from "@/constants/languages";
 import useClickOutside from "@/hooks/useClickOutside";
+import { useTranslations } from "next-intl";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FlagIcon } from "react-flag-kit";
-import { HiGlobeAlt } from "react-icons/hi2";
+import { HiChevronDown, HiGlobeAlt } from "react-icons/hi2";
 
 function LanguageSelector() {
   const [showMenu, setShowMenu] = useState<boolean>(false);
@@ -23,11 +24,13 @@ function LanguageSelector() {
     router.push(newPath);
   }
 
+  const t = useTranslations("user");
+
   return (
     <div
       ref={ref}
       onClick={() => setShowMenu((show) => !show)}
-      className="relative cursor-pointer text-black text-xl"
+      className="relative cursor-pointer text-black text-xl "
     >
       <span className="w-[3rem] h-[3rem] ">
         {locale === "ar" ? (
@@ -36,9 +39,10 @@ function LanguageSelector() {
           <FlagIcon code="GB" size={24} />
         )}
       </span>
+
       {showMenu && (
-        <ul className="absolute top-12 end-6 bg-white p-2  z-10 shadow-xl flex flex-col gap-4 ">
-          {languages.map((language) => {
+        <ul className="absolute top-12 end-6 bg-white p-2  z-50 shadow-xl flex flex-col gap-4 ">
+          {languages(t).map((language) => {
             return (
               <li
                 key={language.value}

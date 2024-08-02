@@ -131,7 +131,7 @@ function ProductDetails() {
                     </div>
                   )}
                   <Image
-                    src={image?.url}
+                    src={image?.url || ""}
                     alt="img"
                     quality={100}
                     onLoad={() => setIsLoadingImages(false)}
@@ -149,7 +149,7 @@ function ProductDetails() {
               </div>
             )}
             <Image
-              src={data?.data?.images?.[productState?.imageIndex]?.url}
+              src={data?.data?.images?.[productState?.imageIndex]?.url || ""}
               alt="img"
               fill
               onLoad={() => setIsLoadingImages(false)}

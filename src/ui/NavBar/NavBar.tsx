@@ -11,6 +11,7 @@ import { useState } from "react";
 import { useParams } from "next/navigation";
 import { useGetAllCategoriesQuery } from "@/lib/features/api/categoriesApi";
 import { HiChevronDown, HiChevronUp } from "react-icons/hi2";
+import { useTranslations } from "next-intl";
 
 function NavBar() {
   const [showCategoriesMenu, setShowCategoriesMenu] = useState<boolean>(false);
@@ -18,6 +19,8 @@ function NavBar() {
   const { data, isLoading } = useGetAllCategoriesQuery("categories");
 
   const { locale } = useParams();
+
+  const user = useTranslations("user");
 
   return (
     <BaseContainer>
@@ -38,7 +41,7 @@ function NavBar() {
                   className="flex items-center gap-1"
                   onClick={() => setShowCategoriesMenu((prev) => !prev)}
                 >
-                  <Link href="">Shop</Link>
+                  <Link href="">{user("Shop")}</Link>
                   <span>
                     {showCategoriesMenu ? <HiChevronUp /> : <HiChevronDown />}
                   </span>
@@ -46,7 +49,7 @@ function NavBar() {
               )}
 
               <li>
-                <Link href={`/${locale}/user/contact`}>Contact</Link>
+                <Link href={`/${locale}/user/contact`}>{user("Contact")}</Link>
               </li>
             </ul>
           </div>
@@ -55,7 +58,6 @@ function NavBar() {
             <NavIcons />
           </div>
           <NavBarCategoriesList
-            setShowCategoriesMenu={setShowCategoriesMenu}
             isLoading={isLoading}
             data={data}
             showCategoriesMenu={showCategoriesMenu}

@@ -5,6 +5,7 @@ import { useGetProductByNameQuery } from "@/lib/features/api/productsApi";
 import Image from "next/image";
 import { useState } from "react";
 import ProductsList from "./ProductsList";
+import { useTranslations } from "next-intl";
 
 function SearchBar() {
   const [productName, setProductName] = useState<string>("");
@@ -13,6 +14,8 @@ function SearchBar() {
 
   const { data } = useGetProductByNameQuery(debounceValue);
 
+  const user = useTranslations("user");
+
   return (
     <div className="relative flex text-xl items-center justify-between gap-4 bg-gray-100 p-4 rounded-md grow">
       <input
@@ -20,7 +23,7 @@ function SearchBar() {
         onChange={(e) => setProductName(e.target.value)}
         name="name"
         className="grow bg-transparent outline-none"
-        placeholder="Search"
+        placeholder={user("Search")}
       />
       <button className="cursor-pointer">
         <Image src="/search.png" width={16} height={16} alt="Search-logo" />

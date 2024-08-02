@@ -16,7 +16,7 @@ export function orderDetailsColumns() {
           <div className="flex justify-center">
             <Image
               className="rounded-md"
-              src={original?.product?.images[0].url}
+              src={original?.product?.images[0].url || ""}
               alt="product-image"
               width={50}
               height={50}

@@ -3,13 +3,9 @@
 import { useParams, usePathname, useRouter } from "next/navigation";
 import CollectionList from "./CollectionList";
 import useClickOutside from "@/hooks/useClickOutside";
+import { useTranslations } from "next-intl";
 
-function NavBarCategoriesList({
-  setShowCategoriesMenu,
-  showCategoriesMenu,
-  data,
-  isLoading,
-}) {
+function NavBarCategoriesList({ showCategoriesMenu, data, isLoading }) {
   const { locale } = useParams();
 
   const { replace } = useRouter();
@@ -17,6 +13,8 @@ function NavBarCategoriesList({
   const handleClick = (id: string) => {
     replace(`/${locale}/user/productsList/${id}`);
   };
+
+  const t = useTranslations("user");
 
   if (isLoading) return;
 
@@ -26,10 +24,14 @@ function NavBarCategoriesList({
         showCategoriesMenu ? "h-[38rem]" : "h-0"
       } absolute  w-screen bg-[#f1e5cd]  text-[1.6rem]  shadow-2xl top-32 z-10  -start-5 transition-all duration-300 flex flex-col items-center gap-6 text-center overflow-hidden overflow-y-scroll text-[#333] `}
     >
-      <ul className=" p-8  w-3/4 m-auto h-full flex flex-col items-center">
-        <div className="grid grid-cols-2 items-center mb-10 w-1/2">
-          <h2 className="font-bold uppercase tracking-widest">Category</h2>
-          <h2 className="font-bold uppercase tracking-widest">Collection</h2>
+      <ul className=" pb-8  w-3/4 m-auto h-full flex flex-col items-center overflow-y-scroll">
+        <div className="sticky top-0 z-40 bg-[#f1e5cd]  p-4 grid grid-cols-2 items-center mb-10 w-1/2">
+          <h2 className="font-bold uppercase tracking-widest">
+            {t("Categories")}
+          </h2>
+          <h2 className="font-bold uppercase tracking-widest">
+            {t("Collections")}
+          </h2>
         </div>
         {data?.data.map((category) => (
           <div

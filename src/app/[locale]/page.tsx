@@ -13,6 +13,7 @@ import FloatingWhatsAppComponent from "@/ui/FloatingWhatsAppIcon/FloatingWhatsAp
 import { UserType } from "@/types/enums";
 import UserProtectedRoute from "@/ui/UserProtectedRoute/UserProtectedRoute";
 import useCookie from "@/hooks/useCookie";
+import { useTranslations } from "next-intl";
 
 function HomePage() {
   const { data, isLoading } = useGetAllProductsQuery({ limit: 6 });
@@ -21,6 +22,8 @@ function HomePage() {
     useGetAllProductsQuery({ sale: "true", limit: 6 });
 
   const user = useAppSelector((state) => state.usersSlice.user);
+
+  const t = useTranslations("user");
 
   useCookie("cartItems", "wishListItems");
 
@@ -34,7 +37,7 @@ function HomePage() {
       </BaseContainer>
 
       <TitledProductList
-        title="Hot Products"
+        title={t("Hot Products")}
         description="Mauris luctus nisi sapien tristique dignissim ornare"
         products={data?.data}
         isLoading={isLoading}
@@ -42,13 +45,15 @@ function HomePage() {
       />
 
       <TitledProductList
-        title="Sale Products"
+        title={t("Sale Products")}
         description="Mauris luctus nisi sapien tristique dignissim ornare"
         products={SaleProducts?.data}
         isLoading={isLoadingSaleProducts}
         columns={4}
       />
-      {user?.role !== UserType.ADMIN && <FloatingWhatsAppComponent />}
+
+      {user && user?.role !== UserType.ADMIN && <FloatingWhatsAppComponent />}
+
       <Footer />
     </UserProtectedRoute>
   );

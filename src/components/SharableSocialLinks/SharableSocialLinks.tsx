@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import {
   FaFacebook,
@@ -26,14 +27,14 @@ const SocialLink = (props) => {
 
   if (props.href) {
     content = (
-      <a
+      <Link
         href={props.href || "#"}
         // action={props.action || ""}
         target={"_blank"}
         rel="noreferrer"
       >
         {icon}
-      </a>
+      </Link>
     );
   }
 

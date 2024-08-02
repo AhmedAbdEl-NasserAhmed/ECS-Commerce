@@ -415,7 +415,7 @@ function ProductDetails() {
                       </div>
                     )}
                     <Image
-                      src={image?.url}
+                      src={image?.url || ""}
                       alt="img"
                       quality={100}
                       onLoad={handleLoadingImages}
@@ -433,7 +433,10 @@ function ProductDetails() {
                 </div>
               )}
               <Image
-                src={data?.data?.images?.[productDetailsState?.imageIndex]?.url}
+                src={
+                  data?.data?.images?.[productDetailsState?.imageIndex]?.url ||
+                  ""
+                }
                 alt="img"
                 fill
                 onLoad={handleLoadingImages}

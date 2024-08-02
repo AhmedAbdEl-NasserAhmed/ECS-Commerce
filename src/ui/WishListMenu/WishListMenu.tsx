@@ -17,6 +17,7 @@ import {
 } from "@/lib/features/cookieSlice/cookieSlice";
 import useImagesLoadingSpinner from "@/hooks/useImagesLoadingSpinner";
 import Spinner from "../Spinner/Spinner";
+import { useTranslations } from "next-intl";
 
 const WishListMenu = ({ setIsWishListOpen }) => {
   const { locale } = useParams();
@@ -28,6 +29,8 @@ const WishListMenu = ({ setIsWishListOpen }) => {
   const cart = useAppSelector(
     (state) => state.cookieSlice.cookieItems.cartItems
   );
+
+  const t = useTranslations("user");
 
   const { isLoadingImages, setIsLoadingImages } = useImagesLoadingSpinner();
 
@@ -83,7 +86,7 @@ const WishListMenu = ({ setIsWishListOpen }) => {
       className="w-max absolute p-4 rounded-lg shadow-[0_3px_10px_rgb(0,0,0,0.2)] bg-white top-12 end-0 flex flex-col gap-6 z-20"
     >
       {wishList?.length === 0 ? (
-        <div className="">Wish List is Empty</div>
+        <div className="">{t("Wish List is Empty")}</div>
       ) : (
         <>
           <div className="flex justify-between items-center">

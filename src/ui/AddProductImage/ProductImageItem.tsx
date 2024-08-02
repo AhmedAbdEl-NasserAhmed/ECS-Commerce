@@ -26,7 +26,7 @@ function ProductImageItem(props) {
       {props.imageUrl ? (
         <ImagePreview
           disabled={props.disabled}
-          imageUrl={props.imageUrl}
+          imageUrl={props.imageUrl || ""}
           onRemove={props.onRemoveImage}
           imageInputName={`images.${props.imageInputName}`}
         />

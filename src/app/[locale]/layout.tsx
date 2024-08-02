@@ -4,6 +4,7 @@ import { Toaster } from "react-hot-toast";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import ScrollToTop from "@/ui/ScrollToTop/ScrollToTop";
+import Head from "next/head";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -29,35 +30,36 @@ export default async function LocaleLayout({
       >
         <NextIntlClientProvider messages={messages}>
           <ScrollToTop>{children}</ScrollToTop>
-        </NextIntlClientProvider>
-        <div id="modal"></div>
-        <Toaster
-          position="top-center"
-          reverseOrder={false}
-          gutter={8}
-          containerClassName=""
-          containerStyle={{}}
-          toastOptions={{
-            duration: 1500,
-            style: {
-              background: "white",
-              color: "#fff",
-              fontSize: "1.2rem",
-              padding: "1.4rem",
-            },
-            success: {
+
+          <div id="modal"></div>
+          <Toaster
+            position="top-center"
+            reverseOrder={false}
+            gutter={8}
+            containerClassName=""
+            containerStyle={{}}
+            toastOptions={{
+              duration: 1500,
               style: {
-                color: "green",
                 background: "white",
+                color: "#fff",
+                fontSize: "1.2rem",
+                padding: "1.4rem",
               },
-            },
-            error: {
-              style: {
-                color: "red",
+              success: {
+                style: {
+                  color: "green",
+                  background: "white",
+                },
               },
-            },
-          }}
-        />
+              error: {
+                style: {
+                  color: "red",
+                },
+              },
+            }}
+          />
+        </NextIntlClientProvider>
       </body>
     </html>
   );

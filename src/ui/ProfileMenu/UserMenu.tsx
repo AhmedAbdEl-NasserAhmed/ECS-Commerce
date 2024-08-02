@@ -9,6 +9,7 @@ import { useSetCartItemsMutation } from "@/lib/features/api/cartItemsApi";
 import { HiOutlineUserCircle } from "react-icons/hi2";
 import { HiOutlineLogout, HiOutlineViewGrid } from "react-icons/hi";
 import { clearCookiesThunk } from "@/lib/features/cookieSlice/cookieSlice";
+import { useTranslations } from "next-intl";
 
 function UserMenu({ setIsProfileOpen }) {
   const { locale } = useParams();
@@ -31,6 +32,8 @@ function UserMenu({ setIsProfileOpen }) {
 
   const [cartItems, setCartItems] = useSetCartItemsMutation();
 
+  const userTranslation = useTranslations("user");
+
   return (
     <ul
       ref={ref}
@@ -46,7 +49,7 @@ function UserMenu({ setIsProfileOpen }) {
             <span className="text-3xl">
               <HiOutlineUserCircle />
             </span>
-            <span>Profile</span>
+            <span>{userTranslation("Profile")}</span>
           </Link>
         </li>
       )}
@@ -70,11 +73,13 @@ function UserMenu({ setIsProfileOpen }) {
           className="flex items-center justify-center gap-4 "
           disabled={setCartItems.isLoading}
           onClick={() => {
-            cartItems({
-              user: user["_id"],
-              cartItems: cart,
-              wishListItems: wishList,
-            });
+            if (user && user?.role === UserType.USER) {
+              cartItems({
+                user: user["_id"],
+                cartItems: cart,
+                wishListItems: wishList,
+              });
+            }
             dispatch(logoutUser());
             localStorage.removeItem("userToken");
             localStorage.removeItem("user");
@@ -88,7 +93,7 @@ function UserMenu({ setIsProfileOpen }) {
           <span className="text-3xl">
             <HiOutlineLogout />
           </span>
-          <span>Logout</span>
+          <span>{userTranslation("Log out")}</span>
         </button>
       </li>
     </ul>

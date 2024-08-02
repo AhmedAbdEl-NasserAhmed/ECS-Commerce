@@ -27,7 +27,7 @@ const ProductCard = ({ product }) => {
           } easy transition-opacity duration-500 rounded-md absolute z-10 h-full w-full overflow-hidden`}
         >
           <Image
-            src={product.images[0]?.url}
+            src={product.images[0]?.url || ""}
             className="object-cover"
             fill
             sizes="25vw"
@@ -38,7 +38,7 @@ const ProductCard = ({ product }) => {
         {product.images[1] && (
           <div className="absolute transition-all duration-500 rotate-0 scale-1 group-hover:rotate-3 group-hover:scale-110 rounded-md h-full w-full overflow-hidden">
             <Image
-              src={product.images[1]?.url}
+              src={product.images[1]?.url || ""}
               fill
               sizes="25vw"
               alt="image"

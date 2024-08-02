@@ -67,7 +67,7 @@ function ProductsList({ data, setProductName, productName }) {
                       className="rounded-md"
                       width={60}
                       height={60}
-                      src={product?.images[0]?.url}
+                      src={product?.images[0]?.url || ""}
                       alt="iamge"
                     />
                   </div>

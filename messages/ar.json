@@ -87,5 +87,38 @@
     "password": "كلمة المرور",
     "Password": "كلمة المرور",
     "Enter password": "ادخل كلمة المرور"
+  },
+
+  "user": {
+    "Shop": "المتجر",
+    "Home Page": "الصفحة الرئيسية",
+    "Best Sale Categories": "أفضل الأقسام مبيعا",
+    "Profile": "الحساب",
+    "Contact Us": "تواصل معنا",
+    "Wish List": " قائمة الأمنيات ",
+    "Cart": "عربة التسوق ",
+    "Log out": " تسجيل الخروج",
+    "Have a Tour in our amazing offers": "استمتع بجولة في عروضنا المذهلة",
+    "Start Shopping": "ابدء التسوق",
+    "male Jeans": "جينز رجالي",
+    "Female Jeans": "جينز حريمي",
+    "Hot Products": "المنتجات الاكثر طلبا",
+    "Sale Products": "عروض على المنتجات  ",
+    "Contact": "تواصل معنا",
+    "Search": "بحث",
+    "Hey": "اهلا",
+    "Wish List is Empty": "قائمة الأمنيات فارغة",
+    "Cart is Empty": "عربة التسوق فارغة",
+    "English": "الانجليزية",
+    "Arabic": "العربية",
+    "Shopping Cart": "عربة التسوق",
+    "Log in": "نسجيل الدخول",
+    "Sign up": "انشاء حساب",
+    "Categories": "الاٌقسام",
+    "Collections": "المجموعات",
+    "Spring Sale Collections": "تخفيض مجموعة الربيع",
+    "Winter Sale Collections": "تخفيض مجموعة الشتاء",
+    "Summer Sale Collections": "تخفيض مجموعة الصيف",
+    "Sale! Up to 50% off!": "تخفيض يصل إلى 50 %"
   }
 }

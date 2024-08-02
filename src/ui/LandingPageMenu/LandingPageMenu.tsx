@@ -157,7 +157,7 @@ function LandingPageMenu() {
           </li>
 
           {user?.isActive && (
-            <li>
+            <li className="border-2 border-white py-2.5 px-20">
               <button
                 onClick={() => {
                   cartItems({

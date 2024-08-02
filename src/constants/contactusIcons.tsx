@@ -8,7 +8,7 @@ function contactusIcons() {
     {
       id: 1,
       label: "phone",
-      value: "01019491146",
+      value: "01010101010",
       icon: <HiPhone />,
     },
     {

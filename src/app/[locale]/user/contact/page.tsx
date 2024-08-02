@@ -163,7 +163,6 @@ function Contact() {
       <div className=" p-8 bg-white shadow-[0px_0px_7px_5px_#0000000a] w-full xl:w-3/4">
         <ul className="h-full flex justify-center flex-col gap-14">
           {contactusIcons().map((contactDetail) => {
-            console.log(contactDetail.icon);
             return (
               <li key={contactDetail.id} className="flex items-center gap-6">
                 <span className="w-20 h-20 p-3 flex items-center justify-center text-3xl rounded-full border-2 border-[#16161678]">

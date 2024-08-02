@@ -48,7 +48,6 @@ import TitledProductList from "@/components/TitledProductList/TitledProductList"
 import useWindowResize from "@/hooks/useWindowResize";
 import Head from "next/head";
 import SharableSocialLinks from "@/components/SharableSocialLinks/SharableSocialLinks";
-import { Helmet } from "react-helmet";
 
 function ProductDetails() {
   const params = useParams();

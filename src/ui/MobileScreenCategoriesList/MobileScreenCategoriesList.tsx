@@ -8,8 +8,13 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useGetAllCategoriesQuery } from "@/lib/features/api/categoriesApi";
+import CollectionList from "../NavBarCaegoriesList/CollectionList";
+import useClickOutside from "@/hooks/useClickOutside";
 
-function MobileScreenCategoriesList({ setOpens }) {
+function MobileScreenCategoriesList({
+  setOpenCategoriesMenu,
+  openCategoriesMenu,
+}) {
   const { locale } = useParams();
 
   const { replace } = useRouter();
@@ -20,45 +25,37 @@ function MobileScreenCategoriesList({ setOpens }) {
     replace(`/${locale}/user/productsList/${id}`);
   };
 
+  const ref = useClickOutside({ close: setOpenCategoriesMenu, value: false });
+
   if (isLoading) return;
 
   return (
-    <div>
-      <Accordion>
-        <AccordionSummary
-          sx={{ backgroundColor: "white", color: "black" }}
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1-content"
-          id="panel1-header"
-        >
-          Categories
-        </AccordionSummary>
-        <AccordionDetails
-          sx={{
-            backgroundColor: "white",
-            color: "black",
-            borderRadius: "5px",
-          }}
-        >
-          <ul className=" flex flex-col gap-8  items-center justify-center h-[100px] overflow-y-scroll  ">
-            {data?.data.map((category) => (
-              <li
-                className="hover:bg-black hover:text-white duration-300 transition-all p-2"
-                key={category["_id"]}
-              >
-                <button
-                  onClick={() => {
-                    handleClick(category["_id"]);
-                    setOpens(false);
-                  }}
-                >
-                  {category.name}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </AccordionDetails>
-      </Accordion>
+    <div
+      ref={ref}
+      className={`fixed top-0 ${
+        openCategoriesMenu ? "start-0" : "-start-[900px]"
+      } transition-all  duration-300 w-full  h-screen  backdrop-filter backdrop-blur-sm z-50 text-black  text-center text-[1.6rem] font-semibold `}
+    >
+      <ul className=" p-8 w-[70vw] bg-white  h-full  flex flex-col items-center  text-center    ">
+        <div className="grid grid-cols-2 items-center gap-36 mb-16 w-full ">
+          <h2>Category</h2>
+          <h2>Collection</h2>
+        </div>
+        {data?.data.map((category) => (
+          <div
+            key={category["_id"]}
+            className="grid grid-cols-2 gap-36 items-center text-center mb-16 w-full   "
+          >
+            <li className="px-4 py-2 hover:bg-black hover:text-white duration-100 transition-all">
+              <button onClick={() => handleClick(category["_id"])}>
+                {category.name}
+              </button>
+            </li>
+
+            <CollectionList id={category["_id"]} />
+          </div>
+        ))}
+      </ul>
     </div>
   );
 }

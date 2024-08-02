@@ -28,18 +28,18 @@ function NavBar() {
         </div>
 
         {/*Bigger Screens Screens*/}
-        <div className="hidden md:flex items-center justify-between gap-8 h-full ">
+        <div className="  hidden md:flex items-center justify-between gap-8 h-full ">
           <div className="w-1/3 xl:w-1/2 flex items-center   gap-12 ">
             <Logo />
-            <ul className="hidden md:flex gap-12 text-[1.6rem]  font-semibold">
+            <ul className="hidden md:flex gap-12 text-[1.6rem]   font-semibold">
               {data?.data.length > 0 && (
                 <li
                   className="relative"
-                  onMouseEnter={() => setShowCategoriesMenu(true)}
-                  onMouseLeave={() => setShowCategoriesMenu(false)}
+                  onClick={() => setShowCategoriesMenu((prev) => !prev)}
                 >
-                  <Link href="">Categories</Link>
+                  <Link href="">Shop</Link>
                   <NavBarCategoriesList
+                    setShowCategoriesMenu={setShowCategoriesMenu}
                     isLoading={isLoading}
                     data={data}
                     showCategoriesMenu={showCategoriesMenu}

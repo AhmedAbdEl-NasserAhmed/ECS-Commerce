@@ -1,4 +1,3 @@
-import useClickOutside from "@/hooks/useClickOutside";
 import { logoutUser } from "@/lib/features/usersSlice/usersSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { UserType } from "@/types/enums";
@@ -15,8 +14,6 @@ function UserMenu({ setIsProfileOpen }) {
   const { locale } = useParams();
 
   const router = useRouter();
-
-  const ref = useClickOutside({ close: setIsProfileOpen, value: false });
 
   const user = useAppSelector((state) => state.usersSlice.user);
 
@@ -35,10 +32,7 @@ function UserMenu({ setIsProfileOpen }) {
   const userTranslation = useTranslations("user");
 
   return (
-    <ul
-      ref={ref}
-      className=" absolute text-xl start-0 top-12 bg-white  flex flex-col z-20 gap-4 shadow-[0_3px_10px_rgb(0,0,0,0.2)] p-2 w-48 font-semibold text-center  rounded-lg"
-    >
+    <ul className=" absolute text-xl start-0 top-12 bg-white  flex flex-col z-20 gap-4 shadow-[0_3px_10px_rgb(0,0,0,0.2)] p-2 w-48 font-semibold text-center  rounded-lg">
       {user?.role === UserType.USER && (
         <li className="p-2 hover:bg-gray-200 duration-200 transition-all">
           <Link
@@ -63,7 +57,7 @@ function UserMenu({ setIsProfileOpen }) {
             <span className="text-3xl">
               <HiOutlineViewGrid />
             </span>
-            <span>Dashboard</span>
+            <span>{userTranslation("Dashboard")}</span>
           </Link>
         </li>
       )}
@@ -84,7 +78,7 @@ function UserMenu({ setIsProfileOpen }) {
             localStorage.removeItem("userToken");
             localStorage.removeItem("user");
             setIsProfileOpen(false);
-            router.push(`/${locale}`);
+            router.replace(`/${locale}`);
             toast.success("Do Not Be Late");
             dispatch(clearCookiesThunk("wishListItems"));
             dispatch(clearCookiesThunk("cartItems"));

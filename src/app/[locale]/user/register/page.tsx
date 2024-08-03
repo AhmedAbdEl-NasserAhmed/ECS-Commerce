@@ -11,6 +11,7 @@ import { useAppDispatch } from "@/lib/hooks";
 import MiniSpinner from "@/ui/MiniSpinner/MiniSpinner";
 import CustomizedTextField from "@/ui/TextField/TextField";
 import { Button, IconButton, InputAdornment } from "@mui/material";
+import { useTranslations } from "next-intl";
 import { useParams, useRouter } from "next/navigation";
 
 import { useState } from "react";
@@ -32,6 +33,8 @@ function RegisterPage() {
   const router = useRouter();
 
   const [signupFn, signupResponse] = useUserSignupMutation();
+
+  const userTranslation = useTranslations("user");
 
   const dispatch = useAppDispatch();
 
@@ -71,7 +74,7 @@ function RegisterPage() {
     >
       <div className="p-8 flex flex-col gap-12 ">
         <h2 className="text-3xl text-black font-bold flex justify-center">
-          REGISTER
+          {userTranslation("REGISTER")}
         </h2>
         <Controller
           name={"name"}
@@ -81,15 +84,17 @@ function RegisterPage() {
             required: "This field is required",
             minLength: {
               value: 4,
-              message: "The name should be more than 4 characters ",
+              message: userTranslation(
+                "The name should be more than 4 characters "
+              ),
             },
           }}
           render={({ field }) => (
             <CustomizedTextField
               disabled={signupResponse.isLoading}
               textLabelClass={"font-semibold text-xl"}
-              placeholder={"First Name"}
-              textlabel={"First Name"}
+              placeholder={userTranslation("First Name")}
+              textlabel={userTranslation("First Name")}
               field={field}
               formerHelperStyles={{ style: { fontSize: "1rem" } }}
               errors={errors}
@@ -104,18 +109,18 @@ function RegisterPage() {
           control={control}
           defaultValue={""}
           rules={{
-            required: "Please Enter A Valid Email",
+            required: userTranslation("Please Enter A Valid Email"),
             pattern: {
               value: emailRegex,
-              message: "Please Enter Valid Email Format",
+              message: userTranslation("Please Enter Valid Email Format"),
             },
           }}
           render={({ field }) => (
             <CustomizedTextField
               disabled={signupResponse.isLoading}
               textLabelClass={"font-semibold text-xl"}
-              placeholder={"Email Address"}
-              textlabel={"Email Address"}
+              placeholder={userTranslation("Email Address")}
+              textlabel={userTranslation("Email Address")}
               field={field}
               formerHelperStyles={{ style: { fontSize: "1rem" } }}
               errors={errors}
@@ -130,19 +135,20 @@ function RegisterPage() {
           control={control}
           defaultValue={""}
           rules={{
-            required: "Please Enter A Valid Password",
+            required: userTranslation("Please Enter A Valid Password"),
             pattern: {
               value: passwordRegex,
-              message:
-                "password must be at least 8 characters long and include an uppercase letter, lowercase letter, digit, and special character (e.g., #?!@$%^&*-)",
+              message: userTranslation(
+                "password must be at least 8 characters long and include an uppercase letter, lowercase letter, digit, and special character"
+              ),
             },
           }}
           render={({ field }) => (
             <CustomizedTextField
               disabled={signupResponse.isLoading}
               textLabelClass={"font-semibold text-xl"}
-              placeholder={"Passwprd "}
-              textlabel={"Password "}
+              placeholder={userTranslation("Password")}
+              textlabel={userTranslation("Password")}
               field={field}
               formerHelperStyles={{ style: { fontSize: "1rem" } }}
               errors={errors}
@@ -170,17 +176,18 @@ function RegisterPage() {
           control={control}
           defaultValue={""}
           rules={{
-            required: "This field is required",
+            required: userTranslation("This field is required"),
             validate: (value) => {
-              if (value !== formData.password) return "Password does not match";
+              if (value !== formData.password)
+                return userTranslation("Password does not match");
             },
           }}
           render={({ field }) => (
             <CustomizedTextField
               disabled={signupResponse.isLoading}
               textLabelClass={"font-semibold text-xl"}
-              placeholder={"Confirm Password "}
-              textlabel={"Confirm Password "}
+              placeholder={userTranslation("Confirm Password")}
+              textlabel={userTranslation("Confirm Password")}
               field={field}
               formerHelperStyles={{ style: { fontSize: "1rem" } }}
               errors={errors}
@@ -222,7 +229,11 @@ function RegisterPage() {
           variant="contained"
           size="large"
         >
-          {signupResponse.isLoading ? <MiniSpinner /> : "Register"}
+          {signupResponse.isLoading ? (
+            <MiniSpinner />
+          ) : (
+            userTranslation("Register")
+          )}
         </Button>
       </div>
     </form>

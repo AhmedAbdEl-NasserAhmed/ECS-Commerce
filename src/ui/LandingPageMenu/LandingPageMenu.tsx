@@ -190,7 +190,7 @@ function LandingPageMenu() {
                   localStorage.removeItem("user");
                   dispatch(clearCookiesThunk("cartItems"));
                   dispatch(clearCookiesThunk("wishListItems"));
-                  router.push(`/${locale}`);
+                  router.replace(`/${locale}`);
                   toast.success("Do Not Be Late");
                   setOpens(false);
                 }}

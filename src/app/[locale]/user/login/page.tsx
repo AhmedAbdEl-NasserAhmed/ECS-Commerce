@@ -13,19 +13,15 @@ import { loginUser } from "@/lib/features/usersSlice/usersSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import toast from "react-hot-toast";
 import MiniSpinner from "@/ui/MiniSpinner/MiniSpinner";
-import {
-  concatCartItemsHandler,
-  getUniqueValues,
-  isProductExisted,
-} from "@/lib/helpers";
+import { concatCartItemsHandler, getUniqueValues } from "@/lib/helpers";
 import { getCookie } from "cookies-next";
 import { setCookiesThunk } from "@/lib/features/cookieSlice/cookieSlice";
 import { StorageService } from "@/services/StorageService";
+import { useTranslations } from "next-intl";
 
 function LoginPage() {
   const {
     control,
-    watch,
     handleSubmit,
     formState: { errors },
   } = useForm({ mode: "onChange" });
@@ -48,13 +44,15 @@ function LoginPage() {
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
+  const userTranslation = useTranslations("user");
+
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   function onSubmit(data) {
     loginFn({ email: data.email, password: data.password })
       .unwrap()
       .then((res) => {
-        toast.success("Welcome Back");
+        toast.success(userTranslation("Welcome Back"));
         dispatch(
           loginUser({
             user: res.data,
@@ -115,25 +113,25 @@ function LoginPage() {
     >
       <div className="p-8 flex flex-col gap-12 ">
         <h2 className="text-3xl text-black font-bold flex justify-center">
-          LOG IN
+          {userTranslation("Log in")}
         </h2>
         <Controller
           name={"email"}
           control={control}
           defaultValue={""}
           rules={{
-            required: "Please Enter A Valid Email",
+            required: userTranslation("Please Enter A Valid Email"),
             pattern: {
               value: emailRegex,
-              message: "Please Enter Valid Email Format",
+              message: userTranslation("Please Enter Valid Email Format"),
             },
           }}
           render={({ field }) => (
             <CustomizedTextField
               disabled={loginState.isLoading}
               textLabelClass={"font-semibold text-xl"}
-              placeholder={"Email Address"}
-              textlabel={"Email Address"}
+              placeholder={userTranslation("Email Address")}
+              textlabel={userTranslation("Email Address")}
               field={field}
               formerHelperStyles={{ style: { fontSize: "1rem" } }}
               errors={errors}
@@ -148,14 +146,14 @@ function LoginPage() {
           control={control}
           defaultValue={""}
           rules={{
-            required: "Please Enter A Valid Password",
+            required: userTranslation("Please Enter A Valid Password"),
           }}
           render={({ field }) => (
             <CustomizedTextField
               disabled={loginState.isLoading}
               textLabelClass={"font-semibold text-xl"}
-              placeholder={"Password "}
-              textlabel={"Password "}
+              placeholder={userTranslation("Password")}
+              textlabel={userTranslation("Password")}
               field={field}
               formerHelperStyles={{ style: { fontSize: "1rem" } }}
               errors={errors}
@@ -183,13 +181,13 @@ function LoginPage() {
             className="text-xl text-[#ed0534] font-bold"
             href={`/${locale}/user/register`}
           >
-            Craete a new account ?
+            {userTranslation("Craete a new account ")}
           </Link>
           <Link
             className="text-[#ed0534]  font-semibold sm:text-md md:text-xl "
             href={`/${locale}/user/forgetPassword`}
           >
-            Forget My Password ?
+            {userTranslation("Forget My Password")}
           </Link>
         </div>
 
@@ -207,7 +205,7 @@ function LoginPage() {
           variant="contained"
           size="large"
         >
-          {loginState.isLoading ? <MiniSpinner /> : " Log In"}
+          {loginState.isLoading ? <MiniSpinner /> : userTranslation("Log in")}
         </Button>
       </div>
     </form>

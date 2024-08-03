@@ -19,7 +19,7 @@ function UserGreeting({ onClick }) {
   if (!isClient) return;
 
   return (
-    <li
+    <div
       className="text-2xl font-semibold cursor-pointer flex items-center gap-4"
       onClick={onClick}
     >
@@ -30,7 +30,7 @@ function UserGreeting({ onClick }) {
       <span>
         <HiChevronDown />
       </span>
-    </li>
+    </div>
   );
 }
 

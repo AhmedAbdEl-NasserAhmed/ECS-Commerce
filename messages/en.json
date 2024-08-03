@@ -120,6 +120,24 @@
     "Arabic": "Arabic",
     "Shopping Cart": "Shopping Cart",
     "Log in": "Log in",
-    "Sign up": "sign up"
+    "Sign up": "sign up",
+    "Email Address": "Email Address",
+    "Password": "Password",
+    "Please Enter A Valid Email": "Please Enter A Valid Email",
+    "Please Enter Valid Email Format": "Please Enter Valid Email Format",
+    "Please Enter A Valid Password": "Please Enter A Valid Password",
+    "Craete a new account ": "Craete a new account ",
+    "Forget My Password": "Forget My Password",
+    "REGISTER": "REGISTER",
+    "First Name": "First Name",
+    "The name should be more than 4 characters ": "The name should be more than 4 characters ",
+    "password must be at least 8 characters long and include an uppercase letter, lowercase letter, digit, and special character ": "password must be at least 8 characters long and include an uppercase letter, lowercase letter, digit, and special character",
+    "This field is required": "This field is required",
+    "Password does not match": "Password does not match",
+    "Confirm Password": "Confirm Password",
+    "Register": "Register",
+    "Home": "Home",
+    "Welcome Back": "Welcome Back",
+    "Dashboard": "Dashboard"
   }
 }

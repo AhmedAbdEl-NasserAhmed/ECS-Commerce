@@ -61,9 +61,9 @@ const WishListMenu = () => {
           )
         )
       );
-      toast.success("This Item is Added to your  Cart");
+      toast.success(t("This Item is Added to your  Cart"));
     } else {
-      toast.error("This Item is Already Existed in the Cart");
+      toast.error(t("This Item is Already Existed in the Cart"));
     }
   }
 
@@ -76,12 +76,12 @@ const WishListMenu = () => {
         )
       )
     );
-    toast.success("This Item is Removed from wish List");
+    toast.success(t("This Item is Removed from wish List"));
   }
 
   const removeAllCartItems = () => {
     dispatch(clearCookiesThunk("wishListItems"));
-    toast.success("You Wish List is Empty 🥲 ");
+    toast.success(t("Your Wish List is Empty 🥲"));
   };
 
   return (
@@ -100,18 +100,18 @@ const WishListMenu = () => {
       </span>
 
       {isWishListOpen && (
-        <div className="w-max absolute p-4 rounded-lg shadow-[0_3px_10px_rgb(0,0,0,0.2)] bg-white top-12 end-0 flex flex-col gap-6 z-20">
+        <div className="w-[30rem] absolute p-4 rounded-lg shadow-[0_3px_10px_rgb(0,0,0,0.2)] bg-white top-12 end-0 flex flex-col gap-6 z-20">
           {wishList?.length === 0 ? (
             <div className="">{t("Wish List is Empty")}</div>
           ) : (
             <>
               <div className="flex justify-between items-center">
-                <h2 className="text-2xl font-semibold">Wish List </h2>
+                <h2 className="text-2xl font-semibold">{t("Wish List")} </h2>
                 <button
                   className="p-2 bg-red-500 text-white rounded-lg"
                   onClick={removeAllCartItems}
                 >
-                  Clear All
+                  {t("Clear All")}
                 </button>
               </div>
               {/* LIST */}
@@ -159,10 +159,10 @@ const WishListMenu = () => {
                             {/* DESC */}
                             <div className="flex justify-between  gap-4">
                               <div className="text-xl text-gray-500">
-                                Size: {product.size}
+                                {t("Size")}: {product.size}
                               </div>
                               <div className=" flex items-center gap-4 text-xl  text-gray-500">
-                                <span>Color: </span>
+                                <span>{t("Color")}: </span>
                                 <span
                                   className=" w-5 h-5 rounded-full"
                                   style={{ backgroundColor: product.color }}
@@ -179,13 +179,13 @@ const WishListMenu = () => {
                           onClick={() => addToCartHandler(product)}
                           className="p-3 bg-black text-white rounded-lg"
                         >
-                          Add To cart
+                          {t("Add To cart")}
                         </button>
                         <button
                           onClick={() => handleDeleteProduct(product)}
                           className="text-blue-500 text-xl cursor-pointer"
                         >
-                          Remove
+                          {t("Remove")}
                         </button>
                       </div>
                     </div>

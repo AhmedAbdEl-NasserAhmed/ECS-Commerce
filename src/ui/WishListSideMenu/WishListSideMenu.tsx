@@ -60,9 +60,9 @@ const WishListSideMenu = ({
           )
         )
       );
-      toast.success("This Item is Added to your  Cart");
+      toast.success(t("This Item is Added to your  Cart"));
     } else {
-      toast.error("This Item is Already Existed in the Cart");
+      toast.error(t("This Item is Already Existed in the Cart"));
     }
   }
 
@@ -75,12 +75,12 @@ const WishListSideMenu = ({
         )
       )
     );
-    toast.success("This Item is Removed from wish List");
+    toast.success(t("This Item is Removed from wish List"));
   }
 
   const removeAllCartItems = () => {
     dispatch(clearCookiesThunk("wishListItems"));
-    toast.success("You Wish List is Empty 🥲 ");
+    toast.success(t("You Wish List is Empty 🥲 "));
   };
 
   return (
@@ -97,12 +97,12 @@ const WishListSideMenu = ({
         ) : (
           <>
             <div className="flex justify-between items-center mb-10">
-              <h2 className="text-2xl font-semibold">Wish List </h2>
+              <h2 className="text-2xl font-semibold">{t("Wish List")} </h2>
               <button
                 className="p-2 bg-red-500 text-white rounded-lg"
                 onClick={removeAllCartItems}
               >
-                Clear All
+                {t("Clear All")}
               </button>
             </div>
             {/* LIST */}
@@ -149,10 +149,10 @@ const WishListSideMenu = ({
                           {/* DESC */}
                           <div className="flex justify-between  gap-4">
                             <div className="text-xl text-gray-500">
-                              Size: {product.size}
+                              {t("Size")}: {product.size}
                             </div>
                             <div className=" flex items-center gap-4 text-xl  text-gray-500">
-                              <span>Color: </span>
+                              <span>{t("Color")}:</span>
                               <span
                                 className=" w-5 h-5 rounded-full"
                                 style={{ backgroundColor: product.color }}
@@ -169,13 +169,13 @@ const WishListSideMenu = ({
                         onClick={() => addToCartHandler(product)}
                         className="p-3 bg-black text-white rounded-lg"
                       >
-                        Add To cart
+                        {t("Add To cart")}
                       </button>
                       <button
                         onClick={() => handleDeleteProduct(product)}
                         className="text-blue-500 text-xl cursor-pointer"
                       >
-                        Remove
+                        {t("Remove")}
                       </button>
                     </div>
                   </div>

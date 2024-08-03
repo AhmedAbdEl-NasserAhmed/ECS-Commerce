@@ -128,7 +128,7 @@ function CartSideMenu({ setOpenSideMenu, openSideMenu, setOpens }) {
                 className="p-2 bg-red-500 text-white rounded-lg"
                 onClick={removeAllCartItems}
               >
-                Clear All
+                {t("Clear All")}
               </button>
             </div>
             {/* LIST */}
@@ -173,10 +173,10 @@ function CartSideMenu({ setOpenSideMenu, openSideMenu, setOpens }) {
                         {/* DESC */}
                         <div className="flex justify-between  gap-4">
                           <div className="text-xl text-gray-500">
-                            Size: {product.size}
+                            {t("Size")}: {product.size}
                           </div>
                           <div className=" flex items-center gap-4 text-xl  text-gray-500">
-                            <span>Color: </span>
+                            <span>{t("Color")}:</span>
                             <span
                               className=" w-5 h-5 rounded-full"
                               style={{ backgroundColor: product.color }}
@@ -189,7 +189,8 @@ function CartSideMenu({ setOpenSideMenu, openSideMenu, setOpens }) {
                       {/* BOTTOM */}
                       <div className="flex justify-between items-center text-xl gap-8">
                         <span className="text-gray-500">
-                          Qty. {product.quantity}
+                          {t("Qty")}
+                          {product.quantity}
                         </span>
 
                         <div className="flex items-center gap-5 flex-row mr-auto ">
@@ -221,7 +222,7 @@ function CartSideMenu({ setOpenSideMenu, openSideMenu, setOpens }) {
                             handleDeleteProduct(product);
                           }}
                         >
-                          Remove
+                          {t("Remove")}
                         </span>
                       </div>
                     </div>
@@ -233,11 +234,14 @@ function CartSideMenu({ setOpenSideMenu, openSideMenu, setOpens }) {
             {/* BOTTOM */}
             <div className="mt-10">
               <div className="flex items-center justify-between font-bold text-xl text-black">
-                <span className="">Total</span>
-                <span className="">{Math.trunc(totalCartItems)} EGP</span>
+                <span className="">{t("Total")}</span>
+                <span className="">
+                  {Math.trunc(totalCartItems)}
+                  {t("EGP")}
+                </span>
               </div>
               <p className="text-gray-500 text-xl mt-2 mb-4">
-                Shipping and taxes calculated at checkout.
+                {t("Shipping and taxes calculated at checkout")}
               </p>
               <div className="flex justify-end text-xl">
                 <button
@@ -253,7 +257,7 @@ function CartSideMenu({ setOpenSideMenu, openSideMenu, setOpens }) {
                   }}
                   className="rounded-xl py-3 px-4 bg-black text-white disabled:cursor-not-allowed disabled:opacity-75"
                 >
-                  Checkout
+                  {t("Checkout")}
                 </button>
               </div>
             </div>

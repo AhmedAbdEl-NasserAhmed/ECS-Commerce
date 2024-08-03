@@ -49,6 +49,7 @@ import useWindowResize from "@/hooks/useWindowResize";
 import Head from "next/head";
 import SharableSocialLinks from "@/components/SharableSocialLinks/SharableSocialLinks";
 import { Helmet } from "react-helmet";
+import { useTranslations } from "next-intl";
 
 function ProductDetails() {
   const params = useParams();
@@ -62,6 +63,8 @@ function ProductDetails() {
   const [page, setPage] = useState<number>(1);
 
   const [sort, setSort] = useState<string>("");
+
+  const userTranslation = useTranslations("user");
 
   const [selectedSize, setSelectedSize] = useState(null);
 
@@ -169,7 +172,7 @@ function ProductDetails() {
 
   function handleAddCartItem(selectedProduct) {
     if (productDetailsState?.isColorExisted) {
-      toast.error("This Color and Size are Already Existed");
+      toast.error(userTranslation("This Color and Size are Already Existed"));
       return;
     }
 
@@ -197,7 +200,7 @@ function ProductDetails() {
           colorId: productDetailsState?.selectedColor["_id"],
           slug: productDetailsState?.selectedProduct.slug,
         },
-        message: "An item added to your cart",
+        message: userTranslation("This Item is Added to your  Cart"),
       });
 
       dispatchRedux(
@@ -232,7 +235,7 @@ function ProductDetails() {
 
       dispatchRedux(removeItemThunk("wishListItems", filtredWishList));
 
-      toast.success("Item removed from whist List ");
+      toast.success(userTranslation("This Item is Removed from wish List"));
     } else {
       const isExistedInCart = cart.some((carItem) => {
         return (
@@ -257,10 +260,12 @@ function ProductDetails() {
             colorId: productDetailsState?.selectedColor["_id"],
             slug: productDetailsState?.selectedProduct.slug,
           },
-          message: "An item added to your Wish List",
+          message: userTranslation("This Item is Added to your Wish List"),
         });
       } else {
-        toast.error("This Item is Already in the Cart");
+        toast.error(
+          userTranslation("This Item is Already Existed in the Cart")
+        );
       }
     }
   }
@@ -456,7 +461,7 @@ function ProductDetails() {
 
               {productDetailsState?.isColorExisted && (
                 <p className="text-xl font-semibold capitalize">
-                  Item added to cart
+                  {userTranslation("Item added to cart")}
                 </p>
               )}
 
@@ -498,7 +503,7 @@ function ProductDetails() {
                 />
               </div>
               <h2 className="font-semibold text-[1.4rem]">
-                ({reviews?.data?.length} Customer Review)
+                ({reviews?.data?.length} {userTranslation("Customer Review")} )
               </h2>
             </div>
             <Box className="flex items-center gap-5">
@@ -515,7 +520,9 @@ function ProductDetails() {
               {productDetailsState?.selectedProduct?.description}
             </q>
             <Box className="md:w-1/2 my-5">
-              <h2 className="text-2xl mb-5">Pick Your Size</h2>
+              <h2 className="text-2xl mb-5">
+                {userTranslation("Pick Your Size")}
+              </h2>
               <div className="flex items-center gap-5">
                 {data?.data?.products?.map((product, idx) => {
                   return (
@@ -541,7 +548,9 @@ function ProductDetails() {
               </div>
             </Box>
             <Box className="my-5">
-              <h2 className="text-2xl mb-5">Pick Your Color</h2>
+              <h2 className="text-2xl mb-5">
+                {userTranslation("Pick Your Color")}
+              </h2>
               <div className="flex gap-4">
                 {productDetailsState?.selectedProduct?.colors?.map((color) => {
                   return (
@@ -596,7 +605,9 @@ function ProductDetails() {
             )}
             {isExceededMaxQuantity && (
               <p className="text-2xl text-red-600">
-                This is maximum Quantity for this product Color
+                {userTranslation(
+                  "This is maximum Quantity for this product Color"
+                )}
               </p>
             )}
             {!isAdmin && (
@@ -613,7 +624,7 @@ function ProductDetails() {
                 >
                   <div className="flex justify-center items-center gap-5">
                     <FaCartPlus color="white" />
-                    <span>Add To Cart</span>
+                    <span>{userTranslation("Add To cart")}</span>
                   </div>
                 </button>
               </Box>
@@ -646,7 +657,7 @@ function ProductDetails() {
                     orientation="horizontal"
                     tabs={[
                       {
-                        label: "Reviews",
+                        label: userTranslation("Reviews"),
                         content: (
                           <Reviews
                             productId={

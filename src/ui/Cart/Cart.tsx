@@ -116,7 +116,7 @@ const Cart = () => {
 
   const removeAllCartItems = () => {
     dispatch(clearCookiesThunk("cartItems"));
-    toast.success("You Cart is Empty 🥲 ");
+    toast.success(t("You Cart is Empty 🥲 "));
   };
 
   if (user && user?.role === UserType.ADMIN && !makePayment) return;
@@ -140,7 +140,7 @@ const Cart = () => {
         {cart?.length}
       </span>
       {isCartOpen && (
-        <div className="w-max absolute p-4 rounded-lg shadow-[0_3px_10px_rgb(0,0,0,0.2)] bg-white top-12 end-0 flex flex-col gap-6 z-20">
+        <div className="w-[30rem] absolute p-4 rounded-lg shadow-[0_3px_10px_rgb(0,0,0,0.2)] bg-white top-12 end-0 flex flex-col gap-6 z-20">
           {cart?.length === 0 ? (
             <div className="">{t("Cart is Empty")}</div>
           ) : (
@@ -151,7 +151,7 @@ const Cart = () => {
                   className="p-2 bg-red-500 text-white rounded-lg"
                   onClick={removeAllCartItems}
                 >
-                  Clear All
+                  {t("Clear All")}
                 </button>
               </div>
               {/* LIST */}
@@ -197,10 +197,10 @@ const Cart = () => {
                           {/* DESC */}
                           <div className="flex justify-between  gap-4">
                             <div className="text-xl text-gray-500">
-                              Size: {product.size}
+                              {t("Size")}: {product.size}
                             </div>
                             <div className=" flex items-center gap-4 text-xl  text-gray-500">
-                              <span>Color: </span>
+                              <span>{t("Color")}: </span>
                               <span
                                 className=" w-5 h-5 rounded-full"
                                 style={{ backgroundColor: product.color }}
@@ -213,7 +213,7 @@ const Cart = () => {
                         {/* BOTTOM */}
                         <div className="flex justify-between items-center text-xl">
                           <span className="text-gray-500">
-                            Qty. {product.quantity}
+                            {t("Qty")}. {product.quantity}
                           </span>
 
                           <div className="flex items-center gap-5">
@@ -248,7 +248,7 @@ const Cart = () => {
                             className="text-blue-500 cursor-pointer"
                             onClick={() => handleDeleteProduct(product)}
                           >
-                            Remove
+                            {t("Remove")}
                           </button>
                         </div>
                       </div>
@@ -260,11 +260,13 @@ const Cart = () => {
               {/* BOTTOM */}
               <div className="">
                 <div className="flex items-center justify-between font-bold text-xl">
-                  <span className="">Total</span>
-                  <span className="">{Math.trunc(totalCartItems)} EGP</span>
+                  <span className="">{t("Total")}</span>
+                  <span className="">
+                    {Math.trunc(totalCartItems)} {t("EGP")}
+                  </span>
                 </div>
                 <p className="text-gray-500 text-xl mt-2 mb-4">
-                  Shipping and taxes calculated at checkout.
+                  {t("Shipping and taxes calculated at checkout")}
                 </p>
                 <div className="flex justify-end  text-xl">
                   <button
@@ -280,7 +282,7 @@ const Cart = () => {
                     }}
                     className="rounded-xl py-3 px-4 bg-black text-white disabled:cursor-not-allowed disabled:opacity-75"
                   >
-                    Checkout
+                    {t("Checkout")}
                   </button>
                 </div>
               </div>

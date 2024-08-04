@@ -3,6 +3,7 @@ import ReviewForm from "./ReviewForm";
 import ReviewItem, { IReview } from "./ReviewItem";
 import { useEffect, useState } from "react";
 import { UserType } from "@/types/enums";
+import { useTranslations } from "next-intl";
 
 interface ReviewsProps {
   reviews: IReview[];
@@ -26,6 +27,8 @@ const Reviews = ({ reviews, productId }: ReviewsProps) => {
 
   const noReviewsAvailable = reviews?.length === 0;
 
+  const userTranslation = useTranslations("user");
+
   return (
     <div>
       {isAuthenticated && !isReviewed && user.role !== UserType.ADMIN && (
@@ -33,7 +36,9 @@ const Reviews = ({ reviews, productId }: ReviewsProps) => {
       )}
       <div className="max-h-[500px] overflow-y-auto">
         {noReviewsAvailable ? (
-          <p className="text-xl font-medium">No reviews yet</p>
+          <p className="text-xl font-medium">
+            {userTranslation("No reviews yet")}
+          </p>
         ) : (
           reviews?.map((review) => {
             return <ReviewItem key={review["_id"]} review={review} />;

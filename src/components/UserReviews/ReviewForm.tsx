@@ -15,7 +15,7 @@ import MiniSpinner from "@/ui/MiniSpinner/MiniSpinner";
 import ReactStars from "@/ui/ReactStars/ReactStars";
 
 const ReviewForm = ({ productId }) => {
-  const t = useTranslations("User");
+  const t = useTranslations("user");
 
   const user = useAppSelector((state) => state.usersSlice.user);
 
@@ -42,11 +42,11 @@ const ReviewForm = ({ productId }) => {
     })
       .unwrap()
       .then(() => {
-        toast.success("your review has been added");
+        toast.success(t("your review has been added"));
         reset();
       })
       .catch(() => {
-        toast.error("Something went wrong");
+        toast.error(t("Something went wrong"));
       });
   };
 
@@ -61,7 +61,7 @@ const ReviewForm = ({ productId }) => {
           defaultValue={""}
           control={control}
           rules={{
-            required: "This field is required",
+            required: t("This field is required"),
           }}
           render={({ field }) => (
             <CustomizedTextField
@@ -138,7 +138,7 @@ const ReviewForm = ({ productId }) => {
           {user?.role === UserType.ADMIN || reviewRes.isLoading ? (
             <MiniSpinner />
           ) : (
-            "Add Review"
+            t("Add Review")
           )}
         </Button>
       </div>

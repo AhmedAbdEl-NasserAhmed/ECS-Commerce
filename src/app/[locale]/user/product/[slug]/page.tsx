@@ -508,11 +508,13 @@ function ProductDetails() {
             </div>
             <Box className="flex items-center gap-5">
               <h2 className="text-3xl font-semibold ">
-                {productDetailsState?.selectedProduct?.saleProduct} EGP
+                {productDetailsState?.selectedProduct?.saleProduct}{" "}
+                {userTranslation("EGP")}
               </h2>
               {productDetailsState?.selectedProduct?.discount > 0 && (
                 <h2 className="text-3xl font-semibold text-gray-400 line-through">
-                  {productDetailsState?.selectedProduct?.price} EGP
+                  {productDetailsState?.selectedProduct?.price}{" "}
+                  {userTranslation("EGP")}
                 </h2>
               )}
             </Box>

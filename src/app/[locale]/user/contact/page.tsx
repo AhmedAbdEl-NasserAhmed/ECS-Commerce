@@ -8,6 +8,7 @@ import { UserType } from "@/types/enums";
 import MiniSpinner from "@/ui/MiniSpinner/MiniSpinner";
 import CustomizedTextField from "@/ui/TextField/TextField";
 import { Button } from "@mui/material";
+import { useTranslations } from "next-intl";
 import { Controller, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
@@ -21,6 +22,8 @@ function Contact() {
 
   const user = useAppSelector((state) => state.usersSlice.user);
 
+  const t = useTranslations("user");
+
   const [sendFeedBackFn, feedBackResponse] = useSendFeedBackMutation();
 
   function onSubmit(data) {
@@ -31,7 +34,7 @@ function Contact() {
     })
       .unwrap()
       .then(() => {
-        toast.success("We are always here for you");
+        toast.success(t("We are always here for you"));
         reset();
       })
       .catch((err) => {
@@ -54,10 +57,10 @@ function Contact() {
             control={control}
             defaultValue={""}
             rules={{
-              required: "This field is required",
+              required: t("This field is required"),
               minLength: {
                 value: 4,
-                message: "The name should be more than 4 characters ",
+                message: t("The name should be more than 4 characters "),
               },
             }}
             render={({ field }) => (
@@ -66,8 +69,8 @@ function Contact() {
                   user?.role === UserType.ADMIN || feedBackResponse.isLoading
                 }
                 textLabelClass={"font-semibold text-xl"}
-                placeholder={"First Name"}
-                textlabel={"First Name"}
+                placeholder={t("First Name")}
+                textlabel={t("First Name")}
                 field={field}
                 formerHelperStyles={{ style: { fontSize: "1rem" } }}
                 errors={errors}
@@ -82,10 +85,10 @@ function Contact() {
             control={control}
             defaultValue={""}
             rules={{
-              required: "Please Enter A Valid Email",
+              required: t("Please Enter A Valid Email"),
               pattern: {
                 value: emailRegex,
-                message: "Please Enter Valid Email Format",
+                message: t("Please Enter Valid Email Format"),
               },
             }}
             render={({ field }) => (
@@ -94,8 +97,8 @@ function Contact() {
                   user?.role === UserType.ADMIN || feedBackResponse.isLoading
                 }
                 textLabelClass={"font-semibold text-xl"}
-                placeholder={"Email Address"}
-                textlabel={"Email Address"}
+                placeholder={t("Email Address")}
+                textlabel={t("Email Address")}
                 field={field}
                 formerHelperStyles={{ style: { fontSize: "1rem" } }}
                 errors={errors}
@@ -108,7 +111,7 @@ function Contact() {
           <Controller
             name={"message"}
             control={control}
-            rules={{ required: "This field is required" }}
+            rules={{ required: t("This field is required") }}
             defaultValue=""
             render={({ field }) => (
               <CustomizedTextField
@@ -116,8 +119,8 @@ function Contact() {
                   user?.role === UserType.ADMIN || feedBackResponse.isLoading
                 }
                 textLabelClass={"font-semibold text-xl"}
-                placeholder={"Message"}
-                textlabel={"Message"}
+                placeholder={t("Message")}
+                textlabel={t("Message")}
                 field={field}
                 formerHelperStyles={{ style: { fontSize: "1rem" } }}
                 errors={errors}
@@ -155,14 +158,14 @@ function Contact() {
             {feedBackResponse.isLoading ? (
               <MiniSpinner />
             ) : (
-              "Send your feedback"
+              t("Send your feedback")
             )}
           </Button>
         </div>
       </form>
       <div className=" p-8 bg-white shadow-[0px_0px_7px_5px_#0000000a] w-full xl:w-3/4">
         <ul className="h-full flex justify-center flex-col gap-14">
-          {contactusIcons().map((contactDetail) => {
+          {contactusIcons(t).map((contactDetail) => {
             return (
               <li key={contactDetail.id} className="flex items-center gap-6">
                 <span className="w-20 h-20 p-3 flex items-center justify-center text-3xl rounded-full border-2 border-[#16161678]">

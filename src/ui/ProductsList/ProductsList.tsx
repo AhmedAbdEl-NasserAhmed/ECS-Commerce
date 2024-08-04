@@ -5,6 +5,7 @@ import Spinner from "../Spinner/Spinner";
 import { getUniqueValues } from "@/lib/helpers";
 import ProductCard from "../ProductCard/ProductCard";
 import GridContainer from "@/ui/Container/GridContainer";
+import { useTranslations } from "next-intl";
 
 interface IProductList {
   products: any[];
@@ -15,10 +16,12 @@ interface IProductList {
 function ProductList(props: IProductList) {
   const uniqueItems = getUniqueValues(props.products, ["name"]);
 
+  const t = useTranslations("user");
+
   if (!props?.products?.length)
     return (
       <div className="flex justify-center items-center h-[50vh]">
-        <p className="text-3xl font-semibold">No Products Available</p>
+        <p className="text-3xl font-semibold">{t("No Products Available")}</p>
       </div>
     );
 

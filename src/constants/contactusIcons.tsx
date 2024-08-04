@@ -3,35 +3,36 @@ import { FaSquareInstagram } from "react-icons/fa6";
 import { HiLocationMarker, HiOutlineMail } from "react-icons/hi";
 import { HiPhone } from "react-icons/hi2";
 
-function contactusIcons() {
+function contactusIcons(t) {
   return [
     {
       id: 1,
-      label: "phone",
+      label: t("Phone"),
       value: "01010101010",
       icon: <HiPhone />,
     },
     {
       id: 2,
-      label: "email",
+      label: t("Email Address"),
       value: "Help@Orca.com",
       icon: <HiOutlineMail />,
     },
     {
       id: 3,
-      label: "address",
+      label: t("Address"),
+
       value: "Online",
       icon: <HiLocationMarker />,
     },
     {
       id: 4,
-      label: "facebook",
+      label: t("Facebook"),
       value: "orca Page",
       icon: <FaFacebook />,
     },
     {
       id: 5,
-      label: "Instagram",
+      label: t("Instagram"),
       value: "orca Page Instagram",
       icon: <FaSquareInstagram />,
     },

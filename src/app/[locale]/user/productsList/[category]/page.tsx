@@ -12,6 +12,7 @@ import ResponsiveMobileFilters from "@/ui/ResponsiveMobileFilters/ResponsiveMobi
 
 import Spinner from "@/ui/Spinner/Spinner";
 import { Button } from "@mui/material";
+import { useTranslations } from "next-intl";
 import {
   useParams,
   usePathname,
@@ -23,6 +24,8 @@ import { BsFilterLeft } from "react-icons/bs";
 
 function ProductsByCategory() {
   const searchParams = useSearchParams();
+
+  const t = useTranslations("user");
 
   const { category } = useParams();
 
@@ -116,7 +119,7 @@ function ProductsByCategory() {
             className=" absolute top-0 start-0 md:hidden mb-5 mt-3 flex items-center gap-3 cursor-pointer "
           >
             <BsFilterLeft size={"3rem"} />
-            <p className="text-[3rem] font-bold ">Filters</p>
+            <p className="text-[3rem] font-bold ">{t("Filters")}</p>
           </div>
 
           <div className="block md:hidden">
@@ -167,7 +170,7 @@ function ProductsByCategory() {
                     variant="contained"
                     size="large"
                   >
-                    {isFetching ? <MiniSpinner /> : "Show More"}
+                    {isFetching ? <MiniSpinner /> : t("Show More")}
                   </Button>
                 </div>
               )}

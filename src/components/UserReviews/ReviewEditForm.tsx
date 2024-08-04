@@ -19,7 +19,7 @@ import Spinner from "@/ui/Spinner/Spinner";
 import ReactStars from "@/ui/ReactStars/ReactStars";
 
 const ReviewEditForm = ({ review }) => {
-  const t = useTranslations("User");
+  const t = useTranslations("user");
 
   const user = useAppSelector((state) => state.usersSlice.user);
 
@@ -47,11 +47,11 @@ const ReviewEditForm = ({ review }) => {
     })
       .unwrap()
       .then(() => {
-        toast.success("your review has been Edited");
+        toast.success(t("your review has been Edited"));
         reset();
       })
       .catch(() => {
-        toast.error("Something went wrong");
+        toast.error(t("Something went wrong"));
       });
   };
 
@@ -68,7 +68,7 @@ const ReviewEditForm = ({ review }) => {
           defaultValue={review?.title}
           control={control}
           rules={{
-            required: "This field is required",
+            required: t("This field is required"),
           }}
           render={({ field }) => (
             <CustomizedTextField
@@ -147,7 +147,7 @@ const ReviewEditForm = ({ review }) => {
           editReviewRes.isLoading ? (
             <MiniSpinner />
           ) : (
-            "Edit Review"
+            t("Edit Review")
           )}
         </Button>
       </div>

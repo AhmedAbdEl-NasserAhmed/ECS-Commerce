@@ -9,6 +9,7 @@ import { BsFilterLeft } from "react-icons/bs";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { CSSProperties, useEffect, useRef, useState } from "react";
 import FilterSaleOptions from "../FilterSaleOptions/FilterSaleOptions";
+import { useTranslations } from "next-intl";
 
 function FilterItemContainer(props) {
   return (
@@ -26,6 +27,8 @@ function FilterItemContainer(props) {
 }
 
 const Filter = (props) => {
+  const t = useTranslations("user");
+
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const { replace } = useRouter();
@@ -73,7 +76,7 @@ const Filter = (props) => {
     >
       <div className="mb-5 mt-3 hidden  md:flex items-center gap-3  ">
         <BsFilterLeft size={"3rem"} />
-        <p className="text-[3rem] font-bold ">Filters</p>
+        <p className="text-[3rem] font-bold ">{t("Filters")}</p>
       </div>
 
       {props.setShowMobileFilters && (
@@ -81,41 +84,45 @@ const Filter = (props) => {
           onClick={() => props.setShowMobileFilters(false)}
           className="inline-block md:hidden bg-[#161616] text-white p-8 text-2xl mb-8 sticky top-0 shadow-md z-50 "
         >
-          Done
+          {t("Done")}
         </button>
       )}
 
-      <FilterItemContainer title="Colors">
+      <FilterItemContainer title={t("Colors")}>
         <FilterColorsOptions />
       </FilterItemContainer>
 
-      <FilterItemContainer title="Sizes">
+      <FilterItemContainer title={t("Sizes")}>
         <FilterSizesOptions handleFilterChange={handleFilterSizeChange} />
       </FilterItemContainer>
 
-      <FilterItemContainer title="Sale">
+      <FilterItemContainer title={t("Sale")}>
         <FilterSaleOptions />
       </FilterItemContainer>
 
-      <FilterItemContainer title="Collections">
+      <FilterItemContainer title={t("Collections")}>
         <SubCategoriesFiltertation />
       </FilterItemContainer>
 
-      <FilterItemContainer title="Price">
+      <FilterItemContainer title={t("Price")}>
         <RangeSlider handleChange={handlePriceChange} value={value} />
       </FilterItemContainer>
 
-      <FilterItemContainer title="Sort">
+      <FilterItemContainer title={t("Sort")}>
         <select
           name="sort"
           className="py-2 px-4 rounded-2xl text-lg font-medium bg-white ring-1 ring-gray-400 w-full"
           onChange={handleFilterChange}
         >
-          <option value="">Sort By</option>
-          <option value="price">Price (low to high)</option>
-          <option value="-price">Price (high to low)</option>
-          <option value="-createdAt">Newest</option>
-          <option value="createdAt">Oldest</option>
+          <option value="">{t("Sort By")}</option>
+          <option value="price">
+            {t("Price")} ({t("low to high")})
+          </option>
+          <option value="-price">
+            {t("Price")} ({t("high to low")})
+          </option>
+          <option value="-createdAt">{t("Newest")}</option>
+          <option value="createdAt">{t("Oldest")}</option>
         </select>
       </FilterItemContainer>
     </div>

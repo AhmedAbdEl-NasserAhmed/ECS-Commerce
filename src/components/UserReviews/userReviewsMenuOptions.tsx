@@ -7,8 +7,11 @@ import DeleteWindow from "@/ui/DeleteWindow/DeleteWindow";
 import { useDeleteReviewMutation } from "@/lib/features/api/reviewsApi";
 import ReviewEditForm from "./ReviewEditForm";
 import toast from "react-hot-toast";
+import { useTranslations } from "next-intl";
 
 function UserReviewsMenuOptions({ review }) {
+  const userTranslation = useTranslations("user");
+
   const [deleteReviewFn, reviewResponse] = useDeleteReviewMutation();
 
   function onDeleteReview() {
@@ -29,11 +32,15 @@ function UserReviewsMenuOptions({ review }) {
 
         <Menus.List id={review["_id"]}>
           <Modal.Open opens="edit">
-            <Menus.Button icon={<HiMiniPencilSquare />}>Edit</Menus.Button>
+            <Menus.Button icon={<HiMiniPencilSquare />}>
+              {userTranslation("Edit")}
+            </Menus.Button>
           </Modal.Open>
 
           <Modal.Open opens="delete">
-            <Menus.Button icon={<HiTrash />}>Delete</Menus.Button>
+            <Menus.Button icon={<HiTrash />}>
+              {userTranslation("Delete")}
+            </Menus.Button>
           </Modal.Open>
         </Menus.List>
 

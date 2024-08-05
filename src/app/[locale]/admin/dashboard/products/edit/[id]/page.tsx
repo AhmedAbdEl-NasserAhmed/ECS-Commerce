@@ -11,6 +11,7 @@ import {
 } from "@/lib/features/api/productsApi";
 import { useGetSubCategoryQuery } from "@/lib/features/api/subCategoriesApi";
 import { getAddProductServerData, getSumFrom } from "@/lib/helpers";
+import { Lang } from "@/types/enums";
 import { AdminProductProps } from "@/types/types";
 import AddProductImage from "@/ui/AddProductImage/AddProductImage";
 import BaseColorPicker from "@/ui/BaseColorPicker/BaseColorPicker";
@@ -20,7 +21,14 @@ import SmartSearchInput from "@/ui/SmartSearchInput/SmartSearchInput";
 import SmartSearchMultipleInput from "@/ui/SmartSearchMultipleInput/SmartSearchMultipleInput";
 import Spinner from "@/ui/Spinner/Spinner";
 import CustomizedTextField from "@/ui/TextField/TextField";
-import { Box, Button, Stack } from "@mui/material";
+import {
+  Box,
+  Button,
+  FormControlLabel,
+  Stack,
+  Switch,
+  Typography,
+} from "@mui/material";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -62,6 +70,10 @@ function EditProduct() {
     name: string;
   }>({ id: "", name: "" });
 
+  const [isChecked, setIsChecked] = useState<boolean>(false);
+
+  const [lang, setLang] = useState("en");
+
   const [smartSeachSubCategoryvalue, setSmartSeachSubCategoryValue] =
     useState<string>("");
 
@@ -84,6 +96,10 @@ function EditProduct() {
       },
       { skip: !subCategorydebounceValue }
     );
+
+  function showInputsHandler(e) {
+    setIsChecked(e.target.checked);
+  }
 
   useEffect(() => {
     if (currentProduct?.images) {
@@ -136,6 +152,10 @@ function EditProduct() {
     }
   }, [mainCategory?.data, smartSeachvalue.name, allCategories]);
 
+  useEffect(() => {
+    setLang(isChecked ? Lang.ARABIC : Lang.ENGLISH);
+  }, [isChecked]);
+
   const tIndex = useTranslations("Index");
 
   const t = useTranslations("Dashboard");
@@ -143,7 +163,7 @@ function EditProduct() {
   function onSubmit(data: AdminProductProps) {
     const myData = { ...data, category: smartSeachvalue["_id"] };
 
-    const serverData = getAddProductServerData(myData);
+    const serverData = getAddProductServerData(myData, lang);
 
     const formDataImagesLength = Object.values(data.images)[0];
 
@@ -158,12 +178,18 @@ function EditProduct() {
         toast.success("Product is updated");
         router.push(`/${locale}/admin/dashboard/products`);
         reset({
-          name: "",
+          name: {
+            en: "",
+            ar: "",
+          },
           price: 0,
-          description: "",
+          description: {
+            en: "",
+            ar: "",
+          },
           colors: [],
           images: {},
-          subCategory: "",
+          subCategory: [],
           quantity: 0,
           size: [],
           discount: 0,
@@ -230,9 +256,34 @@ function EditProduct() {
         </Box>
       </Box>
       <Box className="relative grow flex flex-col gap-8 bg-white rounded-2xl border-2 p-10 border-slate-100 shadow-md">
-        <Box className="mb-4">
+        <Box className="mb-4 flex items-center justify-between">
           <h2 className="text-3xl font-semibold mb-5">{t("Edit Product")}</h2>
-          <span className=" absolute left-0 block h-[1px] w-full bg-gray-200">
+          <FormControlLabel
+            control={
+              <Switch
+                checked={isChecked}
+                onChange={showInputsHandler}
+                sx={{
+                  "& .MuiSwitch-switchBase.Mui-checked": {
+                    color: "red",
+                    "& + .MuiSwitch-track": {
+                      backgroundColor: "#ed0534",
+                    },
+                  },
+                  "& .MuiSwitch-track": {
+                    backgroundColor: "#161616",
+                    opacity: 1,
+                  },
+                }}
+              />
+            }
+            label={
+              <Typography variant="h6">{`Show ${
+                isChecked ? "English" : "Arabic"
+              }  Inputs`}</Typography>
+            }
+          />
+          <span className=" absolute left-0 top-28 block h-[1px] w-full bg-gray-200">
             &nbsp;
           </span>
         </Box>
@@ -240,363 +291,526 @@ function EditProduct() {
         <Box className="flex gap-8 flex-col lg:flex-row justify-between ">
           <Box className="w-full lg:w-[70%] ">
             <Box className="relative grid grid-cols-autofill-minmax gap-12">
-              <Controller
-                name={"category"}
-                control={control}
-                defaultValue={""}
-                rules={{
-                  required: "This field is required",
-                  validate(value) {
-                    if (
-                      isMainCategoryIncluded &&
-                      !allCategories?.includes(value)
-                    )
-                      return "You Have to choose from available categories";
-                  },
-                }}
-                render={({ field }) => (
-                  <SmartSearchInput
-                    isFetching={isFetchingMainCategory}
-                    notAvailableMessage="No Categories Available"
-                    errors={errors}
-                    disabled={updateProductResponse.isLoading}
-                    shouldReset={updateProductResponse.isSuccess}
-                    getSmartSearchValue={setSmartSeachValue}
-                    textLabel={t("Main Category")}
-                    data={mainCategory?.data}
-                    placeholder={t("main category placeholder")}
-                    name={field.name}
-                    value={currentProduct?.category}
-                    onChange={field.onChange}
-                  />
-                )}
-              />
-              <Controller
-                name={"subCategory"}
-                control={control}
-                defaultValue={""}
-                render={({ field }) => (
-                  <SmartSearchMultipleInput
-                    isFetching={isFetchingSubCategories}
-                    existedItems={currentProduct?.subCategory}
-                    shouldReset={
-                      updateProductResponse.isSuccess ||
-                      (formData.category === "" && smartSeachvalue.name === "")
-                    }
-                    disabled={
-                      updateProductResponse.isLoading ||
-                      smartSeachvalue.name === "" ||
-                      isFetchingSubCategories
-                    }
-                    getSmartSearchValue={setSmartSeachSubCategoryValue}
-                    textLabel={t("Collection")}
-                    data={subCategory?.data}
-                    placeholder={t("Collection placeholder")}
-                    name={field.name}
-                    onChange={field.onChange}
-                  />
-                )}
-              />
-              <Box className="col-span-full">
+              {!isChecked && (
                 <Controller
-                  name={"name"}
+                  name={"category.en"}
                   control={control}
+                  defaultValue={""}
+                  rules={{
+                    required: "This field is required",
+                    validate(value) {
+                      if (!allCategories?.includes(value))
+                        return t(
+                          "You Have to choose from available categories"
+                        );
+                    },
+                  }}
+                  render={({ field }) => (
+                    <SmartSearchInput
+                      errors={errors?.["category"]?.["en"]}
+                      defaultValue={formData.category?.en}
+                      isFetching={isFetchingMainCategory}
+                      notAvailableMessage="No Categories Available"
+                      disabled={
+                        updateProductResponse.isLoading ||
+                        isFetchingMainCategory
+                      }
+                      shouldReset={updateProductResponse.isSuccess}
+                      getSmartSearchValue={setSmartSeachValue}
+                      textLabel={t("Main Category")}
+                      data={mainCategory?.data}
+                      placeholder={t("main category placeholder")}
+                      name={field.name}
+                      onChange={field.onChange}
+                    />
+                  )}
+                />
+              )}
+
+              {isChecked && (
+                <Controller
+                  name={"category.ar"}
+                  control={control}
+                  defaultValue={""}
+                  rules={{
+                    required: "هذا الحقل مطلوب",
+                    validate(value) {
+                      if (!allCategories?.includes(value))
+                        return "يجب الأختيار من الأقسام المتاحة";
+                    },
+                  }}
+                  render={({ field }) => (
+                    <SmartSearchInput
+                      errors={errors?.["category"]?.["ar"]}
+                      defaultValue={formData.category?.ar}
+                      isFetching={isFetchingMainCategory}
+                      notAvailableMessage="لا توجد منتجات متاحه"
+                      disabled={
+                        updateProductResponse.isLoading ||
+                        isFetchingMainCategory
+                      }
+                      shouldReset={updateProductResponse.isSuccess}
+                      getSmartSearchValue={setSmartSeachValue}
+                      textLabel={"القسم الرئيسي"}
+                      data={mainCategory?.data}
+                      placeholder={"ابحث عن القسم الرئيسي"}
+                      name={field.name}
+                      value={currentProduct?.category.ar}
+                      onChange={field.onChange}
+                    />
+                  )}
+                />
+              )}
+
+              {!isChecked && (
+                <Controller
+                  name={"subCategory.en"}
+                  control={control}
+                  defaultValue={""}
+                  render={({ field }) => (
+                    <SmartSearchMultipleInput
+                      isFetching={isFetchingSubCategories}
+                      existedItems={currentProduct?.subCategory.en}
+                      shouldReset={
+                        updateProductResponse.isSuccess ||
+                        (formData.category?.[lang] === "" &&
+                          smartSeachvalue.name === "")
+                      }
+                      disabled={
+                        updateProductResponse.isLoading ||
+                        smartSeachvalue.name === "" ||
+                        isFetchingSubCategories
+                      }
+                      getSmartSearchValue={setSmartSeachSubCategoryValue}
+                      textLabel={t("Collection")}
+                      data={subCategory?.data}
+                      placeholder={t("Collection placeholder")}
+                      name={field.name}
+                      onChange={field.onChange}
+                    />
+                  )}
+                />
+              )}
+
+              {isChecked && (
+                <Controller
+                  name={"subCategory.ar"}
+                  control={control}
+                  defaultValue={""}
+                  render={({ field }) => (
+                    <SmartSearchMultipleInput
+                      isFetching={isFetchingSubCategories}
+                      existedItems={currentProduct?.subCategory.ar}
+                      shouldReset={
+                        updateProductResponse.isSuccess ||
+                        (formData.category?.[lang] === "" &&
+                          smartSeachvalue.name === "")
+                      }
+                      disabled={
+                        updateProductResponse.isLoading ||
+                        smartSeachvalue.name === "" ||
+                        isFetchingSubCategories
+                      }
+                      getSmartSearchValue={setSmartSeachSubCategoryValue}
+                      textLabel={"المحموعات"}
+                      data={subCategory?.data}
+                      placeholder={"ابحث في المجموعات"}
+                      name={field.name}
+                      onChange={field.onChange}
+                    />
+                  )}
+                />
+              )}
+
+              {!isChecked && (
+                <Box className="col-span-full">
+                  <Controller
+                    name={"name.en"}
+                    control={control}
+                    rules={{ required: "This field is required" }}
+                    defaultValue={currentProduct?.name.en}
+                    render={({ field }) => (
+                      <CustomizedTextField
+                        disabled={updateProductResponse.isLoading}
+                        textLabelClass={"font-semibold text-xl"}
+                        placeholder={t("Product Name")}
+                        textlabel={t("Product Name")}
+                        field={field}
+                        formerHelperStyles={{ style: { fontSize: "1rem" } }}
+                        customError={errors?.["name"]?.["en"]}
+                        type={"text"}
+                        variant={"outlined"}
+                        size={"small"}
+                      />
+                    )}
+                  />
+                </Box>
+              )}
+
+              {isChecked && (
+                <Box className="col-span-full">
+                  <Controller
+                    name={"name.ar"}
+                    control={control}
+                    rules={{ required: "This field is required" }}
+                    defaultValue={currentProduct?.name.ar}
+                    render={({ field }) => (
+                      <CustomizedTextField
+                        disabled={updateProductResponse.isLoading}
+                        textLabelClass={"font-semibold text-xl"}
+                        placeholder={"اسم المنتج"}
+                        textlabel={"اسم المنتج"}
+                        field={field}
+                        formerHelperStyles={{ style: { fontSize: "1rem" } }}
+                        customError={errors?.["name"]?.["ar"]}
+                        type={"text"}
+                        variant={"outlined"}
+                        size={"small"}
+                      />
+                    )}
+                  />
+                </Box>
+              )}
+
+              {!isChecked && (
+                <Box className="relative col-span-full">
+                  <Controller
+                    name={"colors"}
+                    defaultValue={currentProduct?.colors}
+                    control={control}
+                    rules={{
+                      required: "This field is required",
+                    }}
+                    render={({ field }) => (
+                      <BaseColorPicker
+                        existedColors={currentProduct?.colors}
+                        onChange={field.onChange}
+                        disabled={updateProductResponse.isLoading}
+                        isMulti={true}
+                        textLabelClass={"font-semibold text-xl"}
+                        placeholder={t("Product Colors")}
+                        textLabel={t("Product Colors")}
+                        name={"colors"}
+                        field={field}
+                        errors={errors}
+                      />
+                    )}
+                  />
+                </Box>
+              )}
+              {!isChecked && (
+                <Box className="relative col-span-full flex flex-wrap  gap-4  items-center">
+                  {formData.colors?.map((color) => {
+                    return (
+                      <Stack
+                        direction={"row"}
+                        alignItems={"center"}
+                        gap={1}
+                        key={color.label}
+                      >
+                        <Box
+                          sx={{
+                            width: "30px",
+                            height: "30px",
+                            background: color.value,
+                            borderRadius: "50%",
+                            border: "1px solid #000",
+                          }}
+                        ></Box>
+                        <Controller
+                          name={`colors-quantity.${color.label}`}
+                          control={control}
+                          defaultValue={color.quantity ? color.quantity : 0}
+                          rules={{
+                            required: "This field is required",
+                            min: {
+                              value: 1,
+                              message: "Quantity should be more than 1",
+                            },
+                          }}
+                          render={({ field }) => (
+                            <CustomizedTextField
+                              disabled={updateProductResponse.isLoading}
+                              textLabelClass={"font-semibold text-xl"}
+                              placeholder={t("quantity")}
+                              field={field}
+                              formerHelperStyles={{
+                                style: { fontSize: "1rem" },
+                              }}
+                              // errors={errors}
+                              customError={
+                                errors?.["colors-quantity"]?.[color.label]
+                              }
+                              type={"number"}
+                              variant={"outlined"}
+                              size={"small"}
+                              mainContainerSx={{
+                                width: "8rem",
+                              }}
+                            />
+                          )}
+                        />
+                      </Stack>
+                    );
+                  })}
+                </Box>
+              )}
+              {!isChecked && (
+                <Controller
+                  name={"size"}
+                  control={control}
+                  defaultValue={currentProduct?.size}
                   rules={{ required: "This field is required" }}
-                  defaultValue={currentProduct?.name}
+                  render={({ field }) => (
+                    <MultiChoiceSelectMenu
+                      disabled={updateProductResponse.isLoading}
+                      readOnly={!!currentProduct?.size}
+                      isMulti={false}
+                      textLabelClass={"font-semibold text-xl"}
+                      placeholder={t("Product Sizes")}
+                      textLabel={t("Product Sizes")}
+                      name={"size"}
+                      options={[
+                        { value: "XS", label: "XS", color: "#666666" },
+                        { value: "SM", label: "SM", color: "#666666" },
+                        { value: "L", label: "L", color: "#666666" },
+                        { value: "Xl", label: "Xl", color: "#666666" },
+                        { value: "XXl", label: "XXl", color: "#666666" },
+                        { value: "XXXl", label: "XXXl", color: "#666666" },
+                      ]}
+                      field={field}
+                      errors={errors}
+                    />
+                  )}
+                />
+              )}
+              {!isChecked && (
+                <Controller
+                  name={"quantity"}
+                  control={control}
+                  defaultValue={currentProduct?.quantity}
+                  rules={{
+                    required: "This field is required",
+                    min: {
+                      value: 1,
+                      message: "Quantity should be more than 1",
+                    },
+                  }}
                   render={({ field }) => (
                     <CustomizedTextField
+                      inputProps={{ readOnly: true, disabled: true }}
                       disabled={updateProductResponse.isLoading}
                       textLabelClass={"font-semibold text-xl"}
-                      placeholder={t("Product Name")}
-                      textlabel={t("Product Name")}
-                      field={field}
+                      placeholder={t("Product Quantity")}
+                      textlabel={t("Product Quantity")}
+                      value={getQuantityValue()}
                       formerHelperStyles={{ style: { fontSize: "1rem" } }}
                       errors={errors}
-                      type={"text"}
+                      type={"number"}
                       variant={"outlined"}
                       size={"small"}
                     />
                   )}
                 />
-              </Box>
-              <Box className="relative col-span-full">
+              )}
+              {!isChecked && (
                 <Controller
-                  name={"colors"}
-                  defaultValue={currentProduct?.colors}
+                  name={"price"}
+                  control={control}
+                  defaultValue={currentProduct?.price}
+                  rules={{
+                    required: "This field is required",
+                    min: {
+                      value: 1,
+                      message: "The Price should be more than 1 ",
+                    },
+                  }}
+                  render={({ field }) => (
+                    <CustomizedTextField
+                      disabled={updateProductResponse.isLoading}
+                      textLabelClass={"font-semibold text-xl"}
+                      placeholder={t("Product Price")}
+                      textlabel={t("Product Price")}
+                      field={field}
+                      formerHelperStyles={{ style: { fontSize: "1rem" } }}
+                      errors={errors}
+                      type={"number"}
+                      variant={"outlined"}
+                      size={"small"}
+                    />
+                  )}
+                />
+              )}
+              {!isChecked && (
+                <Controller
+                  name={"discount"}
+                  control={control}
+                  defaultValue={currentProduct?.discount}
+                  rules={{
+                    min: {
+                      value: 0,
+                      message: "This field should be more than 0 ",
+                    },
+                    max: {
+                      value: 99,
+                      message: "This field should be less than 100 % ",
+                    },
+                  }}
+                  render={({ field }) => (
+                    <CustomizedTextField
+                      disabled={updateProductResponse.isLoading}
+                      textLabelClass={"font-semibold text-xl"}
+                      placeholder={t("Product Discount %")}
+                      textlabel={t("Product Discount %")}
+                      field={field}
+                      formerHelperStyles={{ style: { fontSize: "1rem" } }}
+                      errors={errors}
+                      type={"number"}
+                      variant={"outlined"}
+                      size={"small"}
+                    />
+                  )}
+                />
+              )}
+              {!isChecked && (
+                <Controller
+                  name={"salePrice"}
+                  defaultValue={0}
                   control={control}
                   rules={{
                     required: "This field is required",
                   }}
                   render={({ field }) => (
-                    <BaseColorPicker
-                      existedColors={currentProduct?.colors}
-                      onChange={field.onChange}
-                      disabled={updateProductResponse.isLoading}
-                      isMulti={true}
-                      textLabelClass={"font-semibold text-xl"}
-                      placeholder={t("Product Colors")}
-                      textLabel={t("Product Colors")}
-                      name={"colors"}
-                      field={field}
-                      errors={errors}
-                    />
-                  )}
-                />
-              </Box>
-              <Box className="relative col-span-full flex flex-wrap  gap-4  items-center">
-                {formData.colors?.map((color) => {
-                  return (
-                    <Stack
-                      direction={"row"}
-                      alignItems={"center"}
-                      gap={1}
-                      key={color.label}
-                    >
-                      <Box
-                        sx={{
-                          width: "30px",
-                          height: "30px",
-                          background: color.value,
-                          borderRadius: "50%",
-                          border: "1px solid #000",
-                        }}
-                      ></Box>
-                      <Controller
-                        name={`colors-quantity.${color.label}`}
-                        control={control}
-                        defaultValue={color.quantity ? color.quantity : 0}
-                        rules={{
-                          required: "This field is required",
-                          min: {
-                            value: 1,
-                            message: "Quantity should be more than 1",
-                          },
-                        }}
-                        render={({ field }) => (
-                          <CustomizedTextField
-                            disabled={updateProductResponse.isLoading}
-                            textLabelClass={"font-semibold text-xl"}
-                            placeholder={t("quantity")}
-                            field={field}
-                            formerHelperStyles={{ style: { fontSize: "1rem" } }}
-                            // errors={errors}
-                            customError={
-                              errors?.["colors-quantity"]?.[color.label]
-                            }
-                            type={"number"}
-                            variant={"outlined"}
-                            size={"small"}
-                            mainContainerSx={{
-                              width: "8rem",
-                            }}
-                          />
-                        )}
-                      />
-                    </Stack>
-                  );
-                })}
-              </Box>
-              <Controller
-                name={"size"}
-                control={control}
-                defaultValue={currentProduct?.size}
-                rules={{ required: "This field is required" }}
-                render={({ field }) => (
-                  <MultiChoiceSelectMenu
-                    disabled={updateProductResponse.isLoading}
-                    readOnly={!!currentProduct?.size}
-                    isMulti={false}
-                    textLabelClass={"font-semibold text-xl"}
-                    placeholder={t("Product Sizes")}
-                    textLabel={t("Product Sizes")}
-                    name={"size"}
-                    options={[
-                      { value: "XS", label: "XS", color: "#666666" },
-                      { value: "SM", label: "SM", color: "#666666" },
-                      { value: "L", label: "L", color: "#666666" },
-                      { value: "Xl", label: "Xl", color: "#666666" },
-                      { value: "XXl", label: "XXl", color: "#666666" },
-                      { value: "XXXl", label: "XXXl", color: "#666666" },
-                    ]}
-                    field={field}
-                    errors={errors}
-                  />
-                )}
-              />
-              <Controller
-                name={"quantity"}
-                control={control}
-                defaultValue={currentProduct?.quantity}
-                rules={{
-                  required: "This field is required",
-                  min: {
-                    value: 1,
-                    message: "Quantity should be more than 1",
-                  },
-                }}
-                render={({ field }) => (
-                  <CustomizedTextField
-                    inputProps={{ readOnly: true, disabled: true }}
-                    disabled={updateProductResponse.isLoading}
-                    textLabelClass={"font-semibold text-xl"}
-                    placeholder={t("Product Quantity")}
-                    textlabel={t("Product Quantity")}
-                    value={getQuantityValue()}
-                    formerHelperStyles={{ style: { fontSize: "1rem" } }}
-                    errors={errors}
-                    type={"number"}
-                    variant={"outlined"}
-                    size={"small"}
-                  />
-                )}
-              />
-              <Controller
-                name={"price"}
-                control={control}
-                defaultValue={currentProduct?.price}
-                rules={{
-                  required: "This field is required",
-                  min: {
-                    value: 1,
-                    message: "The Price should be more than 1 ",
-                  },
-                }}
-                render={({ field }) => (
-                  <CustomizedTextField
-                    disabled={updateProductResponse.isLoading}
-                    textLabelClass={"font-semibold text-xl"}
-                    placeholder={t("Product Price")}
-                    textlabel={t("Product Price")}
-                    field={field}
-                    formerHelperStyles={{ style: { fontSize: "1rem" } }}
-                    errors={errors}
-                    type={"number"}
-                    variant={"outlined"}
-                    size={"small"}
-                  />
-                )}
-              />
-              <Controller
-                name={"discount"}
-                control={control}
-                defaultValue={currentProduct?.discount}
-                rules={{
-                  min: {
-                    value: 0,
-                    message: "This field should be more than 0 ",
-                  },
-                  max: {
-                    value: 99,
-                    message: "This field should be less than 100 % ",
-                  },
-                }}
-                render={({ field }) => (
-                  <CustomizedTextField
-                    disabled={updateProductResponse.isLoading}
-                    textLabelClass={"font-semibold text-xl"}
-                    placeholder={t("Product Discount %")}
-                    textlabel={t("Product Discount %")}
-                    field={field}
-                    formerHelperStyles={{ style: { fontSize: "1rem" } }}
-                    errors={errors}
-                    type={"number"}
-                    variant={"outlined"}
-                    size={"small"}
-                  />
-                )}
-              />
-              <Controller
-                name={"salePrice"}
-                defaultValue={0}
-                control={control}
-                rules={{
-                  required: "This field is required",
-                }}
-                render={({ field }) => (
-                  <CustomizedTextField
-                    disabled={updateProductResponse.isLoading}
-                    textLabelClass={"font-semibold text-xl"}
-                    placeholder={t("Product Sale Price")}
-                    textlabel={t("Product Sale Price")}
-                    field={field}
-                    formerHelperStyles={{ style: { fontSize: "1rem" } }}
-                    errors={errors}
-                    inputProps={{ readOnly: true, disabled: true }}
-                    type={"number"}
-                    variant={"outlined"}
-                    size={"small"}
-                  />
-                )}
-              />
-              <Box className="col-span-full">
-                <Controller
-                  name={"description"}
-                  control={control}
-                  rules={{ required: "This field is required" }}
-                  defaultValue={currentProduct?.description}
-                  render={({ field }) => (
                     <CustomizedTextField
                       disabled={updateProductResponse.isLoading}
                       textLabelClass={"font-semibold text-xl"}
-                      placeholder={t("Product Description")}
-                      textlabel={t("Product Description")}
+                      placeholder={t("Product Sale Price")}
+                      textlabel={t("Product Sale Price")}
                       field={field}
                       formerHelperStyles={{ style: { fontSize: "1rem" } }}
                       errors={errors}
-                      type={"text"}
+                      inputProps={{ readOnly: true, disabled: true }}
+                      type={"number"}
                       variant={"outlined"}
-                      multiline={true}
-                      rows={6}
-                      sx={{
-                        "& .MuiInputBase-input": {
-                          fontSize: "1.4rem",
-                        },
-                        "& .MuiInputBase-inputMultiline": {
-                          fontSize: "1.4rem",
-                        },
-                      }}
+                      size={"small"}
                     />
                   )}
                 />
-              </Box>
+              )}
+              {!isChecked && (
+                <Box className="col-span-full">
+                  <Controller
+                    name={"description.en"}
+                    control={control}
+                    rules={{ required: "This field is required" }}
+                    defaultValue={currentProduct?.description.en}
+                    render={({ field }) => (
+                      <CustomizedTextField
+                        disabled={updateProductResponse.isLoading}
+                        textLabelClass={"font-semibold text-xl"}
+                        placeholder={t("Product Description")}
+                        textlabel={t("Product Description")}
+                        field={field}
+                        formerHelperStyles={{ style: { fontSize: "1rem" } }}
+                        customError={errors?.["description"]?.["en"]}
+                        type={"text"}
+                        variant={"outlined"}
+                        multiline={true}
+                        rows={6}
+                        sx={{
+                          "& .MuiInputBase-input": {
+                            fontSize: "1.4rem",
+                          },
+                          "& .MuiInputBase-inputMultiline": {
+                            fontSize: "1.4rem",
+                          },
+                        }}
+                      />
+                    )}
+                  />
+                </Box>
+              )}
+              {isChecked && (
+                <Box className="col-span-full">
+                  <Controller
+                    name={"description.ar"}
+                    control={control}
+                    rules={{ required: "This field is required" }}
+                    defaultValue={currentProduct?.description.en}
+                    render={({ field }) => (
+                      <CustomizedTextField
+                        disabled={updateProductResponse.isLoading}
+                        textLabelClass={"font-semibold text-xl"}
+                        textlabel={"وصف المنتج"}
+                        placeholder={"وصف المنتج"}
+                        field={field}
+                        formerHelperStyles={{ style: { fontSize: "1rem" } }}
+                        customError={errors?.["description"]?.["ar"]}
+                        type={"text"}
+                        variant={"outlined"}
+                        multiline={true}
+                        rows={6}
+                        sx={{
+                          "& .MuiInputBase-input": {
+                            fontSize: "1.4rem",
+                          },
+                          "& .MuiInputBase-inputMultiline": {
+                            fontSize: "1.4rem",
+                          },
+                        }}
+                      />
+                    )}
+                  />
+                </Box>
+              )}
             </Box>
           </Box>
-          <Box className="grow text-center">
-            <AddProductImage
-              disabled={updateProductResponse.isLoading}
-              control={control}
-              formData={formData}
-              imagesNumber={3}
-              setValue={setValue}
-            />
-          </Box>
+          {!isChecked && (
+            <Box className="grow text-center">
+              <AddProductImage
+                disabled={updateProductResponse.isLoading}
+                control={control}
+                formData={formData}
+                imagesNumber={3}
+                setValue={setValue}
+              />
+            </Box>
+          )}
         </Box>
-        <Box>
-          <Button
-            disabled={updateProductResponse.isLoading}
-            sx={{
-              paddingInline: "1.6rem",
-              paddingBlock: "1rem",
-              fontSize: "1.3rem",
-              borderRadius: "5px",
-              backgroundColor: "#ed0534",
-              boxShadow: "none",
-              "&:hover": {
-                backgroundColor: "black",
-                boxShadow: "none",
-              },
-            }}
-            type="submit"
-            variant="contained"
-            size="large"
-          >
-            {updateProductResponse.isLoading ? (
-              <MiniSpinner />
-            ) : (
-              t("Edit Product")
-            )}
-          </Button>
-        </Box>
+        {formData.category?.ar &&
+          formData.category?.ar !== "" &&
+          formData.name?.ar &&
+          formData.name?.ar !== "" &&
+          formData.description?.ar &&
+          formData.description?.ar !== "" &&
+          !isChecked && (
+            <Box>
+              <Button
+                disabled={updateProductResponse.isLoading}
+                sx={{
+                  paddingInline: "1.6rem",
+                  paddingBlock: "1rem",
+                  fontSize: "1.3rem",
+                  borderRadius: "5px",
+                  backgroundColor: "#ed0534",
+                  boxShadow: "none",
+                  "&:hover": {
+                    backgroundColor: "black",
+                    boxShadow: "none",
+                  },
+                }}
+                type="submit"
+                variant="contained"
+                size="large"
+              >
+                {updateProductResponse.isLoading ? (
+                  <MiniSpinner />
+                ) : (
+                  t("Edit Product")
+                )}
+              </Button>
+            </Box>
+          )}
       </Box>
     </form>
   );

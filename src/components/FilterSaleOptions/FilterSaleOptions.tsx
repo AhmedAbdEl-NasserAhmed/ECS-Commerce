@@ -2,30 +2,6 @@ import React, { useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { createTheme, Switch } from "@mui/material";
 
-const theme = createTheme({
-  components: {
-    MuiSwitch: {
-      styleOverrides: {
-        switchBase: {
-          "&.Mui-checked": {
-            color: "red",
-            "& + .MuiSwitch-track": {
-              backgroundColor: "red",
-            },
-          },
-        },
-        track: {
-          backgroundColor: "grey",
-          opacity: 1,
-        },
-        thumb: {
-          backgroundColor: "white",
-        },
-      },
-    },
-  },
-});
-
 const FilterSaleOptions = () => {
   const { replace } = useRouter();
 

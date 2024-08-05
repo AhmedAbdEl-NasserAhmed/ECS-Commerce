@@ -4,7 +4,6 @@ import { Box, TextField } from "@mui/material";
 function CustomizedTextField({
   type,
   label,
-  name,
   variant,
   textLabelClass,
   size,

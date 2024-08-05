@@ -22,6 +22,7 @@ function SmartSearchInput({
   value = "",
   disabled,
   isFetching,
+  defaultValue,
 }) {
   const [smartSearchState, dispatch] = useReducer(reducerFn, initialState);
 
@@ -35,19 +36,29 @@ function SmartSearchInput({
   });
 
   useEffect(() => {
+    if (defaultValue) {
+      if (defaultValue !== "" && smartSearchState.inputValue === "") {
+        action(SmartSearchActions.SELECT_ITEM, {
+          value: defaultValue,
+        });
+      }
+    }
+  }, [defaultValue, getSmartSearchValue, smartSearchState.inputValue]);
+
+  useEffect(() => {
     if (shouldReset) {
       action(SmartSearchActions.RESET);
     }
   }, [shouldReset]);
 
   useEffect(() => {
-    if (getSmartSearchValue) {
+    if (getSmartSearchValue || defaultValue) {
       getSmartSearchValue((prev) => ({
         ...prev,
         name: smartSearchState.inputValue,
       }));
     }
-  }, [smartSearchState.inputValue, getSmartSearchValue]);
+  }, [smartSearchState.inputValue, getSmartSearchValue, defaultValue]);
 
   useEffect(() => {
     if (
@@ -84,8 +95,8 @@ function SmartSearchInput({
       <div className="relative flex flex-col gap-4">
         {<label className="font-semibold text-xl">{textLabel}</label>}
         <TextField
-          error={!!errors?.[name]}
-          helperText={errors?.[name]?.message || ""}
+          error={!!errors}
+          helperText={errors?.message || ""}
           FormHelperTextProps={{ style: { fontSize: "1rem" } }}
           disabled={disabled}
           style={{

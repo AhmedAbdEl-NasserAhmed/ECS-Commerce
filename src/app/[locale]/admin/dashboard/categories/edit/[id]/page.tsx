@@ -8,11 +8,17 @@ import {
 import { AdminMainCategory } from "@/types/types";
 import MiniSpinner from "@/ui/MiniSpinner/MiniSpinner";
 import CustomizedTextField from "@/ui/TextField/TextField";
-import { Box, Button } from "@mui/material";
+import {
+  Box,
+  Button,
+  FormControlLabel,
+  Switch,
+  Typography,
+} from "@mui/material";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { HiChevronRight } from "react-icons/hi2";
@@ -20,14 +26,15 @@ import { HiChevronRight } from "react-icons/hi2";
 function EditCategoryPage() {
   const params = useParams();
 
-  const {
-    data: categoryData,
-    isFetching,
-    isLoading,
-    isSuccess,
-  } = useGetCategoryByIdQuery(params.id);
+  const { data: categoryData, isLoading } = useGetCategoryByIdQuery(params.id);
 
   const [editCategory, editCategoryResponse] = useEditCategoryMutation();
+
+  const [isChecked, setIsChecked] = useState<boolean>(false);
+
+  function showInputsHandler(e) {
+    setIsChecked(e.target.checked);
+  }
 
   const t = useTranslations("Dashboard");
 
@@ -35,18 +42,10 @@ function EditCategoryPage() {
     handleSubmit,
     control,
     watch,
-    reset,
-    setValue,
-    formState: { errors, dirtyFields },
-  } = useForm<AdminMainCategory>({ mode: "onChange" });
-
-  useEffect(() => {
-    if (isSuccess) {
-      setValue("name", categoryData?.data?.name || "");
-      setValue("description", categoryData?.data?.description || "");
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [categoryData, isSuccess]);
+    formState: { errors },
+  } = useForm<AdminMainCategory>({
+    mode: "onChange",
+  });
 
   const formData = watch();
 
@@ -54,7 +53,7 @@ function EditCategoryPage() {
     editCategory({
       id: params.id,
       data: {
-        name: formData.name.trim(),
+        name: formData.name,
         description: formData.description,
       },
     })
@@ -71,6 +70,8 @@ function EditCategoryPage() {
       });
   }
 
+  console.log("formData", formData);
+
   return (
     <form
       onSubmit={handleSubmit(handleEditCategorySubmit)}
@@ -82,7 +83,7 @@ function EditCategoryPage() {
             {t("Edit Category")}
           </h2>
           <Box className="flex items-center gap-4 text-[1.4rem]">
-            <Link className="text-blue-400" href="/">
+            <Link className="text-[#ed0534]" href="/">
               {t("Home")}
             </Link>
             <span>
@@ -93,94 +94,188 @@ function EditCategoryPage() {
         </Box>
       </Box>
       <Box className="relative grow flex flex-col gap-8 bg-white rounded-2xl border-2 p-10 border-slate-100 shadow-md">
-        <Box className="mb-4">
-          <h2 className="text-3xl font-semibold mb-5">{t("Edit Category")}</h2>
-          <span className=" absolute left-0 block h-[1px] w-full bg-gray-200">
-            &nbsp;
-          </span>
+        <Box>
+          <Box className="flex justify-between items-center">
+            <h2 className="text-3xl font-semibold mb-5">
+              {t("Edit Category")}
+            </h2>
+            <FormControlLabel
+              control={
+                <Switch
+                  disabled={
+                    formData.name?.en === "" || formData.description?.en === ""
+                  }
+                  checked={isChecked}
+                  onChange={showInputsHandler}
+                  sx={{
+                    "& .MuiSwitch-switchBase.Mui-checked": {
+                      color: "red",
+                      "& + .MuiSwitch-track": {
+                        backgroundColor: "#ed0534",
+                      },
+                    },
+                    "& .MuiSwitch-track": {
+                      backgroundColor: "#161616",
+                      opacity: 1,
+                    },
+                  }}
+                />
+              }
+              label={
+                <Typography variant="h6">{`Show ${
+                  isChecked ? "English" : "Arabic"
+                }  Inputs`}</Typography>
+              }
+            />
+          </Box>
         </Box>
         <Box className="relative flex flex-col  gap-12">
-          <Controller
-            name={"name"}
-            control={control}
-            defaultValue={categoryData?.data?.name || ""}
-            rules={{
-              required: "This field is required",
-            }}
-            render={({ field }) => {
-              return (
+          {!isChecked && (
+            <Controller
+              name={"name.en"}
+              control={control}
+              defaultValue={""}
+              rules={{
+                required: "This field is required",
+              }}
+              render={({ field }) => (
                 <CustomizedTextField
-                  disabled={isLoading || editCategoryResponse.isLoading}
+                  customError={errors?.["name"]?.["en"]}
+                  disabled={editCategoryResponse.isLoading}
                   textLabelClass={"font-semibold text-xl"}
                   placeholder={t("Category Name")}
                   textlabel={t("Category Name")}
+                  field={field}
+                  errors={errors}
+                  formerHelperStyles={{ style: { fontSize: "1rem" } }}
+                  type={"text"}
+                  variant={"outlined"}
+                  size={"small"}
+                />
+              )}
+            />
+          )}
+          {isChecked && (
+            <Controller
+              name={"name.ar"}
+              control={control}
+              defaultValue={""}
+              rules={{
+                required: "هذا الحقل مطلوب",
+              }}
+              render={({ field }) => (
+                <CustomizedTextField
+                  customError={errors?.["name"]?.["ar"]}
+                  disabled={editCategoryResponse.isLoading}
+                  textLabelClass={"font-semibold text-xl"}
+                  placeholder={"أسم القسم"}
+                  textlabel={"أسم القسم"}
+                  field={field}
+                  errors={errors}
+                  formerHelperStyles={{ style: { fontSize: "1rem" } }}
+                  type={"text"}
+                  variant={"outlined"}
+                  size={"small"}
+                />
+              )}
+            />
+          )}
+          {!isChecked && (
+            <Controller
+              name={"description.en"}
+              disabled={editCategoryResponse.isLoading}
+              defaultValue={""}
+              control={control}
+              rules={{
+                required: "This field is required",
+              }}
+              render={({ field }) => (
+                <CustomizedTextField
+                  customError={errors?.["description"]?.["en"]}
+                  textLabelClass={"font-semibold text-xl"}
+                  placeholder={t("Category Description")}
+                  textlabel={t("Category Description")}
                   field={field}
                   formerHelperStyles={{ style: { fontSize: "1rem" } }}
                   errors={errors}
                   type={"text"}
                   variant={"outlined"}
-                  size={"small"}
+                  multiline={true}
+                  rows={6}
+                  sx={{
+                    "& .MuiInputBase-input": {
+                      fontSize: "1.4rem",
+                    },
+                    "& .MuiInputBase-inputMultiline": {
+                      fontSize: "1.4rem",
+                    },
+                  }}
                 />
-              );
-            }}
-          />
-          <Controller
-            name={"description"}
-            disabled={isLoading || editCategoryResponse.isLoading}
-            defaultValue={categoryData?.data?.description || ""}
-            control={control}
-            rules={{
-              required: "This field is required",
-            }}
-            render={({ field }) => (
-              <CustomizedTextField
-                textLabelClass={"font-semibold text-xl"}
-                placeholder={t("Category Description")}
-                textlabel={t("Category Description")}
-                field={field}
-                formerHelperStyles={{ style: { fontSize: "1rem" } }}
-                errors={errors}
-                type={"text"}
-                variant={"outlined"}
-                multiline={true}
-                rows={6}
-                sx={{
-                  "& .MuiInputBase-input": {
-                    fontSize: "1.4rem",
-                  },
-                  "& .MuiInputBase-inputMultiline": {
-                    fontSize: "1.4rem",
-                  },
-                }}
-              />
-            )}
-          />
+              )}
+            />
+          )}
+          {isChecked && (
+            <Controller
+              name={"description.ar"}
+              disabled={editCategoryResponse.isLoading}
+              defaultValue={""}
+              control={control}
+              rules={{
+                required: "هذا الحقل مطلوب",
+              }}
+              render={({ field }) => (
+                <CustomizedTextField
+                  customError={errors?.["description"]?.["ar"]}
+                  textLabelClass={"font-semibold text-xl"}
+                  placeholder={"وصف القسم"}
+                  textlabel={"وصف القسم"}
+                  field={field}
+                  formerHelperStyles={{ style: { fontSize: "1rem" } }}
+                  errors={errors}
+                  type={"text"}
+                  variant={"outlined"}
+                  multiline={true}
+                  rows={6}
+                  sx={{
+                    "& .MuiInputBase-input": {
+                      fontSize: "1.4rem",
+                    },
+                    "& .MuiInputBase-inputMultiline": {
+                      fontSize: "1.4rem",
+                    },
+                  }}
+                />
+              )}
+            />
+          )}
         </Box>
         <Box>
-          <Button
-            disabled={isLoading || editCategoryResponse.isLoading}
-            sx={{
-              paddingInline: "1.6rem",
-              paddingBlock: "1rem",
-              fontSize: "1.3rem",
-              borderRadius: "5px",
-              backgroundColor: "#5b93ff",
-              boxShadow: "none",
-              "&:hover": {
-                backgroundColor: "black",
+          {isChecked && (
+            <Button
+              disabled={isLoading || editCategoryResponse.isLoading}
+              sx={{
+                paddingInline: "1.6rem",
+                paddingBlock: "1rem",
+                fontSize: "1.3rem",
+                borderRadius: "5px",
+                backgroundColor: "#ed0534",
                 boxShadow: "none",
-              },
-            }}
-            type="submit"
-            variant="contained"
-            size="large"
-          >
-            {isLoading || editCategoryResponse.isLoading ? (
-              <MiniSpinner />
-            ) : (
-              t("Edit Category")
-            )}
-          </Button>
+                "&:hover": {
+                  backgroundColor: "black",
+                  boxShadow: "none",
+                },
+              }}
+              type="submit"
+              variant="contained"
+              size="large"
+            >
+              {isLoading || editCategoryResponse.isLoading ? (
+                <MiniSpinner />
+              ) : (
+                t("Edit Category")
+              )}
+            </Button>
+          )}
         </Box>
       </Box>
     </form>

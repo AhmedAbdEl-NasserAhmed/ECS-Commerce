@@ -20,3 +20,8 @@ export enum HomeCategory {
   MALE_JEANS = "male jeans",
   FEMALE_JEANS = "female jeans",
 }
+
+export enum Lang {
+  ENGLISH = "en",
+  ARABIC = "ar",
+}

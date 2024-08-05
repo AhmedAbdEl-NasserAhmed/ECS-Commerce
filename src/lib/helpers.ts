@@ -1,6 +1,9 @@
 import { AdminProductProps } from "@/types/types";
 
-export const getAddProductServerData = (data: AdminProductProps) => {
+export const getAddProductServerData = (
+  data: AdminProductProps,
+  lang: string
+) => {
   const formData = new FormData();
 
   const excludeKeys = [
@@ -47,8 +50,8 @@ export const getAddProductServerData = (data: AdminProductProps) => {
     }
   });
 
-  Array.from(data.subCategory).forEach((subCategory) => {
-    formData.append("subCategory", subCategory);
+  Array.from(data.subCategory[lang]).forEach((subCategory) => {
+    formData.append("subCategory", subCategory[lang]);
   });
 
   return formData;

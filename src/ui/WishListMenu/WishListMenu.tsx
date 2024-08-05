@@ -20,6 +20,7 @@ import Spinner from "../Spinner/Spinner";
 import { useTranslations } from "next-intl";
 import { HiOutlineHeart } from "react-icons/hi2";
 import { useState } from "react";
+import { UserType } from "@/types/enums";
 
 const WishListMenu = () => {
   const { locale } = useParams();
@@ -27,6 +28,7 @@ const WishListMenu = () => {
   const wishList = useAppSelector(
     (state) => state.cookieSlice.cookieItems.wishListItems
   );
+  const user = useAppSelector((state) => state.usersSlice.user);
 
   const cart = useAppSelector(
     (state) => state.cookieSlice.cookieItems.cartItems
@@ -83,6 +85,8 @@ const WishListMenu = () => {
     dispatch(clearCookiesThunk("wishListItems"));
     toast.success(t("Your Wish List is Empty 🥲"));
   };
+
+  if (user && user?.role === UserType.ADMIN) return;
 
   return (
     <div ref={ref} className="relative">

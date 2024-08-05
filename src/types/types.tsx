@@ -6,8 +6,14 @@ export interface LoginFormData {
 }
 
 export interface AdminMainCategory {
-  name: string;
-  description: string;
+  name: {
+    en: string;
+    ar: string;
+  };
+  description: {
+    en: string;
+    ar: string;
+  };
 }
 
 export interface UserReviewForm {
@@ -16,21 +22,44 @@ export interface UserReviewForm {
 }
 
 export interface AdminSubCategory {
-  name: string;
-  description: string;
-  category: string;
+  name: {
+    en: string;
+    ar: string;
+  };
+  description: {
+    en: string;
+    ar: string;
+  };
+  category: {
+    en: string;
+    ar: string;
+  };
 }
 
 export type extraKey = { [key: string]: string };
+
 export interface AdminProductProps {
-  name: string;
+  name: {
+    en: "";
+    ar: "";
+  };
   quantity: number;
-  price: number;
   salePrice: number;
-  subCategory: string[] | string;
+  subCategory:
+    | string[]
+    | {
+        en: string;
+        ar: string;
+      };
   discount: number;
-  category: string;
-  description: string;
+  category: {
+    en: "";
+    ar: "";
+  };
+  description: {
+    en: "";
+    ar: "";
+  };
   colors: {
     value: string;
     label: string;

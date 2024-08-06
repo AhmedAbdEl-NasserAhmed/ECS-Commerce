@@ -32,8 +32,8 @@ const categoriesApi = createApi({
     }),
 
     getCategory: builder.query({
-      query: (letter) => ({
-        url: `categories/filtered?letters=${letter}`,
+      query: ({ letter, lang }) => ({
+        url: `categories/filtered?letters=${letter}&lang=${lang}`,
         method: "GET",
       }),
       providesTags: ["CATEGORIES"],

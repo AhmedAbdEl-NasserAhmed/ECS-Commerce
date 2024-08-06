@@ -12,12 +12,15 @@ import Spinner from "@/ui/Spinner/Spinner";
 import { Box } from "@mui/material";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { HiChevronRight } from "react-icons/hi2";
 
 function Products() {
   const [getPaginatedProducts, getPaginatedProductsResponse] =
     useLazyGetPaginatedProductsQuery();
+
+  const { locale } = useParams();
 
   const t = useTranslations("Dashboard");
 
@@ -67,6 +70,7 @@ function Products() {
             data={getPaginatedProductsResponse?.data?.data}
             isLoading={getPaginatedProductsResponse?.isFetching}
             columns={productTableHeaders(
+              locale,
               t,
               isLoadingImages,
               setIsLoadingImages

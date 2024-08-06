@@ -1,6 +1,6 @@
 import { TextField } from "@mui/material";
 import styles from "./SmartSearchMultipleInput.module.scss";
-import { useEffect, useReducer, useState } from "react";
+import { useEffect, useReducer, useRef, useState } from "react";
 import {
   initialState,
   reducerFn,
@@ -21,6 +21,9 @@ function SmartSearchMultipleInput({
   shouldReset,
   existedItems,
   isFetching,
+  onBlur = null,
+  onFocus = null,
+  lang = "",
 }) {
   const [smartSearchMultipleState, dispatch] = useReducer(
     reducerFn,
@@ -49,8 +52,8 @@ function SmartSearchMultipleInput({
   }, [shouldReset]);
 
   useEffect(() => {
-    onChange(smartSearchMultipleState.multipleItemsId);
-  }, [smartSearchMultipleState.multipleItemsId, onChange]);
+    onChange(smartSearchMultipleState.multipleItems);
+  }, [smartSearchMultipleState.multipleItems, onChange]);
 
   useEffect(() => {
     if (smartSearchMultipleState.inputValue) {
@@ -73,7 +76,9 @@ function SmartSearchMultipleInput({
 
   function hanldeAdditem(item) {
     action(SmartSearchActions.ADD_ITEM, {
-      name: item.name,
+      name: {
+        [lang]: item.name[lang],
+      },
       value: item["_id"],
     });
 
@@ -82,11 +87,23 @@ function SmartSearchMultipleInput({
     action(SmartSearchActions.ADD_ID, { value: item["_id"] });
   }
 
+  const onBlurHandler = () => {
+    if (onBlur) return onBlur;
+    return;
+  };
+
+  const onFocusHandler = () => {
+    if (onFocus) return onFocus;
+    return;
+  };
+
   return (
     <div className="relative w-full">
       <div className="relative flex flex-col gap-4">
         {<label className="font-semibold text-xl">{textLabel}</label>}
         <TextField
+          onBlur={onBlurHandler}
+          onFocus={onFocusHandler}
           disabled={disabled}
           className=" w-full"
           placeholder={placeholder}
@@ -168,7 +185,7 @@ function SmartSearchMultipleInput({
                   smartSearchMultipleState.multipleItemsId?.includes(
                     item["_id"]
                   )
-                    ? "#dcdbdb "
+                    ? "#ed0533 "
                     : "",
                 color: smartSearchMultipleState.multipleItemsId?.includes(
                   item["_id"]
@@ -176,14 +193,14 @@ function SmartSearchMultipleInput({
                   ? "white"
                   : "",
               }}
-              key={item.name}
+              key={item.name[lang]}
               onClick={() =>
                 smartSearchMultipleState.multipleItemsId?.includes(item["_id"])
                   ? null
                   : hanldeAdditem(item)
               }
             >
-              {item.name}
+              {item.name[lang]}
             </li>
           );
         })}
@@ -201,14 +218,16 @@ function SmartSearchMultipleInput({
                   ? null
                   : () => {
                       action(SmartSearchActions.DELETE_ITEM, {
-                        value: item.name,
+                        value: item.name[lang],
+                        lang: lang,
                       });
                       action(SmartSearchActions.DELETE_ID, {
                         value: item["_id"],
                       });
                     }
               }
-              key={item.name}
+              key={item.name[lang]}
+              lang={lang}
               item={item}
             />
           );

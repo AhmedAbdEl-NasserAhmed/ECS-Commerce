@@ -40,8 +40,8 @@ const productsApi = createApi({
     }),
 
     getProductByName: builder.query({
-      query: (letter) => ({
-        url: `products/filtered?letters=${letter}`,
+      query: ({ letter, lang }) => ({
+        url: `products/filtered?letters=${letter}&lang=${lang}`,
         method: "GET",
       }),
       providesTags: ["PRODUCTS", "CATEGORIES", "COLLECTIONS"],

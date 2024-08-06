@@ -20,6 +20,8 @@ function CustomizedTextField({
   rows,
   value,
   onChange,
+  onFocus,
+  onBlur,
   placeholder,
   mainContainerSx,
   customError,
@@ -34,6 +36,8 @@ function CustomizedTextField({
       <Box className={`flex flex-col gap-4`} sx={mainContainerSx}>
         {textlabel && <label className={textLabelClass}>{textlabel}</label>}
         <TextField
+          onFocus={onFocus}
+          onBlur={onBlur}
           disabled={disabled}
           placeholder={placeholder}
           multiline={multiline}

@@ -9,10 +9,15 @@ import Spinner from "@/ui/Spinner/Spinner";
 import { Box } from "@mui/material";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 import { useEffect } from "react";
 import { HiChevronRight } from "react-icons/hi2";
 
 function Categories() {
+  const { locale } = useParams();
+
+  const t = useTranslations("Dashboard");
+
   const [getPaginatedCategories, getPaginatedCategoriesResponse] =
     useLazyGetAdminCategoryQuery();
 
@@ -28,7 +33,8 @@ function Categories() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [paginationControllers.page, paginationControllers.pageSize]);
 
-  const t = useTranslations("Dashboard");
+  console.log(getPaginatedCategoriesResponse?.data?.data);
+
   return (
     <Box className=" flex flex-col gap-8 px-[4rem] py-[1.2rem] bg-[#FDFDFD] ">
       <Box className="h-[10vh] flex justify-between items-center">
@@ -61,7 +67,7 @@ function Categories() {
             <BaseTable
               data={getPaginatedCategoriesResponse?.data?.data}
               isLoading={getPaginatedCategoriesResponse?.isFetching}
-              columns={categoriesTableHeaders()}
+              columns={categoriesTableHeaders(locale)}
               paginationControllers={paginationControllers}
             />
           )}

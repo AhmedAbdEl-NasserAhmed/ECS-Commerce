@@ -2,49 +2,27 @@
 import CategoryTableMenuOptions from "@/components/AdminCategories/categoryTableMenuOptions";
 import { useGetAllSubCategoriesByCategoryQuery } from "@/lib/features/api/subCategoriesApi";
 
-export const categoriesTableHeaders = () => {
+export const categoriesTableHeaders = (locale) => {
   return [
     {
       id: "name",
-      header: () => "Category",
-      accessorKey: "name",
+      header: () => "name",
+      cell: ({
+        cell: {
+          row: { original },
+        },
+      }) => <h2>{original.name[locale]}</h2>,
     },
     {
       id: "description",
-      header: () => "Description",
-      accessorKey: "description",
+      header: () => "description",
+      cell: ({
+        cell: {
+          row: { original },
+        },
+      }) => <h2>{original.description[locale]}</h2>,
     },
-    // {
-    //   id: "collections",
-    //   header: () => "Collections",
-    //   cell: ({
-    //     cell: {
-    //       row: { original },
-    //     },
-    //   }) => {
-    //     if (isFetching || !data || data?.data?.length === 0)
-    //       return <div>No Collections</div>;
-    //     return (
-    //       <ul className="flex gap-2 items-cneter justify-center flex-wrap">
-    //         {data?.data?.map((subCategory) => {
-    //           return (
-    //             <li
-    //               key={subCategory["_id"]}
-    //               className=""
-    //               style={{
-    //                 background: "#eaeaea",
-    //                 padding: "2px 10px",
-    //                 borderRadius: "3px",
-    //               }}
-    //             >
-    //               {subCategory.name}
-    //             </li>
-    //           );
-    //         })}
-    //       </ul>
-    //     );
-    //   },
-    // },
+
     {
       id: "actions",
       header: () => "Actions",

@@ -12,8 +12,13 @@ import BaseTable from "@/ui/BaseReactTable";
 import { useTranslations } from "next-intl";
 import { useEffect } from "react";
 import useBaseTablePagination from "@/hooks/useBaseTablePagination/useBaseTablePagination";
+import { useParams } from "next/navigation";
 
 function SubCategories() {
+  const { locale } = useParams();
+
+  const t = useTranslations("Dashboard");
+
   const [getPaginatedSubCategories, getPaginatedSubCategoriesResponse] =
     useLazyGetAllAdminSubCategoriesQuery();
 
@@ -29,7 +34,8 @@ function SubCategories() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [paginationControllers.page, paginationControllers.pageSize]);
 
-  const t = useTranslations("Dashboard");
+  if (getPaginatedSubCategoriesResponse.isLoading) return <Spinner />;
+
   return (
     <Box className=" flex flex-col gap-8 px-[4rem] py-[1.2rem] bg-[#FDFDFD] ">
       <Box className="h-[10vh] flex justify-between items-center">
@@ -63,7 +69,7 @@ function SubCategories() {
               isLoading={getPaginatedSubCategoriesResponse.isFetching}
               paginationControllers={paginationControllers}
               data={getPaginatedSubCategoriesResponse?.data?.data}
-              columns={subCategoriesTableHeaders}
+              columns={subCategoriesTableHeaders(locale)}
             />
           )}
         </Menus>

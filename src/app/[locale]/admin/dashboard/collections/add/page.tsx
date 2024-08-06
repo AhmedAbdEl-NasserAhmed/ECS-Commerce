@@ -38,7 +38,11 @@ function AddSubCategoriesPage() {
     mode: "onChange",
   });
 
+  const t = useTranslations("Dashboard");
+
   const formData = watch();
+
+  console.log("form Data", formData);
 
   const [smartSeachvalue, setSmartSeachValue] = useState<{
     id: string;
@@ -53,11 +57,12 @@ function AddSubCategoriesPage() {
 
   const debounceValue = useDebounceHook(smartSeachvalue.name);
 
-  const { data, isLoading, isFetching } = useGetCategoryQuery(debounceValue);
+  const { data, isLoading, isFetching } = useGetCategoryQuery({
+    letter: debounceValue,
+    lang,
+  });
 
   const { data: AllCategories } = useGetAllCategoriesQuery("categories");
-
-  const t = useTranslations("Dashboard");
 
   const params = useParams();
 
@@ -72,8 +77,10 @@ function AddSubCategoriesPage() {
   }, [isChecked]);
 
   useEffect(() => {
-    setAllCategories(AllCategories?.data.map((category) => category.name));
-  }, [AllCategories?.data]);
+    setAllCategories(
+      AllCategories?.data.map((category) => category.name[lang])
+    );
+  }, [AllCategories?.data, lang]);
 
   function handleAddSubCategorySubmit() {
     addSubCategoryFn({
@@ -89,6 +96,7 @@ function AddSubCategoriesPage() {
             id: "",
             name: "",
           });
+          setIsChecked(false);
           reset();
         }
       })
@@ -98,6 +106,10 @@ function AddSubCategoriesPage() {
         }
       });
   }
+
+  console.log("AllCategories", allCategories);
+
+  // return <h1>Hello</h1>;
 
   if (!AllCategories) return <Spinner />;
   const noCategoriesYet = AllCategories?.data?.length === 0;
@@ -202,6 +214,7 @@ function AddSubCategoriesPage() {
               }}
               render={({ field }) => (
                 <SmartSearchInput
+                  lang={lang}
                   isFetching={isFetching}
                   notAvailableMessage="No Categories Available"
                   errors={errors?.["category"]?.["en"]}
@@ -232,6 +245,7 @@ function AddSubCategoriesPage() {
               }}
               render={({ field }) => (
                 <SmartSearchInput
+                  lang={lang}
                   errors={errors?.["category"]?.["ar"]}
                   isFetching={isFetching}
                   notAvailableMessage="No Categories Available"
@@ -240,7 +254,7 @@ function AddSubCategoriesPage() {
                   getSmartSearchValue={setSmartSeachValue}
                   textLabel={"القسم الرئيسي"}
                   placeholder={"بحث عن القسم"}
-                  defaultValue={formData.category?.ar}
+                  defaultValue={formData.category.ar}
                   data={data?.data}
                   name={field.name}
                   onChange={field.onChange}

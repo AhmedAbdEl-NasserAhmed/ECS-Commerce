@@ -45,12 +45,10 @@ export interface AdminProductProps {
   };
   quantity: number;
   salePrice: number;
-  subCategory:
-    | string[]
-    | {
-        en: string;
-        ar: string;
-      };
+  subCategory: {
+    en: string;
+    ar: string;
+  };
   discount: number;
   category: {
     en: "";
@@ -103,6 +101,8 @@ export interface CustomizedTextFieldProps {
   rows?: number;
   value?: React.ReactNode;
   onChange?: (value) => void;
+  onFocus?: (value) => void;
+  onBlur?: (value) => void;
   row?: number;
   placeholder?: string;
   options?: ColourOption[] | SizesOption[];

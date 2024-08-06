@@ -53,7 +53,7 @@ export const reducerFn = function (state = initialState, action) {
     return {
       ...state,
       multipleItems: state.multipleItems.filter(
-        (item) => item.name !== action.payload.value
+        (item) => item.name[action.payload.lang] !== action.payload.value
       ),
     };
   }

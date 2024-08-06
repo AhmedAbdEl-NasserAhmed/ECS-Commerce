@@ -23,6 +23,9 @@ function SmartSearchInput({
   disabled,
   isFetching,
   defaultValue,
+  onFocus = null,
+  onBlur = null,
+  lang,
 }) {
   const [smartSearchState, dispatch] = useReducer(reducerFn, initialState);
 
@@ -36,14 +39,14 @@ function SmartSearchInput({
   });
 
   useEffect(() => {
-    if (defaultValue) {
+    if (defaultValue && !value) {
       if (defaultValue !== "" && smartSearchState.inputValue === "") {
         action(SmartSearchActions.SELECT_ITEM, {
           value: defaultValue,
         });
       }
     }
-  }, [defaultValue, getSmartSearchValue, smartSearchState.inputValue]);
+  }, [defaultValue, getSmartSearchValue, smartSearchState.inputValue, value]);
 
   useEffect(() => {
     if (shouldReset) {
@@ -52,13 +55,18 @@ function SmartSearchInput({
   }, [shouldReset]);
 
   useEffect(() => {
-    if (getSmartSearchValue || defaultValue) {
+    if (getSmartSearchValue && !smartSearchState.userSelectedValue) {
       getSmartSearchValue((prev) => ({
         ...prev,
         name: smartSearchState.inputValue,
       }));
     }
-  }, [smartSearchState.inputValue, getSmartSearchValue, defaultValue]);
+  }, [
+    smartSearchState.inputValue,
+    getSmartSearchValue,
+    defaultValue,
+    smartSearchState.userSelectedValue,
+  ]);
 
   useEffect(() => {
     if (
@@ -76,25 +84,37 @@ function SmartSearchInput({
   ]);
 
   const onSelectItem = (data) => {
-    onChange(data.name);
-    action(SmartSearchActions.SELECT_ITEM, { value: data.name });
+    onChange(data?.name?.[lang]);
+    action(SmartSearchActions.SELECT_ITEM, { value: data?.name?.[lang] });
     if (getSmartSearchValue) {
       getSmartSearchValue(data);
     }
   };
 
   useEffect(() => {
-    if (value) {
+    if (value && lang) {
       onSelectItem(value);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [value]);
+  }, [value, lang]);
+
+  const onBlurHandler = () => {
+    if (onBlur) return onBlur;
+    return;
+  };
+
+  const onFocusHandler = (e) => {
+    if (onFocus) return onFocus(e);
+    return;
+  };
 
   return (
     <div className="relative w-full">
       <div className="relative flex flex-col gap-4">
         {<label className="font-semibold text-xl">{textLabel}</label>}
         <TextField
+          onBlur={onBlurHandler}
+          // onFocus={onFocusHandler}
           error={!!errors}
           helperText={errors?.message || ""}
           FormHelperTextProps={{ style: { fontSize: "1rem" } }}
@@ -108,6 +128,7 @@ function SmartSearchInput({
           onChange={(e) => {
             onChange(e.target.value);
             action(SmartSearchActions.CHANGE_INPUT, { value: e.target.value });
+            onFocusHandler(e);
           }}
           name={name}
           value={smartSearchState.inputValue}
@@ -197,20 +218,20 @@ function SmartSearchInput({
           </div>
         )}
 
-        {data?.map((user) => {
+        {data?.map((item) => {
           return (
             <li
               className="text-[#161616} font-semibold capitalize"
-              key={user.name}
+              key={item.name[lang || ""]}
               onClick={
                 disabled
                   ? null
                   : () => {
-                      onSelectItem(user);
+                      onSelectItem(item);
                     }
               }
             >
-              {user.name}{" "}
+              {item.name[lang || ""]}{" "}
             </li>
           );
         })}

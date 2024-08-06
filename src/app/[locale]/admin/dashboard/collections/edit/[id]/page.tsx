@@ -20,7 +20,7 @@ import {
 } from "@mui/material";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -44,6 +44,10 @@ function EditSubCategoryPage() {
 
   const formData = watch();
 
+  const router = useRouter();
+
+  const { locale } = useParams();
+
   const t = useTranslations("Dashboard");
 
   const [smartSeachvalue, setSmartSeachValue] = useState<{
@@ -62,9 +66,12 @@ function EditSubCategoryPage() {
 
   const debounceValue = useDebounceHook(smartSeachvalue.name);
 
-  const { data, isLoading } = useGetCategoryQuery(debounceValue, {
-    skip: !debounceValue,
-  });
+  const { data, isLoading } = useGetCategoryQuery(
+    { letter: debounceValue, lang },
+    {
+      skip: !debounceValue,
+    }
+  );
 
   const [editSubCategory, editSubCategoryResponse] =
     useEditSubCategoryMutation();
@@ -78,8 +85,8 @@ function EditSubCategoryPage() {
   }, [isChecked]);
 
   useEffect(() => {
-    setAllCategories(data?.data.map((category) => category.name));
-  }, [data?.data]);
+    setAllCategories(data?.data.map((category) => category.name[lang]));
+  }, [data?.data, lang]);
 
   useEffect(() => {
     if (data?.data.length) {
@@ -106,6 +113,7 @@ function EditSubCategoryPage() {
             id: "",
             name: "",
           });
+          router.replace(`/${locale}/admin/dashboard/collections`);
           reset();
         }
       })
@@ -116,7 +124,8 @@ function EditSubCategoryPage() {
       });
   }
 
-  if (isLoading || isSubCategoryFetching) return <Spinner />;
+  if (isLoading || isSubCategoryFetching || !subCategoryData)
+    return <Spinner />;
 
   return (
     <form
@@ -184,7 +193,7 @@ function EditSubCategoryPage() {
             <Controller
               name={"category.en"}
               control={control}
-              defaultValue={""}
+              defaultValue={subCategoryData?.data.category.name.en}
               rules={{
                 required: "This field is required",
                 validate(value) {
@@ -194,6 +203,7 @@ function EditSubCategoryPage() {
               }}
               render={({ field }) => (
                 <SmartSearchInput
+                  lang={lang}
                   isFetching={isSubCategoryFetching}
                   notAvailableMessage="No Categories Available"
                   errors={errors?.["category"]?.["en"]}
@@ -216,7 +226,7 @@ function EditSubCategoryPage() {
             <Controller
               name={"category.ar"}
               control={control}
-              defaultValue={""}
+              defaultValue={subCategoryData?.data.category.name.ar}
               rules={{
                 required: "هذا الحقل مطلوب",
                 validate(value) {
@@ -226,6 +236,7 @@ function EditSubCategoryPage() {
               }}
               render={({ field }) => (
                 <SmartSearchInput
+                  lang={lang}
                   errors={errors?.["category"]?.["ar"]}
                   isFetching={isSubCategoryFetching}
                   notAvailableMessage="No Categories Available"
@@ -248,7 +259,7 @@ function EditSubCategoryPage() {
             <Controller
               name={"name.en"}
               control={control}
-              defaultValue={""}
+              defaultValue={subCategoryData?.data.name.en}
               rules={{ required: "This field is required" }}
               render={({ field }) => (
                 <CustomizedTextField
@@ -270,7 +281,7 @@ function EditSubCategoryPage() {
             <Controller
               name={"name.ar"}
               control={control}
-              defaultValue={""}
+              defaultValue={subCategoryData?.data.name.ar}
               rules={{ required: "هذا الحقل مطلوب" }}
               render={({ field }) => (
                 <CustomizedTextField
@@ -292,7 +303,7 @@ function EditSubCategoryPage() {
             <Controller
               name={"description.en"}
               control={control}
-              defaultValue={""}
+              defaultValue={subCategoryData?.data.description.en}
               rules={{ required: "This field is required" }}
               render={({ field }) => (
                 <CustomizedTextField
@@ -323,7 +334,7 @@ function EditSubCategoryPage() {
             <Controller
               name={"description.ar"}
               control={control}
-              defaultValue={""}
+              defaultValue={subCategoryData?.data.description.ar}
               rules={{ required: "هذا الحقل مطلوب" }}
               render={({ field }) => (
                 <CustomizedTextField

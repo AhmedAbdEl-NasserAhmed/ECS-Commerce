@@ -21,8 +21,8 @@ const subCategoriesApi = createApi({
     }),
 
     getSubCategory: builder.query({
-      query: ({ letter, categoryId }) => ({
-        url: `subCategories/filtered?letters=${letter}&category=${categoryId}`,
+      query: ({ letter, categoryId, lang }) => ({
+        url: `subCategories/filtered?letters=${letter}&category=${categoryId}&lang=${lang}`,
         method: "GET",
       }),
       providesTags: ["SUB-CATEGORY", "CATEGORIES"],

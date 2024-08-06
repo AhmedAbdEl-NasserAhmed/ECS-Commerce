@@ -7,6 +7,7 @@ import {
 } from "@/lib/features/api/categoriesApi";
 import { AdminMainCategory } from "@/types/types";
 import MiniSpinner from "@/ui/MiniSpinner/MiniSpinner";
+import Spinner from "@/ui/Spinner/Spinner";
 import CustomizedTextField from "@/ui/TextField/TextField";
 import {
   Box,
@@ -17,14 +18,18 @@ import {
 } from "@mui/material";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
-import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { HiChevronRight } from "react-icons/hi2";
 
 function EditCategoryPage() {
   const params = useParams();
+
+  const router = useRouter();
+
+  const { locale } = useParams();
 
   const { data: categoryData, isLoading } = useGetCategoryByIdQuery(params.id);
 
@@ -42,6 +47,7 @@ function EditCategoryPage() {
     handleSubmit,
     control,
     watch,
+    reset,
     formState: { errors },
   } = useForm<AdminMainCategory>({
     mode: "onChange",
@@ -61,6 +67,7 @@ function EditCategoryPage() {
       .then((res) => {
         if (res.status === "success") {
           toast.success(`Your category has been updated!`);
+          router.replace(`/${locale}/admin/dashboard/categories`);
         }
       })
       .catch((err) => {
@@ -70,7 +77,7 @@ function EditCategoryPage() {
       });
   }
 
-  console.log("formData", formData);
+  if (!categoryData) return <Spinner />;
 
   return (
     <form
@@ -134,7 +141,7 @@ function EditCategoryPage() {
             <Controller
               name={"name.en"}
               control={control}
-              defaultValue={""}
+              defaultValue={categoryData?.data.name.en}
               rules={{
                 required: "This field is required",
               }}
@@ -159,7 +166,7 @@ function EditCategoryPage() {
             <Controller
               name={"name.ar"}
               control={control}
-              defaultValue={""}
+              defaultValue={categoryData?.data.name.ar}
               rules={{
                 required: "هذا الحقل مطلوب",
               }}
@@ -184,7 +191,7 @@ function EditCategoryPage() {
             <Controller
               name={"description.en"}
               disabled={editCategoryResponse.isLoading}
-              defaultValue={""}
+              defaultValue={categoryData?.data.description.en}
               control={control}
               rules={{
                 required: "This field is required",
@@ -218,7 +225,7 @@ function EditCategoryPage() {
             <Controller
               name={"description.ar"}
               disabled={editCategoryResponse.isLoading}
-              defaultValue={""}
+              defaultValue={categoryData?.data.description.ar}
               control={control}
               rules={{
                 required: "هذا الحقل مطلوب",

@@ -11,6 +11,7 @@ import {
 } from "@/lib/features/api/productsApi";
 import { useGetSubCategoryQuery } from "@/lib/features/api/subCategoriesApi";
 import { getAddProductServerData, getSumFrom } from "@/lib/helpers";
+import { StorageService } from "@/services/StorageService";
 import { Lang } from "@/types/enums";
 import { AdminProductProps } from "@/types/types";
 import AddProductImage from "@/ui/AddProductImage/AddProductImage";
@@ -34,7 +35,7 @@ import { createKey } from "next/dist/shared/lib/router/router";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import toast from "react-hot-toast";
 import { HiChevronRight } from "react-icons/hi2";
@@ -53,6 +54,8 @@ function AddProductPage() {
 
   const formData = watch();
 
+  const [lang, setLang] = useState("en");
+
   console.log("formData", formData);
 
   const [smartSeachvalue, setSmartSeachValue] = useState<{
@@ -62,7 +65,14 @@ function AddProductPage() {
 
   const [isChecked, setIsChecked] = useState<boolean>(false);
 
-  const [lang, setLang] = useState("en");
+  const [currentSubCategories, setCurrentSubCategories] = useState([]);
+  useEffect(() => {
+    if (localStorage !== undefined) {
+      setCurrentSubCategories(
+        JSON.parse(localStorage.getItem(`subCategories${lang}`))
+      );
+    }
+  }, [lang]);
 
   const [smartSeachSubCategoryvalue, setSmartSeachSubCategoryValue] =
     useState<string>("");
@@ -74,13 +84,20 @@ function AddProductPage() {
   const { data: AllCategories } = useGetAllCategoriesQuery("categories");
 
   const { data: mainCategory, isFetching: isFetchingMainCategory } =
-    useGetCategoryQuery(mainCategorydebounceValue, {
-      skip: !mainCategorydebounceValue,
-    });
+    useGetCategoryQuery(
+      { letter: mainCategorydebounceValue, lang },
+      {
+        skip: !mainCategorydebounceValue,
+      }
+    );
 
   const { data: subCategory, isFetching: isFetchingSubCategories } =
     useGetSubCategoryQuery(
-      { letter: subCategorydebounceValue, categoryId: smartSeachvalue["_id"] },
+      {
+        letter: subCategorydebounceValue,
+        categoryId: smartSeachvalue["_id"],
+        lang,
+      },
       { skip: !subCategorydebounceValue || !smartSeachvalue["_id"] }
     );
 
@@ -93,9 +110,12 @@ function AddProductPage() {
   const productNameDebounceValue = useDebounceHook(productSearchName?.name);
 
   const { data: productName, isFetching: isFetchingProduct } =
-    useGetProductByNameQuery(productNameDebounceValue, {
-      skip: !productNameDebounceValue,
-    });
+    useGetProductByNameQuery(
+      { letter: productNameDebounceValue, lang },
+      {
+        skip: !productNameDebounceValue,
+      }
+    );
 
   const [addProductFn, productResponse] = useAddProductMutation();
 
@@ -115,6 +135,12 @@ function AddProductPage() {
 
   function showInputsHandler(e) {
     setIsChecked(e.target.checked);
+    if (formData.subCategory[lang].length > 0) {
+      localStorage.setItem(
+        `subCategories${lang}`,
+        JSON.stringify([...formData.subCategory[lang]])
+      );
+    }
   }
 
   useEffect(() => {
@@ -156,8 +182,8 @@ function AddProductPage() {
   }, [formData.price, formData.discount]);
 
   useEffect(() => {
-    setAllCategories(mainCategory?.data.map((category) => category.name));
-  }, [mainCategory?.data]);
+    setAllCategories(mainCategory?.data.map((category) => category.name[lang]));
+  }, [mainCategory?.data, lang]);
 
   const tIndex = useTranslations("Index");
 
@@ -179,7 +205,33 @@ function AddProductPage() {
       .unwrap()
       .then(() => {
         toast.success("A new Product is added");
-        reset();
+        localStorage.removeItem("subCategoriesen");
+        localStorage.removeItem("subCategoriesar");
+        reset({
+          category: {
+            en: "",
+            ar: "",
+          },
+          name: {
+            en: "",
+            ar: "",
+          },
+          price: 0,
+          description: {
+            en: "",
+            ar: "",
+          },
+          colors: [],
+          images: {},
+          subCategory: {
+            en: "",
+            ar: "",
+          },
+          salePrice: 0,
+          quantity: 0,
+          size: [],
+          discount: 0,
+        });
       })
       .catch((err) => {
         toast.error(err.message);
@@ -292,6 +344,7 @@ function AddProductPage() {
                   }}
                   render={({ field }) => (
                     <SmartSearchInput
+                      lang={lang}
                       errors={errors?.["category"]?.["en"]}
                       defaultValue={formData.category?.en}
                       isFetching={isFetchingMainCategory}
@@ -324,6 +377,7 @@ function AddProductPage() {
                   }}
                   render={({ field }) => (
                     <SmartSearchInput
+                      lang={lang}
                       errors={errors?.["category"]?.["ar"]}
                       defaultValue={formData.category?.ar}
                       isFetching={isFetchingMainCategory}
@@ -349,8 +403,9 @@ function AddProductPage() {
                   defaultValue={""}
                   render={({ field }) => (
                     <SmartSearchMultipleInput
+                      lang={lang}
                       isFetching={isFetchingSubCategories}
-                      existedItems={[]}
+                      existedItems={currentSubCategories}
                       disabled={
                         productResponse.isLoading ||
                         !smartSeachvalue["_id"] ||
@@ -378,8 +433,9 @@ function AddProductPage() {
                   defaultValue={""}
                   render={({ field }) => (
                     <SmartSearchMultipleInput
+                      lang={lang}
                       isFetching={isFetchingSubCategories}
-                      existedItems={[]}
+                      existedItems={currentSubCategories}
                       disabled={
                         productResponse.isLoading ||
                         !smartSeachvalue["_id"] ||
@@ -409,6 +465,7 @@ function AddProductPage() {
                     rules={{ required: "This field is required" }}
                     render={({ field }) => (
                       <SmartSearchInput
+                        lang={lang}
                         errors={errors?.["name"]?.["en"]}
                         defaultValue={formData.name?.en}
                         isFetching={isFetchingProduct}
@@ -437,6 +494,7 @@ function AddProductPage() {
                     rules={{ required: "هذا الحقل مطلوب" }}
                     render={({ field }) => (
                       <SmartSearchInput
+                        lang={lang}
                         errors={errors?.["name"]?.["ar"]}
                         defaultValue={formData.name?.ar}
                         isFetching={isFetchingProduct}

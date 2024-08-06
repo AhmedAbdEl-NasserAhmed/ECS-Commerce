@@ -3,6 +3,7 @@ import Spinner from "@/ui/Spinner/Spinner";
 import Image from "next/image";
 
 export const productTableHeaders = (
+  locale,
   translate,
   isLoadingImages,
   setIsloadingImages
@@ -12,7 +13,16 @@ export const productTableHeaders = (
       id: "name",
       header: () => translate("Product Name"),
       accessorKey: "name",
+
+      cell: ({
+        cell: {
+          row: { original },
+        },
+      }) => {
+        return original.name?.[locale];
+      },
     },
+
     {
       id: "price",
       header: () => translate("Product Price"),

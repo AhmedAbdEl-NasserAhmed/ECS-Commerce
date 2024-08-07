@@ -239,10 +239,6 @@ function EditProduct() {
     return getSumFrom(formData["colors"], formData["colors-quantity"]);
   };
 
-  console.log("lang", lang);
-
-  console.log("productDetails", productDetails);
-
   if (!AllCategories || !productDetails || !currentProduct.colors)
     return <Spinner />;
 

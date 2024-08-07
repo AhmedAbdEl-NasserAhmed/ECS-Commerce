@@ -42,7 +42,6 @@ function AddSubCategoriesPage() {
 
   const formData = watch();
 
-  console.log("form Data", formData);
 
   const [smartSeachvalue, setSmartSeachValue] = useState<{
     id: string;
@@ -107,7 +106,6 @@ function AddSubCategoriesPage() {
       });
   }
 
-  console.log("AllCategories", allCategories);
 
   // return <h1>Hello</h1>;
 

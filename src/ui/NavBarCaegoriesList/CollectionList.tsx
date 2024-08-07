@@ -6,7 +6,7 @@ import { useParams, useRouter } from "next/navigation";
 
 function CollectionList({ id }) {
   const { data, isLoading } = useGetAllSubCategoriesByCategoryQuery(id, {
-    skip: !id,
+    skip: !id
   });
 
   const { locale } = useParams();
@@ -20,7 +20,7 @@ function CollectionList({ id }) {
   };
 
   return (
-    <ul className="flex flex-col gap-7 self-center">
+    <ul className="flex flex-col gap-7 self-start ">
       {data?.data.map((subCategory) => {
         return (
           <li
@@ -28,7 +28,7 @@ function CollectionList({ id }) {
             key={subCategory["_id"]}
           >
             <button onClick={() => handleClick(subCategory["_id"])}>
-              <div>{subCategory.name}</div>
+              <div>{subCategory.name[locale as string]}</div>
               <div className="w-0 group-hover:w-full h-px bg-black duration-100 transition-all"></div>
             </button>
           </li>

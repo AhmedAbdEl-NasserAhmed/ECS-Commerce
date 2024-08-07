@@ -24,6 +24,8 @@ function NavBarCategoriesList({ data, isLoading }) {
 
   if (isLoading) return;
 
+  console.log("data", data);
+
   return (
     <div
       ref={ref}
@@ -37,7 +39,7 @@ function NavBarCategoriesList({ data, isLoading }) {
       <li
         className={` ${
           showCategoriesMenu ? "h-[38rem]" : "h-0"
-        } absolute  w-screen bg-[#f1e5cd]  text-[1.6rem]  shadow-2xl top-32 z-10  -start-5 transition-all duration-300 flex flex-col items-center gap-6 text-center overflow-hidden overflow-y-scroll text-[#333] `}
+        } absolute  w-screen bg-[#f1e5cd] cursor-default  text-[1.6rem]  shadow-2xl top-32 z-10  -start-5 transition-all duration-300 flex flex-col items-center gap-6 text-center overflow-hidden overflow-y-scroll text-[#333] `}
       >
         <div className=" pb-8  w-3/4 m-auto h-full flex flex-col items-center overflow-y-scroll">
           <div className="sticky top-0 z-40 bg-[#f1e5cd]  p-4 grid grid-cols-2 items-center mb-10 w-1/2">
@@ -48,6 +50,7 @@ function NavBarCategoriesList({ data, isLoading }) {
               {t("Collections")}
             </h2>
           </div>
+
           {data?.data.map((category) => (
             <ul
               key={category["_id"]}
@@ -55,7 +58,7 @@ function NavBarCategoriesList({ data, isLoading }) {
             >
               <li className="px-4 py-2 group duration-100 transition-all self-start font-medium">
                 <button onClick={() => handleClick(category["_id"])}>
-                  <div>{category.name}</div>
+                  <div>{category.name[locale as string]}</div>
                   <div className="w-0 group-hover:w-full h-px bg-black duration-100 transition-all"></div>
                 </button>
               </li>

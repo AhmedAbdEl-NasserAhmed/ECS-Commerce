@@ -62,7 +62,9 @@ function EditProduct() {
 
   const formData = watch();
 
-  console.log("form Data", formData);
+  console.log("formData",formData)
+
+
 
   const [updateProductFn, updateProductResponse] =
     useUpdateSingleProductMutation();
@@ -214,7 +216,6 @@ function EditProduct() {
 
   const isCategoryDirty = dirtyFields[`category`];
 
-  console.log("isCategoryDirty", isCategoryDirty);
 
   if (noCategoriesYet) {
     return (
@@ -248,7 +249,6 @@ function EditProduct() {
   if (!AllCategories || !productDetails || !currentProduct.colors)
     return <Spinner />;
 
-  console.log("LANG", lang);
 
   return (
     <form
@@ -651,10 +651,9 @@ function EditProduct() {
                 defaultValue={""}
                 render={({ field }) => (
                   <SmartSearchMultipleInput
-                    onFocus={() => {
-                      setLang(Lang.ARABIC);
-                      console.log("hello");
-                    }}
+                    onFocus={() => 
+                      setLang(Lang.ARABIC)
+                    }
                     onBlur={() => setLang(Lang.ENGLISH)}
                     lang={Lang.ARABIC}
                     isFetching={isFetchingSubCategories}
@@ -685,10 +684,10 @@ function EditProduct() {
                 defaultValue={""}
                 rules={{
                   required: "هذا الحقل مطلوب",
-                  // validate(value) {
-                  //   if (!allCategories?.includes(value))
-                  //     return "You Have to choose from available categories";
-                  // },
+                  validate(value) {
+                    if (lang === Lang.ARABIC && !allCategories?.includes(value))
+                      return "يجب ان تختار من الأقسام المتاحه";
+                  },
                 }}
                 render={({ field }) => (
                   <SmartSearchInput

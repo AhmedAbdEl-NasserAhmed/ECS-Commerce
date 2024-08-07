@@ -33,7 +33,6 @@ function Categories() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [paginationControllers.page, paginationControllers.pageSize]);
 
-  console.log(getPaginatedCategoriesResponse?.data?.data);
 
   return (
     <Box className=" flex flex-col gap-8 px-[4rem] py-[1.2rem] bg-[#FDFDFD] ">

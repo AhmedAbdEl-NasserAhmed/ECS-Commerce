@@ -89,6 +89,7 @@ function SmartSearchInput({
     if (getSmartSearchValue) {
       getSmartSearchValue(data);
     }
+    onBlurHandler()
   };
 
   useEffect(() => {
@@ -99,7 +100,7 @@ function SmartSearchInput({
   }, [value, lang]);
 
   const onBlurHandler = () => {
-    if (onBlur) return onBlur;
+    if (onBlur) return onBlur();
     return;
   };
 
@@ -113,8 +114,7 @@ function SmartSearchInput({
       <div className="relative flex flex-col gap-4">
         {<label className="font-semibold text-xl">{textLabel}</label>}
         <TextField
-          onBlur={onBlurHandler}
-          // onFocus={onFocusHandler}
+    
           error={!!errors}
           helperText={errors?.message || ""}
           FormHelperTextProps={{ style: { fontSize: "1rem" } }}

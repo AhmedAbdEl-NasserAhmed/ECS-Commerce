@@ -6,16 +6,17 @@ import GridContainer from "../Container/GridContainer";
 import { useGetCategoryQuery } from "@/lib/features/api/categoriesApi";
 import Spinner from "../Spinner/Spinner";
 import { useGetSubCategoryQuery } from "@/lib/features/api/subCategoriesApi";
-import { HomeCategory } from "@/types/enums";
+import { HomeCategory, Lang } from "@/types/enums";
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 
 function HomePageCategory() {
   const { locale } = useParams();
 
-  const { data: mainCategory, isLoading } = useGetCategoryQuery(
-    HomeCategory.MAIN_CATEGORY
-  );
+  const { data: mainCategory, isLoading } = useGetCategoryQuery({
+    letter: HomeCategory.MAIN_CATEGORY,
+    lang: Lang.ENGLISH
+  });
 
   const [maleJeans, setMaleJeans] = useState({ _id: "" });
 
@@ -26,24 +27,31 @@ function HomePageCategory() {
   const { data: subCategories, isLoading: subCategoriesLoading } =
     useGetSubCategoryQuery(
       {
-        letter: HomeCategory.MALE_JEANS,
-        categoryId: mainCategory?.data[0]?.["_id"],
+        letter: HomeCategory.MALE_JEANS_EN,
+        lang: Lang.ENGLISH,
+        categoryId: mainCategory?.data[0]?.["_id"]
       },
       { skip: !mainCategory?.data[0]?.["_id"] }
     );
 
+  console.log("subCategories", subCategories);
+
   useEffect(() => {
     setMaleJeans(
-      subCategories?.data.find(
-        (subCategory) =>
-          subCategory.name.toLowerCase() === HomeCategory.MALE_JEANS
-      )
+      subCategories?.data.find((subCategory) => {
+        return (
+          subCategory.name[Lang.ENGLISH].toLowerCase() ===
+          HomeCategory.MALE_JEANS_EN
+        );
+      })
     );
     setFemaleJeans(
-      subCategories?.data.find(
-        (subCategory) =>
-          subCategory.name.toLowerCase() === HomeCategory.FEMALE_JEANS
-      )
+      subCategories?.data.find((subCategory) => {
+        return (
+          subCategory.name[Lang.ENGLISH].toLowerCase() ===
+          HomeCategory.FEMALE_JEANS_EN
+        );
+      })
     );
   }, [subCategories?.data]);
 

@@ -50,7 +50,6 @@ export const getAddProductServerData = (
     }
   });
 
-  console.log("data", data);
 
   Array.from(data.subCategory.en.concat(data.subCategory.ar)).forEach(
     (subCategory) => {

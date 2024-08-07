@@ -1,15 +1,18 @@
 import Image from "next/image";
 import ProductListOptions from "../ProductsList/ProductListOptions";
 import { useGetCategoryByIdQuery } from "@/lib/features/api/categoriesApi";
-import Link from "next/link";
-import { useParams } from "next/navigation";
 import Spinner from "../Spinner/Spinner";
 import ColorItem from "../ColorItem/ColorItem";
+import { useParams } from "next/navigation";
 
 const ProductCard = ({ product }) => {
   const { data: category } = useGetCategoryByIdQuery(product?.category, {
     skip: !product?.category,
   });
+
+
+  const {locale} = useParams();
+
 
   if (!product) return <Spinner />;
 
@@ -77,7 +80,7 @@ const ProductCard = ({ product }) => {
         </div>
       </div>
       <div className="bg-white flex flex-col items-center justify-center h-[9rem] gap-[1rem]">
-        <h4 className="font-normal text-[1.4rem]">{product.name}</h4>
+        <h4 className="font-normal text-[1.4rem]">{product.name.en}</h4>
         <div className="flex items-center gap-4 text-[1.6rem] font-medium">
           {!!product.discount && (
             <span className="line-through text-gray-300">

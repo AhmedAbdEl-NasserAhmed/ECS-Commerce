@@ -6,13 +6,16 @@ import Image from "next/image";
 import { useState } from "react";
 import ProductsList from "./ProductsList";
 import { useTranslations } from "next-intl";
+import { useParams } from "next/navigation";
 
 function SearchBar() {
   const [productName, setProductName] = useState<string>("");
 
+  const {locale}=useParams();
+
   const debounceValue = useDebounceHook(productName);
 
-  const { data } = useGetProductByNameQuery(debounceValue);
+  const { data } = useGetProductByNameQuery({letter:debounceValue,lang:locale});
 
   const user = useTranslations("user");
 

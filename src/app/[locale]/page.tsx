@@ -14,6 +14,7 @@ import { UserType } from "@/types/enums";
 import UserProtectedRoute from "@/ui/UserProtectedRoute/UserProtectedRoute";
 import useCookie from "@/hooks/useCookie";
 import { useTranslations } from "next-intl";
+import Spinner from "@/ui/Spinner/Spinner";
 
 function HomePage() {
   const { data, isLoading } = useGetAllProductsQuery({ limit: 6 });
@@ -26,6 +27,8 @@ function HomePage() {
   const t = useTranslations("user");
 
   useCookie("cartItems", "wishListItems");
+
+  // return <h2>as</h2>;
 
   return (
     <UserProtectedRoute>
@@ -43,7 +46,6 @@ function HomePage() {
         isLoading={isLoading}
         columns={4}
       />
-
       <TitledProductList
         title={t("Sale Products")}
         description="Mauris luctus nisi sapien tristique dignissim ornare"
@@ -53,7 +55,6 @@ function HomePage() {
       />
 
       {user && user?.role !== UserType.ADMIN && <FloatingWhatsAppComponent />}
-
       <Footer />
     </UserProtectedRoute>
   );

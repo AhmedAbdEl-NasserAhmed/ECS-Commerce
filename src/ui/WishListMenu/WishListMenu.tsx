@@ -13,7 +13,7 @@ import {
   addItemThunk,
   clearCookiesThunk,
   removeItemThunk,
-  setCookiesThunk,
+  setCookiesThunk
 } from "@/lib/features/cookieSlice/cookieSlice";
 import useImagesLoadingSpinner from "@/hooks/useImagesLoadingSpinner";
 import Spinner from "../Spinner/Spinner";
@@ -150,7 +150,7 @@ const WishListMenu = () => {
                                 href={`/${locale}/user/product/${product.slug}`}
                                 className="font-semibold capitalize"
                               >
-                                {product.name}
+                                {product.name[locale as string]}
                               </Link>
                               <div className="p-1 bg-gray-50 rounded-xl flex items-center gap-2">
                                 <div className="text-sm font-semibold text-green-500">

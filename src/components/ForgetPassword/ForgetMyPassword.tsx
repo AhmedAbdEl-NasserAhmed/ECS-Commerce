@@ -3,6 +3,7 @@
 import { useForgetPasswordMutation } from "@/lib/features/api/usersApi";
 import CustomizedTextField from "@/ui/TextField/TextField";
 import { Button } from "@mui/material";
+import { useTranslations } from "next-intl";
 import { useParams, useRouter } from "next/navigation";
 import { ChangeEvent, useState } from "react";
 import toast from "react-hot-toast";
@@ -10,6 +11,8 @@ import toast from "react-hot-toast";
 function ForgetMyPassword() {
   const { locale } = useParams();
   const router = useRouter();
+
+  const userTranslation = useTranslations("user");
 
   const [email, setEmail] = useState<string>("");
 
@@ -38,13 +41,16 @@ function ForgetMyPassword() {
       onSubmit={handleSubmit}
       className="w-[50vw] lg:w-[30vw] p-8 bg-white text-[#161616} h-96 rounded-lg text-center flex flex-col gap-12 "
     >
-      <h2 className="text-3xl capitalize font-bold"> ENTER YOUR EMAIL</h2>
+      <h2 className="text-3xl capitalize font-bold">
+        {" "}
+        {userTranslation("ENTER YOUR EMAIL")}
+      </h2>
       <CustomizedTextField
         disabled={forgetPasswordResponse.isLoading}
         value={email}
         onChange={handleChangeInput}
         type="text"
-        placeholder="ENTER YOUR EMAIL"
+        placeholder={userTranslation("ENTER YOUR EMAIL")}
       />
       <Button
         disabled={forgetPasswordResponse.isLoading}
@@ -53,14 +59,14 @@ function ForgetMyPassword() {
           fontSize: "1.2rem",
           backgroundColor: "#ed0534",
           "&:hover": {
-            backgroundColor: "#161616",
-          },
+            backgroundColor: "#161616"
+          }
         }}
         type="submit"
         variant="contained"
         size="large"
       >
-        Enter Your Email
+        {userTranslation("ENTER YOUR EMAIL")}
       </Button>
     </form>
   );

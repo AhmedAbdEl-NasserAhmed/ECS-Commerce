@@ -47,13 +47,6 @@ function ProfileMenu() {
       )}
     </div>
   );
-
-  // switch (!!token) {
-  //   case true:
-  //     return <UserMenu setIsProfileOpen={setIsProfileOpen} />;
-  //   case false:
-  //     return <GuestMenu setIsProfileOpen={setIsProfileOpen} />;
-  // }
 }
 
 export default ProfileMenu;

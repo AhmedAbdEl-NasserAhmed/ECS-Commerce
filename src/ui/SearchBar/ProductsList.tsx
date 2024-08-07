@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -7,6 +8,8 @@ function ProductsList({ data, setProductName, productName }) {
   const { locale } = useParams();
 
   const [showList, setShowList] = useState<boolean>(true);
+
+  const userTranslation = useTranslations("user");
 
   const ref = useRef(null);
 
@@ -25,7 +28,7 @@ function ProductsList({ data, setProductName, productName }) {
     const observer = new IntersectionObserver(handleObserver, {
       root: null,
       rootMargin: "0px",
-      threshold: 0,
+      threshold: 0
     });
 
     if (observer && ref.current) {
@@ -72,13 +75,17 @@ function ProductsList({ data, setProductName, productName }) {
                     />
                   </div>
                   <div className="flex flex-col gap-2">
-                    <h2 className="font-semibold">{product.name}</h2>
+                    <h2 className="font-semibold">
+                      {product.name?.[locale as string]}
+                    </h2>
                     <h2 className="font-semibold">{product.size.value}</h2>
                   </div>
                 </div>
                 <div className="flex flex-col gap-2">
                   <div>
-                    <h2 className="font-semibold">{product.price} EGP</h2>
+                    <h2 className="font-semibold">
+                      {product.price} {userTranslation("EGP")}
+                    </h2>
                   </div>
                   <ul className="flex items-center justify-center gap-2">
                     {product.colors.map((color) => {

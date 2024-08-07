@@ -16,12 +16,13 @@ import { useParams, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { clearCookiesThunk } from "@/lib/features/cookieSlice/cookieSlice";
 import { makePayment } from "@/lib/features/paymentSlice/paymentSlice";
+import { useTranslations } from "next-intl";
 
 function BillingInformation() {
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors }
   } = useForm({ mode: "onChange" });
 
   const [paymentFn, paymentResponse] = usePaymentCheckoutMutation();
@@ -32,6 +33,8 @@ function BillingInformation() {
 
   const dispatch = useAppDispatch();
 
+  const userTranslation = useTranslations("user");
+
   const cart = useAppSelector(
     (state) => state.cookieSlice.cookieItems.cartItems
   );
@@ -39,7 +42,7 @@ function BillingInformation() {
   const countries = getNames().map((country) => ({
     label: country,
     value: country,
-    color: "#666666",
+    color: "#666666"
   }));
 
   function onSubmit(data) {
@@ -61,9 +64,9 @@ function BillingInformation() {
         building: data.building,
         apartment: data.apartment,
         street: data.street,
-        floor: data.floor,
+        floor: data.floor
       },
-      cartItems: cart,
+      cartItems: cart
     })
       .unwrap()
       .then((res) => {
@@ -83,7 +86,9 @@ function BillingInformation() {
       className="p-6 bg-white shadow-md w-full lg:w-1/2 rounded-md  flex flex-col gap-8"
     >
       <div>
-        <h2 className="text-4xl font-semibold mb-5">Billings Information</h2>
+        <h2 className="text-4xl font-semibold mb-5">
+          {userTranslation("Billings Information")}
+        </h2>
         <span className="w-full h-1 block bg-[#ed0534] ">&nbsp;</span>
       </div>
       <div className="flex items-center flex-wrap md:flex-nowrap gap-8 ">
@@ -93,18 +98,20 @@ function BillingInformation() {
             control={control}
             defaultValue={""}
             rules={{
-              required: "This field is required",
+              required: userTranslation("This field is required"),
               minLength: {
                 value: 4,
-                message: "The name should be more than 4 characters ",
-              },
+                message: userTranslation(
+                  "The name should be more than 4 characters "
+                )
+              }
             }}
             render={({ field }) => (
               <CustomizedTextField
                 disabled={paymentResponse.isLoading}
                 textLabelClass={"font-semibold text-xl"}
-                placeholder={"First Name"}
-                textlabel={"First Name"}
+                placeholder={userTranslation("First Name")}
+                textlabel={userTranslation("First Name")}
                 field={field}
                 formerHelperStyles={{ style: { fontSize: "1rem" } }}
                 errors={errors}
@@ -121,18 +128,20 @@ function BillingInformation() {
             control={control}
             defaultValue={""}
             rules={{
-              required: "This field is required",
+              required: userTranslation("This field is required"),
               minLength: {
                 value: 4,
-                message: "The name should be more than 4 characters ",
-              },
+                message: userTranslation(
+                  "The name should be more than 4 characters "
+                )
+              }
             }}
             render={({ field }) => (
               <CustomizedTextField
                 disabled={paymentResponse.isLoading}
                 textLabelClass={"font-semibold text-xl"}
-                placeholder={"Last Name"}
-                textlabel={"Last Name"}
+                placeholder={userTranslation("Last Name")}
+                textlabel={userTranslation("Last Name")}
                 field={field}
                 formerHelperStyles={{ style: { fontSize: "1rem" } }}
                 errors={errors}
@@ -150,18 +159,18 @@ function BillingInformation() {
           control={control}
           defaultValue={""}
           rules={{
-            required: "Please Enter A Valid Email",
+            required: userTranslation("Please Enter A Valid Email"),
             pattern: {
               value: emailRegex,
-              message: "Please Enter Valid Email Format",
-            },
+              message: userTranslation("Please Enter Valid Email Format")
+            }
           }}
           render={({ field }) => (
             <CustomizedTextField
               disabled={paymentResponse.isLoading}
               textLabelClass={"font-semibold text-xl"}
-              placeholder={"Email Address"}
-              textlabel={"Email Address"}
+              placeholder={userTranslation("Email Address")}
+              textlabel={userTranslation("Email Address")}
               field={field}
               formerHelperStyles={{ style: { fontSize: "1rem" } }}
               errors={errors}
@@ -179,14 +188,14 @@ function BillingInformation() {
             name={"country"}
             control={control}
             defaultValue={{ label: "Egypt", value: "Egypt", color: "#666666" }}
-            rules={{ required: "This field is required" }}
+            rules={{ required: userTranslation("This field is required") }}
             render={({ field }) => (
               <MultiChoiceSelectMenu
                 disabled={false || paymentResponse.isLoading}
                 isMulti={false}
                 textLabelClass={"font-semibold text-xl"}
-                placeholder={"Select a Country "}
-                textLabel={"Country Name"}
+                placeholder={userTranslation("Select a Country")}
+                textLabel={userTranslation("Country Name")}
                 name={"country"}
                 options={countries}
                 field={field}
@@ -196,12 +205,14 @@ function BillingInformation() {
           />
         </div>
         <div className="w-full flex flex-col gap-4">
-          <label className="font-semibold text-xl">Phone Number</label>
+          <label className="font-semibold text-xl">
+            {userTranslation("Phone Number")}
+          </label>
           <Controller
             name={"phoneNumber"}
             control={control}
             defaultValue={""}
-            rules={{ required: "This field is required" }}
+            rules={{ required: userTranslation("This field is required") }}
             render={({ field }) => (
               <PhoneInput
                 disabled={paymentResponse.isLoading}
@@ -209,12 +220,12 @@ function BillingInformation() {
                 value={field.value}
                 onChange={field.onChange}
                 inputStyle={{
-                  width: "100%",
+                  width: "100%"
                 }}
                 inputProps={{
                   name: "phoneNumber",
                   required: true,
-                  autoFocus: true,
+                  autoFocus: true
                 }}
               />
             )}
@@ -231,13 +242,13 @@ function BillingInformation() {
             name={"city"}
             control={control}
             defaultValue={""}
-            rules={{ required: "This field is required" }}
+            rules={{ required: userTranslation("This field is required") }}
             render={({ field }) => (
               <CustomizedTextField
                 disabled={paymentResponse.isLoading}
                 textLabelClass={"font-semibold text-xl"}
-                placeholder={"City"}
-                textlabel={"City"}
+                placeholder={userTranslation("City")}
+                textlabel={userTranslation("City")}
                 field={field}
                 formerHelperStyles={{ style: { fontSize: "1rem" } }}
                 errors={errors}
@@ -253,13 +264,13 @@ function BillingInformation() {
             name={"apartment"}
             control={control}
             defaultValue={""}
-            rules={{ required: "This field is required" }}
+            rules={{ required: userTranslation("This field is required") }}
             render={({ field }) => (
               <CustomizedTextField
                 disabled={paymentResponse.isLoading}
                 textLabelClass={"font-semibold text-xl"}
-                placeholder={"Apartment"}
-                textlabel={"Apartment"}
+                placeholder={userTranslation("Apartment")}
+                textlabel={userTranslation("Apartment")}
                 field={field}
                 formerHelperStyles={{ style: { fontSize: "1rem" } }}
                 errors={errors}
@@ -278,13 +289,13 @@ function BillingInformation() {
             name={"building"}
             control={control}
             defaultValue={""}
-            rules={{ required: "This field is required" }}
+            rules={{ required: userTranslation("This field is required") }}
             render={({ field }) => (
               <CustomizedTextField
                 disabled={paymentResponse.isLoading}
                 textLabelClass={"font-semibold text-xl"}
-                placeholder={"Building"}
-                textlabel={"Building"}
+                placeholder={userTranslation("Building")}
+                textlabel={userTranslation("Building")}
                 field={field}
                 formerHelperStyles={{ style: { fontSize: "1rem" } }}
                 errors={errors}
@@ -300,13 +311,13 @@ function BillingInformation() {
             name={"street"}
             control={control}
             defaultValue={""}
-            rules={{ required: "This field is required" }}
+            rules={{ required: userTranslation("This field is required") }}
             render={({ field }) => (
               <CustomizedTextField
                 disabled={paymentResponse.isLoading}
                 textLabelClass={"font-semibold text-xl"}
-                placeholder={"Street"}
-                textlabel={"Street"}
+                placeholder={userTranslation("Street")}
+                textlabel={userTranslation("Street")}
                 field={field}
                 formerHelperStyles={{ style: { fontSize: "1rem" } }}
                 errors={errors}
@@ -322,13 +333,13 @@ function BillingInformation() {
             name={"floor"}
             control={control}
             defaultValue={""}
-            rules={{ required: "This field is required" }}
+            rules={{ required: userTranslation("This field is required") }}
             render={({ field }) => (
               <CustomizedTextField
                 disabled={paymentResponse.isLoading}
                 textLabelClass={"font-semibold text-xl"}
-                placeholder={"Floor"}
-                textlabel={"Floor"}
+                placeholder={userTranslation("Floor")}
+                textlabel={userTranslation("Floor")}
                 field={field}
                 formerHelperStyles={{ style: { fontSize: "1rem" } }}
                 errors={errors}
@@ -348,14 +359,18 @@ function BillingInformation() {
           fontSize: "1.2rem",
           backgroundColor: "#ed0534",
           "&:hover": {
-            backgroundColor: "#141414",
-          },
+            backgroundColor: "#141414"
+          }
         }}
         type="submit"
         variant="contained"
         size="large"
       >
-        {paymentResponse.isLoading ? <MiniSpinner /> : "Place Order"}
+        {paymentResponse.isLoading ? (
+          <MiniSpinner />
+        ) : (
+          userTranslation("Place Order")
+        )}
       </Button>
     </form>
   );

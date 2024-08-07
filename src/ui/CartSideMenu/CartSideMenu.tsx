@@ -3,7 +3,7 @@ import useImagesLoadingSpinner from "@/hooks/useImagesLoadingSpinner";
 import {
   clearCookiesThunk,
   removeItemThunk,
-  setCookiesThunk,
+  setCookiesThunk
 } from "@/lib/features/cookieSlice/cookieSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { UserType } from "@/types/enums";
@@ -70,7 +70,7 @@ function CartSideMenu({ setOpenSideMenu, openSideMenu, setOpens }) {
                 incrementQuantityProduct.maxQuantity !==
                 incrementQuantityProduct.quantity
                   ? incrementQuantityProduct.quantity + 1
-                  : incrementQuantityProduct.quantity,
+                  : incrementQuantityProduct.quantity
             }
           : incrementQuantityProduct
       );
@@ -91,7 +91,7 @@ function CartSideMenu({ setOpenSideMenu, openSideMenu, setOpens }) {
             quantity:
               incrementQuantityProduct.quantity !== 1
                 ? incrementQuantityProduct.quantity - 1
-                : incrementQuantityProduct.quantity,
+                : incrementQuantityProduct.quantity
           }
         : incrementQuantityProduct
     );
@@ -159,7 +159,7 @@ function CartSideMenu({ setOpenSideMenu, openSideMenu, setOpens }) {
                         {/* TITLE */}
                         <div className="flex items-center justify-between gap-8 text-black">
                           <h3 className="font-semibold capitalize">
-                            {product.name}
+                            {product.name?.[locale as string]}
                           </h3>
                           <div className="p-1 bg-gray-50 rounded-xl flex items-center gap-2">
                             {true && (

@@ -103,7 +103,7 @@ function LandingPageMenu() {
                 onClick={() => setOpens(false)}
                 href={`/${locale}/admin/dashboard`}
               >
-                <span>Dashboard</span>
+                <span>{userTranslation("Dashboard")}</span>
               </Link>
             </li>
           )}
@@ -180,7 +180,7 @@ function LandingPageMenu() {
                     cartItems({
                       user: user["_id"],
                       cartItems: cart,
-                      wishListItems: wishList,
+                      wishListItems: wishList
                     });
                   }
 
@@ -191,7 +191,7 @@ function LandingPageMenu() {
                   dispatch(clearCookiesThunk("cartItems"));
                   dispatch(clearCookiesThunk("wishListItems"));
                   router.replace(`/${locale}`);
-                  toast.success("Do Not Be Late");
+                  toast.success(userTranslation("See you soon"));
                   setOpens(false);
                 }}
               >

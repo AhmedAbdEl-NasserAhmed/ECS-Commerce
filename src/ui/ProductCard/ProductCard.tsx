@@ -4,15 +4,16 @@ import { useGetCategoryByIdQuery } from "@/lib/features/api/categoriesApi";
 import Spinner from "../Spinner/Spinner";
 import ColorItem from "../ColorItem/ColorItem";
 import { useParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 const ProductCard = ({ product }) => {
   const { data: category } = useGetCategoryByIdQuery(product?.category, {
-    skip: !product?.category,
+    skip: !product?.category
   });
 
+  const { locale } = useParams();
 
-  const {locale} = useParams();
-
+  const userTranslation = useTranslations("user");
 
   if (!product) return <Spinner />;
 
@@ -20,7 +21,7 @@ const ProductCard = ({ product }) => {
     <div
       className=""
       style={{
-        boxShadow: "0px 3px 15px 0px #0000000f",
+        boxShadow: "0px 3px 15px 0px #0000000f"
       }}
     >
       <div className="relative w-full group overflow-hidden h-[40rem]">
@@ -56,11 +57,11 @@ const ProductCard = ({ product }) => {
           flex flex-col gap-2 text-center uppercase"
         >
           <div className="bg-[green] py-[.3rem] px-[.8rem] rounded">
-            {category?.data?.name}
+            {category?.data?.name[locale as string]}
           </div>
           {!!product.discount && (
             <div className="bg-[#f1c40f] py-[.3rem] px-[.8rem] rounded transition-all duration-500">
-              Sale
+              {userTranslation("Sale")}
             </div>
           )}
         </div>
@@ -69,7 +70,7 @@ const ProductCard = ({ product }) => {
           className="absolute z-20 transition-all duration-500 -bottom-[5rem] group-hover:bottom-[1rem]"
           style={{
             left: "50%",
-            transform: "translateX(-50%)",
+            transform: "translateX(-50%)"
           }}
         >
           <div className="flex gap-2">
@@ -80,14 +81,18 @@ const ProductCard = ({ product }) => {
         </div>
       </div>
       <div className="bg-white flex flex-col items-center justify-center h-[9rem] gap-[1rem]">
-        <h4 className="font-normal text-[1.4rem]">{product.name.en}</h4>
+        <h4 className="font-normal text-[1.4rem]">
+          {product.name?.[locale as string]}
+        </h4>
         <div className="flex items-center gap-4 text-[1.6rem] font-medium">
           {!!product.discount && (
             <span className="line-through text-gray-300">
-              {`${product.price} EGP`}
+              {`${product.price} ${userTranslation("EGP")}`}
             </span>
           )}
-          <span className="">{`${product.saleProduct} EGP`}</span>
+          <span className="">{`${product.saleProduct} ${userTranslation(
+            "EGP"
+          )}`}</span>
         </div>
       </div>
     </div>

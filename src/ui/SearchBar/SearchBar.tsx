@@ -11,11 +11,14 @@ import { useParams } from "next/navigation";
 function SearchBar() {
   const [productName, setProductName] = useState<string>("");
 
-  const {locale}=useParams();
+  const { locale } = useParams();
 
   const debounceValue = useDebounceHook(productName);
 
-  const { data } = useGetProductByNameQuery({letter:debounceValue,lang:locale});
+  const { data } = useGetProductByNameQuery({
+    letter: debounceValue,
+    lang: locale
+  });
 
   const user = useTranslations("user");
 

@@ -15,7 +15,7 @@ import useImagesLoadingSpinner from "@/hooks/useImagesLoadingSpinner";
 import {
   initialState,
   ProductViewActions,
-  reducerFn,
+  reducerFn
 } from "./adminProductViewReducer";
 import BaseContainer from "@/ui/Container/BaseContainer";
 import { useGetProductReviewsQuery } from "@/lib/features/api/reviewsApi";
@@ -38,7 +38,7 @@ function ProductDetails() {
 
   const { data: mainCategory, isLoading: mainCategoryLoading } =
     useGetCategoryByIdQuery(productState.selectedProduct?.category, {
-      skip: !productState.selectedProduct?.category,
+      skip: !productState.selectedProduct?.category
     });
 
   const { data: reviews, isFetching: loadingReview } =
@@ -46,7 +46,7 @@ function ProductDetails() {
       {
         id: productState?.selectedProduct?.productId,
         sort,
-        page,
+        page
       },
       { skip: !productState?.selectedProduct?.productId }
     );
@@ -65,7 +65,7 @@ function ProductDetails() {
     const selectedIndex = event.target.selectedIndex;
 
     action(ProductViewActions.SET_CURRENT_PRODUCT_INDEX, {
-      value: selectedIndex,
+      value: selectedIndex
     });
 
     action(ProductViewActions.SET_SELECTED_COLOR, {
@@ -73,8 +73,8 @@ function ProductDetails() {
         color: "",
         label: "",
         value: "",
-        quantity: 0,
-      },
+        quantity: 0
+      }
     });
 
     action(ProductViewActions.SET_PRODUCT_QUANTITY, { value: 1 });
@@ -82,13 +82,13 @@ function ProductDetails() {
 
   useEffect(() => {
     action(ProductViewActions.SET_PRODUCT, {
-      value: data?.data?.products[productState.currentProductIndex],
+      value: data?.data?.products[productState.currentProductIndex]
     });
   }, [data?.data?.products, productState.currentProductIndex]);
 
   useEffect(() => {
     action(ProductViewActions.SET_SELECTED_COLOR, {
-      value: productState?.selectedProduct?.colors?.[0],
+      value: productState?.selectedProduct?.colors?.[0]
     });
   }, [productState?.selectedProduct?.colors]);
 
@@ -97,7 +97,7 @@ function ProductDetails() {
       value:
         reviews?.data?.reduce((acc, review) => {
           return acc + review.ratings;
-        }, 0) / reviews?.data?.length,
+        }, 0) / reviews?.data?.length
     });
   }, [reviews?.data, reviews?.data.length]);
 
@@ -113,7 +113,7 @@ function ProductDetails() {
                 <Box
                   onClick={() =>
                     action(ProductViewActions.SET_IMAGE_INDEX, {
-                      value: index,
+                      value: index
                     })
                   }
                   className={`${
@@ -214,10 +214,10 @@ function ProductDetails() {
                   <div
                     onClick={() => {
                       action(ProductViewActions.SET_SELECTED_COLOR, {
-                        value: color,
+                        value: color
                       });
                       action(ProductViewActions.SET_PRODUCT_QUANTITY, {
-                        value: 1,
+                        value: 1
                       });
                     }}
                     key={color.value}
@@ -248,8 +248,8 @@ function ProductDetails() {
                   productId={productState?.selectedProduct?.productId}
                   reviews={reviews?.data}
                 />
-              ),
-            },
+              )
+            }
           ]}
         />
         {reviews?.data?.length > 0 && (
@@ -268,8 +268,8 @@ function ProductDetails() {
             fontSize: "1.2rem",
             backgroundColor: "#ed0534",
             "&:hover": {
-              backgroundColor: "#161616",
-            },
+              backgroundColor: "#161616"
+            }
           }}
           type="button"
           variant="contained"

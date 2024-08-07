@@ -5,34 +5,34 @@ import { OrderStatusEnum } from "@/types/enums";
 import OrderStatus from "@/ui/OrderStatus/OrderStatus";
 import Image from "next/image";
 
-export const useOrderHeaders = () => {
+export const useOrderHeaders = (userTranslation) => {
   return [
     {
       id: "transaction_id",
-      header: () => "Transaction Id",
-      accessorKey: "transaction_id",
+      header: () => userTranslation("Transaction Id"),
+      accessorKey: "transaction_id"
     },
 
     {
       id: "orderPrice",
-      header: () => "Total Price",
+      header: () => userTranslation("Total Price"),
       accessorKey: "orderPrice",
       cell: ({
         cell: {
-          row: { original },
-        },
+          row: { original }
+        }
       }) => {
         return formatCurrency(original.orderPrice);
-      },
+      }
     },
 
     {
       id: "billingData",
-      header: () => "  Name",
+      header: () => userTranslation("First Name"),
       cell: ({
         cell: {
-          row: { original },
-        },
+          row: { original }
+        }
       }) => (
         <div style={{ gap: "10px" }} className="flex justify-center">
           {original?.billingData.map((data) => {
@@ -43,16 +43,16 @@ export const useOrderHeaders = () => {
             );
           })}
         </div>
-      ),
+      )
     },
 
     {
       id: "billingData",
-      header: () => "  Phone Number",
+      header: () => userTranslation("Phone Number"),
       cell: ({
         cell: {
-          row: { original },
-        },
+          row: { original }
+        }
       }) => (
         <div style={{ gap: "10px" }} className="flex justify-center">
           {original?.billingData.map((data) => {
@@ -63,29 +63,29 @@ export const useOrderHeaders = () => {
             );
           })}
         </div>
-      ),
+      )
     },
 
     {
       id: "orderStatus",
-      header: () => <div>{"order status"}</div>,
+      header: () => <div> {userTranslation("order status")}</div>,
       cell: ({
         cell: {
-          row: { original },
-        },
+          row: { original }
+        }
       }) => {
         return <OrderStatus status={OrderStatusEnum[original.orderStatus]} />;
-      },
+      }
     },
 
     {
       id: "actions",
-      header: () => "Actions",
+      header: () => userTranslation("Actions"),
       cell: ({
         cell: {
-          row: { original },
-        },
-      }) => <UserOrdersOptions order={original} />,
-    },
+          row: { original }
+        }
+      }) => <UserOrdersOptions order={original} />
+    }
   ];
 };

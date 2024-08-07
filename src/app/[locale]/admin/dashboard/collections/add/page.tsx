@@ -3,7 +3,7 @@ import useDebounceHook from "@/hooks/useDebounceHook";
 import useThrottle from "@/hooks/useThrottle";
 import {
   useGetAllCategoriesQuery,
-  useGetCategoryQuery,
+  useGetCategoryQuery
 } from "@/lib/features/api/categoriesApi";
 import { useAddSubCategoryMutation } from "@/lib/features/api/subCategoriesApi";
 import { Lang } from "@/types/enums";
@@ -17,11 +17,11 @@ import {
   Button,
   FormControlLabel,
   Switch,
-  Typography,
+  Typography
 } from "@mui/material";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -33,15 +33,17 @@ function AddSubCategoriesPage() {
     control,
     reset,
     watch,
-    formState: { errors },
+    formState: { errors }
   } = useForm<AdminSubCategory>({
-    mode: "onChange",
+    mode: "onChange"
   });
 
   const t = useTranslations("Dashboard");
 
   const formData = watch();
+  const { locale } = useParams();
 
+  const router = useRouter();
 
   const [smartSeachvalue, setSmartSeachValue] = useState<{
     id: string;
@@ -58,7 +60,7 @@ function AddSubCategoriesPage() {
 
   const { data, isLoading, isFetching } = useGetCategoryQuery({
     letter: debounceValue,
-    lang,
+    lang
   });
 
   const { data: AllCategories } = useGetAllCategoriesQuery("categories");
@@ -85,7 +87,7 @@ function AddSubCategoriesPage() {
     addSubCategoryFn({
       name: formData.name,
       description: formData.description,
-      category: smartSeachvalue["_id"],
+      category: smartSeachvalue["_id"]
     })
       .unwrap()
       .then((res) => {
@@ -93,9 +95,10 @@ function AddSubCategoriesPage() {
           toast.success("A New Collection Added");
           setSmartSeachValue({
             id: "",
-            name: "",
+            name: ""
           });
           setIsChecked(false);
+          router.replace(`/${locale}/admin/dashboard/collections`);
           reset();
         }
       })
@@ -105,7 +108,6 @@ function AddSubCategoriesPage() {
         }
       });
   }
-
 
   // return <h1>Hello</h1>;
 
@@ -122,7 +124,7 @@ function AddSubCategoriesPage() {
           alignItems: "center",
           fontSize: "4rem",
           textAlign: "center",
-          flexDirection: "column",
+          flexDirection: "column"
         }}
       >
         {t("No categories yet, please add a new category")}{" "}
@@ -177,13 +179,13 @@ function AddSubCategoriesPage() {
                   "& .MuiSwitch-switchBase.Mui-checked": {
                     color: "red",
                     "& + .MuiSwitch-track": {
-                      backgroundColor: "#ed0534",
-                    },
+                      backgroundColor: "#ed0534"
+                    }
                   },
                   "& .MuiSwitch-track": {
                     backgroundColor: "#161616",
-                    opacity: 1,
-                  },
+                    opacity: 1
+                  }
                 }}
               />
             }
@@ -208,7 +210,7 @@ function AddSubCategoriesPage() {
                 validate(value) {
                   if (!allCategories?.includes(value))
                     return "You Have to choose from available categories";
-                },
+                }
               }}
               render={({ field }) => (
                 <SmartSearchInput
@@ -239,7 +241,7 @@ function AddSubCategoriesPage() {
                 validate(value) {
                   if (!allCategories?.includes(value))
                     return "You Have to choose from available categories";
-                },
+                }
               }}
               render={({ field }) => (
                 <SmartSearchInput
@@ -325,11 +327,11 @@ function AddSubCategoriesPage() {
                   rows={6}
                   sx={{
                     "& .MuiInputBase-input": {
-                      fontSize: "1.4rem",
+                      fontSize: "1.4rem"
                     },
                     "& .MuiInputBase-inputMultiline": {
-                      fontSize: "1.4rem",
-                    },
+                      fontSize: "1.4rem"
+                    }
                   }}
                 />
               )}
@@ -356,11 +358,11 @@ function AddSubCategoriesPage() {
                   rows={6}
                   sx={{
                     "& .MuiInputBase-input": {
-                      fontSize: "1.4rem",
+                      fontSize: "1.4rem"
                     },
                     "& .MuiInputBase-inputMultiline": {
-                      fontSize: "1.4rem",
-                    },
+                      fontSize: "1.4rem"
+                    }
                   }}
                 />
               )}
@@ -380,8 +382,8 @@ function AddSubCategoriesPage() {
                 boxShadow: "none",
                 "&:hover": {
                   backgroundColor: "black",
-                  boxShadow: "none",
-                },
+                  boxShadow: "none"
+                }
               }}
               type="submit"
               variant="contained"

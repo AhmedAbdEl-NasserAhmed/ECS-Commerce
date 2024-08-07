@@ -3,11 +3,11 @@
 import useDebounceHook from "@/hooks/useDebounceHook";
 import {
   useGetAllCategoriesQuery,
-  useGetCategoryQuery,
+  useGetCategoryQuery
 } from "@/lib/features/api/categoriesApi";
 import {
   useGetSingleProductByIDQuery,
-  useUpdateSingleProductMutation,
+  useUpdateSingleProductMutation
 } from "@/lib/features/api/productsApi";
 import { useGetSubCategoryQuery } from "@/lib/features/api/subCategoriesApi";
 import { getAddProductServerData, getSumFrom } from "@/lib/helpers";
@@ -27,7 +27,7 @@ import {
   FormControlLabel,
   Stack,
   Switch,
-  Typography,
+  Typography
 } from "@mui/material";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
@@ -55,16 +55,12 @@ function EditProduct() {
     reset,
     watch,
     setValue,
-    formState: { errors, dirtyFields },
+    formState: { errors, dirtyFields }
   } = useForm<AdminProductProps>({
-    mode: "onChange",
+    mode: "onChange"
   });
 
   const formData = watch();
-
-  console.log("formData",formData)
-
-
 
   const [updateProductFn, updateProductResponse] =
     useUpdateSingleProductMutation();
@@ -74,7 +70,7 @@ function EditProduct() {
     name: "";
   }>({
     id: "",
-    name: "",
+    name: ""
   });
 
   const [smartSeachSubCategoryvalue, setSmartSeachSubCategoryValue] =
@@ -92,7 +88,7 @@ function EditProduct() {
     useGetCategoryQuery(
       { letter: mainCategorydebounceValue, lang },
       {
-        skip: !mainCategorydebounceValue,
+        skip: !mainCategorydebounceValue
       }
     );
 
@@ -101,7 +97,7 @@ function EditProduct() {
       {
         letter: subCategorydebounceValue,
         lang,
-        categoryId: smartSeachvalue["_id"],
+        categoryId: smartSeachvalue["_id"]
       },
       { skip: !subCategorydebounceValue }
     );
@@ -115,7 +111,7 @@ function EditProduct() {
           if (image) {
             images[`image-${i + 1}`] = {
               url: image?.url,
-              id: image?.id,
+              id: image?.id
             };
           }
         }
@@ -185,26 +181,26 @@ function EditProduct() {
         reset({
           category: {
             en: "",
-            ar: "",
+            ar: ""
           },
           name: {
             en: "",
-            ar: "",
+            ar: ""
           },
           price: 0,
           description: {
             en: "",
-            ar: "",
+            ar: ""
           },
           colors: [],
           images: {},
           subCategory: {
             en: "",
-            ar: "",
+            ar: ""
           },
           quantity: 0,
           size: [],
-          discount: 0,
+          discount: 0
         });
       })
       .catch((err) => {
@@ -213,9 +209,6 @@ function EditProduct() {
   }
 
   const noCategoriesYet = AllCategories?.data?.length === 0;
-
-  const isCategoryDirty = dirtyFields[`category`];
-
 
   if (noCategoriesYet) {
     return (
@@ -227,7 +220,7 @@ function EditProduct() {
           alignItems: "center",
           fontSize: "4rem",
           textAlign: "center",
-          flexDirection: "column",
+          flexDirection: "column"
         }}
       >
         {t("No categories yet, please add a new category")}{" "}
@@ -246,9 +239,12 @@ function EditProduct() {
     return getSumFrom(formData["colors"], formData["colors-quantity"]);
   };
 
+  console.log("lang", lang);
+
+  console.log("productDetails", productDetails);
+
   if (!AllCategories || !productDetails || !currentProduct.colors)
     return <Spinner />;
-
 
   return (
     <form
@@ -291,14 +287,15 @@ function EditProduct() {
                   validate(value) {
                     if (
                       isMainCategoryIncluded &&
+                      lang === Lang.ENGLISH &&
                       !allCategories?.includes(value)
                     )
                       return "You Have to choose from available categories";
-                  },
+                  }
                 }}
                 render={({ field }) => (
                   <SmartSearchInput
-                    lang={lang}
+                    lang={Lang.ENGLISH}
                     errors={errors?.["category"]?.["en"]}
                     defaultValue={""}
                     isFetching={isFetchingMainCategory}
@@ -313,7 +310,7 @@ function EditProduct() {
                     placeholder={t("main category placeholder")}
                     name={field.name}
                     onChange={field.onChange}
-                    value={productDetails?.data?.category} // ###
+                    value={productDetails?.data?.category}
                   />
                 )}
               />
@@ -324,17 +321,17 @@ function EditProduct() {
                 defaultValue={""}
                 render={({ field }) => (
                   <SmartSearchMultipleInput
-                    lang={lang}
+                    lang={Lang.ENGLISH}
                     isFetching={isFetchingSubCategories}
                     existedItems={productDetails?.data.subCategory}
                     shouldReset={
                       updateProductResponse.isSuccess ||
-                      (formData.category?.[lang] === "" &&
-                        smartSeachvalue.name === "")
+                      (formData.category?.[Lang.ENGLISH] === "" &&
+                        smartSeachvalue.name?.[Lang.ENGLISH] === "")
                     }
                     disabled={
                       updateProductResponse.isLoading ||
-                      smartSeachvalue.name === "" ||
+                      smartSeachvalue.name?.[Lang.ENGLISH] === "" ||
                       isFetchingSubCategories
                     }
                     getSmartSearchValue={setSmartSeachSubCategoryValue}
@@ -376,7 +373,7 @@ function EditProduct() {
                   defaultValue={currentProduct?.colors}
                   control={control}
                   rules={{
-                    required: "This field is required",
+                    required: "This field is required"
                   }}
                   render={({ field }) => (
                     <BaseColorPicker
@@ -410,7 +407,7 @@ function EditProduct() {
                           height: "30px",
                           background: color.value,
                           borderRadius: "50%",
-                          border: "1px solid #000",
+                          border: "1px solid #000"
                         }}
                       ></Box>
                       <Controller
@@ -421,8 +418,8 @@ function EditProduct() {
                           required: "This field is required",
                           min: {
                             value: 1,
-                            message: "Quantity should be more than 1",
-                          },
+                            message: "Quantity should be more than 1"
+                          }
                         }}
                         render={({ field }) => (
                           <CustomizedTextField
@@ -431,7 +428,7 @@ function EditProduct() {
                             placeholder={t("quantity")}
                             field={field}
                             formerHelperStyles={{
-                              style: { fontSize: "1rem" },
+                              style: { fontSize: "1rem" }
                             }}
                             // errors={errors}
                             customError={
@@ -441,7 +438,7 @@ function EditProduct() {
                             variant={"outlined"}
                             size={"small"}
                             mainContainerSx={{
-                              width: "8rem",
+                              width: "8rem"
                             }}
                           />
                         )}
@@ -471,7 +468,7 @@ function EditProduct() {
                       { value: "L", label: "L", color: "#666666" },
                       { value: "Xl", label: "Xl", color: "#666666" },
                       { value: "XXl", label: "XXl", color: "#666666" },
-                      { value: "XXXl", label: "XXXl", color: "#666666" },
+                      { value: "XXXl", label: "XXXl", color: "#666666" }
                     ]}
                     field={field}
                     errors={errors}
@@ -487,8 +484,8 @@ function EditProduct() {
                   required: "This field is required",
                   min: {
                     value: 1,
-                    message: "Quantity should be more than 1",
-                  },
+                    message: "Quantity should be more than 1"
+                  }
                 }}
                 render={({ field }) => (
                   <CustomizedTextField
@@ -515,8 +512,8 @@ function EditProduct() {
                   required: "This field is required",
                   min: {
                     value: 1,
-                    message: "The Price should be more than 1 ",
-                  },
+                    message: "The Price should be more than 1 "
+                  }
                 }}
                 render={({ field }) => (
                   <CustomizedTextField
@@ -541,12 +538,12 @@ function EditProduct() {
                 rules={{
                   min: {
                     value: 0,
-                    message: "This field should be more than 0 ",
+                    message: "This field should be more than 0 "
                   },
                   max: {
                     value: 99,
-                    message: "This field should be less than 100 % ",
-                  },
+                    message: "This field should be less than 100 % "
+                  }
                 }}
                 render={({ field }) => (
                   <CustomizedTextField
@@ -569,7 +566,7 @@ function EditProduct() {
                 defaultValue={0}
                 control={control}
                 rules={{
-                  required: "This field is required",
+                  required: "This field is required"
                 }}
                 render={({ field }) => (
                   <CustomizedTextField
@@ -609,11 +606,11 @@ function EditProduct() {
                       rows={6}
                       sx={{
                         "& .MuiInputBase-input": {
-                          fontSize: "1.4rem",
+                          fontSize: "1.4rem"
                         },
                         "& .MuiInputBase-inputMultiline": {
-                          fontSize: "1.4rem",
-                        },
+                          fontSize: "1.4rem"
+                        }
                       }}
                     />
                   )}
@@ -651,9 +648,7 @@ function EditProduct() {
                 defaultValue={""}
                 render={({ field }) => (
                   <SmartSearchMultipleInput
-                    onFocus={() => 
-                      setLang(Lang.ARABIC)
-                    }
+                    onFocus={() => setLang(Lang.ARABIC)}
                     onBlur={() => setLang(Lang.ENGLISH)}
                     lang={Lang.ARABIC}
                     isFetching={isFetchingSubCategories}
@@ -665,7 +660,7 @@ function EditProduct() {
                     }
                     disabled={
                       updateProductResponse.isLoading ||
-                      smartSeachvalue.name === "" ||
+                      smartSeachvalue.name?.[Lang.ARABIC] === "" ||
                       isFetchingSubCategories
                     }
                     getSmartSearchValue={setSmartSeachSubCategoryValue}
@@ -687,7 +682,7 @@ function EditProduct() {
                   validate(value) {
                     if (lang === Lang.ARABIC && !allCategories?.includes(value))
                       return "يجب ان تختار من الأقسام المتاحه";
-                  },
+                  }
                 }}
                 render={({ field }) => (
                   <SmartSearchInput
@@ -736,11 +731,11 @@ function EditProduct() {
                       rows={6}
                       sx={{
                         "& .MuiInputBase-input": {
-                          fontSize: "1.4rem",
+                          fontSize: "1.4rem"
                         },
                         "& .MuiInputBase-inputMultiline": {
-                          fontSize: "1.4rem",
-                        },
+                          fontSize: "1.4rem"
+                        }
                       }}
                     />
                   )}
@@ -772,8 +767,8 @@ function EditProduct() {
             boxShadow: "none",
             "&:hover": {
               backgroundColor: "black",
-              boxShadow: "none",
-            },
+              boxShadow: "none"
+            }
           }}
           type="submit"
           variant="contained"

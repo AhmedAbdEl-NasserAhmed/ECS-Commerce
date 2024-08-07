@@ -1,4 +1,8 @@
+import { useTranslations } from "next-intl";
+
 function ReviewsSorting({ handleSortChange }) {
+  const userTranslation = useTranslations("user");
+
   return (
     <div className="absolute top-0 end-0">
       <select
@@ -6,9 +10,9 @@ function ReviewsSorting({ handleSortChange }) {
         className="mt-5 lg:mt-0 py-2 px-4 rounded-2xl text-lg font-medium bg-white ring-1 ring-gray-400 w-full"
         onChange={handleSortChange}
       >
-        <option value="">Sort By</option>
-        <option value="-createdAt">Newest</option>
-        <option value="createdAt">Oldest</option>
+        <option value="">{userTranslation("Sort By")}</option>
+        <option value="-createdAt">{userTranslation("Newest")}</option>
+        <option value="createdAt">{userTranslation("Oldest")}</option>
       </select>
     </div>
   );

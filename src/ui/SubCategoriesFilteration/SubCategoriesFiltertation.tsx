@@ -5,7 +5,7 @@ import {
   usePathname,
   useSearchParams,
   useRouter,
-  useParams,
+  useParams
 } from "next/navigation";
 
 import { ChangeEvent, useEffect, useState } from "react";
@@ -14,6 +14,8 @@ function SubCategoriesFiltertation() {
   const [filtredSubCategories, setFiltredSubCategories] = useState<string[]>(
     []
   );
+
+  const { locale } = useParams();
 
   const [subCategories, setSubCategories] = useState<string[]>([]);
 
@@ -83,13 +85,13 @@ function SubCategoriesFiltertation() {
                 ? "#ed0534"
                 : "",
               color: isActiveSubCategory(subCategory["_id"]) ? "white" : "",
-              outline: "1px solid #161616",
+              outline: "1px solid #161616"
             }}
             onClick={() => {
               handleAddSubCategoryToParams(subCategory["_id"]);
             }}
           >
-            {subCategory.name}
+            {subCategory.name?.[locale as string]}
           </div>
         );
       })}

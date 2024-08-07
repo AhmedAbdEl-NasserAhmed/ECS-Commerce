@@ -4,11 +4,12 @@ import useImagesLoadingSpinner from "@/hooks/useImagesLoadingSpinner";
 import {
   addItemThunk,
   clearCookiesThunk,
-  removeItemThunk,
+  removeItemThunk
 } from "@/lib/features/cookieSlice/cookieSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { WishListItemProps } from "@/types/types";
 import Spinner from "@/ui/Spinner/Spinner";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -22,6 +23,8 @@ function WishListItem({ wishListItem }: Props) {
   const { locale } = useParams();
 
   const { isLoadingImages, setIsLoadingImages } = useImagesLoadingSpinner();
+
+  const userTranslation = useTranslations("user");
 
   const cart = useAppSelector(
     (state) => state.cookieSlice.cookieItems.cartItems
@@ -100,7 +103,7 @@ function WishListItem({ wishListItem }: Props) {
                     href={`/${locale}/user/product/${wishListItem.slug}`}
                     className="font-semibold capitalize"
                   >
-                    {wishListItem.name}
+                    {wishListItem.name?.[locale as string]}
                   </Link>
                   <div className="p-1 bg-gray-50 rounded-xl flex items-center gap-2">
                     <div className="text-lg font-semibold text-green-500">
@@ -113,10 +116,10 @@ function WishListItem({ wishListItem }: Props) {
                 {/* DESC */}
                 <div className="flex justify-between  gap-4">
                   <div className="text-xl text-gray-500">
-                    Size: {wishListItem.size}
+                    {userTranslation("Size")}: {wishListItem.size}
                   </div>
                   <div className=" flex items-center gap-4 text-xl  text-gray-500">
-                    <span>Color: </span>
+                    <span> {userTranslation("Color")} : </span>
                     <span
                       className=" w-5 h-5 rounded-full"
                       style={{ backgroundColor: wishListItem.color }}
@@ -133,13 +136,13 @@ function WishListItem({ wishListItem }: Props) {
               onClick={() => addToCartHandler(wishListItem)}
               className="p-3 bg-black text-white rounded-lg"
             >
-              Add To cart
+              {userTranslation("Add To cart")}
             </button>
             <button
               onClick={() => handleDeleteProduct(wishListItem)}
               className="text-blue-500 text-xl cursor-pointer"
             >
-              Remove
+              {userTranslation("Remove")}
             </button>
           </div>
         </div>

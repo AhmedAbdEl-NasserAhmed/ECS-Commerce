@@ -1,22 +1,25 @@
+import { useParams } from "next/navigation";
 import styles from "./ProductDetailsTable.module.scss";
 
-function ProductDetailsTable({ cart, totalCartItems }) {
+function ProductDetailsTable({ userTranslation, cart, totalCartItems }) {
+  const { locale } = useParams();
+
   return (
     <table className={styles.table}>
       <thead>
         <tr>
-          <th>Product</th>
-          <th>Quantity</th>
-          <th>Size</th>
-          <th>Color</th>
-          <th>TOTAL</th>
+          <th>{userTranslation("Product Name")}</th>
+          <th>{userTranslation("Quantity")}</th>
+          <th>{userTranslation("Size")}</th>
+          <th>{userTranslation("Color")}</th>
+          <th>{userTranslation("Total")}</th>
         </tr>
       </thead>
       <tbody>
         {cart.map((product) => {
           return (
             <tr key={product.cartItemId}>
-              <td>{product.name}</td>
+              <td>{product.name?.[locale as string]}</td>
               <td> {product.quantity}</td>
               <td>{product.size}</td>
               <td>
@@ -25,18 +28,23 @@ function ProductDetailsTable({ cart, totalCartItems }) {
                   style={{ backgroundColor: product.color }}
                 ></span>
               </td>
-              <td>{product.quantity * product.price} EGP</td>
+              <td>
+                {product.quantity * product.price} {userTranslation("EGP")}
+              </td>
             </tr>
           );
         })}
       </tbody>
       <tfoot>
         <tr>
-          <td>TOTAL</td>
+          <td>{userTranslation("Total")}</td>
           <td></td>
           <td></td>
           <td></td>
-          <td> {Math.ceil(totalCartItems)} EGP</td>
+          <td>
+            {" "}
+            {Math.ceil(totalCartItems)} {userTranslation("EGP")}
+          </td>
         </tr>
       </tfoot>
     </table>

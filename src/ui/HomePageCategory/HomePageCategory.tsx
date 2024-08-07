@@ -34,8 +34,6 @@ function HomePageCategory() {
       { skip: !mainCategory?.data[0]?.["_id"] }
     );
 
-  console.log("subCategories", subCategories);
-
   useEffect(() => {
     setMaleJeans(
       subCategories?.data.find((subCategory) => {

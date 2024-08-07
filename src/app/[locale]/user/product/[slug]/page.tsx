@@ -2,7 +2,7 @@
 
 import {
   useGetAllProductsQuery,
-  useGetSingleProductBySlugQuery,
+  useGetSingleProductBySlugQuery
 } from "@/lib/features/api/productsApi";
 import Spinner from "@/ui/Spinner/Spinner";
 import { Box, Button } from "@mui/material";
@@ -14,7 +14,7 @@ import {
   useEffect,
   useReducer,
   useRef,
-  useState,
+  useState
 } from "react";
 import { useGetCategoryByIdQuery } from "@/lib/features/api/categoriesApi";
 import { HiHeart, HiOutlineHeart } from "react-icons/hi2";
@@ -24,7 +24,7 @@ import toast from "react-hot-toast";
 import {
   initialState,
   ProductDetailsAction,
-  reducerFn,
+  reducerFn
 } from "./productDetailsReducer";
 import SubCategoriesList from "@/app/[locale]/admin/dashboard/products/details/[slug]/SubCategoriesList";
 import BaseTabs from "@/ui/Tabs/Tabs";
@@ -38,7 +38,7 @@ import ReviewsSorting from "@/components/UserReviews/ReviewsSorting";
 import useAddItemToCookie from "@/hooks/useAddItemToCart";
 import {
   addItemThunk,
-  removeItemThunk,
+  removeItemThunk
 } from "@/lib/features/cookieSlice/cookieSlice";
 import useImagesLoadingSpinner from "@/hooks/useImagesLoadingSpinner";
 import ReactStars from "@/ui/ReactStars/ReactStars";
@@ -53,6 +53,8 @@ import { useTranslations } from "next-intl";
 
 function ProductDetails() {
   const params = useParams();
+
+  const { locale } = useParams();
 
   const [productDetailsState, dispatch] = useReducer(reducerFn, initialState);
 
@@ -79,21 +81,23 @@ function ProductDetails() {
       {
         limit: 4,
         categoryId: _singleProduct?.category,
-        subCategory: _singleProduct?.subCategory?.join(","),
+        subCategory: _singleProduct?.subCategory?.join(",")
       },
       { skip: !_singleProduct }
     );
 
   const relatedProducts = relatedProductsData?.data?.filter(
     (product) =>
-      product.name !== _singleProduct?.name &&
+      product.name?.[locale as string] !==
+        _singleProduct?.name?.[locale as string] &&
       product.size !== _singleProduct?.size
   );
 
   const areRelatedProductsEmpty =
     relatedProductsData?.data?.filter(
       (product) =>
-        product.name !== _singleProduct?.name &&
+        product.name?.[locale as string] !==
+          _singleProduct?.name?.[locale as string] &&
         product.size !== _singleProduct?.size
     )?.length === 0;
 
@@ -102,7 +106,7 @@ function ProductDetails() {
       {
         id: productDetailsState?.selectedProduct?.productId,
         sort,
-        page,
+        page
       },
       { skip: !productDetailsState?.selectedProduct?.productId }
     );
@@ -135,19 +139,19 @@ function ProductDetails() {
 
   const { data: mainCategory, isLoading: mainCategoryLoading } =
     useGetCategoryByIdQuery(productDetailsState?.selectedProduct?.category, {
-      skip: !productDetailsState?.selectedProduct?.category,
+      skip: !productDetailsState?.selectedProduct?.category
     });
 
   useEffect(() => {
     action(ProductDetailsAction.SET_SELECTED_PRODUCT, {
-      value: data?.data?.products[productDetailsState?.currentProductIndex],
+      value: data?.data?.products[productDetailsState?.currentProductIndex]
     });
     // setSelectedProduct(data?.data?.products[productDetailsState.currentProductIndex]);
   }, [data?.data?.products, productDetailsState?.currentProductIndex]);
 
   useEffect(() => {
     action(ProductDetailsAction.SET_SELECTED_COLOR, {
-      value: productDetailsState?.selectedProduct?.colors?.[0],
+      value: productDetailsState?.selectedProduct?.colors?.[0]
     });
   }, [productDetailsState?.selectedProduct?.colors]);
 
@@ -163,7 +167,7 @@ function ProductDetails() {
   }, [
     productDetailsState?.selectedColor,
     cart,
-    productDetailsState?.selectedProduct,
+    productDetailsState?.selectedProduct
   ]);
 
   useEffect(() => {
@@ -198,9 +202,9 @@ function ProductDetails() {
           maxQuantity: productDetailsState?.selectedColor.quantity,
           cart: user?.cart?.["_id"],
           colorId: productDetailsState?.selectedColor["_id"],
-          slug: productDetailsState?.selectedProduct.slug,
+          slug: productDetailsState?.selectedProduct.slug
         },
-        message: userTranslation("This Item is Added to your  Cart"),
+        message: userTranslation("This Item is Added to your  Cart")
       });
 
       dispatchRedux(
@@ -217,7 +221,7 @@ function ProductDetails() {
 
   useEffect(() => {
     action(ProductDetailsAction.SET_EXISTED_WISHlIST_ITEM, {
-      value: wishList.map((wishListItem) => wishListItem.colorId),
+      value: wishList.map((wishListItem) => wishListItem.colorId)
     });
   }, [wishList]);
 
@@ -258,9 +262,9 @@ function ProductDetails() {
             price: productDetailsState?.selectedProduct.saleProduct,
             maxQuantity: productDetailsState?.selectedColor.quantity,
             colorId: productDetailsState?.selectedColor["_id"],
-            slug: productDetailsState?.selectedProduct.slug,
+            slug: productDetailsState?.selectedProduct.slug
           },
-          message: userTranslation("This Item is Added to your Wish List"),
+          message: userTranslation("This Item is Added to your Wish List")
         });
       } else {
         toast.error(
@@ -272,7 +276,7 @@ function ProductDetails() {
 
   const handleChange = (selectedIndex) => {
     action(ProductDetailsAction.SET_CURRENT_PRODUCT_INDEX, {
-      value: selectedIndex,
+      value: selectedIndex
     });
 
     action(ProductDetailsAction.SET_SELECTED_COLOR, {
@@ -280,8 +284,8 @@ function ProductDetails() {
         color: "",
         label: "",
         value: "",
-        quantity: 0,
-      },
+        quantity: 0
+      }
     });
 
     action(ProductDetailsAction.SET_PRODUCT_QUANTITY, { value: 1 });
@@ -296,7 +300,7 @@ function ProductDetails() {
       return;
 
     action(ProductDetailsAction.SET_PRODUCT_QUANTITY, {
-      value: productDetailsState?.productQuantity + 1,
+      value: productDetailsState?.productQuantity + 1
     });
   }
 
@@ -307,7 +311,7 @@ function ProductDetails() {
     )
       return;
     action(ProductDetailsAction.SET_PRODUCT_QUANTITY, {
-      value: productDetailsState?.productQuantity - 1,
+      value: productDetailsState?.productQuantity - 1
     });
   }
 
@@ -322,7 +326,7 @@ function ProductDetails() {
       value:
         reviews?.data?.reduce((acc, review) => {
           return acc + review.ratings;
-        }, 0) / reviews?.data?.length,
+        }, 0) / reviews?.data?.length
     });
   }, [reviews?.data]);
 
@@ -352,14 +356,17 @@ function ProductDetails() {
   return (
     <>
       <Helmet>
-        <title>{_singleProduct.name}</title>
+        <title>{_singleProduct.name?.[locale as string]}</title>
         <meta
           property="og:image"
           content="https://res.cloudinary.com/practicaldev/image/fetch/s--0qQ47wTC--/c_imagga_scale,f_auto,fl_progressive,h_500,q_auto,w_1000/https://dev-to-uploads.s3.amazonaws.com/uploads/articles/wcg9dbu0z2ca1e9dxy1g.png"
         />
 
-        <meta name="title" content={_singleProduct.name} />
-        <meta name="description" content={_singleProduct.description} />
+        <meta name="title" content={_singleProduct.name?.[locale as string]} />
+        <meta
+          name="description"
+          content={_singleProduct.description?.[locale as string]}
+        />
 
         <meta property="og:type" content="article" />
         <meta property="og:site_name" content="ORCA" />
@@ -371,12 +378,21 @@ function ProductDetails() {
         />
         <meta property="og:image:width" content="600" />
         <meta property="og:image:height" content="800" />
-        <meta property="og:image:alt" content={_singleProduct.name} />
+        <meta
+          property="og:image:alt"
+          content={_singleProduct.name?.[locale as string]}
+        />
         <meta property="og:image:type" content="image/png" />
 
         <meta property="og:url" content={`${dynamicHref}`} />
-        <meta property="og:title" content={_singleProduct.name} />
-        <meta property="og:description" content={_singleProduct.description} />
+        <meta
+          property="og:title"
+          content={_singleProduct.name?.[locale as string]}
+        />
+        <meta
+          property="og:description"
+          content={_singleProduct.description?.[locale as string]}
+        />
         <meta property="twitter:title" content="Twitter title" />
         <meta property="twitter:description" content="Twitter desc" />
         <meta property="twitter:image" content={imageUrl} />
@@ -391,7 +407,7 @@ function ProductDetails() {
             className="flex flex-col md:flex-row gap-5 h-[70rem] w-full"
             sx={{
               position: windowWidth > 1050 ? "sticky" : "",
-              top: "1rem",
+              top: "1rem"
             }}
           >
             <Box className="flex md:flex-col flex-row md:order-none order-1 gap-14 ">
@@ -400,7 +416,7 @@ function ProductDetails() {
                   <Box
                     onClick={() =>
                       action(ProductDetailsAction.SET_IMAGE_INDEX, {
-                        value: index,
+                        value: index
                       })
                     }
                     className={`${
@@ -456,7 +472,7 @@ function ProductDetails() {
             />
             <Box className="flex justify-between items-center  ">
               <h2 className="text-4xl font-semibold capitalize">
-                {productDetailsState?.selectedProduct?.name}
+                {productDetailsState?.selectedProduct?.name?.[locale as string]}
               </h2>
 
               {productDetailsState?.isColorExisted && (
@@ -483,7 +499,7 @@ function ProductDetails() {
             <Box className="flex items-center gap-4 flex-wrap">
               <Box>
                 <h2 className="font-semibold text-xl">
-                  {mainCategory?.data?.name}
+                  {mainCategory?.data?.name?.[locale as string]}
                 </h2>
               </Box>
               <Box className="flex items-center gap-4 flex-wrap">
@@ -519,7 +535,11 @@ function ProductDetails() {
               )}
             </Box>
             <q className="text-2xl text-gray-400 capitalize leading-10">
-              {productDetailsState?.selectedProduct?.description}
+              {
+                productDetailsState?.selectedProduct?.description?.[
+                  locale as string
+                ]
+              }
             </q>
             <Box className="md:w-1/2 my-5">
               <h2 className="text-2xl mb-5">
@@ -535,7 +555,7 @@ function ProductDetails() {
                         background:
                           selectedSize === product.size ? "#161616" : "",
                         color: selectedSize === product.size ? "white" : "",
-                        outline: "1px solid #161616",
+                        outline: "1px solid #161616"
                       }}
                       onClick={() => {
                         if (selectedSize === product.size) return;
@@ -559,10 +579,10 @@ function ProductDetails() {
                     <div
                       onClick={() => {
                         action(ProductDetailsAction.SET_SELECTED_COLOR, {
-                          value: color,
+                          value: color
                         });
                         action(ProductDetailsAction.SET_PRODUCT_QUANTITY, {
-                          value: 1,
+                          value: 1
                         });
                       }}
                       key={color.value}
@@ -619,7 +639,7 @@ function ProductDetails() {
                   onClick={() => {
                     handleAddCartItem(productDetailsState?.selectedProduct);
                     action(ProductDetailsAction?.SET_PRODUCT_QUANTITY, {
-                      value: 1,
+                      value: 1
                     });
                   }}
                   className="bg-[#ed0534] hover:bg-black transition duration-500 text-white p-4 text-2xl rounded-lg w-full"
@@ -639,7 +659,7 @@ function ProductDetails() {
         {!areRelatedProductsEmpty && (
           <Box className="mt-30">
             <TitledProductList
-              title="Related Products"
+              title={userTranslation("Related Products")}
               description="Mauris luctus nisi sapien tristique dignissim ornare"
               products={relatedProducts}
               isLoading={isLoading}
@@ -667,8 +687,8 @@ function ProductDetails() {
                             }
                             reviews={reviews?.data}
                           />
-                        ),
-                      },
+                        )
+                      }
                     ]}
                   />
                   {reviews?.data?.length > 0 && (
@@ -691,8 +711,8 @@ function ProductDetails() {
               fontSize: "1.2rem",
               backgroundColor: "#ed0534",
               "&:hover": {
-                backgroundColor: "#161616",
-              },
+                backgroundColor: "#161616"
+              }
             }}
             type="button"
             variant="contained"

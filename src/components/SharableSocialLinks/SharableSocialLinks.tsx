@@ -1,11 +1,12 @@
 import Link from "next/link";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import {
   FaFacebook,
   FaLink,
   FaLinkedin,
   FaTwitter,
-  FaWhatsapp,
+  FaWhatsapp
 } from "react-icons/fa";
 
 const SocialLink = (props) => {
@@ -49,6 +50,8 @@ const SocialLink = (props) => {
 };
 
 const SharableSocialLinks = ({ data, dynamicHref }) => {
+  const { locale } = useParams();
+
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   const [clipboardContent, setClipboardContent] = useState("");
 
@@ -73,7 +76,7 @@ const SharableSocialLinks = ({ data, dynamicHref }) => {
       className: "text-linkedin",
       icon: <FaFacebook color="#1877F2" fontSize={"2rem"} />,
       size: "xs",
-      tooltip: "Share on Facebook",
+      tooltip: "Share on Facebook"
     },
     // {
     //   href: `https://twitter.com/intent/tweet?url=${dynamicHref}&text=${data.name}`,
@@ -84,13 +87,17 @@ const SharableSocialLinks = ({ data, dynamicHref }) => {
     //   tooltip: "Share on Twitter",
     // },
     {
-      href: whatsappHref + "?text=" + data.name + ` ${dynamicHref}`,
+      href:
+        whatsappHref +
+        "?text=" +
+        data.name[locale as string] +
+        ` ${dynamicHref}`,
       action: `share/whatsapp/share`,
       className: "text-whatsapp",
       icon: <FaWhatsapp color="#25D366" fontSize={"2rem"} />,
       size: "xs",
-      tooltip: "Share on Whatsapp",
-    },
+      tooltip: "Share on Whatsapp"
+    }
   ];
 
   const copyToClipboard = (href) => {

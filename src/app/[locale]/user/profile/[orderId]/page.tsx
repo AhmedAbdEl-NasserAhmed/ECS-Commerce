@@ -2,43 +2,28 @@
 
 import BaseTimeline from "@/components/BaseTimeline/BaseTimeline";
 import orderDetailsColumns from "@/constants/orderDetailsColumns";
+import { requestCheckupTimelineStages } from "@/constants/orderStatus";
 import useTimeline from "@/hooks/useTimeline";
 import { useGetOrderByIdQuery } from "@/lib/features/api/ordersApi";
 import { OrderStatusEnum } from "@/types/enums";
 import BaseTable from "@/ui/BaseReactTable";
 import Spinner from "@/ui/Spinner/Spinner";
+import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
 import { skip } from "node:test";
 import { useEffect } from "react";
-
-const requestCheckupTimelineStages = [
-  {
-    id: 1,
-    name: "CREATED",
-  },
-  {
-    id: 2,
-    name: "SHIPPED",
-  },
-  {
-    id: 3,
-    name: "DELIVERING",
-  },
-  {
-    id: 4,
-    name: "DELIVERED",
-  },
-];
 
 function OrderDetails() {
   const { orderId } = useParams();
 
   const { data, isFetching } = useGetOrderByIdQuery(orderId, {
-    skip: !orderId,
+    skip: !orderId
   });
 
+  const userTranslation = useTranslations("user");
+
   const { timelineData, goNextStage, reset } = useTimeline(
-    requestCheckupTimelineStages
+    requestCheckupTimelineStages(userTranslation)
   );
 
   useEffect(() => {
@@ -84,7 +69,7 @@ function OrderDetails() {
         <BaseTimeline
           activeStageIndex={timelineData.activeStageIndex}
           completedStagesIndexes={timelineData.completedStagesIndexes}
-          stages={requestCheckupTimelineStages}
+          stages={requestCheckupTimelineStages(userTranslation)}
         />
       </div>
 

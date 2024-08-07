@@ -33,9 +33,9 @@ import {
 import { useTranslations } from "next-intl";
 import { createKey } from "next/dist/shared/lib/router/router";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import toast from "react-hot-toast";
 import { HiChevronRight } from "react-icons/hi2";
@@ -53,6 +53,8 @@ function AddProductPage() {
   const { locale } = useParams();
 
   const formData = watch();
+
+  const router = useRouter();
 
   const [lang, setLang] = useState("en");
 
@@ -205,6 +207,7 @@ function AddProductPage() {
         toast.success("A new Product is added");
         localStorage.removeItem("subCategoriesen");
         localStorage.removeItem("subCategoriesar");
+        router.replace(`/${locale}/admin/dashboard/products`);
         reset({
           category: {
             en: "",

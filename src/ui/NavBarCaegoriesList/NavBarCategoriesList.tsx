@@ -24,8 +24,6 @@ function NavBarCategoriesList({ data, isLoading }) {
 
   if (isLoading) return;
 
-  console.log("data", data);
-
   return (
     <div
       ref={ref}

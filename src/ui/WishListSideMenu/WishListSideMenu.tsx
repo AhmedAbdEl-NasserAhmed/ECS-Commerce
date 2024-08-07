@@ -12,7 +12,7 @@ import Link from "next/link";
 import {
   addItemThunk,
   clearCookiesThunk,
-  removeItemThunk,
+  removeItemThunk
 } from "@/lib/features/cookieSlice/cookieSlice";
 import useImagesLoadingSpinner from "@/hooks/useImagesLoadingSpinner";
 import Spinner from "../Spinner/Spinner";
@@ -21,7 +21,7 @@ import { useTranslations } from "next-intl";
 const WishListSideMenu = ({
   setOpens,
   openWishListMenu,
-  setOpenWishListMenu,
+  setOpenWishListMenu
 }) => {
   const { locale } = useParams();
 
@@ -136,7 +136,7 @@ const WishListSideMenu = ({
                               href={`/${locale}/user/product/${product.slug}`}
                               className="font-semibold capitalize"
                             >
-                              {product.name}
+                              {product.name?.[locale as string]}
                             </Link>
                             <div className="p-1 bg-gray-50 rounded-xl flex items-center gap-2">
                               <div className="text-sm font-semibold text-green-500">

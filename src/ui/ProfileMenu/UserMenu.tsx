@@ -71,7 +71,7 @@ function UserMenu({ setIsProfileOpen }) {
               cartItems({
                 user: user["_id"],
                 cartItems: cart,
-                wishListItems: wishList,
+                wishListItems: wishList
               });
             }
             dispatch(logoutUser());
@@ -79,7 +79,7 @@ function UserMenu({ setIsProfileOpen }) {
             localStorage.removeItem("user");
             setIsProfileOpen(false);
             router.replace(`/${locale}`);
-            toast.success("Do Not Be Late");
+            toast.success(userTranslation("See you soon"));
             dispatch(clearCookiesThunk("wishListItems"));
             dispatch(clearCookiesThunk("cartItems"));
           }}

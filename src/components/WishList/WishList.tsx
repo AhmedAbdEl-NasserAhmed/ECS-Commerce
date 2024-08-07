@@ -4,6 +4,8 @@ import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import WishListItem from "./WishListItem";
 import { clearCookiesThunk } from "@/lib/features/cookieSlice/cookieSlice";
 import toast from "react-hot-toast";
+import { useTranslations } from "next-intl";
+import { useParams } from "next/navigation";
 
 function WishList() {
   const wishList = useAppSelector(
@@ -12,21 +14,25 @@ function WishList() {
 
   const dispatch = useAppDispatch();
 
+  const userTranslation = useTranslations("user");
+
   const removeAllCartItems = () => {
     dispatch(clearCookiesThunk("wishListItems"));
-    toast.success("You Wish List is Empty 🥲 ");
+    toast.success(userTranslation("You Wish List is Empty 🥲 "));
   };
 
   if (!wishList.length)
     return (
       <div className="text-2xl bg-white text-black flex items-center justify-center font-semibold p-4">
-        <p>Start Adding Products To your Wish List</p>
+        <p>{userTranslation("Start Adding Products To your Wish List")}</p>
       </div>
     );
 
   return (
     <ul className=" p-8 bg-white shadow-[0px_0px_7px_5px_#0000000a] w-full flex flex-col gap-8 ">
-      <h2 className="text-3xl font-bold flex justify-center">WISH LIST</h2>
+      <h2 className="text-3xl font-bold flex justify-center">
+        {userTranslation("WISH LIST")}
+      </h2>
 
       {wishList.map((wishListItem) => {
         return (
@@ -42,7 +48,7 @@ function WishList() {
           className="p-4 w-full  bg-red-500 text-white rounded-lg"
           onClick={removeAllCartItems}
         >
-          Clear All
+          {userTranslation("Clear All")}
         </button>
       </div>
     </ul>

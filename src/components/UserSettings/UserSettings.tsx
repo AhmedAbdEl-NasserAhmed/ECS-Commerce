@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import MiniSpinner from "@/ui/MiniSpinner/MiniSpinner";
 import CustomizedTextField from "@/ui/TextField/TextField";
 import { Button, IconButton, InputAdornment } from "@mui/material";
+import { useTranslations } from "next-intl";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -16,13 +17,15 @@ function UserSettings() {
     control,
     watch,
     handleSubmit,
-    formState: { errors },
+    formState: { errors }
   } = useForm({ mode: "onChange" });
 
   const formData = watch();
 
   const [updatePasswordFm, updatePasswordResponse] =
     useUpdatePasswordMutation();
+
+  const userTranslation = useTranslations("user");
 
   const dispatch = useAppDispatch();
 
@@ -47,7 +50,7 @@ function UserSettings() {
   function onSubmit(data) {
     updatePasswordFm({
       oldPassword: data.oldPassword,
-      newPassword: data.newPassword,
+      newPassword: data.newPassword
     })
       .unwrap()
       .then(() => {
@@ -69,25 +72,25 @@ function UserSettings() {
     >
       <div className="p-8 flex flex-col gap-12 grow ">
         <h2 className="text-3xl text-black font-bold flex justify-center">
-          ACCOUNT DETAILS
+          {userTranslation("ACCOUNT DETAILS")}
         </h2>
         <Controller
           name={"name"}
           control={control}
           defaultValue={user?.name || ""}
           rules={{
-            required: "This field is required",
+            required: userTranslation("This field is required"),
             minLength: {
               value: 4,
-              message: "The name should be more than 4 characters ",
-            },
+              message: "The name should be more than 4 characters "
+            }
           }}
           render={({ field }) => (
             <CustomizedTextField
               disabled={updatePasswordResponse.isLoading}
               textLabelClass={"font-semibold text-xl"}
-              placeholder={"First Name"}
-              textlabel={"First Name"}
+              placeholder={userTranslation("First Name")}
+              textlabel={userTranslation("First Name")}
               field={field}
               formerHelperStyles={{ style: { fontSize: "1rem" } }}
               errors={errors}
@@ -102,18 +105,18 @@ function UserSettings() {
           control={control}
           defaultValue={user?.email || ""}
           rules={{
-            required: "Please Enter A Valid Email",
+            required: userTranslation("Please Enter A Valid Email"),
             pattern: {
               value: emailRegex,
-              message: "Please Enter Valid Email Format",
-            },
+              message: userTranslation("Please Enter Valid Email Format")
+            }
           }}
           render={({ field }) => (
             <CustomizedTextField
               disabled={updatePasswordResponse.isLoading}
               textLabelClass={"font-semibold text-xl"}
-              placeholder={"Email Address"}
-              textlabel={"Email Address"}
+              placeholder={userTranslation("Email Address")}
+              textlabel={userTranslation("Email Address")}
               field={field}
               formerHelperStyles={{ style: { fontSize: "1rem" } }}
               errors={errors}
@@ -128,14 +131,14 @@ function UserSettings() {
           control={control}
           defaultValue={""}
           rules={{
-            required: "This Field is required",
+            required: "This Field is required"
           }}
           render={({ field }) => (
             <CustomizedTextField
               disabled={updatePasswordResponse.isLoading}
               textLabelClass={"font-semibold text-xl"}
-              placeholder={" Old Password "}
-              textlabel={" Old Password "}
+              placeholder={userTranslation("Old Password")}
+              textlabel={userTranslation("Old Password")}
               field={field}
               formerHelperStyles={{ style: { fontSize: "1rem" } }}
               errors={errors}
@@ -152,7 +155,7 @@ function UserSettings() {
                       {showOldPassword ? <MdVisibility /> : <MdVisibilityOff />}
                     </IconButton>
                   </InputAdornment>
-                ),
+                )
               }}
               size={"small"}
             />
@@ -163,19 +166,20 @@ function UserSettings() {
           control={control}
           defaultValue={""}
           rules={{
-            required: "Please Enter A Valid Password",
+            required: userTranslation("Please Enter A Valid Password"),
             pattern: {
               value: passwordRegex,
-              message:
-                "password must be at least 8 characters long and include an uppercase letter, lowercase letter, digit, and special character (e.g., #?!@$%^&*-)",
-            },
+              message: userTranslation(
+                "password must be at least 8 characters long and include an uppercase letter, lowercase letter, digit, and special character "
+              )
+            }
           }}
           render={({ field }) => (
             <CustomizedTextField
               disabled={updatePasswordResponse.isLoading}
               textLabelClass={"font-semibold text-xl"}
-              placeholder={"New Password "}
-              textlabel={"New Password "}
+              placeholder={userTranslation("New Password")}
+              textlabel={userTranslation("New Password")}
               field={field}
               formerHelperStyles={{ style: { fontSize: "1rem" } }}
               errors={errors}
@@ -192,7 +196,7 @@ function UserSettings() {
                       {showNewPassword ? <MdVisibility /> : <MdVisibilityOff />}
                     </IconButton>
                   </InputAdornment>
-                ),
+                )
               }}
               size={"small"}
             />
@@ -203,18 +207,18 @@ function UserSettings() {
           control={control}
           defaultValue={""}
           rules={{
-            required: "This Field is required",
+            required: userTranslation("This Field is required"),
             validate(value) {
               if (value !== formData.newPassword)
-                return "Password does not match";
-            },
+                return userTranslation("Password does not match");
+            }
           }}
           render={({ field }) => (
             <CustomizedTextField
               disabled={updatePasswordResponse.isLoading}
               textLabelClass={"font-semibold text-xl"}
-              placeholder={"Confirm New Password "}
-              textlabel={"Confirm New Password "}
+              placeholder={userTranslation("Confirm New Password")}
+              textlabel={userTranslation("Confirm New Password")}
               field={field}
               formerHelperStyles={{ style: { fontSize: "1rem" } }}
               errors={errors}
@@ -235,7 +239,7 @@ function UserSettings() {
                       )}
                     </IconButton>
                   </InputAdornment>
-                ),
+                )
               }}
               size={"small"}
             />
@@ -249,14 +253,18 @@ function UserSettings() {
             fontSize: "1.2rem",
             backgroundColor: "#ed0534",
             "&:hover": {
-              backgroundColor: "#141414",
-            },
+              backgroundColor: "#141414"
+            }
           }}
           type="submit"
           variant="contained"
           size="large"
         >
-          {updatePasswordResponse.isLoading ? <MiniSpinner /> : "Update"}
+          {updatePasswordResponse.isLoading ? (
+            <MiniSpinner />
+          ) : (
+            userTranslation("Update")
+          )}
         </Button>
       </div>
     </form>

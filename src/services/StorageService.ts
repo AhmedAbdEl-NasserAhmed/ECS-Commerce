@@ -18,4 +18,10 @@ export const StorageService = {
       return localStorage.setItem(key, value);
     }
   },
+  delete(key) {
+    localStorage.removeItem(key);
+  },
+  clear() {
+    localStorage.clear();
+  }
 };

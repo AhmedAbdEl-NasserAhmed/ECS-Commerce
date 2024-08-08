@@ -277,7 +277,7 @@ const Cart = () => {
                         addCartId();
                         router.push(`/${locale}/user/checkout`);
                       } else {
-                        toast.error("Please Log in First");
+                        toast.error(t("Please Log in First"));
                       }
                     }}
                     className="rounded-xl py-3 px-4 bg-black text-white disabled:cursor-not-allowed disabled:opacity-75"

@@ -17,6 +17,7 @@ import toast from "react-hot-toast";
 import { clearCookiesThunk } from "@/lib/features/cookieSlice/cookieSlice";
 import { makePayment } from "@/lib/features/paymentSlice/paymentSlice";
 import { useTranslations } from "next-intl";
+import { StorageService } from "@/services/StorageService";
 
 function BillingInformation() {
   const {
@@ -74,6 +75,7 @@ function BillingInformation() {
         dispatch(makePayment(false));
         window.open(res.url, "_blank", "noopener,noreferrer");
         router.replace(`/${locale}`);
+        StorageService.set("userLang", locale);
       })
       .catch((err) => {
         dispatch(makePayment(false));

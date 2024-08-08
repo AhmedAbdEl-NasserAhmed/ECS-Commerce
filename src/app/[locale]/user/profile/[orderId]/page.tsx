@@ -22,8 +22,6 @@ function OrderDetails() {
     skip: !orderId
   });
 
-  console.log("data", data);
-
   const userTranslation = useTranslations("user");
 
   const { timelineData, goNextStage, reset } = useTimeline(

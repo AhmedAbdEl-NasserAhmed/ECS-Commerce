@@ -239,6 +239,9 @@
     "Product Quantity": "الكمية",
     "Product Size": "المقاس",
     "Product Color": "اللون",
-    "Your Order is Completed Successfully": "تم إضافة الطلب الخاص بك"
+    "Your Order is Completed Successfully": "تم إضافة الطلب الخاص بك",
+    "Please Log in First": "برجاء التسجيل اولا",
+    "YOU TRANSACTION IS SUCCESFUL": "تم تنفيذ العملية بنجاح",
+    "You Will be redirected to home Page in": "سوف يتم توجيهك إلى القائمة االرئيسية خلال"
   }
 }

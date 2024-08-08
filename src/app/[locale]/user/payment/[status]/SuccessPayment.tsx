@@ -2,6 +2,7 @@
 
 import { clearCookiesThunk } from "@/lib/features/cookieSlice/cookieSlice";
 import { useAppDispatch } from "@/lib/hooks";
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -15,6 +16,8 @@ function SuccessPayment() {
 
   const [redirectNumber, setRedirectNumber] = useState<number>(5);
 
+  const userTranslation = useTranslations("user");
+
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -24,11 +27,11 @@ function SuccessPayment() {
       }, 1000);
     }
     if (redirectNumber === 0) {
-      toast.success("Your Order is Completed Successfully ");
+      toast.success(userTranslation("Your Order is Completed Successfully"));
       dispatch(clearCookiesThunk("cartItems"));
       router.replace(`/${locale}`);
     }
-  }, [redirectNumber, locale, router, dispatch]);
+  }, [redirectNumber, locale, router, dispatch, userTranslation]);
 
   return (
     <div className=" flex flex-col items-center justify-center gap-6 mt-12 mb-12 p-8 h-56 bg-white shadow-[0px_0px_7px_5px_#0000000a] max-w-[80rem] m-auto ">

@@ -1,16 +1,16 @@
 import { formatCurrency } from "@/lib/helpers";
 import Image from "next/image";
 
-export function orderDetailsColumns() {
+export function orderDetailsColumns(locale, userTranslation) {
   return [
     {
       id: "productImage",
-      header: () => "Product Image",
+      header: () => userTranslation("Product Image"),
       accessorKey: "productImage",
       cell: ({
         cell: {
-          row: { original },
-        },
+          row: { original }
+        }
       }) => {
         return (
           <div className="flex justify-center">
@@ -23,65 +23,65 @@ export function orderDetailsColumns() {
             />
           </div>
         );
-      },
+      }
     },
     {
       id: "productName",
-      header: () => "Product Name",
+      header: () => userTranslation("Product Name"),
       accessorKey: "productName",
       cell: ({
         cell: {
-          row: { original },
-        },
+          row: { original }
+        }
       }) => {
-        return <h2>{original.product?.name}</h2>;
-      },
+        return <h2>{original.product?.name?.[locale]}</h2>;
+      }
     },
 
     {
       id: "ProductPrice",
-      header: () => "Product Price",
+      header: () => userTranslation("Product Price"),
       accessorKey: "ProductPrice",
       cell: ({
         cell: {
-          row: { original },
-        },
+          row: { original }
+        }
       }) => {
         return formatCurrency(original.product?.saleProduct);
-      },
+      }
     },
     {
       id: "productQuantity",
-      header: () => "Product Quantity",
+      header: () => userTranslation("Product Quantity"),
       accessorKey: "productQuantity",
       cell: ({
         cell: {
-          row: { original },
-        },
+          row: { original }
+        }
       }) => {
         return <h2>{original.quantity}</h2>;
-      },
+      }
     },
     {
       id: "productSize",
-      header: () => "Product Size",
+      header: () => userTranslation("Product Size"),
       accessorKey: "productSize",
       cell: ({
         cell: {
-          row: { original },
-        },
+          row: { original }
+        }
       }) => {
         return <h2>{original?.product?.size.value}</h2>;
-      },
+      }
     },
     {
       id: "productColor",
-      header: () => "Product Color",
+      header: () => userTranslation("Product Color"),
       accessorKey: "productColor",
       cell: ({
         cell: {
-          row: { original },
-        },
+          row: { original }
+        }
       }) => {
         return (
           <div className="flex items-center justify-center w-full">
@@ -91,8 +91,8 @@ export function orderDetailsColumns() {
             ></span>
           </div>
         );
-      },
-    },
+      }
+    }
   ];
 }
 

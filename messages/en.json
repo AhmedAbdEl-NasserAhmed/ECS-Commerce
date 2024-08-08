@@ -232,6 +232,14 @@
     "CREATED": "CREATED",
     "SHIPPED": "SHIPPED",
     "DELIVERING": "DELIVERING",
-    "DELIVERED": "DELIVERED"
+    "DELIVERED": "DELIVERED",
+    "Details": "Details",
+    "ORDER DETAILS": "ORDER DETAILS",
+    "Product Image": "Product Image",
+    "Product Price": "Product Price",
+    "Product Quantity": "Product Quantity",
+    "Product Size": "Product Size",
+    "Product Color": "Product Color",
+    "Your Order is Completed Successfully": "Your Order is Completed Successfully"
   }
 }

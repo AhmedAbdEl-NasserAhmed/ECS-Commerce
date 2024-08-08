@@ -28,7 +28,7 @@ function CollectionList({ id }) {
             key={subCategory["_id"]}
           >
             <button onClick={() => handleClick(subCategory["_id"])}>
-              <div>{subCategory.name[locale as string]}</div>
+              <div>{subCategory.name?.[locale as string]}</div>
               <div className="w-0 group-hover:w-full h-px bg-black duration-100 transition-all"></div>
             </button>
           </li>

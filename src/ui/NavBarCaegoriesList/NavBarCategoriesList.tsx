@@ -56,7 +56,7 @@ function NavBarCategoriesList({ data, isLoading }) {
             >
               <li className="px-4 py-2 group duration-100 transition-all self-start font-medium">
                 <button onClick={() => handleClick(category["_id"])}>
-                  <div>{category.name[locale as string]}</div>
+                  <div>{category.name?.[locale as string]}</div>
                   <div className="w-0 group-hover:w-full h-px bg-black duration-100 transition-all"></div>
                 </button>
               </li>

@@ -57,7 +57,7 @@ const ProductCard = ({ product }) => {
           flex flex-col gap-2 text-center uppercase"
         >
           <div className="bg-[green] py-[.3rem] px-[.8rem] rounded">
-            {category?.data?.name[locale as string]}
+            {category?.data?.name?.[locale as string]}
           </div>
           {!!product.discount && (
             <div className="bg-[#f1c40f] py-[.3rem] px-[.8rem] rounded transition-all duration-500">

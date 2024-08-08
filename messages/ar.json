@@ -231,6 +231,14 @@
     "CREATED": "انشاء الطلب",
     "SHIPPED": "تم الشحن",
     "DELIVERING": "جاري التوصيل",
-    "DELIVERED": "تم التوصيل"
+    "DELIVERED": "تم التوصيل",
+    "Details": "التفاصيل",
+    "ORDER DETAILS": "تفاصيل المنتج",
+    "Product Image": "صور المنتج ",
+    "Product Price": "سعر المنتج",
+    "Product Quantity": "الكمية",
+    "Product Size": "المقاس",
+    "Product Color": "اللون",
+    "Your Order is Completed Successfully": "تم إضافة الطلب الخاص بك"
   }
 }

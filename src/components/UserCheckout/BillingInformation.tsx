@@ -66,7 +66,8 @@ function BillingInformation() {
         street: data.street,
         floor: data.floor
       },
-      cartItems: cart
+      cartItems: cart,
+      locale
     })
       .unwrap()
       .then((res) => {

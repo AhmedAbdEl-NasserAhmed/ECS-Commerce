@@ -16,9 +16,13 @@ import { useEffect } from "react";
 function OrderDetails() {
   const { orderId } = useParams();
 
+  const { locale } = useParams();
+
   const { data, isFetching } = useGetOrderByIdQuery(orderId, {
     skip: !orderId
   });
+
+  console.log("data", data);
 
   const userTranslation = useTranslations("user");
 
@@ -62,7 +66,7 @@ function OrderDetails() {
   return (
     <div className=" p-8 bg-white w-full text-center ">
       <h2 className="text-3xl font-bold flex justify-center mb-10 capitalize">
-        ORDER DETAILS
+        {userTranslation("ORDER DETAILS")}
       </h2>
 
       <div className="mb-20 px-8 md:px-20">
@@ -75,7 +79,7 @@ function OrderDetails() {
 
       <BaseTable
         data={selectedOrderItems}
-        columns={orderDetailsColumns()}
+        columns={orderDetailsColumns(locale, userTranslation)}
         isLoading={isFetching}
         paginationControllers={false}
       />

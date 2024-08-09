@@ -10,6 +10,7 @@ import {
 import MiniSpinner from "../MiniSpinner/MiniSpinner";
 
 function SmartSearchInput({
+  onRemove = () => {},
   data,
   onChange,
   name,
@@ -51,6 +52,7 @@ function SmartSearchInput({
   useEffect(() => {
     if (shouldReset) {
       action(SmartSearchActions.RESET);
+      onRemove();
     }
   }, [shouldReset]);
 
@@ -84,7 +86,7 @@ function SmartSearchInput({
   ]);
 
   const onSelectItem = (data) => {
-    onChange(data?.name?.[lang]);
+    onChange(data?.name);
     action(SmartSearchActions.SELECT_ITEM, { value: data?.name?.[lang] });
     if (getSmartSearchValue) {
       getSmartSearchValue(data);
@@ -119,6 +121,7 @@ function SmartSearchInput({
           FormHelperTextProps={{ style: { fontSize: "1rem" } }}
           // disabled={disabled}
           style={{
+            borderRadius: "1rem",
             backgroundColor:
               smartSearchState.userSelectedValue !== "" ? "#f5f5f5" : "",
           }}
@@ -151,6 +154,7 @@ function SmartSearchInput({
                 paddingBlock: "1rem",
                 paddingInline: "1.8rem",
                 color: "#383737",
+                borderRadius: "1rem",
 
                 "&::placeholder": {
                   color: "#939393",
@@ -190,6 +194,7 @@ function SmartSearchInput({
               disabled
                 ? null
                 : () => {
+                    onRemove();
                     onChange("");
                     action(SmartSearchActions.RESET);
                     getSmartSearchValue({

@@ -70,6 +70,7 @@ function CustomizedTextField({
                 backgroundColor: "none",
                 paddingBlock: "1rem",
                 paddingInline: "1.8rem",
+                borderRadius: "1rem",
                 color: "#383737",
 
                 "&::placeholder": {
@@ -127,6 +128,7 @@ function CustomizedTextField({
                 backgroundColor: "none",
                 paddingBlock: "1rem",
                 paddingInline: "1.8rem",
+                borderRadius: "1rem",
                 color: "#383737",
 
                 "&::placeholder": {

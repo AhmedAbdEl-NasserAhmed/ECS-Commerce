@@ -11,7 +11,7 @@ function ImageInput(props) {
         }}
         name={props.name}
         className="absolute w-full left-0 top-0 h-full opacity-0 cursor-pointer"
-        accept="image/png, image/jpeg"
+        accept="image/png, image/jpeg, image/jpg, image/webp, image/avif"
         type="file"
       />
     </div>

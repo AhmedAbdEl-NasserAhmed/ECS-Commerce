@@ -35,7 +35,7 @@ function NavBarCategoriesList({ data, isLoading }) {
         <span>{showCategoriesMenu ? <HiChevronUp /> : <HiChevronDown />} </span>
       </div>
       <li
-        className={` ${
+        className={`z-[99] ${
           showCategoriesMenu ? "h-[38rem]" : "h-0"
         } absolute  w-screen bg-[#f1e5cd] cursor-default  text-[1.6rem]  shadow-2xl top-32 z-10  -start-5 transition-all duration-300 flex flex-col items-center gap-6 text-center overflow-hidden overflow-y-scroll text-[#333] `}
       >

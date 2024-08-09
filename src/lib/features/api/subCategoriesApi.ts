@@ -85,6 +85,7 @@ const subCategoriesApi = createApi({
 export const {
   useAddSubCategoryMutation,
   useGetSubCategoryQuery,
+  useLazyGetSubCategoryQuery,
   useDeleteSubCategoryMutation,
   useEditSubCategoryMutation,
   useGetSubCategoryByIdQuery,

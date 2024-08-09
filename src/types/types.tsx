@@ -45,10 +45,7 @@ export interface AdminProductProps {
   };
   quantity: number;
   salePrice: number;
-  subCategory: {
-    en: string;
-    ar: string;
-  };
+  subCategory: any[];
   discount: number;
   category: {
     en: "";

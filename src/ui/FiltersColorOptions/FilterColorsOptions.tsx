@@ -1,7 +1,15 @@
 "use client";
 
-import { useGetAllProductsColorsQuery } from "@/lib/features/api/productsApi";
-import { usePathname, useSearchParams, useRouter } from "next/navigation";
+import {
+  useGetAllProductsColorsQuery,
+  useLazyGetAllProductsColorsQuery,
+} from "@/lib/features/api/productsApi";
+import {
+  usePathname,
+  useSearchParams,
+  useRouter,
+  useParams,
+} from "next/navigation";
 
 import { ChangeEvent, useEffect, useState } from "react";
 import ColorItem from "../ColorItem/ColorItem";
@@ -9,13 +17,22 @@ import ColorItem from "../ColorItem/ColorItem";
 function FilterColorsOptions() {
   const [filtredColors, setFiltredColors] = useState<string[]>([]);
 
-  const { data } = useGetAllProductsColorsQuery("colors");
+  // const { data } = useGetAllProductsColorsQuery("colors");
+  const [getColors, getColorsResponse] = useLazyGetAllProductsColorsQuery();
 
   const searchParams = useSearchParams();
 
   const [selectedColors, setSelectedColors] = useState<string[]>([]);
 
+  const params = useParams();
+
   const pathName = usePathname();
+
+  useEffect(() => {
+    if (params.category) {
+      getColors(params.category);
+    }
+  }, []);
 
   const { replace } = useRouter();
 
@@ -69,12 +86,12 @@ function FilterColorsOptions() {
 
   return (
     <div className="flex gap-8 flex-wrap justify-center">
-      {data?.data?.map((color) => {
+      {getColorsResponse?.data?.data?.map((color) => {
         return (
           <div
             key={color}
             onClick={handleAddColorToParams.bind(null, color)}
-            className={`rounded-full cursor-pointer w-[2.3rem] h-[2.3rem] ${
+            className={`rounded-full cursor-pointer w-[2.3rem] h-[2.3rem] border-2 border-[#F5F5F5] ${
               isColorActive(color) ? "ring-offset-2 ring-2 ring-slate-400" : ""
             }`}
             style={{

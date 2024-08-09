@@ -133,6 +133,7 @@ function SmartSearchMultipleInput({
                 paddingBlock: "1rem",
                 paddingInline: "1.8rem",
                 color: "#383737",
+                borderRadius: "1rem",
 
                 "&::placeholder": {
                   color: "#939393",

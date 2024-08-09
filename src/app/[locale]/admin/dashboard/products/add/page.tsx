@@ -1,6 +1,7 @@
 "use client";
 
 import useDebounceHook from "@/hooks/useDebounceHook";
+import { setSubCategory } from "@/lib/features/adminProductSlice/adminProductSlice";
 import {
   useGetAllCategoriesQuery,
   useGetCategoryQuery,
@@ -11,6 +12,7 @@ import {
 } from "@/lib/features/api/productsApi";
 import { useGetSubCategoryQuery } from "@/lib/features/api/subCategoriesApi";
 import { getAddProductServerData, getSumFrom } from "@/lib/helpers";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { StorageService } from "@/services/StorageService";
 import { Lang } from "@/types/enums";
 import { AdminProductProps } from "@/types/types";
@@ -40,6 +42,8 @@ import { useForm, Controller } from "react-hook-form";
 import toast from "react-hot-toast";
 import { HiChevronRight } from "react-icons/hi2";
 
+let shouldResetMultipleSearchInputTimer = null;
+
 function AddProductPage() {
   const {
     handleSubmit,
@@ -56,20 +60,29 @@ function AddProductPage() {
 
   const router = useRouter();
 
-  const [lang, setLang] = useState("en");
-
   const [smartSeachvalue, setSmartSeachValue] = useState<{
     id: string;
     name: string;
   }>({ id: "", name: "" });
 
+  const [shouldResetMultipleSearchInput, setShouldResetMultipleSearchInput] =
+    useState(false);
+
   const [isChecked, setIsChecked] = useState<boolean>(false);
+
+  /**
+   * locale       isChecked           Value
+   *   ar           false         =
+   */
+
+  const lang = isChecked ? "ar" : "en";
 
   const [currentSubCategories, setCurrentSubCategories] = useState([]);
   useEffect(() => {
     if (localStorage !== undefined) {
       setCurrentSubCategories(
-        JSON.parse(localStorage.getItem(`subCategories${lang}`))
+        adminProduct.subCategory
+        // JSON.parse(localStorage.getItem(`subCategories${lang}`))
       );
     }
   }, [lang]);
@@ -77,7 +90,7 @@ function AddProductPage() {
   const [smartSeachSubCategoryvalue, setSmartSeachSubCategoryValue] =
     useState<string>("");
 
-  const mainCategorydebounceValue = useDebounceHook(smartSeachvalue.name);
+  const mainCategorydebounceValue = useDebounceHook(smartSeachvalue?.name);
 
   const subCategorydebounceValue = useDebounceHook(smartSeachSubCategoryvalue);
 
@@ -85,7 +98,7 @@ function AddProductPage() {
 
   const { data: mainCategory, isFetching: isFetchingMainCategory } =
     useGetCategoryQuery(
-      { letter: mainCategorydebounceValue, lang },
+      { letter: mainCategorydebounceValue, lang: locale },
       {
         skip: !mainCategorydebounceValue,
       }
@@ -96,9 +109,11 @@ function AddProductPage() {
       {
         letter: subCategorydebounceValue,
         categoryId: smartSeachvalue["_id"],
-        lang,
+        lang: locale,
       },
-      { skip: !subCategorydebounceValue || !smartSeachvalue["_id"] }
+      {
+        skip: !subCategorydebounceValue || !smartSeachvalue["_id"],
+      }
     );
 
   const [allCategories, setAllCategories] = useState<string[]>([]);
@@ -133,19 +148,20 @@ function AddProductPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formData["name"], productName]);
 
+  const adminProduct = useAppSelector((store) => store.adminProductSlice);
+
+  const dispatch = useAppDispatch();
+
   function showInputsHandler(e) {
     setIsChecked(e.target.checked);
-    if (formData.subCategory[lang].length > 0) {
-      localStorage.setItem(
-        `subCategories${lang}`,
-        JSON.stringify([...formData.subCategory[lang]])
-      );
+    if (formData.subCategory.length > 0) {
+      dispatch(setSubCategory({ data: formData.subCategory }));
+      // localStorage.setItem(
+      //   `subCategories${lang}`,
+      //   JSON.stringify([...formData.subCategory])
+      // );
     }
   }
-
-  useEffect(() => {
-    setLang(isChecked ? Lang.ARABIC : Lang.ENGLISH);
-  }, [isChecked]);
 
   useEffect(() => {
     if (selectedProduct?.images) {
@@ -189,18 +205,9 @@ function AddProductPage() {
 
   const t = useTranslations("Dashboard");
 
-  console.log("formData", formData);
-
   function onSubmit(data: AdminProductProps) {
     if (
       !formData.category.en ||
-      !formData.category.ar ||
-      !formData.subCategory.en ||
-      !formData.subCategory.ar ||
-      (!Array.isArray(formData.subCategory.en) &&
-        formData.subCategory.en.length === 0) ||
-      (!Array.isArray(formData.subCategory.ar) &&
-        formData.subCategory.ar.length === 0) ||
       !formData.name.en ||
       !formData.name.ar ||
       !formData.description.en ||
@@ -226,6 +233,7 @@ function AddProductPage() {
         toast.success("A new Product is added");
         localStorage.removeItem("subCategoriesen");
         localStorage.removeItem("subCategoriesar");
+        setIsChecked(false);
         router.replace(`/${locale}/admin/dashboard/products`);
         reset({
           category: {
@@ -243,10 +251,7 @@ function AddProductPage() {
           },
           colors: [],
           images: {},
-          subCategory: {
-            en: "",
-            ar: "",
-          },
+          subCategory: [],
           salePrice: 0,
           quantity: 0,
           size: [],
@@ -291,6 +296,18 @@ function AddProductPage() {
     return getSumFrom(formData["colors"], formData["colors-quantity"]);
   };
 
+  const onRemoveMainCategory = () => {
+    if (shouldResetMultipleSearchInputTimer)
+      clearTimeout(shouldResetMultipleSearchInputTimer);
+
+    dispatch(setSubCategory({ data: [] }));
+    setValue("subCategory", []);
+    setShouldResetMultipleSearchInput(true);
+    shouldResetMultipleSearchInputTimer = setTimeout(() => {
+      setShouldResetMultipleSearchInput(false);
+    }, 100);
+  };
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
@@ -314,10 +331,7 @@ function AddProductPage() {
       </Box>
       <Box className="relative grow flex flex-col gap-8 bg-white rounded-2xl border-2 p-10 border-slate-100 shadow-md">
         <Box className="mb-4 flex items-center justify-between">
-          <h2 className="text-3xl font-semibold mb-5">
-            {t("Add Product")}
-            {isChecked ? "(عربي)" : ""}
-          </h2>
+          <h2 className="text-3xl font-semibold mb-5">{t("Add Product")}</h2>
           <FormControlLabel
             control={
               <Switch
@@ -354,13 +368,13 @@ function AddProductPage() {
             <Box className="relative grid grid-cols-autofill-minmax gap-12">
               {!isChecked && (
                 <Controller
-                  name={"category.en"}
+                  name={"category"}
                   control={control}
-                  defaultValue={""}
+                  defaultValue={{ en: "", ar: "" }}
                   rules={{
                     required: "This field is required",
                     validate(value) {
-                      if (!allCategories?.includes(value))
+                      if (!allCategories?.includes(value[lang]))
                         return t(
                           "You Have to choose from available categories"
                         );
@@ -368,9 +382,10 @@ function AddProductPage() {
                   }}
                   render={({ field }) => (
                     <SmartSearchInput
-                      lang={lang}
-                      errors={errors?.["category"]?.["en"]}
-                      defaultValue={formData.category?.en}
+                      onRemove={onRemoveMainCategory}
+                      lang={locale}
+                      errors={errors?.["category"]}
+                      defaultValue={formData.category?.[locale as string]}
                       isFetching={isFetchingMainCategory}
                       notAvailableMessage="No Categories Available"
                       disabled={
@@ -387,22 +402,22 @@ function AddProductPage() {
                   )}
                 />
               )}
-              {isChecked && (
+              {/* {isChecked && (
                 <Controller
-                  name={"category.ar"}
+                  name={"category"}
                   control={control}
-                  defaultValue={""}
+                  defaultValue={{ en: "", ar: "" }}
                   rules={{
                     required: "هذا الحقل مطلوب",
                     validate(value) {
-                      if (!allCategories?.includes(value))
+                      if (!allCategories?.includes(value[lang]))
                         return "يجب الأختيار من الأقسام المتاحة";
                     },
                   }}
                   render={({ field }) => (
                     <SmartSearchInput
                       lang={lang}
-                      errors={errors?.["category"]?.["ar"]}
+                      errors={errors?.["category"]}
                       defaultValue={formData.category?.ar}
                       isFetching={isFetchingMainCategory}
                       notAvailableMessage="لا توجد منتجات متاحه"
@@ -419,15 +434,15 @@ function AddProductPage() {
                     />
                   )}
                 />
-              )}
+              )} */}
               {!isChecked && (
                 <Controller
-                  name={"subCategory.en"}
+                  name={"subCategory"}
                   control={control}
-                  defaultValue={""}
+                  defaultValue={[]}
                   render={({ field }) => (
                     <SmartSearchMultipleInput
-                      lang={lang}
+                      lang={locale as string}
                       isFetching={isFetchingSubCategories}
                       existedItems={currentSubCategories}
                       disabled={
@@ -436,9 +451,11 @@ function AddProductPage() {
                         isFetchingSubCategories
                       }
                       shouldReset={
+                        shouldResetMultipleSearchInput ||
                         productResponse.isSuccess ||
-                        (formData.category?.[lang] === "" &&
-                          smartSeachvalue.name === "")
+                        (formData.category?.en === "" &&
+                          smartSeachvalue?.name === "")
+                        // smartSeachvalue?.[lang]?.name === "")
                       }
                       getSmartSearchValue={setSmartSeachSubCategoryValue}
                       textLabel={t("Collection")}
@@ -450,7 +467,7 @@ function AddProductPage() {
                   )}
                 />
               )}
-              {isChecked && (
+              {/* {isChecked && (
                 <Controller
                   name={"subCategory.ar"}
                   control={control}
@@ -467,7 +484,7 @@ function AddProductPage() {
                       }
                       shouldReset={
                         productResponse.isSuccess ||
-                        (formData.category?.[lang] === "" &&
+                        (formData.category?.ar === "" &&
                           smartSeachvalue.name === "")
                       }
                       getSmartSearchValue={setSmartSeachSubCategoryValue}
@@ -479,7 +496,7 @@ function AddProductPage() {
                     />
                   )}
                 />
-              )}
+              )} */}
               {!isChecked && (
                 <Box className="col-span-full">
                   <Controller
@@ -489,6 +506,7 @@ function AddProductPage() {
                     rules={{ required: "This field is required" }}
                     render={({ field }) => (
                       <SmartSearchInput
+                        onRemove={onRemoveMainCategory}
                         lang={lang}
                         errors={errors?.["name"]?.["en"]}
                         defaultValue={formData.name?.en}
@@ -499,7 +517,9 @@ function AddProductPage() {
                         }
                         shouldReset={productResponse.isSuccess}
                         getSmartSearchValue={setProductSearchName}
-                        textLabel={t("Product Name")}
+                        textLabel={`${t("Product Name")} ${
+                          isChecked ? "(عربي)" : "(English)"
+                        }`}
                         data={productName}
                         placeholder={t("Product Name")}
                         name={field.name}
@@ -518,6 +538,7 @@ function AddProductPage() {
                     rules={{ required: "هذا الحقل مطلوب" }}
                     render={({ field }) => (
                       <SmartSearchInput
+                        onRemove={onRemoveMainCategory}
                         lang={lang}
                         errors={errors?.["name"]?.["ar"]}
                         defaultValue={formData.name?.ar}
@@ -528,7 +549,9 @@ function AddProductPage() {
                         }
                         shouldReset={productResponse.isSuccess}
                         getSmartSearchValue={setProductSearchName}
-                        textLabel={"اسم المنتج"}
+                        textLabel={`اسم المنتج ${
+                          isChecked ? "(عربي)" : "(English)"
+                        }`}
                         data={productName}
                         placeholder={"اسم المنتج"}
                         name={field.name}
@@ -637,9 +660,9 @@ function AddProductPage() {
                         { value: "XS", label: "XS", color: "#666666" },
                         { value: "SM", label: "SM", color: "#666666" },
                         { value: "L", label: "L", color: "#666666" },
-                        { value: "Xl", label: "Xl", color: "#666666" },
-                        { value: "XXl", label: "XXl", color: "#666666" },
-                        { value: "XXXl", label: "XXXl", color: "#666666" },
+                        { value: "XL", label: "XL", color: "#666666" },
+                        { value: "XXL", label: "XXL", color: "#666666" },
+                        { value: "XXXL", label: "XXXL", color: "#666666" },
                       ]}
                       field={field}
                       errors={errors}
@@ -759,7 +782,9 @@ function AddProductPage() {
                         disabled={productResponse.isLoading}
                         textLabelClass={"font-semibold text-xl"}
                         placeholder={t("Product Description")}
-                        textlabel={t("Product Description")}
+                        textlabel={`${t("Product Description")} ${
+                          isChecked ? "(عربي)" : "(English)"
+                        }`}
                         field={field}
                         formerHelperStyles={{ style: { fontSize: "1rem" } }}
                         customError={errors?.["description"]?.["en"]}
@@ -793,7 +818,9 @@ function AddProductPage() {
                       <CustomizedTextField
                         disabled={productResponse.isLoading}
                         textLabelClass={"font-semibold text-xl"}
-                        textlabel={"وصف المنتج"}
+                        textlabel={`وصف المنتج ${
+                          isChecked ? "(عربي)" : "(English)"
+                        }`}
                         placeholder={"وصف المنتج"}
                         field={field}
                         formerHelperStyles={{ style: { fontSize: "1rem" } }}
@@ -869,3 +896,12 @@ function AddProductPage() {
 }
 
 export default AddProductPage;
+
+/**
+ * Product
+ *    Category  EN
+ *    Sub categories(collections)  EN[jeans, old jeans]
+ * Product
+ *    Category  AR
+ *    Sub categories(collections)  AR[جينز، جينز جديد]
+ */

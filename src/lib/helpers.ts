@@ -50,12 +50,9 @@ export const getAddProductServerData = (
     }
   });
 
-
-  Array.from(data.subCategory.en.concat(data.subCategory.ar)).forEach(
-    (subCategory) => {
-      formData.append("subCategory", subCategory["_id"]);
-    }
-  );
+  Array.from(data.subCategory).forEach((subCategory) => {
+    formData.append("subCategory", subCategory["_id"]);
+  });
 
   return formData;
 };

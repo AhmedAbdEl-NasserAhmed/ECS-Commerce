@@ -1,16 +1,18 @@
 "use client";
 
 import useDebounceHook from "@/hooks/useDebounceHook";
+import { setSubCategory } from "@/lib/features/adminProductSlice/adminProductSlice";
 import {
   useGetAllCategoriesQuery,
-  useGetCategoryQuery
+  useGetCategoryQuery,
 } from "@/lib/features/api/categoriesApi";
 import {
   useGetSingleProductByIDQuery,
-  useUpdateSingleProductMutation
+  useUpdateSingleProductMutation,
 } from "@/lib/features/api/productsApi";
 import { useGetSubCategoryQuery } from "@/lib/features/api/subCategoriesApi";
 import { getAddProductServerData, getSumFrom } from "@/lib/helpers";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { Lang } from "@/types/enums";
 import { AdminProductProps } from "@/types/types";
 import AddProductImage from "@/ui/AddProductImage/AddProductImage";
@@ -27,7 +29,7 @@ import {
   FormControlLabel,
   Stack,
   Switch,
-  Typography
+  Typography,
 } from "@mui/material";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
@@ -37,6 +39,8 @@ import { useEffect, useMemo, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import toast from "react-hot-toast";
 import { HiChevronRight } from "react-icons/hi2";
+
+let shouldResetMultipleSearchInputTimer = null;
 
 function EditProduct() {
   const params = useParams();
@@ -55,9 +59,9 @@ function EditProduct() {
     reset,
     watch,
     setValue,
-    formState: { errors, dirtyFields }
+    formState: { errors, dirtyFields },
   } = useForm<AdminProductProps>({
-    mode: "onChange"
+    mode: "onChange",
   });
 
   const formData = watch();
@@ -70,11 +74,16 @@ function EditProduct() {
     name: "";
   }>({
     id: "",
-    name: ""
+    name: "",
   });
 
   const [smartSeachSubCategoryvalue, setSmartSeachSubCategoryValue] =
     useState<string>("");
+
+  const [shouldResetMultipleSearchInput, setShouldResetMultipleSearchInput] =
+    useState(false);
+
+  const dispatch = useAppDispatch();
 
   const mainCategorydebounceValue = useDebounceHook(smartSeachvalue.name);
 
@@ -88,7 +97,7 @@ function EditProduct() {
     useGetCategoryQuery(
       { letter: mainCategorydebounceValue, lang },
       {
-        skip: !mainCategorydebounceValue
+        skip: !mainCategorydebounceValue,
       }
     );
 
@@ -97,7 +106,7 @@ function EditProduct() {
       {
         letter: subCategorydebounceValue,
         lang,
-        categoryId: smartSeachvalue["_id"]
+        categoryId: smartSeachvalue["_id"],
       },
       { skip: !subCategorydebounceValue }
     );
@@ -111,7 +120,7 @@ function EditProduct() {
           if (image) {
             images[`image-${i + 1}`] = {
               url: image?.url,
-              id: image?.id
+              id: image?.id,
             };
           }
         }
@@ -181,26 +190,23 @@ function EditProduct() {
         reset({
           category: {
             en: "",
-            ar: ""
+            ar: "",
           },
           name: {
             en: "",
-            ar: ""
+            ar: "",
           },
           price: 0,
           description: {
             en: "",
-            ar: ""
+            ar: "",
           },
           colors: [],
           images: {},
-          subCategory: {
-            en: "",
-            ar: ""
-          },
+          subCategory: [],
           quantity: 0,
           size: [],
-          discount: 0
+          discount: 0,
         });
       })
       .catch((err) => {
@@ -220,7 +226,7 @@ function EditProduct() {
           alignItems: "center",
           fontSize: "4rem",
           textAlign: "center",
-          flexDirection: "column"
+          flexDirection: "column",
         }}
       >
         {t("No categories yet, please add a new category")}{" "}
@@ -237,6 +243,18 @@ function EditProduct() {
   const getQuantityValue = () => {
     if (!formData[`colors-quantity`]) return 0;
     return getSumFrom(formData["colors"], formData["colors-quantity"]);
+  };
+
+  const onRemoveMainCategory = () => {
+    if (shouldResetMultipleSearchInputTimer)
+      clearTimeout(shouldResetMultipleSearchInputTimer);
+
+    dispatch(setSubCategory({ data: [] }));
+    setValue("subCategory", []);
+    setShouldResetMultipleSearchInput(true);
+    shouldResetMultipleSearchInputTimer = setTimeout(() => {
+      setShouldResetMultipleSearchInput(false);
+    }, 100);
   };
 
   if (!AllCategories || !productDetails || !currentProduct.colors)
@@ -274,7 +292,7 @@ function EditProduct() {
         <Box className="flex gap-8 flex-col lg:flex-row justify-between ">
           <Box className="w-full lg:w-[70%] ">
             <Box className="relative grid grid-cols-autofill-minmax gap-12">
-              <Controller
+              {/* <Controller
                 name={"category.en"}
                 control={control}
                 defaultValue={""}
@@ -287,13 +305,47 @@ function EditProduct() {
                       !allCategories?.includes(value)
                     )
                       return "You Have to choose from available categories";
-                  }
+                  },
                 }}
                 render={({ field }) => (
                   <SmartSearchInput
-                    lang={Lang.ENGLISH}
-                    errors={errors?.["category"]?.["en"]}
+                    onRemove={onRemoveMainCategory}
+                    lang={locale}
+                    errors={errors?.["category"]}
                     defaultValue={""}
+                    isFetching={isFetchingMainCategory}
+                    notAvailableMessage="No Categories Available"
+                    disabled={
+                      updateProductResponse.isLoading || isFetchingMainCategory
+                    }
+                    shouldReset={updateProductResponse.isSuccess}
+                    getSmartSearchValue={setSmartSeachValue}
+                    textLabel={t("Main Category")}
+                    data={mainCategory?.data}
+                    placeholder={t("main category placeholder")}
+                    name={field.name}
+                    onChange={field.onChange}
+                    value={productDetails?.data?.category}
+                  />
+                )}
+              /> */}
+              <Controller
+                name={"category"}
+                control={control}
+                defaultValue={{ en: "", ar: "" }}
+                rules={{
+                  required: "This field is required",
+                  validate(value) {
+                    if (!allCategories?.includes(value[lang]))
+                      return t("You Have to choose from available categories");
+                  },
+                }}
+                render={({ field }) => (
+                  <SmartSearchInput
+                    onRemove={onRemoveMainCategory}
+                    lang={locale}
+                    errors={errors?.["category"]}
+                    defaultValue={formData.category?.[locale as string]}
                     isFetching={isFetchingMainCategory}
                     notAvailableMessage="No Categories Available"
                     disabled={
@@ -312,15 +364,46 @@ function EditProduct() {
               />
 
               <Controller
-                name={"subCategory.en"}
+                name={"subCategory"}
                 control={control}
-                defaultValue={""}
+                defaultValue={[]}
+                render={({ field }) => (
+                  <SmartSearchMultipleInput
+                    lang={locale as string}
+                    isFetching={isFetchingSubCategories}
+                    existedItems={productDetails?.data.subCategory}
+                    disabled={
+                      updateProductResponse.isLoading ||
+                      !smartSeachvalue["_id"] ||
+                      isFetchingSubCategories
+                    }
+                    shouldReset={
+                      shouldResetMultipleSearchInput ||
+                      updateProductResponse.isSuccess ||
+                      (formData.category?.en === "" &&
+                        smartSeachvalue?.name === "")
+                      // smartSeachvalue?.[lang]?.name === "")
+                    }
+                    getSmartSearchValue={setSmartSeachSubCategoryValue}
+                    textLabel={t("Collection")}
+                    data={subCategory?.data}
+                    placeholder={t("Collection placeholder")}
+                    name={field.name}
+                    onChange={field.onChange}
+                  />
+                )}
+              />
+              {/* <Controller
+                name={"subCategory"}
+                control={control}
+                defaultValue={[]}
                 render={({ field }) => (
                   <SmartSearchMultipleInput
                     lang={Lang.ENGLISH}
                     isFetching={isFetchingSubCategories}
                     existedItems={productDetails?.data.subCategory}
                     shouldReset={
+                      shouldResetMultipleSearchInput ||
                       updateProductResponse.isSuccess ||
                       (formData.category?.[Lang.ENGLISH] === "" &&
                         smartSeachvalue.name?.[Lang.ENGLISH] === "")
@@ -338,7 +421,7 @@ function EditProduct() {
                     onChange={field.onChange}
                   />
                 )}
-              />
+              /> */}
 
               <Box className="col-span-full">
                 <Controller
@@ -369,7 +452,7 @@ function EditProduct() {
                   defaultValue={currentProduct?.colors}
                   control={control}
                   rules={{
-                    required: "This field is required"
+                    required: "This field is required",
                   }}
                   render={({ field }) => (
                     <BaseColorPicker
@@ -403,7 +486,7 @@ function EditProduct() {
                           height: "30px",
                           background: color.value,
                           borderRadius: "50%",
-                          border: "1px solid #000"
+                          border: "1px solid #000",
                         }}
                       ></Box>
                       <Controller
@@ -414,8 +497,8 @@ function EditProduct() {
                           required: "This field is required",
                           min: {
                             value: 1,
-                            message: "Quantity should be more than 1"
-                          }
+                            message: "Quantity should be more than 1",
+                          },
                         }}
                         render={({ field }) => (
                           <CustomizedTextField
@@ -424,7 +507,7 @@ function EditProduct() {
                             placeholder={t("quantity")}
                             field={field}
                             formerHelperStyles={{
-                              style: { fontSize: "1rem" }
+                              style: { fontSize: "1rem" },
                             }}
                             // errors={errors}
                             customError={
@@ -434,7 +517,7 @@ function EditProduct() {
                             variant={"outlined"}
                             size={"small"}
                             mainContainerSx={{
-                              width: "8rem"
+                              width: "8rem",
                             }}
                           />
                         )}
@@ -452,7 +535,7 @@ function EditProduct() {
                 render={({ field }) => (
                   <MultiChoiceSelectMenu
                     disabled={updateProductResponse.isLoading}
-                    readOnly={!!currentProduct?.size}
+                    // readOnly={!!currentProduct?.size}
                     isMulti={false}
                     textLabelClass={"font-semibold text-xl"}
                     placeholder={t("Product Sizes")}
@@ -462,9 +545,9 @@ function EditProduct() {
                       { value: "XS", label: "XS", color: "#666666" },
                       { value: "SM", label: "SM", color: "#666666" },
                       { value: "L", label: "L", color: "#666666" },
-                      { value: "Xl", label: "Xl", color: "#666666" },
-                      { value: "XXl", label: "XXl", color: "#666666" },
-                      { value: "XXXl", label: "XXXl", color: "#666666" }
+                      { value: "XL", label: "XL", color: "#666666" },
+                      { value: "XXL", label: "XXL", color: "#666666" },
+                      { value: "XXXL", label: "XXXL", color: "#666666" },
                     ]}
                     field={field}
                     errors={errors}
@@ -480,8 +563,8 @@ function EditProduct() {
                   required: "This field is required",
                   min: {
                     value: 1,
-                    message: "Quantity should be more than 1"
-                  }
+                    message: "Quantity should be more than 1",
+                  },
                 }}
                 render={({ field }) => (
                   <CustomizedTextField
@@ -508,8 +591,8 @@ function EditProduct() {
                   required: "This field is required",
                   min: {
                     value: 1,
-                    message: "The Price should be more than 1 "
-                  }
+                    message: "The Price should be more than 1 ",
+                  },
                 }}
                 render={({ field }) => (
                   <CustomizedTextField
@@ -534,12 +617,12 @@ function EditProduct() {
                 rules={{
                   min: {
                     value: 0,
-                    message: "This field should be more than 0 "
+                    message: "This field should be more than 0 ",
                   },
                   max: {
                     value: 99,
-                    message: "This field should be less than 100 % "
-                  }
+                    message: "This field should be less than 100 % ",
+                  },
                 }}
                 render={({ field }) => (
                   <CustomizedTextField
@@ -562,7 +645,7 @@ function EditProduct() {
                 defaultValue={0}
                 control={control}
                 rules={{
-                  required: "This field is required"
+                  required: "This field is required",
                 }}
                 render={({ field }) => (
                   <CustomizedTextField
@@ -602,136 +685,11 @@ function EditProduct() {
                       rows={6}
                       sx={{
                         "& .MuiInputBase-input": {
-                          fontSize: "1.4rem"
+                          fontSize: "1.4rem",
                         },
                         "& .MuiInputBase-inputMultiline": {
-                          fontSize: "1.4rem"
-                        }
-                      }}
-                    />
-                  )}
-                />
-              </Box>
-
-              <Box className="col-span-full">
-                <Controller
-                  name={"name.ar"}
-                  control={control}
-                  rules={{ required: "This field is required" }}
-                  defaultValue={currentProduct?.name.ar}
-                  render={({ field }) => (
-                    <CustomizedTextField
-                      onFocus={() => setLang(Lang.ARABIC)}
-                      onBlur={() => setLang(Lang.ENGLISH)}
-                      disabled={updateProductResponse.isLoading}
-                      textLabelClass={"font-semibold text-xl"}
-                      placeholder={"اسم المنتج"}
-                      textlabel={"اسم المنتج"}
-                      field={field}
-                      formerHelperStyles={{ style: { fontSize: "1rem" } }}
-                      customError={errors?.["name"]?.["ar"]}
-                      type={"text"}
-                      variant={"outlined"}
-                      size={"small"}
-                    />
-                  )}
-                />
-              </Box>
-
-              <Controller
-                name={"subCategory.ar"}
-                control={control}
-                defaultValue={""}
-                render={({ field }) => (
-                  <SmartSearchMultipleInput
-                    onFocus={() => setLang(Lang.ARABIC)}
-                    onBlur={() => setLang(Lang.ENGLISH)}
-                    lang={Lang.ARABIC}
-                    isFetching={isFetchingSubCategories}
-                    existedItems={productDetails?.data.subCategory}
-                    shouldReset={
-                      updateProductResponse.isSuccess ||
-                      (formData.category?.[Lang.ARABIC] === "" &&
-                        smartSeachvalue.name === "")
-                    }
-                    disabled={
-                      updateProductResponse.isLoading ||
-                      smartSeachvalue.name?.[Lang.ARABIC] === "" ||
-                      isFetchingSubCategories
-                    }
-                    getSmartSearchValue={setSmartSeachSubCategoryValue}
-                    textLabel={"المحموعات"}
-                    data={subCategory?.data}
-                    placeholder={"ابحث في المجموعات"}
-                    name={field.name}
-                    onChange={field.onChange}
-                  />
-                )}
-              />
-
-              <Controller
-                name={"category.ar"}
-                control={control}
-                defaultValue={""}
-                rules={{
-                  required: "هذا الحقل مطلوب",
-                  validate(value) {
-                    if (lang === Lang.ARABIC && !allCategories?.includes(value))
-                      return "يجب ان تختار من الأقسام المتاحه";
-                  }
-                }}
-                render={({ field }) => (
-                  <SmartSearchInput
-                    onFocus={() => setLang(Lang.ARABIC)}
-                    onBlur={() => setLang(Lang.ENGLISH)}
-                    lang={Lang.ARABIC}
-                    errors={errors?.["category"]?.["ar"]}
-                    defaultValue={""}
-                    isFetching={isFetchingMainCategory}
-                    notAvailableMessage="لا توجد منتجات متاحه"
-                    disabled={
-                      updateProductResponse.isLoading || isFetchingMainCategory
-                    }
-                    shouldReset={updateProductResponse.isSuccess}
-                    getSmartSearchValue={setSmartSeachValue}
-                    textLabel={"القسم الرئيسي"}
-                    data={mainCategory?.data}
-                    placeholder={"ابحث عن القسم الرئيسي"}
-                    name={field.name}
-                    onChange={field.onChange}
-                    value={productDetails?.data?.category}
-                  />
-                )}
-              />
-
-              <Box className="col-span-full">
-                <Controller
-                  name={"description.ar"}
-                  control={control}
-                  rules={{ required: "This field is required" }}
-                  defaultValue={productDetails?.data?.description.ar}
-                  render={({ field }) => (
-                    <CustomizedTextField
-                      onFocus={() => setLang(Lang.ARABIC)}
-                      onBlur={() => setLang(Lang.ENGLISH)}
-                      disabled={updateProductResponse.isLoading}
-                      textLabelClass={"font-semibold text-xl"}
-                      textlabel={"وصف المنتج"}
-                      placeholder={"وصف المنتج"}
-                      field={field}
-                      formerHelperStyles={{ style: { fontSize: "1rem" } }}
-                      customError={errors?.["description"]?.["ar"]}
-                      type={"text"}
-                      variant={"outlined"}
-                      multiline={true}
-                      rows={6}
-                      sx={{
-                        "& .MuiInputBase-input": {
-                          fontSize: "1.4rem"
+                          fontSize: "1.4rem",
                         },
-                        "& .MuiInputBase-inputMultiline": {
-                          fontSize: "1.4rem"
-                        }
                       }}
                     />
                   )}
@@ -751,6 +709,67 @@ function EditProduct() {
           </Box>
         </Box>
       </Box>
+
+      <Box className="relative grow flex flex-col gap-8 bg-white rounded-2xl border-2 p-10 border-slate-100 shadow-md">
+        <Box className="col-span-full">
+          <Controller
+            name={"name.ar"}
+            control={control}
+            rules={{ required: "This field is required" }}
+            defaultValue={currentProduct?.name.ar}
+            render={({ field }) => (
+              <CustomizedTextField
+                onFocus={() => setLang(Lang.ARABIC)}
+                onBlur={() => setLang(Lang.ENGLISH)}
+                disabled={updateProductResponse.isLoading}
+                textLabelClass={"font-semibold text-xl"}
+                placeholder={"اسم المنتج"}
+                textlabel={"اسم المنتج"}
+                field={field}
+                formerHelperStyles={{ style: { fontSize: "1rem" } }}
+                customError={errors?.["name"]?.["ar"]}
+                type={"text"}
+                variant={"outlined"}
+                size={"small"}
+              />
+            )}
+          />
+        </Box>
+
+        <Box className="col-span-full">
+          <Controller
+            name={"description.ar"}
+            control={control}
+            rules={{ required: "This field is required" }}
+            defaultValue={productDetails?.data?.description.ar}
+            render={({ field }) => (
+              <CustomizedTextField
+                onFocus={() => setLang(Lang.ARABIC)}
+                onBlur={() => setLang(Lang.ENGLISH)}
+                disabled={updateProductResponse.isLoading}
+                textLabelClass={"font-semibold text-xl"}
+                textlabel={"وصف المنتج"}
+                placeholder={"وصف المنتج"}
+                field={field}
+                formerHelperStyles={{ style: { fontSize: "1rem" } }}
+                customError={errors?.["description"]?.["ar"]}
+                type={"text"}
+                variant={"outlined"}
+                multiline={true}
+                rows={6}
+                sx={{
+                  "& .MuiInputBase-input": {
+                    fontSize: "1.4rem",
+                  },
+                  "& .MuiInputBase-inputMultiline": {
+                    fontSize: "1.4rem",
+                  },
+                }}
+              />
+            )}
+          />
+        </Box>
+      </Box>
       <Box>
         <Button
           disabled={updateProductResponse.isLoading}
@@ -763,8 +782,8 @@ function EditProduct() {
             boxShadow: "none",
             "&:hover": {
               backgroundColor: "black",
-              boxShadow: "none"
-            }
+              boxShadow: "none",
+            },
           }}
           type="submit"
           variant="contained"

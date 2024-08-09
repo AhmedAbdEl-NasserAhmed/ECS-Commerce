@@ -13,7 +13,9 @@ import {
 } from "@mui/material";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
+// import { useRouter } from "next/router";
+import { useState } from "react";
 
 import { Controller, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -31,6 +33,10 @@ function CategoryPage() {
   });
 
   const [addCategory, categoryState] = useAddCategoryMutation();
+
+  // const router = useRouter();
+
+  const { locale } = useParams();
 
   const formData = watch();
 
@@ -59,6 +65,8 @@ function CategoryPage() {
       .unwrap()
       .then((res) => {
         if (res.status === "success") {
+          setIsChecked(false);
+          // router.replace(`/${locale}/admin/dashboard/categories`);
           toast.success("A New Main Category Added");
           reset();
         }
@@ -97,7 +105,7 @@ function CategoryPage() {
             <Box className="flex justify-between items-center">
               <h2 className="text-3xl font-semibold mb-5">
                 {t("Add Category")}
-                {isChecked ? "(عربي)" : ""}
+                {isChecked ? "(عربي)" : "(English)"}
               </h2>
               <FormControlLabel
                 control={

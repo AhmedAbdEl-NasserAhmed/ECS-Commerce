@@ -54,13 +54,15 @@ function AddSubCategoriesPage() {
 
   const [allCategories, setAllCategories] = useState<string[]>([]);
 
-  const [lang, setLang] = useState("en");
+  // const [lang, setLang] = useState("en");
+
+  const lang = isChecked ? "ar" : "en";
 
   const debounceValue = useDebounceHook(smartSeachvalue.name);
 
   const { data, isLoading, isFetching } = useGetCategoryQuery({
     letter: debounceValue,
-    lang,
+    lang: locale,
   });
 
   const { data: AllCategories } = useGetAllCategoriesQuery("categories");
@@ -73,9 +75,9 @@ function AddSubCategoriesPage() {
     setIsChecked(e.target.checked);
   }
 
-  useEffect(() => {
-    setLang(isChecked ? Lang.ARABIC : Lang.ENGLISH);
-  }, [isChecked]);
+  // useEffect(() => {
+  //   setLang(isChecked ? Lang.ARABIC : Lang.ENGLISH);
+  // }, [isChecked]);
 
   useEffect(() => {
     setAllCategories(
@@ -83,12 +85,9 @@ function AddSubCategoriesPage() {
     );
   }, [AllCategories?.data, lang]);
 
-  console.log("formData", formData);
-
   function handleAddSubCategorySubmit() {
     if (
       !formData.category.en ||
-      !formData.category.ar ||
       !formData.name.en ||
       !formData.name.ar ||
       !formData.description.en ||
@@ -176,10 +175,7 @@ function AddSubCategoriesPage() {
       </Box>
       <Box className="relative grow flex flex-col gap-8 bg-white rounded-2xl border-2 p-10 border-slate-100 shadow-md">
         <Box className="mb-4 flex items-center justify-between">
-          <h2 className="text-3xl font-semibold mb-5">
-            {t("Add Collection")}
-            {isChecked ? "(عربي)" : ""}
-          </h2>
+          <h2 className="text-3xl font-semibold mb-5">{t("Add Collection")}</h2>
           <FormControlLabel
             control={
               <Switch
@@ -218,22 +214,22 @@ function AddSubCategoriesPage() {
         <Box className="relative flex flex-col gap-12">
           {!isChecked && (
             <Controller
-              name={"category.en"}
+              name={"category"}
               control={control}
-              defaultValue={""}
+              defaultValue={{ en: "", ar: "" }}
               rules={{
                 required: "This field is required",
-                validate(value) {
-                  if (!allCategories?.includes(value))
-                    return "You Have to choose from available categories";
-                },
+                // validate(value) {
+                //   if (!allCategories?.includes(value))
+                //     return "You Have to choose from available categories";
+                // },
               }}
               render={({ field }) => (
                 <SmartSearchInput
-                  lang={lang}
+                  lang={locale}
                   isFetching={isFetching}
                   notAvailableMessage="No Categories Available"
-                  errors={errors?.["category"]?.["en"]}
+                  errors={errors?.["category"]}
                   disabled={subCategoryResponse.isLoading || isFetching}
                   shouldReset={subCategoryResponse.isSuccess}
                   getSmartSearchValue={setSmartSeachValue}
@@ -247,17 +243,17 @@ function AddSubCategoriesPage() {
               )}
             />
           )}
-          {isChecked && (
+          {/* {isChecked && (
             <Controller
               name={"category.ar"}
               control={control}
               defaultValue={""}
               rules={{
                 required: "هذا الحقل مطلوب",
-                validate(value) {
-                  if (!allCategories?.includes(value))
-                    return "You Have to choose from available categories";
-                },
+                // validate(value) {
+                //   if (!allCategories?.includes(value))
+                //     return "You Have to choose from available categories";
+                // },
               }}
               render={({ field }) => (
                 <SmartSearchInput
@@ -277,7 +273,7 @@ function AddSubCategoriesPage() {
                 />
               )}
             />
-          )}
+          )} */}
           {!isChecked && (
             <Controller
               name={"name.en"}
@@ -288,7 +284,9 @@ function AddSubCategoriesPage() {
                 <CustomizedTextField
                   disabled={isLoading}
                   textLabelClass={"font-semibold text-xl"}
-                  textlabel={t("Collection Name")}
+                  textlabel={`${t("Collection Name")}${
+                    isChecked ? "(عربي)" : "(English)"
+                  }`}
                   placeholder={t("Collection Name")}
                   field={field}
                   formerHelperStyles={{ style: { fontSize: "1rem" } }}
@@ -311,7 +309,9 @@ function AddSubCategoriesPage() {
                   disabled={isLoading}
                   textLabelClass={"font-semibold text-xl"}
                   placeholder={"اسم المجموعة"}
-                  textlabel={"اسم المجموعة"}
+                  textlabel={`اسم المجموعة${
+                    isChecked ? "(عربي)" : "(English)"
+                  }`}
                   field={field}
                   formerHelperStyles={{ style: { fontSize: "1rem" } }}
                   customError={errors?.["name"]?.["ar"]}
@@ -333,7 +333,9 @@ function AddSubCategoriesPage() {
                   disabled={isLoading}
                   textLabelClass={"font-semibold text-xl"}
                   placeholder={t("Collection Description")}
-                  textlabel={t("Collection Description")}
+                  textlabel={`${t("Collection Description")}${
+                    isChecked ? "(عربي)" : "(English)"
+                  }`}
                   field={field}
                   formerHelperStyles={{ style: { fontSize: "1rem" } }}
                   customError={errors?.["description"]?.["en"]}
@@ -364,7 +366,9 @@ function AddSubCategoriesPage() {
                   disabled={isLoading}
                   textLabelClass={"font-semibold text-xl"}
                   placeholder={"وصف المجموعة"}
-                  textlabel={"وصف المجموعة"}
+                  textlabel={`وصف المجموعة${
+                    isChecked ? "(عربي)" : "(English)"
+                  }`}
                   field={field}
                   formerHelperStyles={{ style: { fontSize: "1rem" } }}
                   customError={errors?.["description"]?.["ar"]}

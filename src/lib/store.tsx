@@ -1,5 +1,6 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import usersSlice from "./features/usersSlice/usersSlice";
+import adminProductSlice from "./features/adminProductSlice/adminProductSlice";
 import usersApi from "./features/api/usersApi";
 import categoriesApi from "./features/api/categoriesApi";
 import subCategoriesApi from "./features/api/subCategoriesApi";
@@ -26,6 +27,8 @@ const rootReducer = combineReducers({
   usersSlice,
   cookieSlice,
   paymentSlice,
+  adminProductSlice,
+
   [usersApi.reducerPath]: usersApi.reducer,
   [categoriesApi.reducerPath]: categoriesApi.reducer,
   [subCategoriesApi.reducerPath]: subCategoriesApi.reducer,

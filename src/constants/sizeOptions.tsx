@@ -3,7 +3,7 @@ export const sizesOptions = [
   { id: "SM", value: "SM" },
   { id: "M", value: "M" },
   { id: "L", value: "L" },
-  { id: "Xl", value: "Xl" },
-  { id: "XXl", value: "XXl" },
-  { id: "XXXl", value: "XXXl" },
+  { id: "XL", value: "XL" },
+  { id: "XXL", value: "XXL" },
+  { id: "XXXL", value: "XXXL" },
 ];

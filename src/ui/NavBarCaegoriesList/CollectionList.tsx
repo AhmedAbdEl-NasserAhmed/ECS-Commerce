@@ -6,7 +6,7 @@ import { useParams, useRouter } from "next/navigation";
 
 function CollectionList({ id }) {
   const { data, isLoading } = useGetAllSubCategoriesByCategoryQuery(id, {
-    skip: !id
+    skip: !id,
   });
 
   const { locale } = useParams();

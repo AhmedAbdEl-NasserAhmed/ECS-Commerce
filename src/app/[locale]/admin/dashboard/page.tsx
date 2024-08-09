@@ -19,6 +19,7 @@ import { formatCurrency } from "@/lib/helpers";
 import { OrderStatusEnum } from "@/types/enums";
 
 import { useGetAnalyticsDataQuery } from "@/lib/features/api/dashboardApi";
+import { useParams } from "next/navigation";
 
 const TARGET_GOAL_SALES = 100000;
 
@@ -26,6 +27,8 @@ function DashBoardPageg() {
   const t = useTranslations("Dashboard");
 
   const { data: orders } = useGetAllOrdersQuery("orders");
+
+  const { locale } = useParams();
 
   const { data: analytics, isFetching: isAnalyticsFetching } =
     useGetAnalyticsDataQuery("analytics");
@@ -70,6 +73,7 @@ function DashBoardPageg() {
 
   if (isAnalyticsFetching) return <Spinner />;
   if (!analytics) return <p>Something went wrong!</p>;
+
   return (
     <div className="px-[4rem] py-[1.2rem] mt-5">
       <FlexWrapper className="gap-9">
@@ -117,7 +121,13 @@ function DashBoardPageg() {
             }}
             series={[
               {
-                data: analytics?.productCountForLast10Categories,
+                data: analytics?.productCountForLast10Categories
+                  ?.filter((p) => p.value)
+                  ?.map((p) => ({
+                    ...p,
+                    id: p.id.en,
+                    label: p.label.en,
+                  })),
               },
             ]}
             width={400}

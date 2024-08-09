@@ -51,8 +51,8 @@ const productsApi = createApi({
       },
     }),
     getAllProductsColors: builder.query({
-      query: () => ({
-        url: "products/colors",
+      query: (categoryId) => ({
+        url: `products/colors?category=${categoryId}`,
         method: "GET",
       }),
       providesTags: ["PRODUCTS", "CATEGORIES", "COLLECTIONS"],
@@ -114,6 +114,7 @@ export const {
   useGetSingleProductByIDQuery,
   useUpdateSingleProductMutation,
   useGetAllProductsColorsQuery,
+  useLazyGetAllProductsColorsQuery,
   useGetPaginatedProductsQuery,
   useLazyGetPaginatedProductsQuery,
 } = productsApi;

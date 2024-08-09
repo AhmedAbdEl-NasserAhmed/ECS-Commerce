@@ -1,27 +1,34 @@
 "use client";
 
-import { useGetAllSubCategoriesQuery } from "@/lib/features/api/subCategoriesApi";
+import { useLazyGetSubCategoryQuery } from "@/lib/features/api/subCategoriesApi";
 import {
   usePathname,
   useSearchParams,
   useRouter,
-  useParams
+  useParams,
 } from "next/navigation";
 
-import { ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 function SubCategoriesFiltertation() {
   const [filtredSubCategories, setFiltredSubCategories] = useState<string[]>(
     []
   );
 
-  const { locale } = useParams();
+  const { locale, category } = useParams();
 
   const [subCategories, setSubCategories] = useState<string[]>([]);
 
-  const { data } = useGetAllSubCategoriesQuery("sucCategories");
+  const [getSubCategoriesByCategory, getSubCategoriesByCategoryResponse] =
+    useLazyGetSubCategoryQuery();
 
   const pathName = usePathname();
+
+  useEffect(() => {
+    if (category) {
+      getSubCategoriesByCategory({ categoryId: category });
+    }
+  }, []);
 
   const searchParams = useSearchParams();
 
@@ -75,7 +82,7 @@ function SubCategoriesFiltertation() {
 
   return (
     <div className="flex gap-[1.3rem] flex-wrap justify-center">
-      {data?.data?.map((subCategory) => {
+      {getSubCategoriesByCategoryResponse?.data?.data?.map((subCategory) => {
         return (
           <div
             key={subCategory["_id"]}
@@ -85,7 +92,7 @@ function SubCategoriesFiltertation() {
                 ? "#ed0534"
                 : "",
               color: isActiveSubCategory(subCategory["_id"]) ? "white" : "",
-              outline: "1px solid #161616"
+              outline: "1px solid #161616",
             }}
             onClick={() => {
               handleAddSubCategoryToParams(subCategory["_id"]);

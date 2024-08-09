@@ -82,12 +82,11 @@ function SmartSearchMultipleInput({
       value: item["_id"],
     });
 
-    onBlurHandler()
+    onBlurHandler();
 
     action(SmartSearchActions.RESET_INPUT_VALUE);
 
     action(SmartSearchActions.ADD_ID, { value: item["_id"] });
-
   }
 
   const onBlurHandler = () => {
@@ -105,15 +104,13 @@ function SmartSearchMultipleInput({
       <div className="relative flex flex-col gap-4">
         {<label className="font-semibold text-xl">{textLabel}</label>}
         <TextField
-     
-          disabled={disabled}
+          // disabled={disabled}
           className=" w-full"
           placeholder={placeholder}
           onChange={(e) => {
-            action(SmartSearchActions.CHANGE_INPUT, { value: e.target.value })
-            onFocusHandler(e)
-          }
-          }
+            action(SmartSearchActions.CHANGE_INPUT, { value: e.target.value });
+            onFocusHandler(e);
+          }}
           name={name}
           value={smartSearchMultipleState.inputValue}
           sx={{
@@ -162,7 +159,7 @@ function SmartSearchMultipleInput({
         {isFetching && (
           <span
             className="absolute w-6 h-6 "
-            style={{ top: "60%", right: "15px" }}
+            style={{ top: "60%", insetInlineEnd: "15px" }}
           >
             <MiniSpinner />
           </span>

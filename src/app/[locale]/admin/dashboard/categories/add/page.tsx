@@ -43,6 +43,15 @@ function CategoryPage() {
   }
 
   function handleAddCategorySubmit() {
+    if (
+      !formData.name.en ||
+      !formData.name.ar ||
+      !formData.description.en ||
+      !formData.description.ar
+    ) {
+      toast.error("Please check form inputs");
+      return;
+    }
     addCategory({
       name: formData.name,
       description: formData.description,
@@ -88,14 +97,11 @@ function CategoryPage() {
             <Box className="flex justify-between items-center">
               <h2 className="text-3xl font-semibold mb-5">
                 {t("Add Category")}
+                {isChecked ? "(عربي)" : ""}
               </h2>
               <FormControlLabel
                 control={
                   <Switch
-                    disabled={
-                      formData?.name?.en === "" ||
-                      formData?.description?.en === ""
-                    }
                     checked={isChecked}
                     onChange={showInputsHandler}
                     sx={{

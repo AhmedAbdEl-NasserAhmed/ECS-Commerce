@@ -3,7 +3,7 @@ import useDebounceHook from "@/hooks/useDebounceHook";
 import useThrottle from "@/hooks/useThrottle";
 import {
   useGetAllCategoriesQuery,
-  useGetCategoryQuery
+  useGetCategoryQuery,
 } from "@/lib/features/api/categoriesApi";
 import { useAddSubCategoryMutation } from "@/lib/features/api/subCategoriesApi";
 import { Lang } from "@/types/enums";
@@ -17,7 +17,7 @@ import {
   Button,
   FormControlLabel,
   Switch,
-  Typography
+  Typography,
 } from "@mui/material";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
@@ -33,9 +33,9 @@ function AddSubCategoriesPage() {
     control,
     reset,
     watch,
-    formState: { errors }
+    formState: { errors },
   } = useForm<AdminSubCategory>({
-    mode: "onChange"
+    mode: "onChange",
   });
 
   const t = useTranslations("Dashboard");
@@ -60,7 +60,7 @@ function AddSubCategoriesPage() {
 
   const { data, isLoading, isFetching } = useGetCategoryQuery({
     letter: debounceValue,
-    lang
+    lang,
   });
 
   const { data: AllCategories } = useGetAllCategoriesQuery("categories");
@@ -83,11 +83,24 @@ function AddSubCategoriesPage() {
     );
   }, [AllCategories?.data, lang]);
 
+  console.log("formData", formData);
+
   function handleAddSubCategorySubmit() {
+    if (
+      !formData.category.en ||
+      !formData.category.ar ||
+      !formData.name.en ||
+      !formData.name.ar ||
+      !formData.description.en ||
+      !formData.description.ar
+    ) {
+      toast.error("Please check form inputs");
+      return;
+    }
     addSubCategoryFn({
       name: formData.name,
       description: formData.description,
-      category: smartSeachvalue["_id"]
+      category: smartSeachvalue["_id"],
     })
       .unwrap()
       .then((res) => {
@@ -95,7 +108,7 @@ function AddSubCategoriesPage() {
           toast.success("A New Collection Added");
           setSmartSeachValue({
             id: "",
-            name: ""
+            name: "",
           });
           setIsChecked(false);
           router.replace(`/${locale}/admin/dashboard/collections`);
@@ -124,7 +137,7 @@ function AddSubCategoriesPage() {
           alignItems: "center",
           fontSize: "4rem",
           textAlign: "center",
-          flexDirection: "column"
+          flexDirection: "column",
         }}
       >
         {t("No categories yet, please add a new category")}{" "}
@@ -163,29 +176,32 @@ function AddSubCategoriesPage() {
       </Box>
       <Box className="relative grow flex flex-col gap-8 bg-white rounded-2xl border-2 p-10 border-slate-100 shadow-md">
         <Box className="mb-4 flex items-center justify-between">
-          <h2 className="text-3xl font-semibold mb-5">{t("Add Collection")}</h2>
+          <h2 className="text-3xl font-semibold mb-5">
+            {t("Add Collection")}
+            {isChecked ? "(عربي)" : ""}
+          </h2>
           <FormControlLabel
             control={
               <Switch
-                disabled={
-                  errors.category?.[lang] ||
-                  formData.category?.en === "" ||
-                  formData.name?.en === "" ||
-                  formData.description?.en === ""
-                }
+                // disabled={
+                //   errors.category?.[lang] ||
+                //   formData.category?.en === "" ||
+                //   formData.name?.en === "" ||
+                //   formData.description?.en === ""
+                // }
                 checked={isChecked}
                 onChange={showInputsHandler}
                 sx={{
                   "& .MuiSwitch-switchBase.Mui-checked": {
                     color: "red",
                     "& + .MuiSwitch-track": {
-                      backgroundColor: "#ed0534"
-                    }
+                      backgroundColor: "#ed0534",
+                    },
                   },
                   "& .MuiSwitch-track": {
                     backgroundColor: "#161616",
-                    opacity: 1
-                  }
+                    opacity: 1,
+                  },
                 }}
               />
             }
@@ -210,7 +226,7 @@ function AddSubCategoriesPage() {
                 validate(value) {
                   if (!allCategories?.includes(value))
                     return "You Have to choose from available categories";
-                }
+                },
               }}
               render={({ field }) => (
                 <SmartSearchInput
@@ -241,7 +257,7 @@ function AddSubCategoriesPage() {
                 validate(value) {
                   if (!allCategories?.includes(value))
                     return "You Have to choose from available categories";
-                }
+                },
               }}
               render={({ field }) => (
                 <SmartSearchInput
@@ -327,11 +343,11 @@ function AddSubCategoriesPage() {
                   rows={6}
                   sx={{
                     "& .MuiInputBase-input": {
-                      fontSize: "1.4rem"
+                      fontSize: "1.4rem",
                     },
                     "& .MuiInputBase-inputMultiline": {
-                      fontSize: "1.4rem"
-                    }
+                      fontSize: "1.4rem",
+                    },
                   }}
                 />
               )}
@@ -358,11 +374,11 @@ function AddSubCategoriesPage() {
                   rows={6}
                   sx={{
                     "& .MuiInputBase-input": {
-                      fontSize: "1.4rem"
+                      fontSize: "1.4rem",
                     },
                     "& .MuiInputBase-inputMultiline": {
-                      fontSize: "1.4rem"
-                    }
+                      fontSize: "1.4rem",
+                    },
                   }}
                 />
               )}
@@ -382,8 +398,8 @@ function AddSubCategoriesPage() {
                 boxShadow: "none",
                 "&:hover": {
                   backgroundColor: "black",
-                  boxShadow: "none"
-                }
+                  boxShadow: "none",
+                },
               }}
               type="submit"
               variant="contained"

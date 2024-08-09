@@ -1,11 +1,11 @@
 import useClickOutside from "@/hooks/useClickOutside";
 import { TextField } from "@mui/material";
-import { useEffect, useReducer, useState } from "react";
+import { useEffect, useReducer, useRef, useState } from "react";
 import styles from "./SmartSearchInput.module.scss";
 import {
   SmartSearchActions,
   initialState,
-  reducerFn
+  reducerFn,
 } from "./smartSearchInputReducer";
 import MiniSpinner from "../MiniSpinner/MiniSpinner";
 
@@ -25,7 +25,7 @@ function SmartSearchInput({
   defaultValue,
   onFocus = null,
   onBlur = null,
-  lang
+  lang,
 }) {
   const [smartSearchState, dispatch] = useReducer(reducerFn, initialState);
 
@@ -35,14 +35,14 @@ function SmartSearchInput({
 
   const menuRef = useClickOutside({
     close: (v) => action(SmartSearchActions.CLOSE_MENU),
-    value: false
+    value: false,
   });
 
   useEffect(() => {
     if (defaultValue && !value) {
       if (defaultValue !== "" && smartSearchState.inputValue === "") {
         action(SmartSearchActions.SELECT_ITEM, {
-          value: defaultValue
+          value: defaultValue,
         });
       }
     }
@@ -58,14 +58,14 @@ function SmartSearchInput({
     if (getSmartSearchValue && !smartSearchState.userSelectedValue) {
       getSmartSearchValue((prev) => ({
         ...prev,
-        name: smartSearchState.inputValue
+        name: smartSearchState.inputValue,
       }));
     }
   }, [
     smartSearchState.inputValue,
     getSmartSearchValue,
     defaultValue,
-    smartSearchState.userSelectedValue
+    smartSearchState.userSelectedValue,
   ]);
 
   useEffect(() => {
@@ -80,7 +80,7 @@ function SmartSearchInput({
   }, [
     data?.length,
     smartSearchState.inputValue,
-    smartSearchState.userSelectedValue
+    smartSearchState.userSelectedValue,
   ]);
 
   const onSelectItem = (data) => {
@@ -117,10 +117,10 @@ function SmartSearchInput({
           error={!!errors}
           helperText={errors?.message || ""}
           FormHelperTextProps={{ style: { fontSize: "1rem" } }}
-          disabled={disabled}
+          // disabled={disabled}
           style={{
             backgroundColor:
-              smartSearchState.userSelectedValue !== "" ? "#f5f5f5" : ""
+              smartSearchState.userSelectedValue !== "" ? "#f5f5f5" : "",
           }}
           className=" w-full"
           placeholder={placeholder}
@@ -133,17 +133,17 @@ function SmartSearchInput({
           value={smartSearchState.inputValue}
           sx={{
             helperText: {
-              fontSize: "4rem"
+              fontSize: "4rem",
             },
             input: {
-              fontSize: "1.4rem"
+              fontSize: "1.4rem",
             },
 
             "& .MuiOutlinedInput-root": {
               "& fieldset": {
                 borderRadius: "10px",
                 borderColor: "#dcdbdb",
-                backgroundColor: "#ffffff52"
+                backgroundColor: "#ffffff52",
               },
 
               "& .MuiInputBase-input": {
@@ -155,22 +155,22 @@ function SmartSearchInput({
                 "&::placeholder": {
                   color: "#939393",
                   fontSize: "1.2rem",
-                  opacity: 1
-                }
+                  opacity: 1,
+                },
               },
 
               "&.Mui-error .MuiOutlinedInput-notchedOutline": {
-                borderColor: "rgb(186, 9, 9)"
+                borderColor: "rgb(186, 9, 9)",
               },
 
               "&:hover fieldset": {
-                borderColor: "#dcdbdb"
+                borderColor: "#dcdbdb",
               },
 
               "&.Mui-focused fieldset": {
-                borderColor: "#dcdbdb"
-              }
-            }
+                borderColor: "#dcdbdb",
+              },
+            },
           }}
           inputProps={{ readOnly: smartSearchState.userSelectedValue !== "" }}
         />
@@ -178,7 +178,7 @@ function SmartSearchInput({
         {isFetching && (
           <span
             className="absolute w-6 h-6 "
-            style={{ top: "60%", right: "15px" }}
+            style={{ top: "60%", insetInlineEnd: "15px" }}
           >
             <MiniSpinner />
           </span>
@@ -194,11 +194,11 @@ function SmartSearchInput({
                     action(SmartSearchActions.RESET);
                     getSmartSearchValue({
                       id: "",
-                      name: ""
+                      name: "",
                     });
                   }
             }
-            style={{ top: "60%", right: "15px", cursor: "pointer" }}
+            style={{ top: "60%", insetInlineEnd: "15px", cursor: "pointer" }}
             className={styles["close-btn"]}
           >
             X

@@ -3,7 +3,7 @@ import useImagesLoadingSpinner from "@/hooks/useImagesLoadingSpinner";
 import {
   clearCookiesThunk,
   removeItemThunk,
-  setCookiesThunk
+  setCookiesThunk,
 } from "@/lib/features/cookieSlice/cookieSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { UserType } from "@/types/enums";
@@ -35,6 +35,7 @@ function CartSideMenu({ setOpenSideMenu, openSideMenu, setOpens }) {
   const token = useAppSelector((state) => state.usersSlice.token);
 
   const t = useTranslations("user");
+  const tMessage = useTranslations("messages");
 
   function handleDeleteProduct(product) {
     dispatch(
@@ -70,12 +71,12 @@ function CartSideMenu({ setOpenSideMenu, openSideMenu, setOpens }) {
                 incrementQuantityProduct.maxQuantity !==
                 incrementQuantityProduct.quantity
                   ? incrementQuantityProduct.quantity + 1
-                  : incrementQuantityProduct.quantity
+                  : incrementQuantityProduct.quantity,
             }
           : incrementQuantityProduct
       );
     } else {
-      toast.error(" This is maximum Quantity for this product Color");
+      toast.error(tMessage("This is maximum Quantity for this product Color"));
     }
 
     dispatch(setCookiesThunk("cartItems", cartArrayCopy));
@@ -91,7 +92,7 @@ function CartSideMenu({ setOpenSideMenu, openSideMenu, setOpens }) {
             quantity:
               incrementQuantityProduct.quantity !== 1
                 ? incrementQuantityProduct.quantity - 1
-                : incrementQuantityProduct.quantity
+                : incrementQuantityProduct.quantity,
           }
         : incrementQuantityProduct
     );

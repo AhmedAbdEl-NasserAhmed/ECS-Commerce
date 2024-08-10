@@ -42,6 +42,7 @@ function EditCategoryPage() {
   }
 
   const t = useTranslations("Dashboard");
+  const tMessage = useTranslations("messages");
 
   const {
     handleSubmit,
@@ -66,13 +67,13 @@ function EditCategoryPage() {
       .unwrap()
       .then((res) => {
         if (res.status === "success") {
-          toast.success(`Your category has been updated!`);
+          toast.success(tMessage(`Your category has been updated!`));
           router.replace(`/${locale}/admin/dashboard/categories`);
         }
       })
       .catch((err) => {
         if (err) {
-          toast.error("This Category is Already Added");
+          toast.error(tMessage("This Category is Already Added"));
         }
       });
   }

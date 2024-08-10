@@ -1,12 +1,15 @@
 "use client";
 
 import BaseTimeline from "@/components/BaseTimeline/BaseTimeline";
+import orderDetailsColumns from "@/constants/orderDetailsColumns";
 import useTimeline from "@/hooks/useTimeline";
 import {
   useGetOrderByIdQuery,
   useUpdateOrderMutation,
 } from "@/lib/features/api/ordersApi";
+import { formatCurrency } from "@/lib/helpers";
 import { OrderStatusEnum } from "@/types/enums";
+import BaseTable from "@/ui/BaseReactTable";
 import GridContainer from "@/ui/Container/GridContainer";
 
 import OrderStatus from "@/ui/OrderStatus/OrderStatus";
@@ -17,27 +20,8 @@ import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { HiChevronRight } from "react-icons/hi2";
-
-const requestCheckupTimelineStages = [
-  {
-    id: 1,
-    name: "CREATED",
-  },
-  {
-    id: 2,
-    name: "SHIPPED",
-  },
-  {
-    id: 3,
-    name: "DELIVERING",
-  },
-  {
-    id: 4,
-    name: "DELIVERED",
-  },
-];
 
 function ViewOrder() {
   const params = useParams();
@@ -45,6 +29,29 @@ function ViewOrder() {
   const { data: order, isFetching } = useGetOrderByIdQuery(params.id, {
     skip: !params.id,
   });
+
+  const userTranslation = useTranslations("user");
+
+  const requestCheckupTimelineStages = useMemo(() => {
+    return [
+      {
+        id: 1,
+        name: userTranslation("CREATED"),
+      },
+      {
+        id: 2,
+        name: userTranslation("SHIPPED"),
+      },
+      {
+        id: 3,
+        name: userTranslation("DELIVERING"),
+      },
+      {
+        id: 4,
+        name: userTranslation("DELIVERED"),
+      },
+    ];
+  }, [order?.data?.orderStatus]);
 
   const tIndex = useTranslations("Index");
 
@@ -90,7 +97,7 @@ function ViewOrder() {
   if (isFetching) return <Spinner />;
 
   return (
-    <Box>
+    <Box className="px-10">
       <Box className="h-[10vh] flex justify-between items-center p-5">
         <Box className="flex flex-col gap-4">
           <h2 className="text-4xl font-semibold  text-gray-600">
@@ -171,7 +178,7 @@ function ViewOrder() {
           {/* DATA ITEM */}
           <Box>
             <p className="font-semibold text-xl">{t("order price")}</p>
-            <p>{order?.data?.orderPrice}</p>
+            <p>{formatCurrency(order?.data?.orderPrice)}</p>
           </Box>
           {/* DATA ITEM */}
           <Box>
@@ -181,6 +188,14 @@ function ViewOrder() {
             </div>
           </Box>
         </GridContainer>
+        <div className="mt-10">
+          <BaseTable
+            data={order?.data?.items}
+            columns={orderDetailsColumns(locale, userTranslation)}
+            isLoading={isFetching}
+            paginationControllers={false}
+          />
+        </div>
       </Box>
     </Box>
   );

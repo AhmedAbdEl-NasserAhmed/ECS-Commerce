@@ -13,6 +13,7 @@ function ForgetMyPassword() {
   const router = useRouter();
 
   const userTranslation = useTranslations("user");
+  const tMessage = useTranslations("messages");
 
   const [email, setEmail] = useState<string>("");
 
@@ -28,7 +29,7 @@ function ForgetMyPassword() {
     forgetPasswordFn({ email, locale })
       .unwrap()
       .then(() => {
-        toast.success("An Email has sent to you email");
+        toast.success(tMessage("An email has sent to your mailbox"));
         router.push(`/${locale}`);
       })
       .catch((err) => {
@@ -59,8 +60,8 @@ function ForgetMyPassword() {
           fontSize: "1.2rem",
           backgroundColor: "#ed0534",
           "&:hover": {
-            backgroundColor: "#161616"
-          }
+            backgroundColor: "#161616",
+          },
         }}
         type="submit"
         variant="contained"

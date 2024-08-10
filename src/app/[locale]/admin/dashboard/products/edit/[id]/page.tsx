@@ -167,6 +167,7 @@ function EditProduct() {
   }, [AllCategories?.data, smartSeachvalue.name, allCategories, lang]);
 
   const tIndex = useTranslations("Index");
+  const tMessage = useTranslations("messages");
 
   const t = useTranslations("Dashboard");
 
@@ -178,14 +179,14 @@ function EditProduct() {
     const formDataImagesLength = Object.values(data.images)[0];
 
     if (!formDataImagesLength) {
-      toast.error("You Have to add The main image");
+      toast.error(tMessage("You Have to add The main image"));
       return;
     }
 
     updateProductFn({ id: currentProduct?.["_id"], data: serverData })
       .unwrap()
       .then(() => {
-        toast.success("Product is updated");
+        toast.success(tMessage("Product is updated"));
         router.push(`/${locale}/admin/dashboard/products`);
         reset({
           category: {
@@ -257,7 +258,14 @@ function EditProduct() {
     }, 100);
   };
 
-  if (!AllCategories || !productDetails || !currentProduct.colors)
+  const areAllCategoriesEmpty = !allCategories || allCategories?.length === 0;
+
+  if (
+    areAllCategoriesEmpty ||
+    !AllCategories ||
+    !productDetails ||
+    !currentProduct.colors
+  )
     return <Spinner />;
 
   return (
@@ -295,43 +303,6 @@ function EditProduct() {
         <Box className="flex gap-8 flex-col lg:flex-row justify-between ">
           <Box className="w-full lg:w-[70%] ">
             <Box className="relative grid grid-cols-autofill-minmax gap-12">
-              {/* <Controller
-                name={"category.en"}
-                control={control}
-                defaultValue={""}
-                rules={{
-                  required: "This field is required",
-                  validate(value) {
-                    if (
-                      isMainCategoryIncluded &&
-                      lang === Lang.ENGLISH &&
-                      !allCategories?.includes(value)
-                    )
-                      return "You Have to choose from available categories";
-                  },
-                }}
-                render={({ field }) => (
-                  <SmartSearchInput
-                    onRemove={onRemoveMainCategory}
-                    lang={locale}
-                    errors={errors?.["category"]}
-                    defaultValue={""}
-                    isFetching={isFetchingMainCategory}
-                    notAvailableMessage="No Categories Available"
-                    disabled={
-                      updateProductResponse.isLoading || isFetchingMainCategory
-                    }
-                    shouldReset={updateProductResponse.isSuccess}
-                    getSmartSearchValue={setSmartSeachValue}
-                    textLabel={t("Main Category")}
-                    data={mainCategory?.data}
-                    placeholder={t("main category placeholder")}
-                    name={field.name}
-                    onChange={field.onChange}
-                    value={productDetails?.data?.category}
-                  />
-                )}
-              /> */}
               <Controller
                 name={"category"}
                 control={control}
@@ -350,7 +321,7 @@ function EditProduct() {
                     errors={errors?.["category"]}
                     defaultValue={formData.category?.[locale as string]}
                     isFetching={isFetchingMainCategory}
-                    notAvailableMessage="No Categories Available"
+                    notAvailableMessage={tMessage("No Categories Available")}
                     disabled={
                       updateProductResponse.isLoading || isFetchingMainCategory
                     }

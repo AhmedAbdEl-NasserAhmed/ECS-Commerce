@@ -90,7 +90,7 @@ const ProductCard = ({ product }) => {
           }}
         >
           <div className="flex gap-2">
-            {_colors.map((color) => {
+            {_colors?.map((color) => {
               return <ColorItem color={color.color} key={color.color} />;
             })}
           </div>

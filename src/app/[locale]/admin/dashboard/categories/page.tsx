@@ -65,7 +65,7 @@ function Categories() {
             <BaseTable
               data={getPaginatedCategoriesResponse?.data?.data}
               isLoading={getPaginatedCategoriesResponse?.isFetching}
-              columns={categoriesTableHeaders(locale)}
+              columns={categoriesTableHeaders(locale, t)}
               paginationControllers={paginationControllers}
             />
           )}

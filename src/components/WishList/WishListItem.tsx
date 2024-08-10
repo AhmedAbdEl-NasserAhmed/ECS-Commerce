@@ -4,7 +4,7 @@ import useImagesLoadingSpinner from "@/hooks/useImagesLoadingSpinner";
 import {
   addItemThunk,
   clearCookiesThunk,
-  removeItemThunk
+  removeItemThunk,
 } from "@/lib/features/cookieSlice/cookieSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { WishListItemProps } from "@/types/types";
@@ -25,6 +25,7 @@ function WishListItem({ wishListItem }: Props) {
   const { isLoadingImages, setIsLoadingImages } = useImagesLoadingSpinner();
 
   const userTranslation = useTranslations("user");
+  const tMessage = useTranslations("messages");
 
   const cart = useAppSelector(
     (state) => state.cookieSlice.cookieItems.cartItems
@@ -55,9 +56,9 @@ function WishListItem({ wishListItem }: Props) {
           )
         )
       );
-      toast.success("This Item is Added to your  Cart");
+      toast.success(tMessage("This Item is Added to your Cart"));
     } else {
-      toast.error("This Item is Already Existed in the Cart");
+      toast.error(tMessage("This Item is Already Existed in the Cart"));
     }
   }
 
@@ -70,7 +71,7 @@ function WishListItem({ wishListItem }: Props) {
         )
       )
     );
-    toast.success("This Item is Removed from wish List");
+    toast.success(tMessage("This Item is Removed from wishlist"));
   }
 
   return (

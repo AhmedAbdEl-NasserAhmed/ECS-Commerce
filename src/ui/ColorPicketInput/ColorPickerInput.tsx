@@ -6,11 +6,14 @@ import { colorsOptions } from "@/constants/colorOptions";
 import Image from "next/image";
 import toast from "react-hot-toast";
 import { HiMiniPlusCircle } from "react-icons/hi2";
+import { useTranslations } from "next-intl";
 
 const DEFAULT_COLOR = "#000000";
 
 function ColorPickerInput({ options, disabled, onSelectColorHandler }) {
   const [color, setColor] = useState<string>(DEFAULT_COLOR);
+
+  const tMessage = useTranslations("messages");
 
   const nearest = nearestColor.from(colorsOptions);
 
@@ -34,7 +37,7 @@ function ColorPickerInput({ options, disabled, onSelectColorHandler }) {
     const existedColor = options.find((color) => color.label === colorName);
 
     if (existedColor) {
-      toast.error("This color is already exist");
+      toast.error(tMessage("This color is already exist"));
       return;
     }
 
@@ -44,7 +47,7 @@ function ColorPickerInput({ options, disabled, onSelectColorHandler }) {
 
     setColor(DEFAULT_COLOR);
 
-    toast.success("A new color is added");
+    toast.success(tMessage("A new color is added"));
   }
 
   return (

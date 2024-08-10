@@ -1,12 +1,11 @@
 "use client";
 import CategoryTableMenuOptions from "@/components/AdminCategories/categoryTableMenuOptions";
-import { useGetAllSubCategoriesByCategoryQuery } from "@/lib/features/api/subCategoriesApi";
 
-export const categoriesTableHeaders = (locale) => {
+export const categoriesTableHeaders = (locale, t) => {
   return [
     {
       id: "name",
-      header: () => "name",
+      header: () => t("Category Name"),
       cell: ({
         cell: {
           row: { original },
@@ -15,7 +14,7 @@ export const categoriesTableHeaders = (locale) => {
     },
     {
       id: "description",
-      header: () => "description",
+      header: () => t("Category Description"),
       cell: ({
         cell: {
           row: { original },

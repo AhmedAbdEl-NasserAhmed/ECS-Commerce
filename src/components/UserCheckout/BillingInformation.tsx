@@ -35,6 +35,7 @@ function BillingInformation() {
   const dispatch = useAppDispatch();
 
   const userTranslation = useTranslations("user");
+  const tMessage = useTranslations("messages");
 
   const cart = useAppSelector(
     (state) => state.cookieSlice.cookieItems.cartItems
@@ -48,7 +49,7 @@ function BillingInformation() {
 
   function onSubmit(data) {
     if (!cart.length) {
-      toast.error("Please add items to you cart");
+      toast.error(tMessage("Please add items to you cart"));
       return;
     }
 

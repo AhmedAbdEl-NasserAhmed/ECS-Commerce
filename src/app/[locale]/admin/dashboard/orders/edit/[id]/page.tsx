@@ -43,6 +43,7 @@ function EditOrder() {
   const [updateOrder, updateOrderResponse] = useUpdateOrderMutation();
 
   const tIndex = useTranslations("Index");
+  const tMessage = useTranslations("messages");
 
   const t = useTranslations("Dashboard");
 
@@ -60,7 +61,7 @@ function EditOrder() {
     })
       .unwrap()
       .then(() => {
-        toast.success("Product is updated");
+        toast.success(tMessage("Product is updated"));
         router.push(`/${locale}/admin/dashboard/orders/details/${params.id}`);
         reset();
       })

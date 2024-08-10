@@ -35,6 +35,7 @@ function RegisterPage() {
   const [signupFn, signupResponse] = useUserSignupMutation();
 
   const userTranslation = useTranslations("user");
+  const tMessage = useTranslations("messages");
 
   const dispatch = useAppDispatch();
 
@@ -60,7 +61,7 @@ function RegisterPage() {
       .then((res) => {
         dispatch(loginUser({ user: res.data }));
         localStorage.setItem("user", JSON.stringify(res.data));
-        toast.success("You have created a new email");
+        toast.success(tMessage("You have created a new email"));
         router.push(`/${locale}/user/login`);
         reset();
       })

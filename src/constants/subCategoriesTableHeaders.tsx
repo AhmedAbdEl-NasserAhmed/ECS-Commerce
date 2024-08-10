@@ -2,11 +2,11 @@
 
 import SubCategoryTableMenuOptions from "@/components/AdminSubCategories/SubCategoryTableMenuOptions";
 
-export function subCategoriesTableHeaders(locale) {
+export function subCategoriesTableHeaders(locale, t) {
   return [
     {
       id: "name",
-      header: () => "Name",
+      header: () => t("Collection Name"),
       cell: ({
         cell: {
           row: { original },
@@ -16,7 +16,7 @@ export function subCategoriesTableHeaders(locale) {
 
     {
       id: "category",
-      header: () => <div>Category</div>,
+      header: () => t("Category Name"),
       accessorKey: "category",
       cell: ({
         cell: {

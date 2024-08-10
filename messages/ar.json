@@ -33,9 +33,9 @@
     "Main Category": "القسم",
     "main category placeholder": "ابحث عن القسم",
     "Add New Category": "إضافة قسم جديد",
-    "Collections": "الاقسام الفرعيه",
-    "Collection": "القسم الفرعي",
-    "Collection placeholder": "ابحث عن القسم الفرعي",
+    "Collections": "المجموعات",
+    "Collection": "المجموعة",
+    "Collection placeholder": "ابحث عن المجموعة",
     "Orders": "الطلبات",
     "transaction id": "رقم العملية",
     "mobile": "رقم الموبيل",
@@ -49,24 +49,26 @@
     "review": "التقييم",
     "stars": "النجوم",
     "Categories List": "كل الاقسام",
-    "Collections List": "كل الاقسام الفرعية",
+    "Collections List": "كل المجموعات",
     "Orders List": "كل الطلبات",
     "Reviews List": "كل التقييمات",
+    "View Order": "الطلبات",
     "Add Category": "إضافة قسم",
     "Category Name": "اسم القسم",
     "Category Description": "وصف القسم",
-    "Add Collection": "إضافة قسم فرعي",
-    "Collection Name": "اسم القسم الفرعي",
-    "Collection Description": "وصف القسم الفرعي",
+    "Add Collection": "إضافة مجموعة",
+    "Collection Name": "اسم المجموعة",
+    "Collection Description": "وصف المجموعة",
     "Search for category": "بحث عن قسم",
-    "Edit Collection": "تعديل قسم فرعي",
+    "Edit Collection": "تعديل مجموعة",
     "Edit Category": "تعديل قسم",
     "All Products": "المنتجات",
     "All Categories": "الاقسام",
-    "All Collections": "الاقسام الفرعية",
+    "All Collections": "المجموعات",
     "All Orders": "الطلبات",
     "All Reviews": "التقييمات",
     "All Feedbacks": "الاقتراحات",
+    "Feedbacks List": "كل الاقتراحات",
     "View All": "عرض الكل",
     "Edit Product": "تعديل المنتج",
     "Edit Order": "تعديل الطلب",
@@ -141,7 +143,7 @@
     "Dashboard": "لوحة التحكم",
     "You Cart is Empty 🥲 ": "عربة التسوق الخاصة بك فارغة 🥲 ",
     "Clear All": "مسح الكل",
-    "Size": "الحجم",
+    "Size": "المقاس",
     "Color": "اللون",
     "Qty": "الكمية",
     "Remove": "مسح المنتج",
@@ -155,12 +157,12 @@
     "This Item is Added to your  Cart": "تم إضافة المنتج إلى عربة التسوق",
     "This Item is Added to your Wish List": "تم إضافة المنتج إلى قائمة الأمنيات",
     "This Item is Already Existed in the Cart": "هذا المنتج موجود بالفعل في عربة التسوق",
-    "Pick Your Size": "اختار الحجم المناسب",
+    "Pick Your Size": "اختار المقاس المناسب",
     "Pick Your Color": "اختار اللون المناسب",
     "This is maximum Quantity for this product Color": "هذة الكمية القصوى لهذا اللون",
     "Item added to cart": "تم إضافة المنتج إلى عربة التسوق",
     "Reviews": "التقييمات",
-    "This Color and Size are Already Existed": "هذا اللون و هذا الحجم موجودين بالفعل",
+    "This Color and Size are Already Existed": "هذا اللون و هذا المقاس موجودين بالفعل",
     "Customer Review": "تقييم العملاء",
     "Add Review": "إضافة تقييم",
     "Review": "تقييم",
@@ -242,6 +244,39 @@
     "Your Order is Completed Successfully": "تم إضافة الطلب الخاص بك",
     "Please Log in First": "برجاء التسجيل اولا",
     "YOU TRANSACTION IS SUCCESFUL": "تم تنفيذ العملية بنجاح",
-    "You Will be redirected to home Page in": "سوف يتم توجيهك إلى القائمة االرئيسية خلال"
+    "You Will be redirected to home Page in": "سوف يتم توجيهك إلى القائمة االرئيسية خلال",
+    "Verify Email": "التحقق من الايميل",
+    "Enter the OTP": "ادخل رمز التحقق"
+  },
+  "messages": {
+    "Please check form inputs": "الرجاء التحقق من المدخلات",
+    "A New Main Category Added": "تم اضافة قسم جديد بنجاح",
+    "This Category is Already Added": "لا يمكنك اضافة القسم، هذا القسم موجود بالفعل",
+    "Your category has been updated!": "تم تحديث القسم بنجاح",
+    "A New Collection Added": "تم اضافة مجموعة جديدة بنجاح",
+    "A new collection updated": "تم تحديث المجموعة بنجاح",
+    "This collection is already there": "لا يمكنك اضافة المجموعة، هذه المجموعة موجودة بالفعل",
+    "Product is updated": "تم تحديث المنتج بنجاح",
+    "You Have to add The main image": "يجب اضافة الصورة الاساسيه علي الاقل",
+    "A new Product is added": "تم اضافة المنتج بنجاح",
+    "You have created a new email": "لقد قمت بانشاء بريد الكتروني جديد",
+    "Your Password has changed": "تم تغيير كلمة المرور بنجاح",
+    "Your category has been deleted!": "تم حذف القسم بنجاح",
+    "Something went wrong!": "حدث خطأ ما يرجي المحاولة وفتا لاحق",
+    "Your Collection has been deleted!": "تم حذف المجموعة بنجاح",
+    "An email has sent to your mailbox": "تم ارسال بريد الكتروني الي صندوق بريدك",
+    "Please add items to you cart": "الرجاء اضافة منتجات الي سلة التسوق",
+    "Your Review is deleted": "تم حذف التقييم بنجاح",
+    "Your Password changed successfully": "تم تغيير كلمة المرور بنجاح",
+    "Your Account is Activated": "تم تنشيط حسابك",
+    "This Item is Added to your Cart": "تم اضافة المنتج الي عربة التسوق",
+    "This Item is Already Existed in the Cart": "هذا المنتج موجود في عربة التسوق بالفعل",
+    "This Item is Removed from wishlist": "تم حذف المنتج من قائمة الامنيات",
+    "This is maximum Quantity for this product Color": "هذا الحد الاقصي من هذا اللون من هذا المنتج",
+    "Please Log in First": "قم بتسجيل الدخول اولا",
+    "This color is already exist": "هذا اللون موجود بالفعل",
+    "A new color is added": "تم اضافة اللون بنجاح",
+    "No Categories Available": "لا يوجد اقسام متاحة",
+    "HERE": "هنا"
   }
 }

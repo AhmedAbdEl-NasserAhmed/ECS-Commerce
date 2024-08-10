@@ -7,6 +7,7 @@ import { StorageService } from "@/services/StorageService";
 import MiniSpinner from "@/ui/MiniSpinner/MiniSpinner";
 import CustomizedTextField from "@/ui/TextField/TextField";
 import { Button } from "@mui/material";
+import { useTranslations } from "next-intl";
 import { useParams, useRouter } from "next/navigation";
 import { ChangeEvent, useState } from "react";
 import toast from "react-hot-toast";
@@ -15,6 +16,9 @@ function VerifyEmailAddressPage({ setShowModal }) {
   const [otp, setOtp] = useState<string>("");
 
   const router = useRouter();
+
+  const t = useTranslations("user");
+  const tMessage = useTranslations("messages");
 
   const { locale } = useParams();
 
@@ -29,7 +33,7 @@ function VerifyEmailAddressPage({ setShowModal }) {
     activeEmailFn({ otp })
       .unwrap()
       .then((res) => {
-        toast.success("Your Email is Activated");
+        toast.success(tMessage("Your Account is Activated"));
         dispatch(
           loginUser({
             user: res.data,
@@ -46,7 +50,7 @@ function VerifyEmailAddressPage({ setShowModal }) {
         router.push(`/${locale}`);
       })
       .catch(() => {
-        toast.error("something went wrong");
+        toast.error(tMessage("something went wrong"));
       });
   }
 
@@ -57,13 +61,13 @@ function VerifyEmailAddressPage({ setShowModal }) {
       onSubmit={handleSubmit}
       className="w-[50vw] lg:w-[30vw] p-8 bg-white text-[#161616} h-96 rounded-lg text-center flex flex-col gap-12 "
     >
-      <h2 className="text-3xl capitalize font-bold"> ENTER THE OTP</h2>
+      <h2 className="text-3xl capitalize font-bold">{t("Enter the OTP")}</h2>
       <CustomizedTextField
         disabled={activeEmailResponse.isLoading}
         value={otp}
         onChange={handleChangeInput}
         type="text"
-        placeholder="ENTER THE OTP"
+        placeholder={t("Enter the OTP")}
       />
       <Button
         disabled={activeEmailResponse.isLoading}
@@ -79,7 +83,7 @@ function VerifyEmailAddressPage({ setShowModal }) {
         variant="contained"
         size="large"
       >
-        {activeEmailResponse.isLoading ? <MiniSpinner /> : " Verify Email"}
+        {activeEmailResponse.isLoading ? <MiniSpinner /> : t("Verify Email")}
       </Button>
     </form>
   );

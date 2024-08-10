@@ -17,7 +17,7 @@ function UserSettings() {
     control,
     watch,
     handleSubmit,
-    formState: { errors }
+    formState: { errors },
   } = useForm({ mode: "onChange" });
 
   const formData = watch();
@@ -26,6 +26,7 @@ function UserSettings() {
     useUpdatePasswordMutation();
 
   const userTranslation = useTranslations("user");
+  const tMessage = useTranslations("messages");
 
   const dispatch = useAppDispatch();
 
@@ -50,11 +51,11 @@ function UserSettings() {
   function onSubmit(data) {
     updatePasswordFm({
       oldPassword: data.oldPassword,
-      newPassword: data.newPassword
+      newPassword: data.newPassword,
     })
       .unwrap()
       .then(() => {
-        toast.success("Your Password changed successfully");
+        toast.success(tMessage("Your Password changed successfully"));
         dispatch(logoutUser());
         localStorage.removeItem("userToken");
         localStorage.removeItem("user");
@@ -82,8 +83,8 @@ function UserSettings() {
             required: userTranslation("This field is required"),
             minLength: {
               value: 4,
-              message: "The name should be more than 4 characters "
-            }
+              message: "The name should be more than 4 characters ",
+            },
           }}
           render={({ field }) => (
             <CustomizedTextField
@@ -108,8 +109,8 @@ function UserSettings() {
             required: userTranslation("Please Enter A Valid Email"),
             pattern: {
               value: emailRegex,
-              message: userTranslation("Please Enter Valid Email Format")
-            }
+              message: userTranslation("Please Enter Valid Email Format"),
+            },
           }}
           render={({ field }) => (
             <CustomizedTextField
@@ -131,7 +132,7 @@ function UserSettings() {
           control={control}
           defaultValue={""}
           rules={{
-            required: "This Field is required"
+            required: "This Field is required",
           }}
           render={({ field }) => (
             <CustomizedTextField
@@ -155,7 +156,7 @@ function UserSettings() {
                       {showOldPassword ? <MdVisibility /> : <MdVisibilityOff />}
                     </IconButton>
                   </InputAdornment>
-                )
+                ),
               }}
               size={"small"}
             />
@@ -171,8 +172,8 @@ function UserSettings() {
               value: passwordRegex,
               message: userTranslation(
                 "password must be at least 8 characters long and include an uppercase letter, lowercase letter, digit, and special character "
-              )
-            }
+              ),
+            },
           }}
           render={({ field }) => (
             <CustomizedTextField
@@ -196,7 +197,7 @@ function UserSettings() {
                       {showNewPassword ? <MdVisibility /> : <MdVisibilityOff />}
                     </IconButton>
                   </InputAdornment>
-                )
+                ),
               }}
               size={"small"}
             />
@@ -211,7 +212,7 @@ function UserSettings() {
             validate(value) {
               if (value !== formData.newPassword)
                 return userTranslation("Password does not match");
-            }
+            },
           }}
           render={({ field }) => (
             <CustomizedTextField
@@ -239,7 +240,7 @@ function UserSettings() {
                       )}
                     </IconButton>
                   </InputAdornment>
-                )
+                ),
               }}
               size={"small"}
             />
@@ -253,8 +254,8 @@ function UserSettings() {
             fontSize: "1.2rem",
             backgroundColor: "#ed0534",
             "&:hover": {
-              backgroundColor: "#141414"
-            }
+              backgroundColor: "#141414",
+            },
           }}
           type="submit"
           variant="contained"

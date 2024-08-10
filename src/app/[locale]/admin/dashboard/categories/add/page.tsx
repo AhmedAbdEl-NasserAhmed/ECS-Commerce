@@ -43,6 +43,7 @@ function CategoryPage() {
   const [isChecked, setIsChecked] = useState<boolean>(false);
 
   const t = useTranslations("Dashboard");
+  const tMessage = useTranslations("messages");
 
   function showInputsHandler(e) {
     setIsChecked(e.target.checked);
@@ -55,7 +56,7 @@ function CategoryPage() {
       !formData.description.en ||
       !formData.description.ar
     ) {
-      toast.error("Please check form inputs");
+      toast.error(tMessage("Please check form inputs"));
       return;
     }
     addCategory({
@@ -67,13 +68,13 @@ function CategoryPage() {
         if (res.status === "success") {
           setIsChecked(false);
           // router.replace(`/${locale}/admin/dashboard/categories`);
-          toast.success("A New Main Category Added");
+          toast.success(tMessage("A New Main Category Added"));
           reset();
         }
       })
       .catch((err) => {
         if (err) {
-          toast.error("This Category is Already Added");
+          toast.error(tMessage("This Category is Already Added"));
         }
       });
   }

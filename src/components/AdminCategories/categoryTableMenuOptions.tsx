@@ -7,11 +7,14 @@ import DeleteWindow from "@/ui/DeleteWindow/DeleteWindow";
 import { useParams, useRouter } from "next/navigation";
 import { useDeleteCategoryMutation } from "@/lib/features/api/categoriesApi";
 import toast from "react-hot-toast";
+import { useTranslations } from "next-intl";
 
 function CategoryTableMenuOptions({ category }) {
   const router = useRouter();
 
   const { locale } = useParams();
+
+  const tMessage = useTranslations("messages");
 
   const [deleteCategory, deleteCategoryResponse] = useDeleteCategoryMutation();
 
@@ -19,10 +22,10 @@ function CategoryTableMenuOptions({ category }) {
     deleteCategory(category["_id"])
       .unwrap()
       .then((res) => {
-        toast.success(`Your category has been deleted!`);
+        toast.success(tMessage(`Your category has been deleted!`));
       })
       .catch((err) => {
-        toast.error("Something went wrong!");
+        toast.error(tMessage("Something went wrong!"));
       });
   };
 

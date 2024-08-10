@@ -39,6 +39,7 @@ function AddSubCategoriesPage() {
   });
 
   const t = useTranslations("Dashboard");
+  const tMessage = useTranslations("messages");
 
   const formData = watch();
   const { locale } = useParams();
@@ -93,7 +94,7 @@ function AddSubCategoriesPage() {
       !formData.description.en ||
       !formData.description.ar
     ) {
-      toast.error("Please check form inputs");
+      toast.error(tMessage("Please check form inputs"));
       return;
     }
     addSubCategoryFn({
@@ -104,7 +105,7 @@ function AddSubCategoriesPage() {
       .unwrap()
       .then((res) => {
         if (res.status === "success") {
-          toast.success("A New Collection Added");
+          toast.success(tMessage("A New Collection Added"));
           setSmartSeachValue({
             id: "",
             name: "",
@@ -116,7 +117,7 @@ function AddSubCategoriesPage() {
       })
       .catch((err) => {
         if (err) {
-          toast.error("This Category is Already Added");
+          toast.error(tMessage("This Category is Already Added"));
         }
       });
   }
@@ -231,7 +232,7 @@ function AddSubCategoriesPage() {
                 <SmartSearchInput
                   lang={locale}
                   isFetching={isFetching}
-                  notAvailableMessage="No Categories Available"
+                  notAvailableMessage={tMessage("No Categories Available")}
                   errors={errors?.["category"]}
                   disabled={subCategoryResponse.isLoading || isFetching}
                   shouldReset={subCategoryResponse.isSuccess}
@@ -263,7 +264,7 @@ function AddSubCategoriesPage() {
                   lang={lang}
                   errors={errors?.["category"]?.["ar"]}
                   isFetching={isFetching}
-                  notAvailableMessage="No Categories Available"
+                  notAvailableMessage={tMessage("No Categories Available")}
                   disabled={subCategoryResponse.isLoading || isFetching}
                   shouldReset={subCategoryResponse.isSuccess}
                   getSmartSearchValue={setSmartSeachValue}

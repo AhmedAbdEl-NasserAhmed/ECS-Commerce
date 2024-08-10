@@ -69,7 +69,7 @@ function SubCategories() {
               isLoading={getPaginatedSubCategoriesResponse.isFetching}
               paginationControllers={paginationControllers}
               data={getPaginatedSubCategoriesResponse?.data?.data}
-              columns={subCategoriesTableHeaders(locale)}
+              columns={subCategoriesTableHeaders(locale, t)}
             />
           )}
         </Menus>

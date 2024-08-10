@@ -13,7 +13,7 @@ import Link from "next/link";
 import {
   clearCookiesThunk,
   removeItemThunk,
-  setCookiesThunk
+  setCookiesThunk,
 } from "@/lib/features/cookieSlice/cookieSlice";
 import useImagesLoadingSpinner from "@/hooks/useImagesLoadingSpinner";
 import Spinner from "../Spinner/Spinner";
@@ -36,7 +36,7 @@ const Cart = () => {
 
   const ref = useClickOutside({
     close: setIsCartOpen,
-    value: false
+    value: false,
   });
 
   const dispatch = useAppDispatch();
@@ -46,6 +46,7 @@ const Cart = () => {
   const token = useAppSelector((state) => state.usersSlice.token);
 
   const t = useTranslations("user");
+  const tMessage = useTranslations("messages");
 
   function handleDeleteProduct(product) {
     dispatch(
@@ -81,12 +82,12 @@ const Cart = () => {
                 incrementQuantityProduct.maxQuantity !==
                 incrementQuantityProduct.quantity
                   ? incrementQuantityProduct.quantity + 1
-                  : incrementQuantityProduct.quantity
+                  : incrementQuantityProduct.quantity,
             }
           : incrementQuantityProduct
       );
     } else {
-      toast.error(" This is maximum Quantity for this product Color");
+      toast.error(tMessage("This is maximum Quantity for this product Color"));
     }
 
     dispatch(setCookiesThunk("cartItems", cartArrayCopy));
@@ -102,7 +103,7 @@ const Cart = () => {
             quantity:
               incrementQuantityProduct.quantity !== 1
                 ? incrementQuantityProduct.quantity - 1
-                : incrementQuantityProduct.quantity
+                : incrementQuantityProduct.quantity,
           }
         : incrementQuantityProduct
     );

@@ -5,6 +5,7 @@ import { useResetPasswordMutation } from "@/lib/features/api/usersApi";
 import MiniSpinner from "@/ui/MiniSpinner/MiniSpinner";
 import CustomizedTextField from "@/ui/TextField/TextField";
 import { Button, IconButton, InputAdornment } from "@mui/material";
+import { useTranslations } from "next-intl";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -20,6 +21,8 @@ function ResetPasswordPage() {
 
   const [showConfirmNewPassword, setShowConfirmNewPassword] =
     useState<boolean>(false);
+
+  const tMessage = useTranslations("messages");
 
   const handleClickShowNewPassword = () => setShowNewPassword((show) => !show);
 
@@ -41,7 +44,7 @@ function ResetPasswordPage() {
     resetPasswordFn({ newPassword: formData.newPassword, token })
       .unwrap()
       .then(() => {
-        toast.success("Your Password has changed");
+        toast.success(tMessage("Your Password has changed"));
         router.push(`/${locale}/user/login`);
       })
       .catch((err) => {

@@ -37,7 +37,7 @@ function EditSubCategoryPage() {
     control,
     reset,
     watch,
-    formState: { errors },
+    formState: { errors, dirtyFields },
   } = useForm<AdminSubCategory>({
     mode: "onChange",
   });
@@ -49,6 +49,7 @@ function EditSubCategoryPage() {
   const { locale } = useParams();
 
   const t = useTranslations("Dashboard");
+  const tMessage = useTranslations("messages");
 
   const [smartSeachvalue, setSmartSeachValue] = useState<{
     id: string;
@@ -85,7 +86,9 @@ function EditSubCategoryPage() {
   }, [isChecked]);
 
   useEffect(() => {
-    setAllCategories(data?.data.map((category) => category.name[lang]));
+    setAllCategories(
+      data?.data.map((category) => category.name[locale as string])
+    );
   }, [data?.data, lang]);
 
   useEffect(() => {
@@ -97,6 +100,16 @@ function EditSubCategoryPage() {
   }, [data?.data, smartSeachvalue.name, allCategories]);
 
   function handleEditSubCategorySubmit() {
+    if (
+      !formData.category.en ||
+      !formData.name.en ||
+      !formData.name.ar ||
+      !formData.description.en ||
+      !formData.description.ar
+    ) {
+      toast.error(tMessage("Please check form inputs"));
+      return;
+    }
     editSubCategory({
       id: params.id,
       data: {
@@ -108,7 +121,7 @@ function EditSubCategoryPage() {
       .unwrap()
       .then((res) => {
         if (res.status === "success") {
-          toast.success("A new sub-category updated");
+          toast.success(tMessage("A new collection updated"));
           setSmartSeachValue({
             id: "",
             name: "",
@@ -119,12 +132,17 @@ function EditSubCategoryPage() {
       })
       .catch((err) => {
         if (err) {
-          toast.error("This sub-category is already there");
+          toast.error(tMessage("This collection is already there"));
         }
       });
   }
 
-  if (isSubCategoryFetching || !subCategoryData) return <Spinner />;
+  if (
+    // areAllCategoriesEmpty ||
+    isSubCategoryFetching ||
+    !subCategoryData
+  )
+    return <Spinner />;
 
   return (
     <form
@@ -198,16 +216,19 @@ function EditSubCategoryPage() {
               defaultValue={subCategoryData?.data?.category?.name}
               rules={{
                 required: "This field is required",
-                // validate(value) {
-                //   if (isMainCategoryIncluded && !allCategories?.includes(value))
-                //     return "You Have to choose from available categories";
-                // },
+                validate(value) {
+                  if (
+                    isMainCategoryIncluded &&
+                    !allCategories?.includes(value[locale as string])
+                  )
+                    return "You Have to choose from available categories";
+                },
               }}
               render={({ field }) => (
                 <SmartSearchInput
                   lang={locale}
                   isFetching={isSubCategoryFetching}
-                  notAvailableMessage="No Categories Available"
+                  notAvailableMessage={tMessage("No Categories Available")}
                   errors={errors?.["category"]}
                   disabled={
                     editSubCategoryResponse.isLoading || isSubCategoryFetching
@@ -242,7 +263,7 @@ function EditSubCategoryPage() {
                   lang={lang}
                   errors={errors?.["category"]?.["ar"]}
                   isFetching={isSubCategoryFetching}
-                  notAvailableMessage="No Categories Available"
+                  notAvailableMessage={(tMessage("No Categories Available"))}
                   disabled={
                     editSubCategoryResponse.isLoading || isSubCategoryFetching
                   }

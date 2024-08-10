@@ -19,7 +19,7 @@ function OrderDetails() {
   const { locale } = useParams();
 
   const { data, isFetching } = useGetOrderByIdQuery(orderId, {
-    skip: !orderId
+    skip: !orderId,
   });
 
   const userTranslation = useTranslations("user");

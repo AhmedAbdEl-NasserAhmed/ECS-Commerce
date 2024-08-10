@@ -11,6 +11,7 @@ import { useTranslations } from "next-intl";
 
 function UserReviewsMenuOptions({ review }) {
   const userTranslation = useTranslations("user");
+  const tMessage = useTranslations("messages");
 
   const [deleteReviewFn, reviewResponse] = useDeleteReviewMutation();
 
@@ -18,10 +19,10 @@ function UserReviewsMenuOptions({ review }) {
     deleteReviewFn({ id: review["_id"] })
       .unwrap()
       .then(() => {
-        toast.success("Your Review is deleted");
+        toast.success(tMessage("Your Review is deleted"));
       })
       .catch(() => {
-        toast.error("Something went wrong");
+        toast.error(tMessage("Something went wrong"));
       });
   }
 

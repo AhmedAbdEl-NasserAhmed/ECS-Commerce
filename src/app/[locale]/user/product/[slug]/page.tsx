@@ -341,7 +341,7 @@ function ProductDetails() {
     // eslint-disable-next-line
   }, [typeof window]);
 
-  if (isLoading || mainCategoryLoading || fetchingReviews) return <Spinner />;
+  if (mainCategoryLoading) return <Spinner />;
 
   if (!_singleProduct && !data?.data.images) return null;
 
@@ -470,32 +470,40 @@ function ProductDetails() {
               dynamicHref={dynamicHref}
               data={_singleProduct}
             />
-            <Box className="flex justify-between items-center  ">
-              <h2 className="text-4xl font-semibold capitalize">
-                {productDetailsState?.selectedProduct?.name?.[locale as string]}
-              </h2>
+            {isLoading ? (
+              <Spinner />
+            ) : (
+              <Box className="flex justify-between items-center  ">
+                <h2 className="text-4xl font-semibold capitalize">
+                  {
+                    productDetailsState?.selectedProduct?.name?.[
+                      locale as string
+                    ]
+                  }
+                </h2>
 
-              {productDetailsState?.isColorExisted && (
-                <p className="text-xl font-semibold capitalize">
-                  {userTranslation("Item added to cart")}
-                </p>
-              )}
+                {productDetailsState?.isColorExisted && (
+                  <p className="text-xl font-semibold capitalize">
+                    {userTranslation("Item added to cart")}
+                  </p>
+                )}
 
-              {!productDetailsState?.isColorExisted && !isAdmin && (
-                <span
-                  onClick={addWishListProducthandler}
-                  className="text-5xl cursor-pointer text-[#ed0534]"
-                >
-                  {productDetailsState.existedWishListItems.includes(
-                    productDetailsState.selectedColor?.["_id"]
-                  ) ? (
-                    <HiHeart />
-                  ) : (
-                    <HiOutlineHeart />
-                  )}
-                </span>
-              )}
-            </Box>
+                {!productDetailsState?.isColorExisted && !isAdmin && (
+                  <span
+                    onClick={addWishListProducthandler}
+                    className="text-5xl cursor-pointer text-[#ed0534]"
+                  >
+                    {productDetailsState.existedWishListItems.includes(
+                      productDetailsState.selectedColor?.["_id"]
+                    ) ? (
+                      <HiHeart />
+                    ) : (
+                      <HiOutlineHeart />
+                    )}
+                  </span>
+                )}
+              </Box>
+            )}
             <Box className="flex items-center gap-4 flex-wrap">
               <Box>
                 <h2 className="font-semibold text-xl">
@@ -510,18 +518,23 @@ function ProductDetails() {
                 />
               </Box>
             </Box>
-            <div className="flex items-center gap-2">
-              <div className="-translate-y-0.5">
-                <ReactStars
-                  readOnly={true}
-                  size={"large"}
-                  value={productDetailsState.averageRatingStar}
-                />
+            {fetchingReviews ? (
+              <Spinner />
+            ) : (
+              <div className="flex items-center gap-2">
+                <div className="-translate-y-0.5">
+                  <ReactStars
+                    readOnly={true}
+                    size={"large"}
+                    value={productDetailsState.averageRatingStar}
+                  />
+                </div>
+                <h2 className="font-semibold text-[1.4rem]">
+                  ({reviews?.data?.length} {userTranslation("Customer Review")}{" "}
+                  )
+                </h2>
               </div>
-              <h2 className="font-semibold text-[1.4rem]">
-                ({reviews?.data?.length} {userTranslation("Customer Review")} )
-              </h2>
-            </div>
+            )}
             <Box className="flex items-center gap-5">
               <h2 className="text-3xl font-semibold ">
                 {productDetailsState?.selectedProduct?.saleProduct}{" "}

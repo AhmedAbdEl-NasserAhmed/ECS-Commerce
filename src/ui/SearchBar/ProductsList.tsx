@@ -28,7 +28,7 @@ function ProductsList({ data, setProductName, productName }) {
     const observer = new IntersectionObserver(handleObserver, {
       root: null,
       rootMargin: "0px",
-      threshold: 0
+      threshold: 0,
     });
 
     if (observer && ref.current) {
@@ -52,7 +52,7 @@ function ProductsList({ data, setProductName, productName }) {
     >
       {data?.length === 0 && (
         <p className="font-semibold text-xl flex items-center justify-center h-full">
-          No Products Available
+          {userTranslation("No Products Available")}
         </p>
       )}
 

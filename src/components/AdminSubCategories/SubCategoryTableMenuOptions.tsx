@@ -7,6 +7,7 @@ import DeleteWindow from "@/ui/DeleteWindow/DeleteWindow";
 import { useParams, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { useDeleteSubCategoryMutation } from "@/lib/features/api/subCategoriesApi";
+import { useTranslations } from "next-intl";
 
 function SubCategoryTableMenuOptions({ subCategory }) {
   const router = useRouter();
@@ -16,14 +17,16 @@ function SubCategoryTableMenuOptions({ subCategory }) {
   const [deleteSubCategory, deleteSubCategoryResponse] =
     useDeleteSubCategoryMutation();
 
+  const tMessage = useTranslations("messages");
+
   const onDeleteSubCategory = () => {
     deleteSubCategory(subCategory["_id"])
       .unwrap()
       .then((res) => {
-        toast.success(`Your Collection has been deleted!`);
+        toast.success(tMessage(`Your Collection has been deleted!`));
       })
       .catch((err) => {
-        toast.error("Something went wrong!");
+        toast.error(tMessage("Something went wrong!"));
       });
   };
 

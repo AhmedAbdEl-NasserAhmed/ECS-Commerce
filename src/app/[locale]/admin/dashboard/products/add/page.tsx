@@ -172,7 +172,9 @@ function AddProductPage() {
     setIsChecked(e.target.checked);
     if (formData.subCategory.length > 0) {
       dispatch(setSubCategory({ data: formData.subCategory }));
-      dispatch(setImages({ data: formData.images }));
+      if (Object.values(formData.images).filter(Boolean)) {
+        dispatch(setImages({ data: { ...formData.images } }));
+      }
       // localStorage.setItem(
       //   `subCategories${lang}`,
       //   JSON.stringify([...formData.subCategory])
@@ -224,6 +226,7 @@ function AddProductPage() {
   }, [formData?.["name-en"]]);
 
   const tIndex = useTranslations("Index");
+  const tMessage = useTranslations("messages");
 
   const t = useTranslations("Dashboard");
 
@@ -236,7 +239,7 @@ function AddProductPage() {
       !formData.description.en ||
       !formData.description.ar
     ) {
-      toast.error("Please check form inputs");
+      toast.error(tMessage("Please check form inputs"));
       return;
     }
     const myData = { ...data, category: smartSeachvalue["_id"] };
@@ -246,14 +249,14 @@ function AddProductPage() {
     const formDataImagesLength = Object.values(data.images)[0];
 
     if (!formDataImagesLength) {
-      toast.error("You Have to add The main image");
+      toast.error(tMessage("You Have to add The main image"));
       return;
     }
 
     addProductFn(serverData)
       .unwrap()
       .then(() => {
-        toast.success("A new Product is added");
+        toast.success(tMessage("A new Product is added"));
         localStorage.removeItem("subCategoriesen");
         localStorage.removeItem("subCategoriesar");
         setIsChecked(false);
@@ -417,7 +420,7 @@ function AddProductPage() {
                       errors={errors?.["category"]}
                       defaultValue={formData.category?.[locale as string]}
                       isFetching={isFetchingMainCategory}
-                      notAvailableMessage="No Categories Available"
+                      notAvailableMessage={tMessage("No Categories Available")}
                       disabled={
                         productResponse.isLoading || isFetchingMainCategory
                       }

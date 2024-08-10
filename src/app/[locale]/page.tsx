@@ -19,8 +19,6 @@ import Spinner from "@/ui/Spinner/Spinner";
 function HomePage() {
   const { data, isLoading } = useGetAllProductsQuery({ limit: 6 });
 
-  console.log("data", data);
-
   const { data: SaleProducts, isLoading: isLoadingSaleProducts } =
     useGetAllProductsQuery({ sale: "true", limit: 6 });
 
@@ -29,8 +27,6 @@ function HomePage() {
   const t = useTranslations("user");
 
   useCookie("cartItems", "wishListItems");
-
-  // return <h2>as</h2>;
 
   return (
     <UserProtectedRoute>

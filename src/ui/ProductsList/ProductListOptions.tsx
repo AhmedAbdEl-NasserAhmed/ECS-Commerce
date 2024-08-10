@@ -23,7 +23,6 @@ function ProductListOptions({ product, productsBySlug = [] }) {
         className="cursor-pointer"
       />
       {productsBySlug?.map((product) => {
-        console.log("XXXXX product XXXXX", product);
         return (
           <ProductActionItem
             key={product["_id"]}

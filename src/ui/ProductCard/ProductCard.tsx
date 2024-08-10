@@ -12,8 +12,6 @@ const ProductCard = ({ product }) => {
     skip: !product?.category,
   });
 
-  console.log("product", product);
-
   const { locale } = useParams();
 
   const userTranslation = useTranslations("user");
@@ -22,21 +20,15 @@ const ProductCard = ({ product }) => {
     product.slug
   );
 
-  console.log("productsBySlug", productsBySlug);
-
   if (!product) return <Spinner />;
-
-  const isSingleProductOfSlug = productsBySlug?.data?.products?.length === 1;
 
   const _colors = productsBySlug?.data?.products?.reduce((acc, product) => {
     return acc.concat(
-      product.colors.map((color) => {
+      product?.colors?.map((color) => {
         return color;
       })
     );
   }, []);
-
-  console.log("_colors", _colors);
 
   return (
     <div

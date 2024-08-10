@@ -32,8 +32,6 @@ function EditSubCategoryPage() {
   const { data: subCategoryData, isFetching: isSubCategoryFetching } =
     useGetSubCategoryByIdQuery(params.id);
 
-  console.log("subCategoryData", subCategoryData);
-
   const {
     handleSubmit,
     control,
@@ -57,8 +55,6 @@ function EditSubCategoryPage() {
     name: string;
   }>({ id: "", name: "" });
 
-  console.log("smartSeachvalue", smartSeachvalue);
-
   const [isChecked, setIsChecked] = useState<boolean>(false);
 
   const [isMainCategoryIncluded, setIsMainCategoryIncluded] =
@@ -76,8 +72,6 @@ function EditSubCategoryPage() {
       skip: !debounceValue,
     }
   );
-
-  console.log("data", data);
 
   const [editSubCategory, editSubCategoryResponse] =
     useEditSubCategoryMutation();
@@ -131,9 +125,6 @@ function EditSubCategoryPage() {
   }
 
   if (isSubCategoryFetching || !subCategoryData) return <Spinner />;
-
-  console.log("formData: ", formData);
-  console.log("data?.data: ", data?.data);
 
   return (
     <form

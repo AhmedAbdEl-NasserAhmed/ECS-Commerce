@@ -25,7 +25,6 @@ function SmartSearchMultipleInput({
   onFocus = null,
   lang,
 }) {
-  console.log("lang", lang);
   const [smartSearchMultipleState, dispatch] = useReducer(
     reducerFn,
     initialState

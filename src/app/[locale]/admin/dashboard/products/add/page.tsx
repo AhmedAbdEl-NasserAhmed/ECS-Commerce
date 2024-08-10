@@ -73,8 +73,6 @@ function AddProductPage() {
 
   const [isChecked, setIsChecked] = useState<boolean>(false);
 
-  console.log("locale", locale);
-
   /**
    * locale       isChecked           Value
    *   ar           false         =
@@ -158,7 +156,6 @@ function AddProductPage() {
       : formData?.["name-ar"]?.ar;
 
   useEffect(() => {
-    console.log("productName", productName);
     setSelectedProduct(
       productName?.find((product) => {
         return product.name.en === nameEnValue;
@@ -184,7 +181,6 @@ function AddProductPage() {
   }
 
   useEffect(() => {
-    console.log("selectedProduct", selectedProduct);
     if (selectedProduct?.images) {
       const images = {};
       if (selectedProduct.images.length >= 1) {
@@ -208,13 +204,9 @@ function AddProductPage() {
   }, [selectedProduct?.images, setValue]);
 
   useEffect(() => {
-    console.log("");
     const p = +(formData.price || 0);
     const d = +(formData.discount || 0);
     const discount: number = +p - (+p * +d) / 100;
-
-    // if (!discount) return;
-    console.log("discount", discount);
 
     setValue("salePrice", discount);
 
@@ -342,15 +334,6 @@ function AddProductPage() {
       setShouldResetMultipleSearchInput(false);
     }, 100);
   };
-
-  console.log(
-    "formData: ",
-    formData,
-    "nameEn",
-    nameEnValue,
-    "nameAr",
-    nameArValue
-  );
 
   return (
     <form

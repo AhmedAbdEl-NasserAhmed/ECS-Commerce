@@ -27,13 +27,6 @@ export const getAddProductServerData = (
     }
   }
 
-  console.log(
-    "NAME: ",
-    data,
-    data?.["name-en"],
-    typeof data?.["name-en"] === "string"
-  );
-
   const nameEnValue = data?.["name-en"];
 
   const nameArValue = data?.["name-ar"];
@@ -42,8 +35,6 @@ export const getAddProductServerData = (
     typeof data?.["name-en"] === "string"
       ? { en: nameEnValue, ar: nameArValue }
       : nameEnValue;
-
-  console.log("nameValue", nameValue);
 
   formData.append("name", JSON.stringify(nameValue));
 

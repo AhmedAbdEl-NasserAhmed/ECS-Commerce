@@ -58,7 +58,6 @@ function SmartSearchInput({
 
   useEffect(() => {
     if (getSmartSearchValue && !smartSearchState.userSelectedValue) {
-      console.log("smartSearchState.inputValue", smartSearchState.inputValue);
       getSmartSearchValue((prev) => ({
         ...prev,
         name: smartSearchState.inputValue,

@@ -56,9 +56,7 @@ function ProductDetails() {
     dispatch({ type, payload });
   }
 
-  const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    const selectedIndex = event.target.selectedIndex;
-
+  const handleChange = (selectedIndex) => {
     action(ProductViewActions.SET_CURRENT_PRODUCT_INDEX, {
       value: selectedIndex,
     });

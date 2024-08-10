@@ -31,7 +31,7 @@ function DashBoardPageg() {
   const { locale } = useParams();
 
   const { data: analytics, isFetching: isAnalyticsFetching } =
-    useGetAnalyticsDataQuery("analytics");
+    useGetAnalyticsDataQuery("analytics", { refetchOnMountOrArgChange: true });
 
   const targetGoalSales =
     (orders?.data

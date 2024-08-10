@@ -32,6 +32,8 @@ function EditSubCategoryPage() {
   const { data: subCategoryData, isFetching: isSubCategoryFetching } =
     useGetSubCategoryByIdQuery(params.id);
 
+  console.log("subCategoryData", subCategoryData);
+
   const {
     handleSubmit,
     control,
@@ -55,6 +57,8 @@ function EditSubCategoryPage() {
     name: string;
   }>({ id: "", name: "" });
 
+  console.log("smartSeachvalue", smartSeachvalue);
+
   const [isChecked, setIsChecked] = useState<boolean>(false);
 
   const [isMainCategoryIncluded, setIsMainCategoryIncluded] =
@@ -67,11 +71,13 @@ function EditSubCategoryPage() {
   const debounceValue = useDebounceHook(smartSeachvalue.name);
 
   const { data, isLoading } = useGetCategoryQuery(
-    { letter: debounceValue, lang },
+    { letter: debounceValue, lang: locale },
     {
       skip: !debounceValue,
     }
   );
+
+  console.log("data", data);
 
   const [editSubCategory, editSubCategoryResponse] =
     useEditSubCategoryMutation();
@@ -124,8 +130,10 @@ function EditSubCategoryPage() {
       });
   }
 
-  if (isLoading || isSubCategoryFetching || !subCategoryData)
-    return <Spinner />;
+  if (isSubCategoryFetching || !subCategoryData) return <Spinner />;
+
+  console.log("formData: ", formData);
+  console.log("data?.data: ", data?.data);
 
   return (
     <form
@@ -138,7 +146,10 @@ function EditSubCategoryPage() {
             {t("Edit Collection")}
           </h2>
           <Box className="flex items-center gap-4 text-[1.4rem]">
-            <Link className="text-[#ed0534]" href="/">
+            <Link
+              className="text-[#ed0534]"
+              href={`/${locale}/admin/dashboard`}
+            >
               {t("Home")}
             </Link>
             <span>
@@ -191,38 +202,39 @@ function EditSubCategoryPage() {
         <Box className="relative flex flex-col gap-12">
           {!isChecked && (
             <Controller
-              name={"category.en"}
+              name={"category"}
               control={control}
-              defaultValue={subCategoryData?.data.category.name.en}
+              defaultValue={subCategoryData?.data?.category?.name}
               rules={{
                 required: "This field is required",
-                validate(value) {
-                  if (isMainCategoryIncluded && !allCategories?.includes(value))
-                    return "You Have to choose from available categories";
-                },
+                // validate(value) {
+                //   if (isMainCategoryIncluded && !allCategories?.includes(value))
+                //     return "You Have to choose from available categories";
+                // },
               }}
               render={({ field }) => (
                 <SmartSearchInput
-                  lang={lang}
+                  lang={locale}
                   isFetching={isSubCategoryFetching}
                   notAvailableMessage="No Categories Available"
-                  errors={errors?.["category"]?.["en"]}
+                  errors={errors?.["category"]}
                   disabled={
                     editSubCategoryResponse.isLoading || isSubCategoryFetching
                   }
                   shouldReset={editSubCategoryResponse.isSuccess}
                   getSmartSearchValue={setSmartSeachValue}
                   textLabel={t("Main Category")}
-                  defaultValue={formData.category?.en}
+                  defaultValue={formData.category?.[locale as string]}
                   data={data?.data}
                   placeholder={t("Search for category")}
                   name={field.name}
                   onChange={field.onChange}
+                  value={subCategoryData?.data?.category}
                 />
               )}
             />
           )}
-          {isChecked && (
+          {/* {isChecked && (
             <Controller
               name={"category.ar"}
               control={control}
@@ -254,18 +266,20 @@ function EditSubCategoryPage() {
                 />
               )}
             />
-          )}
+          )} */}
           {!isChecked && (
             <Controller
               name={"name.en"}
               control={control}
-              defaultValue={subCategoryData?.data.name.en}
+              defaultValue={subCategoryData?.data?.name?.en || ""}
               rules={{ required: "This field is required" }}
               render={({ field }) => (
                 <CustomizedTextField
                   disabled={isLoading}
                   textLabelClass={"font-semibold text-xl"}
-                  textlabel={t("Collection Name")}
+                  textlabel={`${t("Collection Name")}${
+                    isChecked ? "(عربي)" : "(English)"
+                  }`}
                   placeholder={t("Collection Name")}
                   field={field}
                   formerHelperStyles={{ style: { fontSize: "1rem" } }}
@@ -281,14 +295,16 @@ function EditSubCategoryPage() {
             <Controller
               name={"name.ar"}
               control={control}
-              defaultValue={subCategoryData?.data.name.ar}
+              defaultValue={subCategoryData?.data.name.ar || ""}
               rules={{ required: "هذا الحقل مطلوب" }}
               render={({ field }) => (
                 <CustomizedTextField
                   disabled={isLoading}
                   textLabelClass={"font-semibold text-xl"}
                   placeholder={"اسم المجموعة"}
-                  textlabel={"اسم المجموعة"}
+                  textlabel={`اسم المجموعة${
+                    isChecked ? "(عربي)" : "(English)"
+                  }`}
                   field={field}
                   formerHelperStyles={{ style: { fontSize: "1rem" } }}
                   customError={errors?.["name"]?.["ar"]}
@@ -303,14 +319,16 @@ function EditSubCategoryPage() {
             <Controller
               name={"description.en"}
               control={control}
-              defaultValue={subCategoryData?.data.description.en}
+              defaultValue={subCategoryData?.data?.description?.en || ""}
               rules={{ required: "This field is required" }}
               render={({ field }) => (
                 <CustomizedTextField
                   disabled={isLoading}
                   textLabelClass={"font-semibold text-xl"}
                   placeholder={t("Collection Description")}
-                  textlabel={t("Collection Description")}
+                  textlabel={`${t("Collection Description")}${
+                    isChecked ? "(عربي)" : "(English)"
+                  }`}
                   field={field}
                   formerHelperStyles={{ style: { fontSize: "1rem" } }}
                   customError={errors?.["description"]?.["en"]}
@@ -334,14 +352,16 @@ function EditSubCategoryPage() {
             <Controller
               name={"description.ar"}
               control={control}
-              defaultValue={subCategoryData?.data.description.ar}
+              defaultValue={subCategoryData?.data.description?.ar || ""}
               rules={{ required: "هذا الحقل مطلوب" }}
               render={({ field }) => (
                 <CustomizedTextField
                   disabled={isLoading}
                   textLabelClass={"font-semibold text-xl"}
                   placeholder={"وصف المجموعة"}
-                  textlabel={"وصف المجموعة"}
+                  textlabel={`وصف المجموعة${
+                    isChecked ? "(عربي)" : "(English)"
+                  }`}
                   field={field}
                   formerHelperStyles={{ style: { fontSize: "1rem" } }}
                   customError={errors?.["description"]?.["ar"]}

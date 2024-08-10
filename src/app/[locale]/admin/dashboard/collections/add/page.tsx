@@ -163,7 +163,10 @@ function AddSubCategoriesPage() {
             {t("Add Collection")}
           </h2>
           <Box className="flex items-center gap-4 text-[1.4rem]">
-            <Link className="text-[#ed0534]" href="/">
+            <Link
+              className="text-[#ed0534]"
+              href={`/${locale}/admin/dashboard`}
+            >
               {t("Home")}
             </Link>
             <span>

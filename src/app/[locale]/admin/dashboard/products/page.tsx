@@ -48,7 +48,10 @@ function Products() {
         <Box className="flex flex-col gap-4">
           <h2 className="text-4xl font-semibold ">{t("Products List")}</h2>
           <Box className="flex items-center gap-4 text-[1.4rem]">
-            <Link className="text-[#ed0534]" href="/">
+            <Link
+              className="text-[#ed0534]"
+              href={`/${locale}/admin/dashboard`}
+            >
               {tIndex("Home")}
             </Link>
             <span>

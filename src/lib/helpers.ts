@@ -12,6 +12,8 @@ export const getAddProductServerData = (
     "colors",
     "colors-quantity",
     "quantity",
+    "name-en",
+    "name-ar",
   ];
 
   for (let key in data) {
@@ -24,6 +26,26 @@ export const getAddProductServerData = (
       formData.append(key, JSON.stringify(data[key]));
     }
   }
+
+  console.log(
+    "NAME: ",
+    data,
+    data?.["name-en"],
+    typeof data?.["name-en"] === "string"
+  );
+
+  const nameEnValue = data?.["name-en"];
+
+  const nameArValue = data?.["name-ar"];
+
+  const nameValue =
+    typeof data?.["name-en"] === "string"
+      ? { en: nameEnValue, ar: nameArValue }
+      : nameEnValue;
+
+  console.log("nameValue", nameValue);
+
+  formData.append("name", JSON.stringify(nameValue));
 
   data.colors.forEach((color) => {
     formData.append(

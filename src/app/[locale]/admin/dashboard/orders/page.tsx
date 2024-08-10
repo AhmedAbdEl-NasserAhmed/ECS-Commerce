@@ -12,9 +12,13 @@ import { useTranslations } from "next-intl";
 import { useLazyGetAllOrdersQuery } from "@/lib/features/api/ordersApi";
 import useBaseTablePagination from "@/hooks/useBaseTablePagination/useBaseTablePagination";
 import { useEffect } from "react";
+import { useParams } from "next/navigation";
 
 function Orders() {
   const t = useTranslations("Dashboard");
+
+  const { locale } = useParams();
+
   const [getPaginatedOrders, getPaginatedOrdersResponse] =
     useLazyGetAllOrdersQuery();
 
@@ -38,7 +42,7 @@ function Orders() {
             {t("Orders List")}
           </h2>
           <Box className="flex items-center gap-4 text-[1.4rem]">
-            <Link className="text-blue-400" href="/">
+            <Link className="text-blue-400" href={`/${locale}/admin/dashboard`}>
               {t("Home")}
             </Link>
             <span>

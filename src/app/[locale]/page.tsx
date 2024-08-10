@@ -19,6 +19,8 @@ import Spinner from "@/ui/Spinner/Spinner";
 function HomePage() {
   const { data, isLoading } = useGetAllProductsQuery({ limit: 6 });
 
+  console.log("data", data);
+
   const { data: SaleProducts, isLoading: isLoadingSaleProducts } =
     useGetAllProductsQuery({ sale: "true", limit: 6 });
 

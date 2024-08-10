@@ -5,23 +5,44 @@ import Spinner from "../Spinner/Spinner";
 import ColorItem from "../ColorItem/ColorItem";
 import { useParams } from "next/navigation";
 import { useTranslations } from "next-intl";
+import { useGetSingleProductBySlugQuery } from "@/lib/features/api/productsApi";
 
 const ProductCard = ({ product }) => {
   const { data: category } = useGetCategoryByIdQuery(product?.category, {
-    skip: !product?.category
+    skip: !product?.category,
   });
+
+  console.log("product", product);
 
   const { locale } = useParams();
 
   const userTranslation = useTranslations("user");
 
+  const { data: productsBySlug, isLoading } = useGetSingleProductBySlugQuery(
+    product.slug
+  );
+
+  console.log("productsBySlug", productsBySlug);
+
   if (!product) return <Spinner />;
+
+  const isSingleProductOfSlug = productsBySlug?.data?.products?.length === 1;
+
+  const _colors = productsBySlug?.data?.products?.reduce((acc, product) => {
+    return acc.concat(
+      product.colors.map((color) => {
+        return color;
+      })
+    );
+  }, []);
+
+  console.log("_colors", _colors);
 
   return (
     <div
       className=""
       style={{
-        boxShadow: "0px 3px 15px 0px #0000000f"
+        boxShadow: "0px 3px 15px 0px #0000000f",
       }}
     >
       <div className="relative w-full group overflow-hidden h-[40rem]">
@@ -51,7 +72,10 @@ const ProductCard = ({ product }) => {
           </div>
         )}
 
-        <ProductListOptions product={product} />
+        <ProductListOptions
+          product={product}
+          productsBySlug={productsBySlug?.data?.products}
+        />
         <div
           className="absolute font-bold top-[1.5rem] start-[1.5rem] text-white z-20 py-[.3rem] px-[.8rem] text-base
           flex flex-col gap-2 text-center uppercase"
@@ -70,11 +94,11 @@ const ProductCard = ({ product }) => {
           className="absolute z-20 transition-all duration-500 -bottom-[5rem] group-hover:bottom-[1rem]"
           style={{
             left: "50%",
-            transform: "translateX(-50%)"
+            transform: "translateX(-50%)",
           }}
         >
           <div className="flex gap-2">
-            {product.colors.map((color) => {
+            {_colors.map((color) => {
               return <ColorItem color={color.color} key={color.color} />;
             })}
           </div>

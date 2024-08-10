@@ -33,7 +33,6 @@ function Categories() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [paginationControllers.page, paginationControllers.pageSize]);
 
-
   return (
     <Box className=" flex flex-col gap-8 px-[4rem] py-[1.2rem] bg-[#FDFDFD] ">
       <Box className="h-[10vh] flex justify-between items-center">
@@ -42,7 +41,7 @@ function Categories() {
             {t("Categories List")}
           </h2>
           <Box className="flex items-center gap-4 text-[1.4rem]">
-            <Link className="text-blue-400" href="/">
+            <Link className="text-blue-400" href={`/${locale}/admin/dashboard`}>
               {t("Home")}
             </Link>
             <span>

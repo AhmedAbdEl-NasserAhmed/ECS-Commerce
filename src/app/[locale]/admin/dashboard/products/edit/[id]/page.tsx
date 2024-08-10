@@ -101,11 +101,13 @@ function EditProduct() {
       }
     );
 
+  console.log("mainCategory", mainCategory);
+
   const { data: subCategory, isFetching: isFetchingSubCategories } =
     useGetSubCategoryQuery(
       {
         letter: subCategorydebounceValue,
-        lang,
+        lang: locale,
         categoryId: smartSeachvalue["_id"],
       },
       { skip: !subCategorydebounceValue }
@@ -271,7 +273,10 @@ function EditProduct() {
             {t("Edit Product")}
           </h2>
           <Box className="flex items-center gap-4 text-[1.4rem]">
-            <Link className="text-[#ed0534]" href="/">
+            <Link
+              className="text-[#ed0534]"
+              href={`/${locale}/admin/dashboard`}
+            >
               {tIndex("Home")}
             </Link>
             <span>
@@ -369,7 +374,7 @@ function EditProduct() {
                 defaultValue={[]}
                 render={({ field }) => (
                   <SmartSearchMultipleInput
-                    lang={locale as string}
+                    lang={locale}
                     isFetching={isFetchingSubCategories}
                     existedItems={productDetails?.data.subCategory}
                     disabled={
@@ -425,7 +430,7 @@ function EditProduct() {
 
               <Box className="col-span-full">
                 <Controller
-                  name={"name.en"}
+                  name={"name-en"}
                   control={control}
                   rules={{ required: "This field is required" }}
                   defaultValue={currentProduct?.name.en}
@@ -434,10 +439,10 @@ function EditProduct() {
                       disabled={updateProductResponse.isLoading}
                       textLabelClass={"font-semibold text-xl"}
                       placeholder={t("Product Name")}
-                      textlabel={t("Product Name")}
+                      textlabel={`${t("Product Name")}(English)`}
                       field={field}
                       formerHelperStyles={{ style: { fontSize: "1rem" } }}
-                      customError={errors?.["name"]?.["en"]}
+                      customError={errors?.["name-en"]}
                       type={"text"}
                       variant={"outlined"}
                       size={"small"}
@@ -675,7 +680,7 @@ function EditProduct() {
                       disabled={updateProductResponse.isLoading}
                       textLabelClass={"font-semibold text-xl"}
                       placeholder={t("Product Description")}
-                      textlabel={t("Product Description")}
+                      textlabel={`${t("Product Description")}(English)`}
                       field={field}
                       formerHelperStyles={{ style: { fontSize: "1rem" } }}
                       customError={errors?.["description"]?.["en"]}
@@ -713,7 +718,7 @@ function EditProduct() {
       <Box className="relative grow flex flex-col gap-8 bg-white rounded-2xl border-2 p-10 border-slate-100 shadow-md">
         <Box className="col-span-full">
           <Controller
-            name={"name.ar"}
+            name={"name-ar"}
             control={control}
             rules={{ required: "This field is required" }}
             defaultValue={currentProduct?.name.ar}
@@ -724,10 +729,10 @@ function EditProduct() {
                 disabled={updateProductResponse.isLoading}
                 textLabelClass={"font-semibold text-xl"}
                 placeholder={"اسم المنتج"}
-                textlabel={"اسم المنتج"}
+                textlabel={"اسم المنتج(عربي)"}
                 field={field}
                 formerHelperStyles={{ style: { fontSize: "1rem" } }}
-                customError={errors?.["name"]?.["ar"]}
+                customError={errors?.["name-ar"]}
                 type={"text"}
                 variant={"outlined"}
                 size={"small"}
@@ -748,7 +753,7 @@ function EditProduct() {
                 onBlur={() => setLang(Lang.ENGLISH)}
                 disabled={updateProductResponse.isLoading}
                 textLabelClass={"font-semibold text-xl"}
-                textlabel={"وصف المنتج"}
+                textlabel={"وصف المنتج(عربي)"}
                 placeholder={"وصف المنتج"}
                 field={field}
                 formerHelperStyles={{ style: { fontSize: "1rem" } }}

@@ -6,7 +6,7 @@ import { IoStarSharp } from "react-icons/io5";
 
 export const feedbacksTableHeaders = (t) => [
   {
-    id: "user",
+    id: "name",
     header: () => <div>{t("User name")}</div>,
     cell: ({
       cell: {
@@ -15,7 +15,7 @@ export const feedbacksTableHeaders = (t) => [
     }) => {
       return (
         <div className="flex gap-2 justify-center">
-          <h2>{original?.user?.name}</h2>
+          <h2>{original?.name}</h2>
         </div>
       );
     },
@@ -30,16 +30,16 @@ export const feedbacksTableHeaders = (t) => [
     }) => {
       return (
         <div className="flex gap-2 justify-center">
-          <h2>{original?.user?.email}</h2>
+          <h2>{original?.email}</h2>
         </div>
       );
     },
   },
 
   {
-    id: "title",
+    id: "message",
     header: () => <div>{t("feedback")}</div>,
-    accessorKey: "title",
+    accessorKey: "message",
   },
   // {
   //   id: "actions",

@@ -89,7 +89,10 @@ function CategoryPage() {
             {t("Add Category")}
           </h2>
           <Box className="flex items-center gap-4 text-[1.4rem]">
-            <Link className="text-[#ed0534]" href="/">
+            <Link
+              className="text-[#ed0534]"
+              href={`/${locale}/admin/dashboard`}
+            >
               {t("Home")}
             </Link>
             <span>
@@ -105,7 +108,6 @@ function CategoryPage() {
             <Box className="flex justify-between items-center">
               <h2 className="text-3xl font-semibold mb-5">
                 {t("Add Category")}
-                {isChecked ? "(عربي)" : "(English)"}
               </h2>
               <FormControlLabel
                 control={
@@ -154,7 +156,9 @@ function CategoryPage() {
                   disabled={categoryState.isLoading}
                   textLabelClass={"font-semibold text-xl"}
                   placeholder={t("Category Name")}
-                  textlabel={t("Category Name")}
+                  textlabel={`${t("Category Name")}${
+                    isChecked ? "(عربي)" : "(English)"
+                  }`}
                   field={field}
                   errors={errors}
                   formerHelperStyles={{ style: { fontSize: "1rem" } }}
@@ -179,7 +183,7 @@ function CategoryPage() {
                   disabled={categoryState.isLoading}
                   textLabelClass={"font-semibold text-xl"}
                   placeholder={"بحث عن القسم"}
-                  textlabel={"أسم القسم"}
+                  textlabel={`اسم القسم${isChecked ? "(عربي)" : "(English)"}`}
                   field={field}
                   errors={errors}
                   formerHelperStyles={{ style: { fontSize: "1rem" } }}
@@ -204,7 +208,9 @@ function CategoryPage() {
                   customError={errors?.["description"]?.["en"]}
                   textLabelClass={"font-semibold text-xl"}
                   placeholder={t("Category Description")}
-                  textlabel={t("Category Description")}
+                  textlabel={`${t("Category Description")}${
+                    isChecked ? "(عربي)" : "(English)"
+                  }`}
                   field={field}
                   formerHelperStyles={{ style: { fontSize: "1rem" } }}
                   errors={errors}
@@ -238,7 +244,7 @@ function CategoryPage() {
                   customError={errors?.["description"]?.["ar"]}
                   textLabelClass={"font-semibold text-xl"}
                   placeholder={"وصف القسم"}
-                  textlabel={"وصف القسم"}
+                  textlabel={`وصف القسم${isChecked ? "(عربي)" : "(English)"}`}
                   field={field}
                   formerHelperStyles={{ style: { fontSize: "1rem" } }}
                   errors={errors}

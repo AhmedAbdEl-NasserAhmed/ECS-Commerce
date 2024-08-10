@@ -11,8 +11,11 @@ import useBaseTablePagination from "@/hooks/useBaseTablePagination/useBaseTableP
 import { useEffect } from "react";
 import { feedbacksTableHeaders } from "@/constants/feedbacksTableHeaders";
 import { useLazyGetAllFeedBacksQuery } from "@/lib/features/api/feedbacks";
+import { useParams } from "next/navigation";
 
 function Feedbacks() {
+  const { locale } = useParams();
+
   const [getPaginatedFeedbacks, getPaginatedFeedbacksResponse] =
     useLazyGetAllFeedBacksQuery();
 
@@ -38,7 +41,7 @@ function Feedbacks() {
             {t("Feedbacks List")}
           </h2>
           <Box className="flex items-center gap-4 text-[1.4rem]">
-            <Link className="text-blue-400" href="/">
+            <Link className="text-blue-400" href={`/${locale}/admin/dashboard`}>
               {t("Home")}
             </Link>
             <span>

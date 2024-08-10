@@ -44,7 +44,7 @@ function SubCategories() {
             {t("Collections List")}
           </h2>
           <Box className="flex items-center gap-4 text-[1.4rem]">
-            <Link className="text-blue-400" href="/">
+            <Link className="text-blue-400" href={`/${locale}/admin/dashboard`}>
               {t("Home")}
             </Link>
             <span>

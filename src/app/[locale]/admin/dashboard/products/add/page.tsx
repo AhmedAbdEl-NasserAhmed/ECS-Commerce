@@ -1,7 +1,10 @@
 "use client";
 
 import useDebounceHook from "@/hooks/useDebounceHook";
-import { setSubCategory } from "@/lib/features/adminProductSlice/adminProductSlice";
+import {
+  setImages,
+  setSubCategory,
+} from "@/lib/features/adminProductSlice/adminProductSlice";
 import {
   useGetAllCategoriesQuery,
   useGetCategoryQuery,
@@ -70,6 +73,8 @@ function AddProductPage() {
 
   const [isChecked, setIsChecked] = useState<boolean>(false);
 
+  console.log("locale", locale);
+
   /**
    * locale       isChecked           Value
    *   ar           false         =
@@ -84,6 +89,9 @@ function AddProductPage() {
         adminProduct.subCategory
         // JSON.parse(localStorage.getItem(`subCategories${lang}`))
       );
+    }
+    if (adminProduct.images.length > 0) {
+      setValue("images", adminProduct.images);
     }
   }, [lang]);
 
@@ -139,10 +147,21 @@ function AddProductPage() {
     images: [],
   });
 
+  const nameEnValue =
+    typeof formData?.["name-en"] === "string"
+      ? formData?.["name-en"]
+      : formData?.["name-en"]?.en;
+
+  const nameArValue =
+    typeof formData?.["name-ar"] === "string"
+      ? formData?.["name-ar"]
+      : formData?.["name-ar"]?.ar;
+
   useEffect(() => {
+    console.log("productName", productName);
     setSelectedProduct(
       productName?.find((product) => {
-        return product.name === formData["name"];
+        return product.name.en === nameEnValue;
       })
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -156,6 +175,7 @@ function AddProductPage() {
     setIsChecked(e.target.checked);
     if (formData.subCategory.length > 0) {
       dispatch(setSubCategory({ data: formData.subCategory }));
+      dispatch(setImages({ data: formData.images }));
       // localStorage.setItem(
       //   `subCategories${lang}`,
       //   JSON.stringify([...formData.subCategory])
@@ -164,6 +184,7 @@ function AddProductPage() {
   }
 
   useEffect(() => {
+    console.log("selectedProduct", selectedProduct);
     if (selectedProduct?.images) {
       const images = {};
       if (selectedProduct.images.length >= 1) {
@@ -187,10 +208,13 @@ function AddProductPage() {
   }, [selectedProduct?.images, setValue]);
 
   useEffect(() => {
-    const discount: number =
-      +formData.price - (+formData.price * +formData.discount) / 100;
+    console.log("");
+    const p = +(formData.price || 0);
+    const d = +(formData.discount || 0);
+    const discount: number = +p - (+p * +d) / 100;
 
-    if (!discount) return;
+    // if (!discount) return;
+    console.log("discount", discount);
 
     setValue("salePrice", discount);
 
@@ -201,15 +225,22 @@ function AddProductPage() {
     setAllCategories(mainCategory?.data.map((category) => category.name[lang]));
   }, [mainCategory?.data, lang]);
 
+  useEffect(() => {
+    if (formData?.["name-en"]?.ar) {
+      setValue("name-ar", formData?.["name-en"]);
+    }
+  }, [formData?.["name-en"]]);
+
   const tIndex = useTranslations("Index");
 
   const t = useTranslations("Dashboard");
 
   function onSubmit(data: AdminProductProps) {
     if (
+      formData.colors?.length === 0 ||
       !formData.category.en ||
-      !formData.name.en ||
-      !formData.name.ar ||
+      !formData["name-en"] ||
+      !formData["name-ar"] ||
       !formData.description.en ||
       !formData.description.ar
     ) {
@@ -240,7 +271,11 @@ function AddProductPage() {
             en: "",
             ar: "",
           },
-          name: {
+          ["name-en"]: {
+            en: "",
+            ar: "",
+          },
+          ["name-ar"]: {
             en: "",
             ar: "",
           },
@@ -308,6 +343,15 @@ function AddProductPage() {
     }, 100);
   };
 
+  console.log(
+    "formData: ",
+    formData,
+    "nameEn",
+    nameEnValue,
+    "nameAr",
+    nameArValue
+  );
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
@@ -319,7 +363,10 @@ function AddProductPage() {
             {t("Add Product")}
           </h2>
           <Box className="flex items-center gap-4 text-[1.4rem]">
-            <Link className="text-[#ed0534]" href="/">
+            <Link
+              className="text-[#ed0534]"
+              href={`/${locale}/admin/dashboard`}
+            >
               {tIndex("Home")}
             </Link>
             <span>
@@ -402,39 +449,6 @@ function AddProductPage() {
                   )}
                 />
               )}
-              {/* {isChecked && (
-                <Controller
-                  name={"category"}
-                  control={control}
-                  defaultValue={{ en: "", ar: "" }}
-                  rules={{
-                    required: "هذا الحقل مطلوب",
-                    validate(value) {
-                      if (!allCategories?.includes(value[lang]))
-                        return "يجب الأختيار من الأقسام المتاحة";
-                    },
-                  }}
-                  render={({ field }) => (
-                    <SmartSearchInput
-                      lang={lang}
-                      errors={errors?.["category"]}
-                      defaultValue={formData.category?.ar}
-                      isFetching={isFetchingMainCategory}
-                      notAvailableMessage="لا توجد منتجات متاحه"
-                      disabled={
-                        productResponse.isLoading || isFetchingMainCategory
-                      }
-                      shouldReset={productResponse.isSuccess}
-                      getSmartSearchValue={setSmartSeachValue}
-                      textLabel={"القسم الرئيسي"}
-                      data={mainCategory?.data}
-                      placeholder={"ابحث عن القسم الرئيسي"}
-                      name={field.name}
-                      onChange={field.onChange}
-                    />
-                  )}
-                />
-              )} */}
               {!isChecked && (
                 <Controller
                   name={"subCategory"}
@@ -442,7 +456,7 @@ function AddProductPage() {
                   defaultValue={[]}
                   render={({ field }) => (
                     <SmartSearchMultipleInput
-                      lang={locale as string}
+                      lang={locale}
                       isFetching={isFetchingSubCategories}
                       existedItems={currentSubCategories}
                       disabled={
@@ -467,40 +481,11 @@ function AddProductPage() {
                   )}
                 />
               )}
-              {/* {isChecked && (
-                <Controller
-                  name={"subCategory.ar"}
-                  control={control}
-                  defaultValue={""}
-                  render={({ field }) => (
-                    <SmartSearchMultipleInput
-                      lang={lang}
-                      isFetching={isFetchingSubCategories}
-                      existedItems={currentSubCategories}
-                      disabled={
-                        productResponse.isLoading ||
-                        !smartSeachvalue["_id"] ||
-                        isFetchingSubCategories
-                      }
-                      shouldReset={
-                        productResponse.isSuccess ||
-                        (formData.category?.ar === "" &&
-                          smartSeachvalue.name === "")
-                      }
-                      getSmartSearchValue={setSmartSeachSubCategoryValue}
-                      textLabel={"المحموعات"}
-                      data={subCategory?.data}
-                      placeholder={"ابحث في المجموعات"}
-                      name={field.name}
-                      onChange={field.onChange}
-                    />
-                  )}
-                />
-              )} */}
               {!isChecked && (
                 <Box className="col-span-full">
                   <Controller
-                    name={"name.en"}
+                    // name={"name.en"}
+                    name={"name-en"}
                     control={control}
                     defaultValue={""}
                     rules={{ required: "This field is required" }}
@@ -508,8 +493,8 @@ function AddProductPage() {
                       <SmartSearchInput
                         onRemove={onRemoveMainCategory}
                         lang={lang}
-                        errors={errors?.["name"]?.["en"]}
-                        defaultValue={formData.name?.en}
+                        errors={errors?.["name-en"]}
+                        defaultValue={nameEnValue}
                         isFetching={isFetchingProduct}
                         notAvailableMessage="No Products Available But you can write a new Product Name"
                         disabled={
@@ -532,7 +517,7 @@ function AddProductPage() {
               {isChecked && (
                 <Box className="col-span-full">
                   <Controller
-                    name={"name.ar"}
+                    name={"name-ar"}
                     control={control}
                     defaultValue={""}
                     rules={{ required: "هذا الحقل مطلوب" }}
@@ -540,8 +525,8 @@ function AddProductPage() {
                       <SmartSearchInput
                         onRemove={onRemoveMainCategory}
                         lang={lang}
-                        errors={errors?.["name"]?.["ar"]}
-                        defaultValue={formData.name?.ar}
+                        errors={errors?.["name-ar"]}
+                        defaultValue={nameArValue}
                         isFetching={isFetchingProduct}
                         notAvailableMessage="لا توجد منتجات متاحه لكن يمكن كتابة اسم منتج"
                         disabled={
@@ -608,7 +593,6 @@ function AddProductPage() {
                         <Controller
                           name={`colors-quantity.${color.label}`}
                           control={control}
-                          defaultValue={0}
                           rules={{
                             required: "This field is required",
                             min: {
@@ -620,7 +604,7 @@ function AddProductPage() {
                             <CustomizedTextField
                               disabled={productResponse.isLoading}
                               textLabelClass={"font-semibold text-xl"}
-                              placeholder={t("quantity")}
+                              placeholder={"0"}
                               field={field}
                               formerHelperStyles={{
                                 style: { fontSize: "1rem" },
@@ -690,7 +674,7 @@ function AddProductPage() {
                 <Controller
                   name={"price"}
                   control={control}
-                  defaultValue={0}
+                  // defaultValue={}
                   rules={{
                     required: "This field is required",
                     min: {
@@ -702,7 +686,7 @@ function AddProductPage() {
                     <CustomizedTextField
                       disabled={productResponse.isLoading}
                       textLabelClass={"font-semibold text-xl"}
-                      placeholder={t("Product Price")}
+                      placeholder={"0"}
                       textlabel={t("Product Price")}
                       field={field}
                       formerHelperStyles={{ style: { fontSize: "1rem" } }}
@@ -718,7 +702,7 @@ function AddProductPage() {
                 <Controller
                   name={"discount"}
                   control={control}
-                  defaultValue={0}
+                  // defaultValue={0}
                   rules={{
                     min: {
                       value: 0,
@@ -733,7 +717,7 @@ function AddProductPage() {
                     <CustomizedTextField
                       disabled={productResponse.isLoading}
                       textLabelClass={"font-semibold text-xl"}
-                      placeholder={t("Product Discount %")}
+                      placeholder={"0"}
                       textlabel={t("Product Discount %")}
                       field={field}
                       formerHelperStyles={{ style: { fontSize: "1rem" } }}

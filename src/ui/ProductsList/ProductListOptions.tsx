@@ -7,7 +7,7 @@ import { HiEye, HiOutlineHeart } from "react-icons/hi2";
 import ProductActionItem from "../ProductCard/ProductActionItem";
 import { Layout } from "@/config/layout";
 
-function ProductListOptions({ product }) {
+function ProductListOptions({ product, productsBySlug = [] }) {
   const router = useRouter();
 
   const { locale } = useParams();
@@ -22,14 +22,18 @@ function ProductListOptions({ product }) {
         onClick={() => router.push(`/${locale}/user/product/${product?.slug}`)}
         className="cursor-pointer"
       />
-      <ProductActionItem
-        content={
-          <p className="text-lg font-bold">
-            {product.size.value.toUpperCase()}
-          </p>
-        }
-        className={`w-[2.85rem] h-[2.85rem]`}
-      />
+      {productsBySlug?.map((product) => {
+        console.log("XXXXX product XXXXX", product);
+        return (
+          <ProductActionItem
+            key={product["_id"]}
+            content={
+              <p className="text-lg font-bold">{product.size.toUpperCase()}</p>
+            }
+            className={`w-[2.85rem] h-[2.85rem]`}
+          />
+        );
+      })}
     </ul>
   );
 }

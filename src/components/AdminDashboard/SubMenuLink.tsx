@@ -6,7 +6,7 @@ import {
   Box,
 } from "@mui/material";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import { HiChevronRight } from "react-icons/hi2";
 
 function SubMenuLink({
@@ -22,6 +22,10 @@ function SubMenuLink({
   const pathname = usePathname();
 
   const isActiveLink = pathname.includes("/" + id);
+
+  const { locale } = useParams();
+
+  const isArabic = locale === "ar";
 
   const SubmenuIcon = function () {
     const _icon = React.cloneElement(icon, {
@@ -60,7 +64,11 @@ function SubMenuLink({
           </div>
 
           {!expand && (
-            <span className="text-xl transition-all duration-500">
+            <span
+              className={`text-xl transition-all duration-500 ${
+                isArabic ? "rotate-180" : ""
+              }`}
+            >
               <HiChevronRight />
             </span>
           )}

@@ -24,6 +24,12 @@ export const productTableHeaders = (
     },
 
     {
+      id: "quantity",
+      header: () => translate("Product Quantity"),
+      accessorKey: "quantity",
+      // size: 100,
+    },
+    {
       id: "price",
       header: () => translate("Product Price"),
       accessorKey: "price",

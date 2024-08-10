@@ -90,7 +90,10 @@ function EditCategoryPage() {
             {t("Edit Category")}
           </h2>
           <Box className="flex items-center gap-4 text-[1.4rem]">
-            <Link className="text-[#ed0534]" href="/">
+            <Link
+              className="text-[#ed0534]"
+              href={`/${locale}/admin/dashboard`}
+            >
               {t("Home")}
             </Link>
             <span>
@@ -151,7 +154,9 @@ function EditCategoryPage() {
                   disabled={editCategoryResponse.isLoading}
                   textLabelClass={"font-semibold text-xl"}
                   placeholder={t("Category Name")}
-                  textlabel={t("Category Name")}
+                  textlabel={`${t("Category Name")}${
+                    isChecked ? "(عربي)" : "(English)"
+                  }`}
                   field={field}
                   errors={errors}
                   formerHelperStyles={{ style: { fontSize: "1rem" } }}
@@ -176,7 +181,7 @@ function EditCategoryPage() {
                   disabled={editCategoryResponse.isLoading}
                   textLabelClass={"font-semibold text-xl"}
                   placeholder={"أسم القسم"}
-                  textlabel={"أسم القسم"}
+                  textlabel={`اسم القسم${isChecked ? "(عربي)" : "(English)"}`}
                   field={field}
                   errors={errors}
                   formerHelperStyles={{ style: { fontSize: "1rem" } }}
@@ -201,7 +206,9 @@ function EditCategoryPage() {
                   customError={errors?.["description"]?.["en"]}
                   textLabelClass={"font-semibold text-xl"}
                   placeholder={t("Category Description")}
-                  textlabel={t("Category Description")}
+                  textlabel={`${t("Category Description")}${
+                    isChecked ? "(عربي)" : "(English)"
+                  }`}
                   field={field}
                   formerHelperStyles={{ style: { fontSize: "1rem" } }}
                   errors={errors}
@@ -235,7 +242,7 @@ function EditCategoryPage() {
                   customError={errors?.["description"]?.["ar"]}
                   textLabelClass={"font-semibold text-xl"}
                   placeholder={"وصف القسم"}
-                  textlabel={"وصف القسم"}
+                  textlabel={`وصف القسم${isChecked ? "(عربي)" : "(English)"}`}
                   field={field}
                   formerHelperStyles={{ style: { fontSize: "1rem" } }}
                   errors={errors}

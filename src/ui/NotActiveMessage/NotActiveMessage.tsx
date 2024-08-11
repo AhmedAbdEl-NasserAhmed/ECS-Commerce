@@ -20,8 +20,8 @@ function NotActiveMessage() {
   return (
     <div className="bg-[#f1e5cd] text-[#161616] p-7 capitalize sticky top-0 z-50 ">
       <p className="text-xl">
-        {userTranslaltion("We have sent an OTP to your email , please click")}
-        <VerifyEmailAddress />
+        {userTranslaltion("We have sent an OTP to your email , please click")}{" "}
+        <VerifyEmailAddress />{" "}
         {userTranslaltion("to verify your email address")}
       </p>
     </div>

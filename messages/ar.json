@@ -217,7 +217,7 @@
     "Phone Number": "رقم الهاتف",
     "Payment Details": "بيانات الدفع",
     "You can pay your order via PAY MOB": "يمكنك دفع طلبك عبر PAY MOB",
-    "We have sent an OTP to your email , please click": "تم إرسال كلمة مرور مؤقتة للبريد الإلكتروني الخاص بك , برجاء الضغط هنا",
+    "We have sent an OTP to your email , please click": "تم إرسال كلمة مرور مؤقتة للبريد الإلكتروني الخاص بك , برجاء الضغط",
     "to verify your email address": "لتفعيل البريد الإلكتروني الخاص بك",
     "Settings": "الإعدادات",
     "Orders": "الطلبات",
@@ -251,7 +251,7 @@
     "You Will be redirected to home Page in": "سوف يتم توجيهك إلى القائمة االرئيسية خلال",
     "Verify Email": "التحقق من الايميل",
     "Enter the OTP": "ادخل رمز التحقق",
-    "HERE": "هنا",
+    "HERE": "*هنا*",
     "Total order price": "مجموع الطلب"
   },
   "messages": {

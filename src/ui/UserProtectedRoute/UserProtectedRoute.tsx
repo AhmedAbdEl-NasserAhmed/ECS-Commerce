@@ -29,7 +29,9 @@ function UserProtectedRoute({ children }) {
       router.back();
     } else if (
       !isAuthenticated &&
-      (pathName.includes("checkout") || pathName.includes("payment"))
+      (pathName.includes("checkout") ||
+        pathName.includes("payment") ||
+        pathName.includes("profile"))
     ) {
       router.back();
     }

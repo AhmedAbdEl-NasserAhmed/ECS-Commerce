@@ -46,25 +46,25 @@ function DashBoardPageg() {
     return [
       {
         value: analytics?.userCount || 0,
-        title: "Users",
+        title: t("Users"),
         icon: <RiUserSharedFill />,
         className: "bg-gradient-to-r from-cyan-500 to-blue-500",
       },
       {
         value: analytics?.orderCount || 0,
-        title: "Orders",
+        title: t("Orders"),
         icon: <BsFillCartCheckFill />,
         className: "bg-gradient-to-r from-sky-500 to-indigo-500",
       },
       {
         value: analytics?.productCount || 0,
-        title: "Products",
+        title: t("Products"),
         icon: <HiCube />,
         className: "bg-gradient-to-r from-violet-500 to-fuchsia-500",
       },
       {
         value: analytics?.categoryCount || 0,
-        title: "Categories",
+        title: t("Categories"),
         icon: <HiFolder />,
         className: "bg-gradient-to-r from-purple-500 to-pink-500",
       },
@@ -93,7 +93,7 @@ function DashBoardPageg() {
         })}
       </FlexWrapper>
       <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-5 mt-10">
-        <AnalysisCard title="Users">
+        <AnalysisCard title={t("Users")}>
           <LineChart
             xAxis={[
               {
@@ -111,7 +111,7 @@ function DashBoardPageg() {
             margin={{ top: 10, bottom: 20 }}
           />
         </AnalysisCard>
-        <AnalysisCard title="Categories">
+        <AnalysisCard title={t("Categories")}>
           <PieChart
             sx={{
               width: "100%",
@@ -136,7 +136,7 @@ function DashBoardPageg() {
         </AnalysisCard>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-5 mt-10">
-        <AnalysisCard title="Sales">
+        <AnalysisCard title={t("Sales")}>
           <BarChart
             series={[
               {
@@ -153,7 +153,12 @@ function DashBoardPageg() {
             margin={{ top: 10, bottom: 30, left: 40, right: 10 }}
           />
         </AnalysisCard>
-        <AnalysisCard title={`Target (${formatCurrency(TARGET_GOAL_SALES)})`}>
+        <AnalysisCard
+          title={`${t("Target")} (${formatCurrency(
+            TARGET_GOAL_SALES,
+            locale as string
+          )})`}
+        >
           <Gauge
             value={targetGoalSales}
             height={290}
@@ -167,10 +172,10 @@ function DashBoardPageg() {
         </AnalysisCard>
       </div>
       <div className="grid grid-cols-1 mt-10">
-        <AnalysisCard title="Recent orders">
+        <AnalysisCard title={t("Recent Orders")}>
           <BaseTable
             data={analytics?.last10Orders?.slice(0, 5)}
-            columns={ordersTableHeadersWithoutActions(t)}
+            columns={ordersTableHeadersWithoutActions(t, locale)}
           />
         </AnalysisCard>
       </div>

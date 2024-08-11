@@ -50,6 +50,7 @@ import Head from "next/head";
 import SharableSocialLinks from "@/components/SharableSocialLinks/SharableSocialLinks";
 import { Helmet } from "react-helmet";
 import { useTranslations } from "next-intl";
+import { formatCurrency } from "@/lib/helpers";
 
 function ProductDetails() {
   const params = useParams();
@@ -537,13 +538,17 @@ function ProductDetails() {
             )}
             <Box className="flex items-center gap-5">
               <h2 className="text-3xl font-semibold ">
-                {productDetailsState?.selectedProduct?.saleProduct}{" "}
-                {userTranslation("EGP")}
+                {formatCurrency(
+                  productDetailsState?.selectedProduct?.saleProduct,
+                  locale as string
+                )}
               </h2>
               {productDetailsState?.selectedProduct?.discount > 0 && (
                 <h2 className="text-3xl font-semibold text-gray-400 line-through">
-                  {productDetailsState?.selectedProduct?.price}{" "}
-                  {userTranslation("EGP")}
+                  {formatCurrency(
+                    productDetailsState?.selectedProduct?.price,
+                    locale as string
+                  )}
                 </h2>
               )}
             </Box>
@@ -667,17 +672,19 @@ function ProductDetails() {
           </Box>
         </Box>
         <hr className="my-20" />
-        {relatedProducts && Array.isArray(relatedProducts) && (
-          <Box className="mt-30">
-            <TitledProductList
-              title={userTranslation("Related Products")}
-              description="Mauris luctus nisi sapien tristique dignissim ornare"
-              products={relatedProducts}
-              isLoading={isLoading}
-              columns={4}
-            />
-          </Box>
-        )}
+        {relatedProducts &&
+          Array.isArray(relatedProducts) &&
+          relatedProducts.length > 0 && (
+            <Box className="mt-30">
+              <TitledProductList
+                title={userTranslation("Related Products")}
+                description="Mauris luctus nisi sapien tristique dignissim ornare"
+                products={relatedProducts}
+                isLoading={isLoading}
+                columns={4}
+              />
+            </Box>
+          )}
         {!isAdmin && (
           <Box className="mt-30">
             <Menus>

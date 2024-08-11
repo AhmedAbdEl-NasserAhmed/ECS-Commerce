@@ -1,4 +1,5 @@
 import ProductTableMenuOptions from "@/components/AdminProduct/productTableMenuOptions";
+import { formatCurrency } from "@/lib/helpers";
 import Spinner from "@/ui/Spinner/Spinner";
 import Image from "next/image";
 
@@ -34,12 +35,46 @@ export const productTableHeaders = (
       header: () => translate("Product Price"),
       accessorKey: "price",
       size: 100,
+      cell: ({
+        cell: {
+          row: { original },
+        },
+      }) => {
+        return formatCurrency(original.price, locale);
+      },
     },
     {
       id: "discount",
       header: () => translate("Product Discount %"),
       accessorKey: "discount",
       size: 100,
+      cell: ({
+        cell: {
+          row: { original },
+        },
+      }) => {
+        const style = original.discount === 0 ? "red" : "green";
+        return <div style={{ color: style }}>{original.discount + "%"}</div>;
+      },
+    },
+    {
+      id: "saleProduct",
+      header: () => translate("Product Sale Price"),
+      accessorKey: "saleProduct",
+      size: 100,
+      cell: ({
+        cell: {
+          row: { original },
+        },
+      }) => {
+        const style = original.discount === 0 ? "" : "green";
+
+        return (
+          <div style={{ color: style }}>
+            {formatCurrency(original.saleProduct, locale)}
+          </div>
+        );
+      },
     },
     {
       id: "size",

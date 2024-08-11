@@ -1,5 +1,6 @@
 import { useParams } from "next/navigation";
 import styles from "./ProductDetailsTable.module.scss";
+import { formatCurrency } from "@/lib/helpers";
 
 function ProductDetailsTable({ userTranslation, cart, totalCartItems }) {
   const { locale } = useParams();
@@ -29,7 +30,10 @@ function ProductDetailsTable({ userTranslation, cart, totalCartItems }) {
                 ></span>
               </td>
               <td>
-                {product.quantity * product.price} {userTranslation("EGP")}
+                {formatCurrency(
+                  product.quantity * product.price,
+                  locale as string
+                )}
               </td>
             </tr>
           );
@@ -41,10 +45,7 @@ function ProductDetailsTable({ userTranslation, cart, totalCartItems }) {
           <td></td>
           <td></td>
           <td></td>
-          <td>
-            {" "}
-            {Math.ceil(totalCartItems)} {userTranslation("EGP")}
-          </td>
+          <td>{formatCurrency(totalCartItems, locale as string)}</td>
         </tr>
       </tfoot>
     </table>

@@ -1,10 +1,15 @@
 "use client";
 import useDebounceHook from "@/hooks/useDebounceHook";
-import { useGetCategoryQuery } from "@/lib/features/api/categoriesApi";
+import { setCategory } from "@/lib/features/adminProductSlice/adminProductSlice";
+import {
+  useGetAllCategoriesQuery,
+  useGetCategoryQuery,
+} from "@/lib/features/api/categoriesApi";
 import {
   useEditSubCategoryMutation,
   useGetSubCategoryByIdQuery,
 } from "@/lib/features/api/subCategoriesApi";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { Lang } from "@/types/enums";
 import { AdminSubCategory } from "@/types/types";
 import MiniSpinner from "@/ui/MiniSpinner/MiniSpinner";
@@ -37,6 +42,7 @@ function EditSubCategoryPage() {
     control,
     reset,
     watch,
+    setValue,
     formState: { errors, dirtyFields },
   } = useForm<AdminSubCategory>({
     mode: "onChange",
@@ -49,6 +55,7 @@ function EditSubCategoryPage() {
   const { locale } = useParams();
 
   const t = useTranslations("Dashboard");
+
   const tMessage = useTranslations("messages");
 
   const [smartSeachvalue, setSmartSeachValue] = useState<{
@@ -63,6 +70,26 @@ function EditSubCategoryPage() {
 
   const [lang, setLang] = useState("en");
 
+  const dispatch = useAppDispatch();
+
+  const adminCollection = useAppSelector((store) => store.adminProductSlice);
+
+  useEffect(() => {
+    if (formData?.category && typeof formData?.category === "object") {
+      dispatch(setCategory({ data: { ...formData?.category } }));
+    }
+  }, [formData?.category]);
+
+  useEffect(() => {
+    const v = adminCollection.category || formData?.category;
+    setValue("category", v);
+  }, [isChecked]);
+
+  const onRemoveMainCategory = () => {
+    dispatch(setCategory({ data: null }));
+    setValue("category", undefined);
+  };
+
   const [allCategories, setAllCategories] = useState<string[]>([]);
 
   const debounceValue = useDebounceHook(smartSeachvalue.name);
@@ -73,6 +100,7 @@ function EditSubCategoryPage() {
       skip: !debounceValue,
     }
   );
+  const { data: categories } = useGetAllCategoriesQuery("categories");
 
   const [editSubCategory, editSubCategoryResponse] =
     useEditSubCategoryMutation();
@@ -87,9 +115,9 @@ function EditSubCategoryPage() {
 
   useEffect(() => {
     setAllCategories(
-      data?.data.map((category) => category.name[locale as string])
+      categories?.data?.map((category) => category.name[locale as string])
     );
-  }, [data?.data, lang]);
+  }, [categories?.data, lang]);
 
   useEffect(() => {
     if (data?.data.length) {
@@ -137,11 +165,9 @@ function EditSubCategoryPage() {
       });
   }
 
-  if (
-    // areAllCategoriesEmpty ||
-    isSubCategoryFetching ||
-    !subCategoryData
-  )
+  const areAllCategoriesEmpty = !allCategories;
+
+  if (areAllCategoriesEmpty || isSubCategoryFetching || !subCategoryData)
     return <Spinner />;
 
   return (
@@ -226,6 +252,7 @@ function EditSubCategoryPage() {
               }}
               render={({ field }) => (
                 <SmartSearchInput
+                  onRemove={onRemoveMainCategory}
                   lang={locale}
                   isFetching={isSubCategoryFetching}
                   notAvailableMessage={tMessage("No Categories Available")}
@@ -241,7 +268,7 @@ function EditSubCategoryPage() {
                   placeholder={t("Search for category")}
                   name={field.name}
                   onChange={field.onChange}
-                  value={subCategoryData?.data?.category}
+                  // value={subCategoryData?.data?.category}
                 />
               )}
             />

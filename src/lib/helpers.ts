@@ -134,11 +134,12 @@ export function isProductExisted(uniquteValues: string[], value: string, arr) {
   return uniqueProducts;
 }
 
-export const formatCurrency = (n: number) => {
-  return new Intl.NumberFormat("de-DE", {
+export const formatCurrency = (n: number, locale: string = "en" as string) => {
+  const _locale = locale === "en" ? "en-US" : "ar-EG";
+  return (n || 0).toLocaleString(_locale, {
     style: "currency",
     currency: "EGP",
-  }).format(n);
+  });
 };
 
 export const groupBy = function (list, groupKey = "name") {

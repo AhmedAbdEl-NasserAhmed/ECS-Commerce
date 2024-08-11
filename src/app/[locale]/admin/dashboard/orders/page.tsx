@@ -67,7 +67,7 @@ function Orders() {
               isLoading={getPaginatedOrdersResponse.isFetching}
               paginationControllers={paginationControllers}
               data={getPaginatedOrdersResponse?.data?.data}
-              columns={ordersTableHeaders(t)}
+              columns={ordersTableHeaders(t, locale)}
             />
           )}
         </Menus>

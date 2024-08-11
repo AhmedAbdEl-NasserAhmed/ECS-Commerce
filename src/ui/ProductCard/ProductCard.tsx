@@ -6,6 +6,7 @@ import ColorItem from "../ColorItem/ColorItem";
 import { useParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useGetSingleProductBySlugQuery } from "@/lib/features/api/productsApi";
+import { formatCurrency } from "@/lib/helpers";
 
 const ProductCard = ({ product }) => {
   const { data: category } = useGetCategoryByIdQuery(product?.category, {
@@ -103,12 +104,12 @@ const ProductCard = ({ product }) => {
         <div className="flex items-center gap-4 text-[1.6rem] font-medium">
           {!!product.discount && (
             <span className="line-through text-gray-300">
-              {`${product.price} ${userTranslation("EGP")}`}
+              {formatCurrency(product.price, locale as string)}
             </span>
           )}
-          <span className="">{`${product.saleProduct} ${userTranslation(
-            "EGP"
-          )}`}</span>
+          <span className="">
+            {formatCurrency(product.saleProduct, locale as string)}
+          </span>
         </div>
       </div>
     </div>

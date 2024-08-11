@@ -21,6 +21,7 @@ import MiniSpinner from "@/ui/MiniSpinner/MiniSpinner";
 import ReactStars from "@/ui/ReactStars/ReactStars";
 import useWindowResize from "@/hooks/useWindowResize";
 import { useTranslations } from "next-intl";
+import { formatCurrency } from "@/lib/helpers";
 
 function ProductDetails() {
   const userTranslation = useTranslations("user");
@@ -198,8 +199,10 @@ function ProductDetails() {
               </h2>
               {productState?.selectedProduct?.discount > 0 && (
                 <h2 className="text-3xl font-semibold text-gray-400 line-through">
-                  {productState?.selectedProduct?.price}{" "}
-                  {userTranslation("EGP")}
+                  {formatCurrency(
+                    productState?.selectedProduct?.price,
+                    params.locale as string
+                  )}
                 </h2>
               )}
             </Box>

@@ -6,12 +6,15 @@ import { useLazyGetOrderByUserIdQuery } from "@/lib/features/api/ordersApi";
 import { useAppSelector } from "@/lib/hooks";
 import BaseTable from "@/ui/BaseReactTable";
 import { useTranslations } from "next-intl";
+import { useParams } from "next/navigation";
 import { useEffect } from "react";
 
 function UserOrders() {
   const user = useAppSelector((state) => state.usersSlice.user);
 
   const userTranslation = useTranslations("user");
+
+  const { locale } = useParams();
 
   const [getPaginatedOrders, getPaginatedOrdersResponse] =
     useLazyGetOrderByUserIdQuery();
@@ -25,8 +28,8 @@ function UserOrders() {
       userId: user["_id"],
       query: {
         page: paginationControllers.page + 1,
-        limit: paginationControllers.pageSize
-      }
+        limit: paginationControllers.pageSize,
+      },
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -38,7 +41,7 @@ function UserOrders() {
       </h2>
       <BaseTable
         data={getPaginatedOrdersResponse?.data?.data || []}
-        columns={useOrderHeaders(userTranslation)}
+        columns={useOrderHeaders(userTranslation, locale)}
         isLoading={getPaginatedOrdersResponse?.isFetching}
         paginationControllers={paginationControllers}
       />

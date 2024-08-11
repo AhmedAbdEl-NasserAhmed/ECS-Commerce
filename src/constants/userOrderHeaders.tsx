@@ -5,12 +5,12 @@ import { OrderStatusEnum } from "@/types/enums";
 import OrderStatus from "@/ui/OrderStatus/OrderStatus";
 import Image from "next/image";
 
-export const useOrderHeaders = (userTranslation) => {
+export const useOrderHeaders = (userTranslation, locale) => {
   return [
     {
       id: "transaction_id",
       header: () => userTranslation("Transaction Id"),
-      accessorKey: "transaction_id"
+      accessorKey: "transaction_id",
     },
 
     {
@@ -19,11 +19,11 @@ export const useOrderHeaders = (userTranslation) => {
       accessorKey: "orderPrice",
       cell: ({
         cell: {
-          row: { original }
-        }
+          row: { original },
+        },
       }) => {
-        return formatCurrency(original.orderPrice);
-      }
+        return formatCurrency(original.orderPrice, locale);
+      },
     },
 
     {
@@ -31,8 +31,8 @@ export const useOrderHeaders = (userTranslation) => {
       header: () => userTranslation("First Name"),
       cell: ({
         cell: {
-          row: { original }
-        }
+          row: { original },
+        },
       }) => (
         <div style={{ gap: "10px" }} className="flex justify-center">
           {original?.billingData.map((data) => {
@@ -43,7 +43,7 @@ export const useOrderHeaders = (userTranslation) => {
             );
           })}
         </div>
-      )
+      ),
     },
 
     {
@@ -51,8 +51,8 @@ export const useOrderHeaders = (userTranslation) => {
       header: () => userTranslation("Phone Number"),
       cell: ({
         cell: {
-          row: { original }
-        }
+          row: { original },
+        },
       }) => (
         <div style={{ gap: "10px" }} className="flex justify-center">
           {original?.billingData.map((data) => {
@@ -63,7 +63,7 @@ export const useOrderHeaders = (userTranslation) => {
             );
           })}
         </div>
-      )
+      ),
     },
 
     {
@@ -71,11 +71,11 @@ export const useOrderHeaders = (userTranslation) => {
       header: () => <div> {userTranslation("order status")}</div>,
       cell: ({
         cell: {
-          row: { original }
-        }
+          row: { original },
+        },
       }) => {
         return <OrderStatus status={OrderStatusEnum[original.orderStatus]} />;
-      }
+      },
     },
 
     {
@@ -83,9 +83,9 @@ export const useOrderHeaders = (userTranslation) => {
       header: () => userTranslation("Actions"),
       cell: ({
         cell: {
-          row: { original }
-        }
-      }) => <UserOrdersOptions order={original} />
-    }
+          row: { original },
+        },
+      }) => <UserOrdersOptions order={original} />,
+    },
   ];
 };

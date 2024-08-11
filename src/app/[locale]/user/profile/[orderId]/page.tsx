@@ -5,6 +5,7 @@ import orderDetailsColumns from "@/constants/orderDetailsColumns";
 import { requestCheckupTimelineStages } from "@/constants/orderStatus";
 import useTimeline from "@/hooks/useTimeline";
 import { useGetOrderByIdQuery } from "@/lib/features/api/ordersApi";
+import { formatCurrency } from "@/lib/helpers";
 import { OrderStatusEnum } from "@/types/enums";
 import BaseTable from "@/ui/BaseReactTable";
 import Spinner from "@/ui/Spinner/Spinner";
@@ -59,6 +60,10 @@ function OrderDetails() {
 
   const selectedOrderItems = data?.data.items;
 
+  const totalOrderPrice = selectedOrderItems?.reduce((acc, cur) => {
+    return acc + cur.price * cur.quantity;
+  }, 0);
+
   if (isFetching) return <Spinner />;
 
   return (
@@ -75,9 +80,16 @@ function OrderDetails() {
         />
       </div>
 
+      <div className="my-32">
+        <h2 className="text-[2rem] font-bold">
+          {userTranslation("Total Price")}:{" "}
+          {formatCurrency(totalOrderPrice, locale as string)}
+        </h2>
+      </div>
+
       <BaseTable
         data={selectedOrderItems}
-        columns={orderDetailsColumns(locale, userTranslation)}
+        columns={orderDetailsColumns(userTranslation, locale)}
         isLoading={isFetching}
         paginationControllers={false}
       />

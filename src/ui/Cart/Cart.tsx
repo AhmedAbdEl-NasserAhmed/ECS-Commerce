@@ -18,6 +18,7 @@ import {
 import useImagesLoadingSpinner from "@/hooks/useImagesLoadingSpinner";
 import Spinner from "../Spinner/Spinner";
 import { useTranslations } from "next-intl";
+import { formatCurrency } from "@/lib/helpers";
 
 const Cart = () => {
   const { locale } = useParams();
@@ -263,7 +264,7 @@ const Cart = () => {
                 <div className="flex items-center justify-between font-bold text-xl">
                   <span className="">{t("Total")}</span>
                   <span className="">
-                    {Math.trunc(totalCartItems)} {t("EGP")}
+                    {formatCurrency(totalCartItems, locale as string)}
                   </span>
                 </div>
                 <p className="text-gray-500 text-xl mt-2 mb-4">

@@ -25,7 +25,7 @@ function ProductListOptions({ product, productsBySlug = [] }) {
       {productsBySlug?.map((product) => {
         return (
           <ProductActionItem
-            key={product["_id"]}
+            key={product.productId}
             content={
               <p className="text-lg font-bold">{product.size.toUpperCase()}</p>
             }

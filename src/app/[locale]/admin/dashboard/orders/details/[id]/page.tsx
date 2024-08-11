@@ -51,7 +51,7 @@ function ViewOrder() {
         name: userTranslation("DELIVERED"),
       },
     ];
-  }, [order?.data?.orderStatus]);
+  }, [order?.data]);
 
   const tIndex = useTranslations("Index");
 
@@ -178,7 +178,7 @@ function ViewOrder() {
           {/* DATA ITEM */}
           <Box>
             <p className="font-semibold text-xl">{t("order price")}</p>
-            <p>{formatCurrency(order?.data?.orderPrice)}</p>
+            <p>{formatCurrency(order?.data?.orderPrice, locale as string)}</p>
           </Box>
           {/* DATA ITEM */}
           <Box>
@@ -191,7 +191,7 @@ function ViewOrder() {
         <div className="mt-10">
           <BaseTable
             data={order?.data?.items}
-            columns={orderDetailsColumns(locale, userTranslation)}
+            columns={orderDetailsColumns(userTranslation, locale)}
             isLoading={isFetching}
             paginationControllers={false}
           />

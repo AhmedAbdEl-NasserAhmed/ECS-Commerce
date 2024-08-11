@@ -14,8 +14,6 @@ interface IProductList {
 }
 
 function ProductList(props: IProductList) {
-  const uniqueItems = getUniqueValues(props.products, ["name"]);
-
   const t = useTranslations("user");
 
   if (!props?.products?.length)
@@ -32,7 +30,7 @@ function ProductList(props: IProductList) {
       className={"grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 my-0"}
       columns={props.columns || 3}
     >
-      {uniqueItems?.map((product) => {
+      {props.products?.map((product) => {
         return <ProductCard key={product["_id"]} product={product} />;
       })}
     </GridContainer>

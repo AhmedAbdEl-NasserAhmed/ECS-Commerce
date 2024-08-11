@@ -53,11 +53,11 @@ function AddSubCategoriesPage() {
 
   const [isChecked, setIsChecked] = useState<boolean>(false);
 
-  const [allCategories, setAllCategories] = useState<string[]>([]);
+  // const [allCategories, setAllCategories] = useState<string[]>([]);
 
   // const [lang, setLang] = useState("en");
 
-  const lang = isChecked ? "ar" : "en";
+  // const lang = isChecked ? "ar" : "en";
 
   const debounceValue = useDebounceHook(smartSeachvalue.name);
 
@@ -80,11 +80,11 @@ function AddSubCategoriesPage() {
   //   setLang(isChecked ? Lang.ARABIC : Lang.ENGLISH);
   // }, [isChecked]);
 
-  useEffect(() => {
-    setAllCategories(
-      AllCategories?.data.map((category) => category.name[lang])
-    );
-  }, [AllCategories?.data, lang]);
+  // useEffect(() => {
+  //   setAllCategories(
+  //     AllCategories?.data.map((category) => category.name[lang])
+  //   );
+  // }, [AllCategories?.data, lang]);
 
   function handleAddSubCategorySubmit() {
     if (

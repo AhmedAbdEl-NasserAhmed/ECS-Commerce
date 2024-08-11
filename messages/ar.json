@@ -74,7 +74,11 @@
     "Edit Order": "تعديل الطلب",
     "quantity": "الكمية",
     "Please change the status!": "الرجاء تغيير الحالة!",
-    "You Have to choose from available categories": "يجب الأختيار من الأقسام المتاحة"
+    "You Have to choose from available categories": "يجب الأختيار من الأقسام المتاحة",
+    "Users": "المستخدمين",
+    "Target": "الهدف",
+    "Sales": "المبيعات",
+    "Recent Orders": "احدث الطلبات"
   },
   "Login": {
     "greeting": "مرحبًا بك في ORCA، موقعنا للتجارة الإلكترونية، مدير النظام! نحن متحمسون لانضمامك إلينا. هنا يمكنك إدارة المنتجات، تتبع الطلبات، والإشراف على المتجر بكفاءة. شكرًا لكونك جزءًا أساسيًا من فريقنا.",
@@ -246,7 +250,9 @@
     "YOU TRANSACTION IS SUCCESFUL": "تم تنفيذ العملية بنجاح",
     "You Will be redirected to home Page in": "سوف يتم توجيهك إلى القائمة االرئيسية خلال",
     "Verify Email": "التحقق من الايميل",
-    "Enter the OTP": "ادخل رمز التحقق"
+    "Enter the OTP": "ادخل رمز التحقق",
+    "HERE": "هنا",
+    "Total order price": "مجموع الطلب"
   },
   "messages": {
     "Please check form inputs": "الرجاء التحقق من المدخلات",
@@ -276,7 +282,6 @@
     "Please Log in First": "قم بتسجيل الدخول اولا",
     "This color is already exist": "هذا اللون موجود بالفعل",
     "A new color is added": "تم اضافة اللون بنجاح",
-    "No Categories Available": "لا يوجد اقسام متاحة",
-    "HERE": "هنا"
+    "No Categories Available": "لا يوجد اقسام متاحة"
   }
 }

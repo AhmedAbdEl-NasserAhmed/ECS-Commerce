@@ -14,6 +14,7 @@ import { useEffect } from "react";
 import toast from "react-hot-toast";
 import Spinner from "../Spinner/Spinner";
 import { useTranslations } from "next-intl";
+import { formatCurrency } from "@/lib/helpers";
 
 function CartSideMenu({ setOpenSideMenu, openSideMenu, setOpens }) {
   const { locale } = useParams();
@@ -237,8 +238,7 @@ function CartSideMenu({ setOpenSideMenu, openSideMenu, setOpens }) {
               <div className="flex items-center justify-between font-bold text-xl text-black">
                 <span className="">{t("Total")}</span>
                 <span className="">
-                  {Math.trunc(totalCartItems)}
-                  {t("EGP")}
+                  {formatCurrency(totalCartItems, locale as string)}
                 </span>
               </div>
               <p className="text-gray-500 text-xl mt-2 mb-4">

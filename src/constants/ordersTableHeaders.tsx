@@ -53,7 +53,7 @@ import OrderStatus from "@/ui/OrderStatus/OrderStatus";
 //   "__v": 0
 // }
 
-export const ordersTableHeaders = (t) => [
+export const ordersTableHeaders = (t, locale) => [
   {
     id: "transactionId",
     header: () => <div>{t("transaction id")}</div>,
@@ -83,6 +83,13 @@ export const ordersTableHeaders = (t) => [
     id: "orderPrice",
     header: () => <div>{t("order price")}</div>,
     accessorKey: "orderPrice",
+    cell: ({
+      cell: {
+        row: { original },
+      },
+    }) => {
+      return formatCurrency(original.orderPrice, locale);
+    },
   },
   {
     id: "orderStatus",
@@ -105,7 +112,7 @@ export const ordersTableHeaders = (t) => [
     }) => <OrdersTableMenuOptions order={original} />,
   },
 ];
-export const ordersTableHeadersWithoutActions = (t) => [
+export const ordersTableHeadersWithoutActions = (t, locale) => [
   {
     id: "transactionId",
     header: () => <div>{t("transaction id")}</div>,
@@ -140,7 +147,7 @@ export const ordersTableHeadersWithoutActions = (t) => [
         row: { original },
       },
     }) => {
-      return formatCurrency(original.orderPrice);
+      return formatCurrency(original.orderPrice, locale);
     },
   },
   {

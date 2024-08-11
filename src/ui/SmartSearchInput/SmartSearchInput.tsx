@@ -119,6 +119,7 @@ function SmartSearchInput({
           error={!!errors}
           helperText={errors?.message || ""}
           FormHelperTextProps={{ style: { fontSize: "1rem" } }}
+          onBlur={() => action(SmartSearchActions.CLOSE_MENU)}
           // disabled={disabled}
           style={{
             borderRadius: "1rem",

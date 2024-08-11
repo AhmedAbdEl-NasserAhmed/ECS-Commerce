@@ -20,6 +20,7 @@ import { HiOutlineViewGrid } from "react-icons/hi";
 import { HiChevronDown, HiChevronUp } from "react-icons/hi2";
 import { useGetAllCategoriesQuery } from "@/lib/features/api/categoriesApi";
 import { useTranslations } from "next-intl";
+import useLogout from "@/hooks/useLogout";
 
 function LandingPageMenu() {
   const [opens, setOpens] = useState<boolean>(false);
@@ -53,6 +54,8 @@ function LandingPageMenu() {
   const [cartItems] = useSetCartItemsMutation();
 
   const userRoleAdmin = user?.role === UserType.ADMIN;
+
+  const logout = useLogout();
 
   return (
     <div className="md:hidden">
@@ -176,20 +179,7 @@ function LandingPageMenu() {
             <li className="border-2 border-white py-2.5 px-20">
               <button
                 onClick={() => {
-                  if (user && user?.role === UserType.USER) {
-                    cartItems({
-                      user: user["_id"],
-                      cartItems: cart,
-                      wishListItems: wishList
-                    });
-                  }
-
-                  cartItems({ user: user["_id"], cartItems: cart });
-                  dispatch(logoutUser());
-                  localStorage.removeItem("userToken");
-                  localStorage.removeItem("user");
-                  dispatch(clearCookiesThunk("cartItems"));
-                  dispatch(clearCookiesThunk("wishListItems"));
+                  logout();
                   router.replace(`/${locale}`);
                   toast.success(userTranslation("See you soon"));
                   setOpens(false);

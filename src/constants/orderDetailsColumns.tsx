@@ -47,7 +47,7 @@ export function orderDetailsColumns(userTranslation, locale) {
           row: { original },
         },
       }) => {
-        return formatCurrency(original?.product?.saleProduct, locale as string);
+        return formatCurrency(original?.price, locale as string);
       },
     },
 

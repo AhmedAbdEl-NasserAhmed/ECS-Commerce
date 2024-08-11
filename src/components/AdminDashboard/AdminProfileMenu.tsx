@@ -9,6 +9,7 @@ import { useSetCartItemsMutation } from "@/lib/features/api/cartItemsApi";
 import { HiOutlineUserCircle } from "react-icons/hi2";
 import { HiOutlineLogout, HiOutlineViewGrid } from "react-icons/hi";
 import { clearCookiesThunk } from "@/lib/features/cookieSlice/cookieSlice";
+import useLogout from "@/hooks/useLogout";
 
 function AdminProfileMenu({ setIsProfileOpen }) {
   const { locale } = useParams();
@@ -19,6 +20,7 @@ function AdminProfileMenu({ setIsProfileOpen }) {
 
   const dispatch = useAppDispatch();
 
+  const logout = useLogout();
   return (
     <ul
       ref={ref}
@@ -28,9 +30,7 @@ function AdminProfileMenu({ setIsProfileOpen }) {
         <button
           className="flex items-center justify-center gap-4 "
           onClick={() => {
-            dispatch(logoutUser());
-            localStorage.removeItem("userToken");
-            localStorage.removeItem("user");
+            logout();
             router.push(`/${locale}/admin`);
             toast.success("Do Not Be Late");
           }}

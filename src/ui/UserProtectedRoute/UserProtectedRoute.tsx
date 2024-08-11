@@ -33,6 +33,13 @@ function UserProtectedRoute({ children }) {
     ) {
       router.back();
     }
+    // ⚠️
+    /**
+     * /user/login
+     */
+    else if (isAuthenticated && pathName.includes("login")) {
+      router.back();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [forbiddenRoutes, isAuthenticated, pathName, router, user?.role]);
 

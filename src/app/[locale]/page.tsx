@@ -15,6 +15,7 @@ import UserProtectedRoute from "@/ui/UserProtectedRoute/UserProtectedRoute";
 import useCookie from "@/hooks/useCookie";
 import { useTranslations } from "next-intl";
 import { groupBy } from "@/lib/helpers";
+import useCheckTokenExpiration from "@/hooks/useCheckTokenExpiration";
 
 function HomePage() {
   const { data, isLoading } = useGetAllProductsQuery({ limit: 6 });
@@ -22,6 +23,8 @@ function HomePage() {
   const user = useAppSelector((state) => state.usersSlice.user);
 
   const t = useTranslations("user");
+
+  useCheckTokenExpiration();
 
   useCookie("cartItems", "wishListItems");
 

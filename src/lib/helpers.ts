@@ -186,3 +186,32 @@ function sortCategorizedUsersByDayMonth(categorizedList) {
       return monthA - monthB;
     });
 }
+
+export function getExpirationDateFromToken(token) {
+  // Split the token into its three parts
+  const parts = token.split(".");
+
+  // Decode the payload (the second part of the token)
+  const payload = JSON.parse(base64UrlDecode(parts[1]));
+
+  // Extract the expiration time (exp) and convert to a JavaScript Date
+  const expirationDate = new Date(payload.exp * 1000);
+
+  // Log the expiration date
+  return expirationDate.toString();
+}
+
+// Function to decode base64 URL encoded string
+function base64UrlDecode(str) {
+  // Convert Base64URL to Base64 by replacing characters
+  const base64 = str.replace(/-/g, "+").replace(/_/g, "/");
+  // Decode the Base64 string
+  return decodeURIComponent(
+    atob(base64)
+      .split("")
+      .map(function (c) {
+        return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+      })
+      .join("")
+  );
+}

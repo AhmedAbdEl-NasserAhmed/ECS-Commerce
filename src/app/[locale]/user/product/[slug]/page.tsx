@@ -411,7 +411,7 @@ function ProductDetails() {
               top: "1rem",
             }}
           >
-            <Box className="flex md:flex-col flex-row md:order-none order-1 gap-14 ">
+            <Box className="flex md:flex-col flex-row md:order-none order-1 gap-10">
               {data?.data?.images.map((image, index) => {
                 return (
                   <Box

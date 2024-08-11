@@ -1,4 +1,5 @@
 import { emailRegex, passwordRegex } from "@/constants/regx";
+import useLogout from "@/hooks/useLogout";
 import { useUpdatePasswordMutation } from "@/lib/features/api/usersApi";
 import { logoutUser } from "@/lib/features/usersSlice/usersSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
@@ -48,6 +49,8 @@ function UserSettings() {
 
   const user = useAppSelector((state) => state.usersSlice.user);
 
+  const logout = useLogout();
+
   function onSubmit(data) {
     updatePasswordFm({
       oldPassword: data.oldPassword,
@@ -56,9 +59,7 @@ function UserSettings() {
       .unwrap()
       .then(() => {
         toast.success(tMessage("Your Password changed successfully"));
-        dispatch(logoutUser());
-        localStorage.removeItem("userToken");
-        localStorage.removeItem("user");
+        logout();
         router.push(`/${locale}`);
       })
       .catch((err) => {

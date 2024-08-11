@@ -677,7 +677,7 @@ function EditProduct() {
               disabled={updateProductResponse.isLoading}
               control={control}
               formData={formData}
-              imagesNumber={3}
+              imagesNumber={6}
               setValue={setValue}
             />
           </Box>

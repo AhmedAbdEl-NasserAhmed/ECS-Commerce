@@ -7,8 +7,9 @@ export const StorageService = {
     return JSON.stringify(data);
   },
 
-  get(key) {
-    return this.parse(localStorage.getItem(key));
+  get(key, shouldParse = true) {
+    if (shouldParse) return this.parse(localStorage.getItem(key));
+    return localStorage.getItem(key);
   },
 
   set(key, value, shouldStringify = true) {
@@ -23,5 +24,5 @@ export const StorageService = {
   },
   clear() {
     localStorage.clear();
-  }
+  },
 };

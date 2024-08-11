@@ -9,6 +9,7 @@ import { HiOutlineUserCircle } from "react-icons/hi2";
 import { HiOutlineLogout, HiOutlineViewGrid } from "react-icons/hi";
 import { clearCookiesThunk } from "@/lib/features/cookieSlice/cookieSlice";
 import { useTranslations } from "next-intl";
+import useLogout from "@/hooks/useLogout";
 
 function UserMenu({ setIsProfileOpen }) {
   const { locale } = useParams();
@@ -30,6 +31,8 @@ function UserMenu({ setIsProfileOpen }) {
   const [cartItems, setCartItems] = useSetCartItemsMutation();
 
   const userTranslation = useTranslations("user");
+
+  const logout = useLogout();
 
   return (
     <ul className=" absolute text-xl start-0 top-12 bg-white  flex flex-col z-20 gap-4 shadow-[0_3px_10px_rgb(0,0,0,0.2)] p-2 w-48 font-semibold text-center  rounded-lg">
@@ -71,12 +74,13 @@ function UserMenu({ setIsProfileOpen }) {
               cartItems({
                 user: user["_id"],
                 cartItems: cart,
-                wishListItems: wishList
+                wishListItems: wishList,
               });
             }
-            dispatch(logoutUser());
-            localStorage.removeItem("userToken");
-            localStorage.removeItem("user");
+            // dispatch(logoutUser());
+            // localStorage.removeItem("userToken");
+            // localStorage.removeItem("user");
+            logout();
             setIsProfileOpen(false);
             router.replace(`/${locale}`);
             toast.success(userTranslation("See you soon"));

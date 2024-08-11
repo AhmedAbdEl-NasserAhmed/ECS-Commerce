@@ -72,19 +72,12 @@ function OrderDetails() {
         {userTranslation("ORDER DETAILS")}
       </h2>
 
-      <div className="mb-20 px-8 md:px-20">
+      <div className="mb-32 px-8 md:px-20">
         <BaseTimeline
           activeStageIndex={timelineData.activeStageIndex}
           completedStagesIndexes={timelineData.completedStagesIndexes}
           stages={requestCheckupTimelineStages(userTranslation)}
         />
-      </div>
-
-      <div className="my-32">
-        <h2 className="text-[2rem] font-bold">
-          {userTranslation("Total Price")}:{" "}
-          {formatCurrency(totalOrderPrice, locale as string)}
-        </h2>
       </div>
 
       <BaseTable

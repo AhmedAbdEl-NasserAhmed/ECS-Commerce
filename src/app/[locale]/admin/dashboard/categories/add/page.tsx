@@ -67,7 +67,6 @@ function CategoryPage() {
       .then((res) => {
         if (res.status === "success") {
           setIsChecked(false);
-          // router.replace(`/${locale}/admin/dashboard/categories`);
           toast.success(tMessage("A New Main Category Added"));
           reset();
         }

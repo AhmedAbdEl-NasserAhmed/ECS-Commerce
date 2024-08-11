@@ -74,9 +74,12 @@ function BillingInformation() {
       .unwrap()
       .then((res) => {
         dispatch(makePayment(false));
-        window.open(res.url, "_blank", "noopener,noreferrer");
-        router.replace(`/${locale}`);
         StorageService.set("userLang", locale);
+        // router.replace(`/${locale}`);
+        return res;
+      })
+      .then((res) => {
+        router.replace(res.url);
       })
       .catch((err) => {
         dispatch(makePayment(false));

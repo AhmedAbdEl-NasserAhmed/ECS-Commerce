@@ -39,6 +39,9 @@ function SuccessPayment() {
 
   useEffect(() => {
     if (replacedUrl) {
+      dispatch(clearCookiesThunk("cartItems"));
+      StorageService.delete("userLang");
+
       for (let i = 0; i < redirectNumber; i++) {
         setTimeout(() => {
           setRedirectNumber(i);
@@ -47,9 +50,7 @@ function SuccessPayment() {
 
       if (redirectNumber === 0) {
         toast.success(userTranslation("Your Order is Completed Successfully"));
-        dispatch(clearCookiesThunk("cartItems"));
         router.replace(`/${locale}`);
-        StorageService.delete("userLang");
       }
     }
   }, [redirectNumber, locale, router, dispatch, userTranslation, replacedUrl]);

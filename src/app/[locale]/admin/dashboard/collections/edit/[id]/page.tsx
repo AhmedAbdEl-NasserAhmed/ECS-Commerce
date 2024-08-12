@@ -244,7 +244,7 @@ function EditSubCategoryPage() {
                 required: "This field is required",
                 validate(value) {
                   if (
-                    isMainCategoryIncluded &&
+                    // isMainCategoryIncluded &&
                     !allCategories?.includes(value[locale as string])
                   )
                     return "You Have to choose from available categories";

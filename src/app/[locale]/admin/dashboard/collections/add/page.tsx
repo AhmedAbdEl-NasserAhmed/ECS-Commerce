@@ -102,7 +102,7 @@ function AddSubCategoriesPage() {
       })
       .catch((err) => {
         if (err) {
-          toast.error(tMessage("This Category is Already Added"));
+          toast.error(tMessage("This Collection is Already Added"));
         }
       });
   }

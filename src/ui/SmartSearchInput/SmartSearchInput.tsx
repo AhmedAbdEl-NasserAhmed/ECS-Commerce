@@ -27,12 +27,19 @@ function SmartSearchInput({
   onFocus = null,
   onBlur = null,
   lang,
+  shouldUpdateValue = false,
 }) {
   const [smartSearchState, dispatch] = useReducer(reducerFn, initialState);
 
   function action(type, payload = null) {
     dispatch({ type, payload });
   }
+
+  useEffect(() => {
+    if (shouldUpdateValue) {
+      action(SmartSearchActions.CHANGE_INPUT, { value: defaultValue });
+    }
+  }, [shouldUpdateValue]);
 
   const menuRef = useClickOutside({
     close: (v) => action(SmartSearchActions.CLOSE_MENU),

@@ -55,6 +55,7 @@ function AddProductPage() {
     reset,
     watch,
     setValue,
+    clearErrors,
     formState: { errors },
   } = useForm<AdminProductProps>({ mode: "onChange" });
 
@@ -108,6 +109,8 @@ function AddProductPage() {
   const [allCategories, setAllCategories] = useState<string[]>([]);
 
   const [productSearchName, setProductSearchName] = useState(null);
+  const [shouldUpdateCategoryValue, setShowUpdateCategoryValue] =
+    useState(false);
 
   const {
     data: subCategory,
@@ -116,11 +119,13 @@ function AddProductPage() {
   } = useGetSubCategoryQuery(
     {
       letter: subCategorydebounceValue,
-      categoryId: smartSeachvalue["_id"],
+      categoryId: smartSeachvalue["_id"] || productSearchName?.category,
       lang: locale,
     },
     {
-      skip: !subCategorydebounceValue || !smartSeachvalue["_id"],
+      skip:
+        !subCategorydebounceValue ||
+        (!smartSeachvalue["_id"] && !productSearchName?.category),
     }
   );
 
@@ -135,16 +140,24 @@ function AddProductPage() {
     );
 
   useEffect(() => {
-    if (productSearchName?.name) {
+    if (productSearchName?._id) {
       const searchedProductByNameCategoryValue = productSearchName
         ? AllCategories?.data?.find((c) => c._id === productSearchName.category)
             ?.name
         : null;
-      setValue("category", searchedProductByNameCategoryValue);
+
+      if (searchedProductByNameCategoryValue) {
+        setValue(
+          "category",
+          searchedProductByNameCategoryValue || formData?.category
+        );
+        clearErrors("category");
+      }
       setValue("price", productSearchName.price);
       setValue("discount", productSearchName.discount);
       setValue("description.en", productSearchName.description?.en);
       setValue("description.ar", productSearchName.description?.ar);
+      setShowUpdateCategoryValue(true);
     }
   }, [AllCategories, productSearchName]);
 
@@ -181,7 +194,7 @@ function AddProductPage() {
 
   function showInputsHandler(e) {
     setIsChecked(e.target.checked);
-    if (formData.subCategory.length > 0) {
+    if (formData.subCategory?.length > 0) {
       dispatch(setSubCategory({ data: formData.subCategory }));
       if (Object.values(formData.images).filter(Boolean)) {
         dispatch(setImages({ data: { ...formData.images } }));
@@ -223,7 +236,11 @@ function AddProductPage() {
   }, [formData.price, formData.discount]);
 
   useEffect(() => {
-    setAllCategories(mainCategory?.data.map((category) => category.name[lang]));
+    setAllCategories(
+      mainCategory?.data.map((category) => {
+        return category.name?.[locale as string];
+      })
+    );
   }, [mainCategory?.data, lang]);
 
   useEffect(() => {
@@ -364,12 +381,14 @@ function AddProductPage() {
   };
 
   function onRemoveProductName() {
+    if (!productSearchName?._id) return; // this make sure that we didn't select a name from the list
     if (shouldResetMainCategoryTimer)
       clearTimeout(shouldResetMainCategoryTimer);
-
+    setShowUpdateCategoryValue(false);
     reset();
     setValue("name-en", "");
     setValue("name-ar", "");
+    setValue("colors", []);
     setValue("price", 0);
     setValue("subCategory", []);
     setValue("category", { en: "", ar: "" });
@@ -448,7 +467,7 @@ function AddProductPage() {
                   rules={{
                     required: "This field is required",
                     validate(value) {
-                      if (!allCategories?.includes(value[lang]))
+                      if (!allCategories?.includes(value[locale as string]))
                         return t(
                           "You Have to choose from available categories"
                         );
@@ -456,6 +475,7 @@ function AddProductPage() {
                   }}
                   render={({ field }) => (
                     <SmartSearchInput
+                      shouldUpdateValue={shouldUpdateCategoryValue}
                       onRemove={onRemoveMainCategory}
                       lang={locale}
                       errors={errors?.["category"]}
@@ -475,6 +495,7 @@ function AddProductPage() {
                       placeholder={t("main category placeholder")}
                       name={field.name}
                       onChange={field.onChange}
+                      // value={formData?.category?.[locale as string] || ""}
                     />
                   )}
                 />
@@ -522,7 +543,9 @@ function AddProductPage() {
                     render={({ field }) => (
                       <SmartSearchInput
                         onRemove={() => {
-                          onRemoveMainCategory();
+                          if (productSearchName?._id) {
+                            onRemoveMainCategory();
+                          }
                           onRemoveProductName();
                         }}
                         lang={lang}

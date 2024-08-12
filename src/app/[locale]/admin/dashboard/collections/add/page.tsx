@@ -53,12 +53,6 @@ function AddSubCategoriesPage() {
 
   const [isChecked, setIsChecked] = useState<boolean>(false);
 
-  // const [allCategories, setAllCategories] = useState<string[]>([]);
-
-  // const [lang, setLang] = useState("en");
-
-  // const lang = isChecked ? "ar" : "en";
-
   const debounceValue = useDebounceHook(smartSeachvalue.name);
 
   const { data, isLoading, isFetching } = useGetCategoryQuery({
@@ -76,15 +70,6 @@ function AddSubCategoriesPage() {
     setIsChecked(e.target.checked);
   }
 
-  // useEffect(() => {
-  //   setLang(isChecked ? Lang.ARABIC : Lang.ENGLISH);
-  // }, [isChecked]);
-
-  // useEffect(() => {
-  //   setAllCategories(
-  //     AllCategories?.data.map((category) => category.name[lang])
-  //   );
-  // }, [AllCategories?.data, lang]);
 
   function handleAddSubCategorySubmit() {
     if (
@@ -238,7 +223,7 @@ function AddSubCategoriesPage() {
                   shouldReset={subCategoryResponse.isSuccess}
                   getSmartSearchValue={setSmartSeachValue}
                   textLabel={t("Main Category")}
-                  defaultValue={formData.category?.en}
+                  defaultValue={formData.category?.[locale as string]}
                   data={data?.data}
                   placeholder={t("Search for category")}
                   name={field.name}

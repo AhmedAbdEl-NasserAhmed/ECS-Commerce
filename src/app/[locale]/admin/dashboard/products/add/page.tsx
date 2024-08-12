@@ -12,9 +12,14 @@ import {
 import {
   useAddProductMutation,
   useGetProductByNameQuery,
+  useGetSingleProductBySlugQuery,
 } from "@/lib/features/api/productsApi";
 import { useGetSubCategoryQuery } from "@/lib/features/api/subCategoriesApi";
-import { getAddProductServerData, getSumFrom } from "@/lib/helpers";
+import {
+  getAddProductServerData,
+  getSumFrom,
+  removeSizesFoundInProducts,
+} from "@/lib/helpers";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { sizes } from "@/lib/StaticLookups";
 import { StorageService } from "@/services/StorageService";
@@ -63,8 +68,6 @@ function AddProductPage() {
   const { locale } = useParams();
 
   const formData = watch();
-
-  console.log("formData", formData);
 
   const router = useRouter();
 
@@ -117,6 +120,11 @@ function AddProductPage() {
   const [shouldUpdateCategoryValue, setShowUpdateCategoryValue] =
     useState(false);
 
+  const { data: productsBySlug, isLoading } = useGetSingleProductBySlugQuery(
+    productSearchName?.slug,
+    { skip: !productSearchName?._id }
+  );
+
   const {
     data: subCategory,
     isFetching: isFetchingSubCategories,
@@ -146,8 +154,6 @@ function AddProductPage() {
 
   useEffect(() => {
     if (productSearchName?._id) {
-      console.log("111111111");
-
       const searchedProductByNameCategoryValue = doesUserRemovedCategory
         ? formData?.category
         : productSearchName
@@ -424,7 +430,10 @@ function AddProductPage() {
     }, 100);
   }
 
-  const _sizes = sizes.filter((s) => s.value != productSearchName?.size?.value);
+  const _sizes =
+    productSearchName?._id && productsBySlug?.data?.products
+      ? removeSizesFoundInProducts(sizes, productsBySlug?.data?.products)
+      : sizes;
 
   return (
     <form

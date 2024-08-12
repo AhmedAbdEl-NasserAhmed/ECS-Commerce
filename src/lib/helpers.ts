@@ -215,3 +215,11 @@ function base64UrlDecode(str) {
       .join("")
   );
 }
+
+export function removeSizesFoundInProducts(sizes, products) {
+  // Get a list of sizes used in products
+  const productSizes = products.map((product) => product.size);
+
+  // Filter the sizes array to remove sizes found in products
+  return sizes.filter((size) => !productSizes.includes(size.value));
+}

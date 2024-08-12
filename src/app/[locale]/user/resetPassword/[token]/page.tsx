@@ -48,7 +48,7 @@ function ResetPasswordPage() {
         router.push(`/${locale}/user/login`);
       })
       .catch((err) => {
-        toast.error(err.data.message);
+        toast.error(tMessage(err.data.message));
       });
   }
 

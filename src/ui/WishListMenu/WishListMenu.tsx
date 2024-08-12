@@ -13,7 +13,7 @@ import {
   addItemThunk,
   clearCookiesThunk,
   removeItemThunk,
-  setCookiesThunk
+  setCookiesThunk,
 } from "@/lib/features/cookieSlice/cookieSlice";
 import useImagesLoadingSpinner from "@/hooks/useImagesLoadingSpinner";
 import Spinner from "../Spinner/Spinner";

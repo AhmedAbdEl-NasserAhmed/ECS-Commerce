@@ -30,13 +30,12 @@ function HomePage() {
 
   const groupedProducts = groupBy(data?.data, "slug");
 
-  const uniqueProducts = Object.keys(groupedProducts).map(
-    (key) => groupedProducts[key][0]
-  );
-
-  const products = uniqueProducts?.filter((p) => p.discount === 0);
-
-  const saleProducts = uniqueProducts?.filter((p) => p.discount > 0);
+  const uniqueProducts = Object.keys(groupedProducts).map((key) => {
+    return groupedProducts[key].find((p) => p.discount === 0);
+  });
+  const uniqueSalesProducts = Object.keys(groupedProducts).map((key) => {
+    return groupedProducts[key].find((p) => p.discount > 0);
+  });
 
   return (
     <UserProtectedRoute>
@@ -50,14 +49,14 @@ function HomePage() {
       <TitledProductList
         title={t("Hot Products")}
         description="Mauris luctus nisi sapien tristique dignissim ornare"
-        products={products}
+        products={uniqueProducts.filter(Boolean)}
         isLoading={isLoading}
         columns={4}
       />
       <TitledProductList
         title={t("Sale Products")}
         description="Mauris luctus nisi sapien tristique dignissim ornare"
-        products={saleProducts}
+        products={uniqueSalesProducts.filter(Boolean)}
         isLoading={isLoading}
         columns={4}
       />

@@ -45,6 +45,7 @@ function LoginPage() {
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const userTranslation = useTranslations("user");
+  const tMessage = useTranslations("messages");
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -102,7 +103,7 @@ function LoginPage() {
         router.push(`/${locale}`);
       })
       .catch((err) => {
-        toast.error(err?.data?.message);
+        toast.error(tMessage(err?.data?.message));
       });
   }
 

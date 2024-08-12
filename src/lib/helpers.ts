@@ -72,7 +72,7 @@ export const getAddProductServerData = (
 
 export function getSumFrom(list, matchedList, matchedKey = "label") {
   return list
-    .map((item) => {
+    ?.map((item) => {
       if (!matchedList?.[item[matchedKey || "label"]]) return 0;
       return +matchedList?.[item[matchedKey || "label"]];
     })

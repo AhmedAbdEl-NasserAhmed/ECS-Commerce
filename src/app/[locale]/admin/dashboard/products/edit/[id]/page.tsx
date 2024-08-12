@@ -211,7 +211,7 @@ function EditProduct() {
         });
       })
       .catch((err) => {
-        toast.error(err.message);
+        toast.error(tMessage(err.message));
       });
   }
 

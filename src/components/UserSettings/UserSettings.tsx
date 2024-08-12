@@ -63,7 +63,7 @@ function UserSettings() {
         router.push(`/${locale}`);
       })
       .catch((err) => {
-        toast.error(err.data.message);
+        toast.error(tMessage(err.data.message));
       });
   }
 

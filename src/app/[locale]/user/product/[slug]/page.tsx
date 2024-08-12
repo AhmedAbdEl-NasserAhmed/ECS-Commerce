@@ -505,6 +505,7 @@ function ProductDetails() {
                 )}
               </Box>
             )}
+
             <Box className="flex items-center gap-4 flex-wrap">
               <Box>
                 <h2 className="font-semibold text-xl">
@@ -519,6 +520,18 @@ function ProductDetails() {
                 />
               </Box>
             </Box>
+
+            {!!productDetailsState?.selectedProduct?.discount && (
+              <span
+                className="bg-[#f1c40f] uppercase py-[.3rem] px-[.8rem] rounded transition-all duration-500"
+                style={{
+                  marginInlineEnd: "auto",
+                }}
+              >
+                {userTranslation("Sale")}
+              </span>
+            )}
+
             {fetchingReviews ? (
               <Spinner />
             ) : (

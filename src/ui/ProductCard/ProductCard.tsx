@@ -73,11 +73,11 @@ const ProductCard = ({ product }) => {
           className="absolute font-bold top-[1.5rem] start-[1.5rem] text-white z-20 py-[.3rem] px-[.8rem] text-base
           flex flex-col gap-2 text-center uppercase"
         >
-          <div className="bg-[green] py-[.3rem] px-[.8rem] rounded">
+          <div className="bg-[green] uppercase py-[.3rem] px-[.8rem] rounded">
             {category?.data?.name?.[locale as string]}
           </div>
           {!!product.discount && (
-            <div className="bg-[#f1c40f] py-[.3rem] px-[.8rem] rounded transition-all duration-500">
+            <div className="bg-[#f1c40f] uppercase py-[.3rem] px-[.8rem] rounded transition-all duration-500">
               {userTranslation("Sale")}
             </div>
           )}

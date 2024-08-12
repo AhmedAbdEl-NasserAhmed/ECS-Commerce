@@ -40,12 +40,13 @@ import { createKey } from "next/dist/shared/lib/router/router";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import toast from "react-hot-toast";
 import { HiChevronRight } from "react-icons/hi2";
 
 let shouldResetMultipleSearchInputTimer = null;
+let shouldResetMainCategoryTimer = null;
 
 function AddProductPage() {
   const {
@@ -72,11 +73,6 @@ function AddProductPage() {
     useState(false);
 
   const [isChecked, setIsChecked] = useState<boolean>(false);
-
-  /**
-   * locale       isChecked           Value
-   *   ar           false         =
-   */
 
   const lang = isChecked ? "ar" : "en";
 
@@ -109,24 +105,24 @@ function AddProductPage() {
         skip: !mainCategorydebounceValue,
       }
     );
-
-  const { data: subCategory, isFetching: isFetchingSubCategories } =
-    useGetSubCategoryQuery(
-      {
-        letter: subCategorydebounceValue,
-        categoryId: smartSeachvalue["_id"],
-        lang: locale,
-      },
-      {
-        skip: !subCategorydebounceValue || !smartSeachvalue["_id"],
-      }
-    );
-
   const [allCategories, setAllCategories] = useState<string[]>([]);
 
-  const [productSearchName, setProductSearchName] = useState<{
-    name: string;
-  }>({ name: "" });
+  const [productSearchName, setProductSearchName] = useState(null);
+
+  const {
+    data: subCategory,
+    isFetching: isFetchingSubCategories,
+    refetch,
+  } = useGetSubCategoryQuery(
+    {
+      letter: subCategorydebounceValue,
+      categoryId: smartSeachvalue["_id"],
+      lang: locale,
+    },
+    {
+      skip: !subCategorydebounceValue || !smartSeachvalue["_id"],
+    }
+  );
 
   const productNameDebounceValue = useDebounceHook(productSearchName?.name);
 
@@ -137,6 +133,20 @@ function AddProductPage() {
         skip: !productNameDebounceValue,
       }
     );
+
+  useEffect(() => {
+    if (productSearchName?.name) {
+      const searchedProductByNameCategoryValue = productSearchName
+        ? AllCategories?.data?.find((c) => c._id === productSearchName.category)
+            ?.name
+        : null;
+      setValue("category", searchedProductByNameCategoryValue);
+      setValue("price", productSearchName.price);
+      setValue("discount", productSearchName.discount);
+      setValue("description.en", productSearchName.description?.en);
+      setValue("description.ar", productSearchName.description?.ar);
+    }
+  }, [AllCategories, productSearchName]);
 
   const [addProductFn, productResponse] = useAddProductMutation();
 
@@ -165,6 +175,7 @@ function AddProductPage() {
   }, [formData["name"], productName]);
 
   const adminProduct = useAppSelector((store) => store.adminProductSlice);
+  const shouldMainCategoryReset = useRef(false);
 
   const dispatch = useAppDispatch();
 
@@ -175,10 +186,6 @@ function AddProductPage() {
       if (Object.values(formData.images).filter(Boolean)) {
         dispatch(setImages({ data: { ...formData.images } }));
       }
-      // localStorage.setItem(
-      //   `subCategories${lang}`,
-      //   JSON.stringify([...formData.subCategory])
-      // );
     }
   }
 
@@ -220,10 +227,24 @@ function AddProductPage() {
   }, [mainCategory?.data, lang]);
 
   useEffect(() => {
-    if (formData?.["name-en"]?.ar) {
+    if (
+      !shouldMainCategoryReset.current &&
+      typeof formData?.["name-en"] === "object" &&
+      typeof formData?.["name-ar"] !== "object"
+    ) {
       setValue("name-ar", formData?.["name-en"]);
     }
-  }, [formData?.["name-en"]]);
+  }, [shouldMainCategoryReset.current, formData?.["name-en"]]);
+
+  useEffect(() => {
+    if (
+      !shouldMainCategoryReset.current &&
+      typeof formData?.["name-ar"] === "object" &&
+      typeof formData?.["name-en"] !== "object"
+    ) {
+      setValue("name-en", formData?.["name-ar"]);
+    }
+  }, [shouldMainCategoryReset.current, formData?.["name-ar"]]);
 
   const tIndex = useTranslations("Index");
   const tMessage = useTranslations("messages");
@@ -242,7 +263,10 @@ function AddProductPage() {
       toast.error(tMessage("Please check form inputs"));
       return;
     }
-    const myData = { ...data, category: smartSeachvalue["_id"] };
+    const myData = {
+      ...data,
+      category: smartSeachvalue["_id"] || productSearchName?.category,
+    };
 
     const serverData = getAddProductServerData(myData, lang);
 
@@ -289,7 +313,7 @@ function AddProductPage() {
         });
       })
       .catch((err) => {
-        toast.error(err.message);
+        toast.error(tMessage(err.message));
       });
   }
 
@@ -332,11 +356,28 @@ function AddProductPage() {
 
     dispatch(setSubCategory({ data: [] }));
     setValue("subCategory", []);
+    setValue("category", { en: "", ar: "" });
     setShouldResetMultipleSearchInput(true);
     shouldResetMultipleSearchInputTimer = setTimeout(() => {
       setShouldResetMultipleSearchInput(false);
     }, 100);
   };
+
+  function onRemoveProductName() {
+    if (shouldResetMainCategoryTimer)
+      clearTimeout(shouldResetMainCategoryTimer);
+
+    reset();
+    setValue("name-en", "");
+    setValue("name-ar", "");
+    setValue("price", 0);
+    setValue("subCategory", []);
+    setValue("category", { en: "", ar: "" });
+    shouldMainCategoryReset.current = true;
+    shouldResetMainCategoryTimer = setTimeout(() => {
+      shouldMainCategoryReset.current = false;
+    }, 100);
+  }
 
   return (
     <form
@@ -424,7 +465,10 @@ function AddProductPage() {
                       disabled={
                         productResponse.isLoading || isFetchingMainCategory
                       }
-                      shouldReset={productResponse.isSuccess}
+                      shouldReset={
+                        shouldMainCategoryReset.current ||
+                        productResponse.isSuccess
+                      }
                       getSmartSearchValue={setSmartSeachValue}
                       textLabel={t("Main Category")}
                       data={mainCategory?.data}
@@ -477,7 +521,10 @@ function AddProductPage() {
                     rules={{ required: "This field is required" }}
                     render={({ field }) => (
                       <SmartSearchInput
-                        onRemove={onRemoveMainCategory}
+                        onRemove={() => {
+                          onRemoveMainCategory();
+                          onRemoveProductName();
+                        }}
                         lang={lang}
                         errors={errors?.["name-en"]}
                         defaultValue={nameEnValue}
@@ -486,7 +533,10 @@ function AddProductPage() {
                         disabled={
                           productResponse.isLoading || isFetchingProduct
                         }
-                        shouldReset={productResponse.isSuccess}
+                        shouldReset={
+                          shouldMainCategoryReset.current ||
+                          productResponse.isSuccess
+                        }
                         getSmartSearchValue={setProductSearchName}
                         textLabel={`${t("Product Name")} ${
                           isChecked ? "(عربي)" : "(English)"
@@ -509,7 +559,10 @@ function AddProductPage() {
                     rules={{ required: "هذا الحقل مطلوب" }}
                     render={({ field }) => (
                       <SmartSearchInput
-                        onRemove={onRemoveMainCategory}
+                        onRemove={() => {
+                          onRemoveMainCategory();
+                          onRemoveProductName();
+                        }}
                         lang={lang}
                         errors={errors?.["name-ar"]}
                         defaultValue={nameArValue}
@@ -518,7 +571,10 @@ function AddProductPage() {
                         disabled={
                           productResponse.isLoading || isFetchingProduct
                         }
-                        shouldReset={productResponse.isSuccess}
+                        shouldReset={
+                          shouldMainCategoryReset.current ||
+                          productResponse.isSuccess
+                        }
                         getSmartSearchValue={setProductSearchName}
                         textLabel={`اسم المنتج ${
                           isChecked ? "(عربي)" : "(English)"

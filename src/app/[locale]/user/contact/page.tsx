@@ -23,6 +23,7 @@ function Contact() {
   const user = useAppSelector((state) => state.usersSlice.user);
 
   const t = useTranslations("user");
+  const tMessage = useTranslations("messages");
 
   const [sendFeedBackFn, feedBackResponse] = useSendFeedBackMutation();
 
@@ -38,7 +39,7 @@ function Contact() {
         reset();
       })
       .catch((err) => {
-        toast.error(err.data.message);
+        toast.error(tMessage(err.data.message));
       });
   }
 

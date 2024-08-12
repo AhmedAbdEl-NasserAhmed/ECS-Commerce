@@ -65,7 +65,7 @@ function RegisterPage() {
         router.push(`/${locale}/user/login`);
         reset();
       })
-      .catch((err) => toast.error(err.data.message));
+      .catch((err) => toast.error(tMessage(err.data.message)));
   }
 
   return (

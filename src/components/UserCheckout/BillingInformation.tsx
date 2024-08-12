@@ -83,7 +83,7 @@ function BillingInformation() {
       })
       .catch((err) => {
         dispatch(makePayment(false));
-        toast.error(err.data.message);
+        toast.error(tMessage(err.data.message));
       });
   }
 

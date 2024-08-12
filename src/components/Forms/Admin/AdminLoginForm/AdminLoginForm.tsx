@@ -30,6 +30,8 @@ function AdminLoginForm() {
   const dispatch = useAppDispatch();
 
   const t = useTranslations("Login");
+  const tMessage = useTranslations("messages");
+
   const formTranslation = useTranslations("Form");
 
   function onSubmit(data: LoginFormData) {
@@ -47,7 +49,7 @@ function AdminLoginForm() {
 
         dispatch(loginUser({ user: res.data, token: res.token }));
       })
-      .catch((err) => toast.error(err.data.message));
+      .catch((err) => toast.error(tMessage(err.data.message)));
   }
 
   return (

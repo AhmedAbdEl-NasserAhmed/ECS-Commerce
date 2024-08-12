@@ -3,6 +3,7 @@ import { useAppSelector } from "@/lib/hooks";
 import { StorageService } from "@/services/StorageService";
 import { useEffect, useState } from "react";
 import useLogout from "./useLogout";
+import { usePathname } from "next/navigation";
 
 const useCheckTokenExpiration = () => {
   const [userToken, setUserToken] = useState(null);
@@ -10,6 +11,8 @@ const useCheckTokenExpiration = () => {
   const { isAuthenticated: isAuth } = useAppSelector(
     (store) => store.usersSlice
   );
+
+  const pathname = usePathname();
 
   useEffect(() => {
     const userToken = StorageService.get("userToken", false);
@@ -38,7 +41,7 @@ const useCheckTokenExpiration = () => {
       }, 10000);
     }
     return () => clearInterval(timer);
-  }, [location, isAuth, userToken, expirationDate]);
+  }, [pathname, isAuth, userToken, expirationDate]);
 };
 
 export default useCheckTokenExpiration;

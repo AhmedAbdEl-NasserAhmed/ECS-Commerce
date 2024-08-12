@@ -24,6 +24,10 @@ const ProductCard = ({ product }) => {
   if (!product) return <Spinner />;
 
   const _colors = productsBySlug?.data?.products?.reduce((acc, product) => {
+    if (
+      acc.some((color) => product?.colors.find((c) => c.value === color.value))
+    )
+      return acc;
     return acc.concat(
       product?.colors?.map((color) => {
         return color;

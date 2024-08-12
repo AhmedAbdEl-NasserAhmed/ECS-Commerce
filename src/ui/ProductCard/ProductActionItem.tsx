@@ -4,7 +4,7 @@ const ProductActionItem = (props) => {
   return (
     <li onClick={props.onClick}>
       <span
-        className={`flex items-center justify-center text-[1.7rem] bg-white ${isActionClasses} transition-all duration-300  w-[4rem] h-[4rem] rounded-full ${props.className}`}
+        className={`flex items-center justify-center text-[1.7rem] bg-white transition-all duration-300  w-[4rem] h-[4rem] rounded-full ${props.className} ${isActionClasses}`}
       >
         {props.content}
       </span>

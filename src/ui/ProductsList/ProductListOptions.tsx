@@ -27,9 +27,11 @@ function ProductListOptions({ product, productsBySlug = [] }) {
           <ProductActionItem
             key={product.productId}
             content={
-              <p className="text-lg font-bold">{product.size.toUpperCase()}</p>
+              <p className="text-[.9rem] font-bold">
+                {product.size.toUpperCase()}
+              </p>
             }
-            className={`w-[2.85rem] h-[2.85rem]`}
+            className={`!w-[3rem] !h-[3rem]`}
           />
         );
       })}

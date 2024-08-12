@@ -11,6 +11,7 @@ import MiniSpinner from "../MiniSpinner/MiniSpinner";
 
 function SmartSearchInput({
   onRemove = () => {},
+  onChangeName = () => {},
   data,
   onChange,
   name,
@@ -77,9 +78,11 @@ function SmartSearchInput({
     smartSearchState.userSelectedValue,
   ]);
 
+  // console.log("smartSearchState", name, smartSearchState);
+
   useEffect(() => {
     if (
-      smartSearchState.inputValue !== "" &&
+      smartSearchState.inputValue &&
       smartSearchState.userSelectedValue === ""
     ) {
       action(SmartSearchActions.OPEN_MENU);
@@ -93,6 +96,7 @@ function SmartSearchInput({
   ]);
 
   const onSelectItem = (data) => {
+    onChangeName();
     onChange(data?.name);
     action(SmartSearchActions.SELECT_ITEM, { value: data?.name?.[lang] });
     if (getSmartSearchValue) {

@@ -95,7 +95,7 @@ function EditProduct() {
 
   const { data: mainCategory, isFetching: isFetchingMainCategory } =
     useGetCategoryQuery(
-      { letter: mainCategorydebounceValue, lang },
+      { letter: mainCategorydebounceValue, lang: locale },
       {
         skip: !mainCategorydebounceValue,
       }

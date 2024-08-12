@@ -99,6 +99,8 @@ function AddProductPage() {
 
   const { data: AllCategories } = useGetAllCategoriesQuery("categories");
 
+  const [doesUserRemovedCategory, setDoesUserRemovedCategory] = useState(false);
+
   const { data: mainCategory, isFetching: isFetchingMainCategory } =
     useGetCategoryQuery(
       { letter: mainCategorydebounceValue, lang: locale },
@@ -139,18 +141,19 @@ function AddProductPage() {
       }
     );
 
+  console.log("formData", formData);
+
   useEffect(() => {
     if (productSearchName?._id) {
-      const searchedProductByNameCategoryValue = productSearchName
+      const searchedProductByNameCategoryValue = doesUserRemovedCategory
+        ? formData?.category
+        : productSearchName
         ? AllCategories?.data?.find((c) => c._id === productSearchName.category)
             ?.name
         : null;
 
       if (searchedProductByNameCategoryValue) {
-        setValue(
-          "category",
-          searchedProductByNameCategoryValue || formData?.category
-        );
+        setValue("category", searchedProductByNameCategoryValue);
         clearErrors("category");
       }
       setValue("price", productSearchName.price);
@@ -159,7 +162,7 @@ function AddProductPage() {
       setValue("description.ar", productSearchName.description?.ar);
       setShowUpdateCategoryValue(true);
     }
-  }, [AllCategories, productSearchName]);
+  }, [AllCategories, doesUserRemovedCategory, productSearchName]);
 
   const [addProductFn, productResponse] = useAddProductMutation();
 
@@ -368,6 +371,7 @@ function AddProductPage() {
   };
 
   const onRemoveMainCategory = () => {
+    setDoesUserRemovedCategory(true);
     if (shouldResetMultipleSearchInputTimer)
       clearTimeout(shouldResetMultipleSearchInputTimer);
 
@@ -388,6 +392,8 @@ function AddProductPage() {
     reset();
     setValue("name-en", "");
     setValue("name-ar", "");
+    setValue("description.en", "");
+    setValue("description.ar", "");
     setValue("colors", []);
     setValue("price", 0);
     setValue("subCategory", []);
@@ -548,6 +554,7 @@ function AddProductPage() {
                           }
                           onRemoveProductName();
                         }}
+                        onChangeName={() => setDoesUserRemovedCategory(false)}
                         lang={lang}
                         errors={errors?.["name-en"]}
                         defaultValue={nameEnValue}

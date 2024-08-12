@@ -21,13 +21,13 @@ const useLogout = () => {
     localStorage.removeItem("user");
     if (user?.isActive) {
       if (user && user?.role === UserType.USER) {
-        // cartItems({ user: user["_id"], cartItems: cart });
         cartItems({
           user: user["_id"],
           cartItems: cart,
           wishListItems: wishList,
         });
       }
+      // cartItems({ user: user["_id"], cartItems: cart });
       dispatch(clearCookiesThunk("cartItems"));
       dispatch(clearCookiesThunk("wishListItems"));
     }

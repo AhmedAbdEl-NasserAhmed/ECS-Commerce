@@ -78,8 +78,6 @@ function SmartSearchInput({
     smartSearchState.userSelectedValue,
   ]);
 
-  // console.log("smartSearchState", name, smartSearchState);
-
   useEffect(() => {
     if (
       smartSearchState.inputValue &&

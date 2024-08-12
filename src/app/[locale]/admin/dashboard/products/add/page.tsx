@@ -141,8 +141,6 @@ function AddProductPage() {
       }
     );
 
-  console.log("formData", formData);
-
   useEffect(() => {
     if (productSearchName?._id) {
       const searchedProductByNameCategoryValue = doesUserRemovedCategory

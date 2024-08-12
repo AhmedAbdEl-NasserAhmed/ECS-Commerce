@@ -77,9 +77,6 @@ function UserMenu({ setIsProfileOpen }) {
                 wishListItems: wishList,
               });
             }
-            // dispatch(logoutUser());
-            // localStorage.removeItem("userToken");
-            // localStorage.removeItem("user");
             logout();
             setIsProfileOpen(false);
             router.replace(`/${locale}`);

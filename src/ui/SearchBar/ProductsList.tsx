@@ -28,7 +28,7 @@ function ProductsList({ data, setProductName, productName }) {
     const observer = new IntersectionObserver(handleObserver, {
       root: null,
       rootMargin: "0px",
-      threshold: 0,
+      threshold: 0
     });
 
     if (observer && ref.current) {
@@ -62,7 +62,7 @@ function ProductsList({ data, setProductName, productName }) {
             className="p-6 text-black  hover:bg-gray-100 duration-300 transition-all"
             key={product["_id"]}
           >
-            <Link href={`${locale}/user/product/${product?.slug}`}>
+            <Link href={`/${locale}/user/product/${product?.slug}`}>
               <div className="flex justify-between items-start">
                 <div className="flex items-start gap-5">
                   <div className="relative">

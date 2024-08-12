@@ -3,15 +3,15 @@
 import useDebounceHook from "@/hooks/useDebounceHook";
 import {
   setImages,
-  setSubCategory,
+  setSubCategory
 } from "@/lib/features/adminProductSlice/adminProductSlice";
 import {
   useGetAllCategoriesQuery,
-  useGetCategoryQuery,
+  useGetCategoryQuery
 } from "@/lib/features/api/categoriesApi";
 import {
   useAddProductMutation,
-  useGetProductByNameQuery,
+  useGetProductByNameQuery
 } from "@/lib/features/api/productsApi";
 import { useGetSubCategoryQuery } from "@/lib/features/api/subCategoriesApi";
 import { getAddProductServerData, getSumFrom } from "@/lib/helpers";
@@ -33,7 +33,7 @@ import {
   FormControlLabel,
   Stack,
   Switch,
-  Typography,
+  Typography
 } from "@mui/material";
 import { useTranslations } from "next-intl";
 import { createKey } from "next/dist/shared/lib/router/router";
@@ -56,12 +56,14 @@ function AddProductPage() {
     watch,
     setValue,
     clearErrors,
-    formState: { errors },
+    formState: { errors, dirtyFields }
   } = useForm<AdminProductProps>({ mode: "onChange" });
 
   const { locale } = useParams();
 
   const formData = watch();
+
+  console.log("formData", formData);
 
   const router = useRouter();
 
@@ -105,7 +107,7 @@ function AddProductPage() {
     useGetCategoryQuery(
       { letter: mainCategorydebounceValue, lang: locale },
       {
-        skip: !mainCategorydebounceValue,
+        skip: !mainCategorydebounceValue
       }
     );
   const [allCategories, setAllCategories] = useState<string[]>([]);
@@ -117,17 +119,17 @@ function AddProductPage() {
   const {
     data: subCategory,
     isFetching: isFetchingSubCategories,
-    refetch,
+    refetch
   } = useGetSubCategoryQuery(
     {
       letter: subCategorydebounceValue,
       categoryId: smartSeachvalue["_id"] || productSearchName?.category,
-      lang: locale,
+      lang: locale
     },
     {
       skip:
         !subCategorydebounceValue ||
-        (!smartSeachvalue["_id"] && !productSearchName?.category),
+        (!smartSeachvalue["_id"] && !productSearchName?.category)
     }
   );
 
@@ -137,12 +139,14 @@ function AddProductPage() {
     useGetProductByNameQuery(
       { letter: productNameDebounceValue, lang },
       {
-        skip: !productNameDebounceValue,
+        skip: !productNameDebounceValue
       }
     );
 
   useEffect(() => {
     if (productSearchName?._id) {
+      console.log("111111111");
+
       const searchedProductByNameCategoryValue = doesUserRemovedCategory
         ? formData?.category
         : productSearchName
@@ -154,19 +158,49 @@ function AddProductPage() {
         setValue("category", searchedProductByNameCategoryValue);
         clearErrors("category");
       }
-      setValue("price", productSearchName.price);
-      setValue("discount", productSearchName.discount);
-      setValue("description.en", productSearchName.description?.en);
-      setValue("description.ar", productSearchName.description?.ar);
+
+      // if (!dirtyFields.price) {
+      //   setValue("price", productSearchName.price);
+      // }
+      // if (!dirtyFields.discount) {
+      //   setValue("discount", productSearchName.discount);
+      // }
+      // if (!dirtyFields.description?.en) {
+      //   setValue("description.en", productSearchName.description?.en);
+      // }
+      // if (!dirtyFields.description?.ar) {
+      //   setValue("description.ar", productSearchName.description?.ar);
+      // }
+
+      setValue(
+        "price",
+        !dirtyFields.price ? productSearchName.price : formData.price
+      );
+      setValue(
+        "discount",
+        !dirtyFields.discount ? productSearchName.discount : formData.discount
+      );
+      setValue(
+        "description.en",
+        !dirtyFields.description?.en
+          ? productSearchName.description?.en
+          : formData.description?.en
+      );
+      setValue(
+        "description.ar",
+        !dirtyFields.description?.ar
+          ? productSearchName.description?.ar
+          : formData.description?.ar
+      );
       setShowUpdateCategoryValue(true);
     }
-  }, [AllCategories, doesUserRemovedCategory, productSearchName]);
+  }, [AllCategories, doesUserRemovedCategory, productSearchName, dirtyFields]);
 
   const [addProductFn, productResponse] = useAddProductMutation();
 
   const [selectedProduct, setSelectedProduct] = useState({
     name: "",
-    images: [],
+    images: []
   });
 
   const nameEnValue =
@@ -212,7 +246,7 @@ function AddProductPage() {
           if (image) {
             images[`image-${i + 1}`] = {
               url: image?.url,
-              id: image?.id,
+              id: image?.id
             };
           }
         }
@@ -283,7 +317,7 @@ function AddProductPage() {
     }
     const myData = {
       ...data,
-      category: smartSeachvalue["_id"] || productSearchName?.category,
+      category: smartSeachvalue["_id"] || productSearchName?.category
     };
 
     const serverData = getAddProductServerData(myData, lang);
@@ -306,20 +340,20 @@ function AddProductPage() {
         reset({
           category: {
             en: "",
-            ar: "",
+            ar: ""
           },
           ["name-en"]: {
             en: "",
-            ar: "",
+            ar: ""
           },
           ["name-ar"]: {
             en: "",
-            ar: "",
+            ar: ""
           },
           price: 0,
           description: {
             en: "",
-            ar: "",
+            ar: ""
           },
           colors: [],
           images: {},
@@ -327,7 +361,7 @@ function AddProductPage() {
           salePrice: 0,
           quantity: 0,
           size: [],
-          discount: 0,
+          discount: 0
         });
       })
       .catch((err) => {
@@ -349,7 +383,7 @@ function AddProductPage() {
           alignItems: "center",
           fontSize: "4rem",
           textAlign: "center",
-          flexDirection: "column",
+          flexDirection: "column"
         }}
       >
         {t("No categories yet, please add a new category")}{" "}
@@ -439,13 +473,13 @@ function AddProductPage() {
                   "& .MuiSwitch-switchBase.Mui-checked": {
                     color: "red",
                     "& + .MuiSwitch-track": {
-                      backgroundColor: "#ed0534",
-                    },
+                      backgroundColor: "#ed0534"
+                    }
                   },
                   "& .MuiSwitch-track": {
                     backgroundColor: "#161616",
-                    opacity: 1,
-                  },
+                    opacity: 1
+                  }
                 }}
               />
             }
@@ -475,7 +509,7 @@ function AddProductPage() {
                         return t(
                           "You Have to choose from available categories"
                         );
-                    },
+                    }
                   }}
                   render={({ field }) => (
                     <SmartSearchInput
@@ -657,7 +691,7 @@ function AddProductPage() {
                             height: "30px",
                             background: color.value,
                             borderRadius: "50%",
-                            border: "1px solid #000",
+                            border: "1px solid #000"
                           }}
                         ></Box>
                         <Controller
@@ -667,8 +701,8 @@ function AddProductPage() {
                             required: "This field is required",
                             min: {
                               value: 1,
-                              message: "Quantity should be more than 1",
-                            },
+                              message: "Quantity should be more than 1"
+                            }
                           }}
                           render={({ field }) => (
                             <CustomizedTextField
@@ -677,7 +711,7 @@ function AddProductPage() {
                               placeholder={"0"}
                               field={field}
                               formerHelperStyles={{
-                                style: { fontSize: "1rem" },
+                                style: { fontSize: "1rem" }
                               }}
                               customError={
                                 errors?.["colors-quantity"]?.[color.label]
@@ -686,7 +720,7 @@ function AddProductPage() {
                               variant={"outlined"}
                               size={"small"}
                               mainContainerSx={{
-                                width: "8rem",
+                                width: "8rem"
                               }}
                             />
                           )}
@@ -716,7 +750,7 @@ function AddProductPage() {
                         { value: "L", label: "L", color: "#666666" },
                         { value: "XL", label: "XL", color: "#666666" },
                         { value: "XXL", label: "XXL", color: "#666666" },
-                        { value: "XXXL", label: "XXXL", color: "#666666" },
+                        { value: "XXXL", label: "XXXL", color: "#666666" }
                       ]}
                       field={field}
                       errors={errors}
@@ -749,8 +783,8 @@ function AddProductPage() {
                     required: "This field is required",
                     min: {
                       value: 1,
-                      message: "The Price should be more than 1 ",
-                    },
+                      message: "The Price should be more than 1 "
+                    }
                   }}
                   render={({ field }) => (
                     <CustomizedTextField
@@ -776,12 +810,12 @@ function AddProductPage() {
                   rules={{
                     min: {
                       value: 0,
-                      message: "This field should be more than 0 ",
+                      message: "This field should be more than 0 "
                     },
                     max: {
                       value: 99,
-                      message: "This field should be less than 100 % ",
-                    },
+                      message: "This field should be less than 100 % "
+                    }
                   }}
                   render={({ field }) => (
                     <CustomizedTextField
@@ -805,7 +839,7 @@ function AddProductPage() {
                   defaultValue={0}
                   control={control}
                   rules={{
-                    required: "This field is required",
+                    required: "This field is required"
                   }}
                   render={({ field }) => (
                     <CustomizedTextField
@@ -849,12 +883,12 @@ function AddProductPage() {
                         sx={{
                           "& .MuiInputBase-input": {
                             fontSize: "1.4rem",
-                            lineHeight: "2.4rem",
+                            lineHeight: "2.4rem"
                           },
                           "& .MuiInputBase-inputMultiline": {
                             fontSize: "1.4rem",
-                            lineHeight: "2.4rem",
-                          },
+                            lineHeight: "2.4rem"
+                          }
                         }}
                       />
                     )}
@@ -886,12 +920,12 @@ function AddProductPage() {
                         sx={{
                           "& .MuiInputBase-input": {
                             fontSize: "1.4rem",
-                            lineHeight: "2.4rem",
+                            lineHeight: "2.4rem"
                           },
                           "& .MuiInputBase-inputMultiline": {
                             fontSize: "1.4rem",
-                            lineHeight: "2.4rem",
-                          },
+                            lineHeight: "2.4rem"
+                          }
                         }}
                       />
                     )}
@@ -932,8 +966,8 @@ function AddProductPage() {
                   boxShadow: "none",
                   "&:hover": {
                     backgroundColor: "black",
-                    boxShadow: "none",
-                  },
+                    boxShadow: "none"
+                  }
                 }}
                 type="submit"
                 variant="contained"

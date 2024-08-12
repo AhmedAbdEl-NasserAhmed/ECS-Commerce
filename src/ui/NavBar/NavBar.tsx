@@ -11,6 +11,7 @@ import { useState } from "react";
 import { useParams } from "next/navigation";
 import { useGetAllCategoriesQuery } from "@/lib/features/api/categoriesApi";
 import { useTranslations } from "next-intl";
+import Spinner from "../Spinner/Spinner";
 
 function NavBar() {
   const { data, isLoading } = useGetAllCategoriesQuery("categories");
@@ -18,6 +19,8 @@ function NavBar() {
   const { locale } = useParams();
 
   const user = useTranslations("user");
+
+  if (isLoading) return <Spinner />;
 
   return (
     <BaseContainer>
@@ -33,7 +36,7 @@ function NavBar() {
           <div className="w-1/3 xl:w-1/2 flex items-center gap-12 ">
             <Logo />
             <ul className="hidden md:flex gap-12 text-[1.6rem] font-semibold">
-              {data?.data.length > 0 && (
+              {data?.data?.length > 0 && (
                 <NavBarCategoriesList isLoading={isLoading} data={data} />
               )}
 

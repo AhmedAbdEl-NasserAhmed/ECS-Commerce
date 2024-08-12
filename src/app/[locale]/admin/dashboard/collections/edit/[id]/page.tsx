@@ -3,11 +3,11 @@ import useDebounceHook from "@/hooks/useDebounceHook";
 import { setCategory } from "@/lib/features/adminProductSlice/adminProductSlice";
 import {
   useGetAllCategoriesQuery,
-  useGetCategoryQuery,
+  useGetCategoryQuery
 } from "@/lib/features/api/categoriesApi";
 import {
   useEditSubCategoryMutation,
-  useGetSubCategoryByIdQuery,
+  useGetSubCategoryByIdQuery
 } from "@/lib/features/api/subCategoriesApi";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { Lang } from "@/types/enums";
@@ -21,7 +21,7 @@ import {
   Button,
   FormControlLabel,
   Switch,
-  Typography,
+  Typography
 } from "@mui/material";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
@@ -43,9 +43,9 @@ function EditSubCategoryPage() {
     reset,
     watch,
     setValue,
-    formState: { errors, dirtyFields },
+    formState: { errors, dirtyFields }
   } = useForm<AdminSubCategory>({
-    mode: "onChange",
+    mode: "onChange"
   });
 
   const formData = watch();
@@ -97,7 +97,7 @@ function EditSubCategoryPage() {
   const { data, isLoading } = useGetCategoryQuery(
     { letter: debounceValue, lang: locale },
     {
-      skip: !debounceValue,
+      skip: !debounceValue
     }
   );
   const { data: categories } = useGetAllCategoriesQuery("categories");
@@ -143,8 +143,8 @@ function EditSubCategoryPage() {
       data: {
         name: formData.name,
         description: formData.description,
-        category: smartSeachvalue["_id"],
-      },
+        category: smartSeachvalue["_id"]
+      }
     })
       .unwrap()
       .then((res) => {
@@ -152,7 +152,7 @@ function EditSubCategoryPage() {
           toast.success(tMessage("A new collection updated"));
           setSmartSeachValue({
             id: "",
-            name: "",
+            name: ""
           });
           router.replace(`/${locale}/admin/dashboard/collections`);
           reset();
@@ -214,13 +214,13 @@ function EditSubCategoryPage() {
                   "& .MuiSwitch-switchBase.Mui-checked": {
                     color: "red",
                     "& + .MuiSwitch-track": {
-                      backgroundColor: "#ed0534",
-                    },
+                      backgroundColor: "#ed0534"
+                    }
                   },
                   "& .MuiSwitch-track": {
                     backgroundColor: "#161616",
-                    opacity: 1,
-                  },
+                    opacity: 1
+                  }
                 }}
               />
             }
@@ -248,7 +248,7 @@ function EditSubCategoryPage() {
                     !allCategories?.includes(value[locale as string])
                   )
                     return "You Have to choose from available categories";
-                },
+                }
               }}
               render={({ field }) => (
                 <SmartSearchInput
@@ -377,11 +377,11 @@ function EditSubCategoryPage() {
                   rows={6}
                   sx={{
                     "& .MuiInputBase-input": {
-                      fontSize: "1.4rem",
+                      fontSize: "1.4rem"
                     },
                     "& .MuiInputBase-inputMultiline": {
-                      fontSize: "1.4rem",
-                    },
+                      fontSize: "1.4rem"
+                    }
                   }}
                 />
               )}
@@ -410,11 +410,11 @@ function EditSubCategoryPage() {
                   rows={6}
                   sx={{
                     "& .MuiInputBase-input": {
-                      fontSize: "1.4rem",
+                      fontSize: "1.4rem"
                     },
                     "& .MuiInputBase-inputMultiline": {
-                      fontSize: "1.4rem",
-                    },
+                      fontSize: "1.4rem"
+                    }
                   }}
                 />
               )}
@@ -434,8 +434,8 @@ function EditSubCategoryPage() {
                 boxShadow: "none",
                 "&:hover": {
                   backgroundColor: "black",
-                  boxShadow: "none",
-                },
+                  boxShadow: "none"
+                }
               }}
               type="submit"
               variant="contained"

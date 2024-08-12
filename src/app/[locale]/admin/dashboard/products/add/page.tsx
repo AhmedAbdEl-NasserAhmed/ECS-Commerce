@@ -57,12 +57,14 @@ function AddProductPage() {
     watch,
     setValue,
     clearErrors,
-    formState: { errors },
+    formState: { errors, dirtyFields },
   } = useForm<AdminProductProps>({ mode: "onChange" });
 
   const { locale } = useParams();
 
   const formData = watch();
+
+  console.log("formData", formData);
 
   const router = useRouter();
 
@@ -144,6 +146,8 @@ function AddProductPage() {
 
   useEffect(() => {
     if (productSearchName?._id) {
+      console.log("111111111");
+
       const searchedProductByNameCategoryValue = doesUserRemovedCategory
         ? formData?.category
         : productSearchName
@@ -155,13 +159,30 @@ function AddProductPage() {
         setValue("category", searchedProductByNameCategoryValue);
         clearErrors("category");
       }
-      setValue("price", productSearchName.price);
-      setValue("discount", productSearchName.discount);
-      setValue("description.en", productSearchName.description?.en);
-      setValue("description.ar", productSearchName.description?.ar);
+
+      setValue(
+        "price",
+        !dirtyFields.price ? productSearchName.price : formData.price
+      );
+      setValue(
+        "discount",
+        !dirtyFields.discount ? productSearchName.discount : formData.discount
+      );
+      setValue(
+        "description.en",
+        !dirtyFields.description?.en
+          ? productSearchName.description?.en
+          : formData.description?.en
+      );
+      setValue(
+        "description.ar",
+        !dirtyFields.description?.ar
+          ? productSearchName.description?.ar
+          : formData.description?.ar
+      );
       setShowUpdateCategoryValue(true);
     }
-  }, [AllCategories, doesUserRemovedCategory, productSearchName]);
+  }, [AllCategories, doesUserRemovedCategory, productSearchName, dirtyFields]);
 
   const [addProductFn, productResponse] = useAddProductMutation();
 
@@ -908,38 +929,30 @@ function AddProductPage() {
             </Box>
           )}
         </Box>
-        {
-          // formData.category?.ar &&
-          //   formData.category?.ar !== "" &&
-          //   formData.name?.ar &&
-          //   formData.name?.ar !== "" &&
-          //   formData.description?.ar &&
-          //   formData.description?.ar !== "" &&
-          isChecked && (
-            <Box>
-              <Button
-                disabled={productResponse.isLoading}
-                sx={{
-                  paddingInline: "1.6rem",
-                  paddingBlock: "1rem",
-                  fontSize: "1.3rem",
-                  borderRadius: "5px",
-                  backgroundColor: "#ed0534",
+        {isChecked && (
+          <Box>
+            <Button
+              disabled={productResponse.isLoading}
+              sx={{
+                paddingInline: "1.6rem",
+                paddingBlock: "1rem",
+                fontSize: "1.3rem",
+                borderRadius: "5px",
+                backgroundColor: "#ed0534",
+                boxShadow: "none",
+                "&:hover": {
+                  backgroundColor: "black",
                   boxShadow: "none",
-                  "&:hover": {
-                    backgroundColor: "black",
-                    boxShadow: "none",
-                  },
-                }}
-                type="submit"
-                variant="contained"
-                size="large"
-              >
-                {productResponse.isLoading ? <MiniSpinner /> : t("Add Product")}
-              </Button>
-            </Box>
-          )
-        }
+                },
+              }}
+              type="submit"
+              variant="contained"
+              size="large"
+            >
+              {productResponse.isLoading ? <MiniSpinner /> : t("Add Product")}
+            </Button>
+          </Box>
+        )}
       </Box>
     </form>
   );

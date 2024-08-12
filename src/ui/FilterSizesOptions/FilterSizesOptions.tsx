@@ -1,4 +1,4 @@
-import { sizesOptions } from "@/constants/sizeOptions";
+import { sizes } from "@/lib/StaticLookups";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 
@@ -18,7 +18,7 @@ function FilterSizesOptions({ handleFilterChange }) {
   };
   return (
     <div className="flex gap-4 flex-wrap">
-      {sizesOptions.map((size) => {
+      {sizes.map((size) => {
         return (
           <div
             key={size.id}

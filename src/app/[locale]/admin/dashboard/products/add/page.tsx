@@ -16,6 +16,7 @@ import {
 import { useGetSubCategoryQuery } from "@/lib/features/api/subCategoriesApi";
 import { getAddProductServerData, getSumFrom } from "@/lib/helpers";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { sizes } from "@/lib/StaticLookups";
 import { StorageService } from "@/services/StorageService";
 import { Lang } from "@/types/enums";
 import { AdminProductProps } from "@/types/types";
@@ -40,7 +41,7 @@ import { createKey } from "next/dist/shared/lib/router/router";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import toast from "react-hot-toast";
 import { HiChevronRight } from "react-icons/hi2";
@@ -140,6 +141,8 @@ function AddProductPage() {
         skip: !productNameDebounceValue,
       }
     );
+
+  console.log("productSearchName", productSearchName);
 
   useEffect(() => {
     if (productSearchName?._id) {
@@ -401,6 +404,8 @@ function AddProductPage() {
       shouldMainCategoryReset.current = false;
     }, 100);
   }
+
+  const _sizes = sizes.filter((s) => s.value != productSearchName?.size?.value);
 
   return (
     <form
@@ -710,14 +715,7 @@ function AddProductPage() {
                       placeholder={t("Product Sizes")}
                       textLabel={t("Product Sizes")}
                       name={"size"}
-                      options={[
-                        { value: "XS", label: "XS", color: "#666666" },
-                        { value: "SM", label: "SM", color: "#666666" },
-                        { value: "L", label: "L", color: "#666666" },
-                        { value: "XL", label: "XL", color: "#666666" },
-                        { value: "XXL", label: "XXL", color: "#666666" },
-                        { value: "XXXL", label: "XXXL", color: "#666666" },
-                      ]}
+                      options={_sizes}
                       field={field}
                       errors={errors}
                     />

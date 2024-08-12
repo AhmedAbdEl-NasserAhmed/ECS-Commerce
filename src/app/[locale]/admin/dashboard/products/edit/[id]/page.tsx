@@ -13,6 +13,7 @@ import {
 import { useGetSubCategoryQuery } from "@/lib/features/api/subCategoriesApi";
 import { getAddProductServerData, getSumFrom } from "@/lib/helpers";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { sizes } from "@/lib/StaticLookups";
 import { Lang } from "@/types/enums";
 import { AdminProductProps } from "@/types/types";
 import AddProductImage from "@/ui/AddProductImage/AddProductImage";
@@ -515,14 +516,7 @@ function EditProduct() {
                     placeholder={t("Product Sizes")}
                     textLabel={t("Product Sizes")}
                     name={"size"}
-                    options={[
-                      { value: "XS", label: "XS", color: "#666666" },
-                      { value: "SM", label: "SM", color: "#666666" },
-                      { value: "L", label: "L", color: "#666666" },
-                      { value: "XL", label: "XL", color: "#666666" },
-                      { value: "XXL", label: "XXL", color: "#666666" },
-                      { value: "XXXL", label: "XXXL", color: "#666666" },
-                    ]}
+                    options={sizes}
                     field={field}
                     errors={errors}
                   />

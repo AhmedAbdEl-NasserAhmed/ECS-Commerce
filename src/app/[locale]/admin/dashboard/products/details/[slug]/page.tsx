@@ -180,6 +180,16 @@ function ProductDetails() {
                 />
               </Box>
             </Box>
+            {!!productState?.selectedProduct?.discount && (
+              <span
+                className="bg-[#f1c40f] uppercase py-[.3rem] px-[.8rem] rounded transition-all duration-500"
+                style={{
+                  marginInlineEnd: "auto",
+                }}
+              >
+                {userTranslation("Sale")}
+              </span>
+            )}
             <div className="flex items-center gap-2">
               <div className="-translate-y-0.5">
                 <ReactStars
@@ -194,8 +204,10 @@ function ProductDetails() {
             </div>
             <Box className="flex items-center gap-5">
               <h2 className="text-3xl font-semibold ">
-                {productState?.selectedProduct?.saleProduct}{" "}
-                {userTranslation("EGP")}
+                {formatCurrency(
+                  productState?.selectedProduct?.saleProduct,
+                  params.locale as string
+                )}
               </h2>
               {productState?.selectedProduct?.discount > 0 && (
                 <h2 className="text-3xl font-semibold text-gray-400 line-through">

@@ -212,7 +212,7 @@ function EditProduct() {
         });
       })
       .catch((err) => {
-        toast.error(tMessage(err.message));
+        toast.error(tMessage(err?.data?.message));
       });
   }
 

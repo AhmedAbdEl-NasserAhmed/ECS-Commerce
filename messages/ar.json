@@ -367,6 +367,16 @@
     "CATEGORY_ID_CANNOT_BE_EMPTY": "لا يمكن أن يكون معرف القسم فارغًا",
     "CATEGORY_ID_IS_REQUIRED": "معرف القسم مطلوب",
     "CATEGORY_ID_MUST_BE_A_VALID_MONGODB_OBJECTID": "يجب أن يكون معرف القسم معرفًا صالحًا لـ MongoDB",
-    "TOKEN_MUST_BE_A_VALID_HEXADECIMAL_STRING": "يجب أن يكون الرمز نصًا سداسي عشريًا صالحًا"
+    "TOKEN_MUST_BE_A_VALID_HEXADECIMAL_STRING": "يجب أن يكون الرمز نصًا سداسي عشريًا صالحًا",
+    "KEY_PRODUCT_IS_ALREADY_EXIST_IN_THE_DB": "المنتج موجود بالفعل في قاعدة البيانات",
+    "KEY_CART_IS_ALREADY_EXIST_IN_THE_DB": "العربة موجودة بالفعل في قاعدة البيانات",
+    "KEY_COLOR_IS_ALREADY_EXIST_IN_THE_DB": "اللون موجود بالفعل في قاعدة البيانات",
+    "KEY_USER_IS_ALREADY_EXIST_IN_THE_DB": "المستخدم موجود بالفعل في قاعدة البيانات",
+    "KEY_SLUG_IS_ALREADY_EXIST_IN_THE_DB": "المعرف موجود بالفعل في قاعدة البيانات",
+    "KEY_CARTITEMS_IS_ALREADY_EXIST_IN_THE_DB": "عناصر العربة موجودة بالفعل في قاعدة البيانات",
+    "KEY_NAME_IS_ALREADY_EXIST_IN_THE_DB": "الاسم موجود بالفعل في قاعدة البيانات",
+    "KEY_SIZEVALUE_IS_ALREADY_EXIST_IN_THE_DB": "قيمة الحجم موجودة بالفعل في قاعدة البيانات",
+    "KEY_EMAIL_IS_ALREADY_EXIST_IN_THE_DB": "البريد الإلكتروني موجود بالفعل في قاعدة البيانات",
+    "KEY_ID_IS_ALREADY_EXIST_IN_THE_DB": "المعرف موجود بالفعل في قاعدة البيانات"
   }
 }

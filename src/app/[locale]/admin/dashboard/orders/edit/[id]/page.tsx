@@ -66,7 +66,7 @@ function EditOrder() {
         reset();
       })
       .catch((err) => {
-        toast.error(tMessage(err.message));
+        toast.error(tMessage(err?.data?.message));
       });
   }
 

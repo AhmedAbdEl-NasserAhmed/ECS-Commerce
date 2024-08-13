@@ -369,6 +369,16 @@
     "CATEGORY_ID_CANNOT_BE_EMPTY": "Category ID cannot be empty",
     "CATEGORY_ID_IS_REQUIRED": "Category ID is required",
     "CATEGORY_ID_MUST_BE_A_VALID_MONGODB_OBJECTID": "Category ID must be a valid MongoDB ObjectID",
-    "TOKEN_MUST_BE_A_VALID_HEXADECIMAL_STRING": "Token must be a valid hexadecimal string"
+    "TOKEN_MUST_BE_A_VALID_HEXADECIMAL_STRING": "Token must be a valid hexadecimal string",
+    "KEY_PRODUCT_IS_ALREADY_EXIST_IN_THE_DB": "The product is Already exist in the Db",
+    "KEY_CART_IS_ALREADY_EXIST_IN_THE_DB": "The cart is Already exist in the Db",
+    "KEY_COLOR_IS_ALREADY_EXIST_IN_THE_DB": "The color is Already exist in the Db",
+    "KEY_USER_IS_ALREADY_EXIST_IN_THE_DB": "The user is Already exist in the Db",
+    "KEY_SLUG_IS_ALREADY_EXIST_IN_THE_DB": "The slug is Already exist in the Db",
+    "KEY_CARTITEMS_IS_ALREADY_EXIST_IN_THE_DB": "The cartItems is Already exist in the Db",
+    "KEY_NAME_IS_ALREADY_EXIST_IN_THE_DB": "The name is Already exist in the Db",
+    "KEY_SIZEVALUE_IS_ALREADY_EXIST_IN_THE_DB": "The size is Already exist in the Db",
+    "KEY_EMAIL_IS_ALREADY_EXIST_IN_THE_DB": "The email is Already exist in the Db",
+    "KEY_ID_IS_ALREADY_EXIST_IN_THE_DB": "The id is Already exist in the Db"
   }
 }

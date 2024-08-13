@@ -50,7 +50,7 @@ function VerifyEmailAddressPage({ setShowModal }) {
         router.push(`/${locale}`);
       })
       .catch(() => {
-        toast.error(tMessage("something went wrong"));
+        toast.error(tMessage("Something went wrong"));
       });
   }
 

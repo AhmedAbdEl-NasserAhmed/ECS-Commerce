@@ -359,7 +359,8 @@ function AddProductPage() {
         });
       })
       .catch((err) => {
-        toast.error(tMessage(err.message));
+        console.log("err.message", err);
+        toast.error(tMessage(err?.data?.message));
       });
   }
 

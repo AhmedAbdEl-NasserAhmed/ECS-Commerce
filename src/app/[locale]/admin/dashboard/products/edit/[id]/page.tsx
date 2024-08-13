@@ -12,7 +12,7 @@ import {
 } from "@/lib/features/api/productsApi";
 import { useGetSubCategoryQuery } from "@/lib/features/api/subCategoriesApi";
 import { getAddProductServerData, getSumFrom } from "@/lib/helpers";
-import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { useAppDispatch } from "@/lib/hooks";
 import { sizes } from "@/lib/StaticLookups";
 import { Lang } from "@/types/enums";
 import { AdminProductProps } from "@/types/types";
@@ -24,19 +24,12 @@ import SmartSearchInput from "@/ui/SmartSearchInput/SmartSearchInput";
 import SmartSearchMultipleInput from "@/ui/SmartSearchMultipleInput/SmartSearchMultipleInput";
 import Spinner from "@/ui/Spinner/Spinner";
 import CustomizedTextField from "@/ui/TextField/TextField";
-import {
-  Box,
-  Button,
-  FormControlLabel,
-  Stack,
-  Switch,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Stack } from "@mui/material";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import toast from "react-hot-toast";
 import { HiChevronRight } from "react-icons/hi2";
@@ -60,7 +53,7 @@ function EditProduct() {
     reset,
     watch,
     setValue,
-    formState: { errors, dirtyFields },
+    formState: { errors },
   } = useForm<AdminProductProps>({
     mode: "onChange",
   });

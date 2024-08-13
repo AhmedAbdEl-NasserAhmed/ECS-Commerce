@@ -172,7 +172,7 @@
     "Review": "تقييم",
     "No reviews yet": "لا يوجد تقيمات بعد",
     "Edit Review": "تعديل التقييم",
-    "your review has been Edited": "تم تعديل التقييم الخاص بط",
+    "your review has been Edited": "تم تعديل التقييم الخاص بك",
     "Something went wrong": "يوجد شىء خاطيء",
     "your review has been added": "تم إضافة التقييم الخاص بك",
     "Edit": "تعديل",
@@ -380,6 +380,7 @@
     "KEY_ID_IS_ALREADY_EXIST_IN_THE_DB": "المعرف موجود بالفعل في قاعدة البيانات",
     "The left Quantity from Product": "الكمية المتبقة من المنتج",
     "is": "تكون",
-    "PLEASE_ACTIVE_YOUR_ACCOUNT": "بالرجاء تفعيل الحساب اولا"
+    "PLEASE_ACTIVE_YOUR_ACCOUNT": "بالرجاء تفعيل الحساب اولا",
+    "Something went wrong": "يوجد شىء خاطيء"
   }
 }

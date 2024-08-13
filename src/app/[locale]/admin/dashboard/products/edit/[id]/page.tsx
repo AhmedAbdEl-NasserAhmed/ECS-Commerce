@@ -173,6 +173,18 @@ function EditProduct() {
   const t = useTranslations("Dashboard");
 
   function onSubmit(data: AdminProductProps) {
+    if (
+      formData.quantity == 0 ||
+      formData.colors?.length === 0 ||
+      !formData.category.en ||
+      !formData["name-en"] ||
+      !formData["name-ar"] ||
+      !formData.description.en ||
+      !formData.description.ar
+    ) {
+      toast.error(tMessage("Please check form inputs"));
+      return;
+    }
     const myData = { ...data, category: smartSeachvalue["_id"] };
 
     const serverData = getAddProductServerData(myData, lang);

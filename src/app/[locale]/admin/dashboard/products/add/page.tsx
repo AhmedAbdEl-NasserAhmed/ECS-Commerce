@@ -299,6 +299,7 @@ function AddProductPage() {
 
   function onSubmit(data: AdminProductProps) {
     if (
+      formData.quantity == 0 ||
       formData.colors?.length === 0 ||
       !formData.category.en ||
       !formData["name-en"] ||

@@ -381,6 +381,7 @@
     "KEY_EMAIL_IS_ALREADY_EXIST_IN_THE_DB": "The email is Already exist in the Db",
     "KEY_ID_IS_ALREADY_EXIST_IN_THE_DB": "The id is Already exist in the Db",
     "The left Quantity from Product": "The left Quantity from Product",
-    "is": "is"
+    "is": "is",
+    "PLEASE_ACTIVE_YOUR_ACCOUNT": "Please activate your account first"
   }
 }

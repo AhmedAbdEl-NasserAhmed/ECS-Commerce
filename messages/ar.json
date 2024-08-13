@@ -379,6 +379,7 @@
     "KEY_EMAIL_IS_ALREADY_EXIST_IN_THE_DB": "البريد الإلكتروني موجود بالفعل في قاعدة البيانات",
     "KEY_ID_IS_ALREADY_EXIST_IN_THE_DB": "المعرف موجود بالفعل في قاعدة البيانات",
     "The left Quantity from Product": "الكمية المتبقة من المنتج",
-    "is": "تكون"
+    "is": "تكون",
+    "PLEASE_ACTIVE_YOUR_ACCOUNT": "بالرجاء تفعيل الحساب اولا"
   }
 }

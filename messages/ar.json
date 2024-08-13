@@ -381,6 +381,7 @@
     "The left Quantity from Product": "الكمية المتبقة من المنتج",
     "is": "تكون",
     "PLEASE_ACTIVE_YOUR_ACCOUNT": "بالرجاء تفعيل الحساب اولا",
-    "Something went wrong": "يوجد شىء خاطيء"
+    "Something went wrong": "يوجد شىء خاطيء",
+    "COLORS0QUANTITY_COLOR_QUANTITY_IS_REQUIRED": "يوجد خطا في اعداد الالوان بالرجاء التحقق من الالوان"
   }
 }

@@ -172,9 +172,13 @@ function EditProduct() {
 
   const t = useTranslations("Dashboard");
 
+  const areColorsQuantityValid = Object.keys(
+    formData?.["colors-quantity"] || []
+  ).some((key) => +formData["colors-quantity"][key] > 0);
+
   function onSubmit(data: AdminProductProps) {
     if (
-      formData.quantity == 0 ||
+      !areColorsQuantityValid ||
       formData.colors?.length === 0 ||
       !formData.category.en ||
       !formData["name-en"] ||

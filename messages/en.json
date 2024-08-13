@@ -383,6 +383,7 @@
     "KEY_ID_IS_ALREADY_EXIST_IN_THE_DB": "The id is Already exist in the Db",
     "The left Quantity from Product": "The left Quantity from Product",
     "is": "is",
-    "PLEASE_ACTIVE_YOUR_ACCOUNT": "Please activate your account first"
+    "PLEASE_ACTIVE_YOUR_ACCOUNT": "Please activate your account first",
+    "COLORS0QUANTITY_COLOR_QUANTITY_IS_REQUIRED": "Your colors quantity are not valid, please check again"
   }
 }

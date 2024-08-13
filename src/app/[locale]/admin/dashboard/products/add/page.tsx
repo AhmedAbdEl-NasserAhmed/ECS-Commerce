@@ -85,12 +85,11 @@ function AddProductPage() {
 
   const [currentSubCategories, setCurrentSubCategories] = useState([]);
   useEffect(() => {
-    if (localStorage !== undefined) {
-      setCurrentSubCategories(
-        adminProduct.subCategory
-        // JSON.parse(localStorage.getItem(`subCategories${lang}`))
-      );
-    }
+    setCurrentSubCategories(
+      adminProduct.subCategory
+      // JSON.parse(localStorage.getItem(`subCategories${lang}`))
+    );
+
     if (adminProduct.images.length > 0) {
       setValue("images", adminProduct.images);
     }
@@ -117,6 +116,7 @@ function AddProductPage() {
   const [allCategories, setAllCategories] = useState<string[]>([]);
 
   const [productSearchName, setProductSearchName] = useState(null);
+
   const [shouldUpdateCategoryValue, setShowUpdateCategoryValue] =
     useState(false);
 
@@ -166,6 +166,11 @@ function AddProductPage() {
         clearErrors("category");
       }
 
+      // setValue(
+      //   "images",
+      //   !dirtyFields.images ? productSearchName.images : formData.images
+      // );
+
       setValue(
         "price",
         !dirtyFields.price ? productSearchName.price : formData.price
@@ -192,11 +197,6 @@ function AddProductPage() {
 
   const [addProductFn, productResponse] = useAddProductMutation();
 
-  const [selectedProduct, setSelectedProduct] = useState({
-    name: "",
-    images: [],
-  });
-
   const nameEnValue =
     typeof formData?.["name-en"] === "string"
       ? formData?.["name-en"]
@@ -207,15 +207,6 @@ function AddProductPage() {
       ? formData?.["name-ar"]
       : formData?.["name-ar"]?.ar;
 
-  useEffect(() => {
-    setSelectedProduct(
-      productName?.find((product) => {
-        return product.name.en === nameEnValue;
-      })
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formData["name"], productName]);
-
   const adminProduct = useAppSelector((store) => store.adminProductSlice);
   const shouldMainCategoryReset = useRef(false);
 
@@ -225,18 +216,18 @@ function AddProductPage() {
     setIsChecked(e.target.checked);
     if (formData.subCategory?.length > 0) {
       dispatch(setSubCategory({ data: formData.subCategory }));
-      if (Object.values(formData.images).filter(Boolean)) {
-        dispatch(setImages({ data: { ...formData.images } }));
-      }
+    }
+    if (Object.values(formData.images).filter(Boolean)) {
+      dispatch(setImages({ data: { ...formData.images } }));
     }
   }
 
   useEffect(() => {
-    if (selectedProduct?.images) {
+    if (productSearchName?.images) {
       const images = {};
-      if (selectedProduct.images.length >= 1) {
-        for (let i = 0; i < selectedProduct.images.length; i++) {
-          const image = selectedProduct?.images?.[i];
+      if (productSearchName.images.length >= 1) {
+        for (let i = 0; i < productSearchName.images.length; i++) {
+          const image = productSearchName?.images?.[i];
           if (image) {
             images[`image-${i + 1}`] = {
               url: image?.url,
@@ -252,7 +243,7 @@ function AddProductPage() {
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedProduct?.images, setValue]);
+  }, [productSearchName?.images, setValue]);
 
   useEffect(() => {
     const p = +(formData.price || 0);
@@ -364,7 +355,6 @@ function AddProductPage() {
         });
       })
       .catch((err) => {
-        console.log("err.message", err);
         toast.error(tMessage(err?.data?.message));
       });
   }

@@ -2,7 +2,7 @@
 
 import {
   useGetAllProductsQuery,
-  useGetSingleProductBySlugQuery
+  useGetSingleProductBySlugQuery,
 } from "@/lib/features/api/productsApi";
 import Spinner from "@/ui/Spinner/Spinner";
 import { Box, Button } from "@mui/material";
@@ -14,7 +14,7 @@ import {
   useEffect,
   useReducer,
   useRef,
-  useState
+  useState,
 } from "react";
 import { useGetCategoryByIdQuery } from "@/lib/features/api/categoriesApi";
 import { HiHeart, HiOutlineHeart } from "react-icons/hi2";
@@ -24,7 +24,7 @@ import toast from "react-hot-toast";
 import {
   initialState,
   ProductDetailsAction,
-  reducerFn
+  reducerFn,
 } from "./productDetailsReducer";
 import SubCategoriesList from "@/app/[locale]/admin/dashboard/products/details/[slug]/SubCategoriesList";
 import BaseTabs from "@/ui/Tabs/Tabs";
@@ -38,7 +38,7 @@ import ReviewsSorting from "@/components/UserReviews/ReviewsSorting";
 import useAddItemToCookie from "@/hooks/useAddItemToCart";
 import {
   addItemThunk,
-  removeItemThunk
+  removeItemThunk,
 } from "@/lib/features/cookieSlice/cookieSlice";
 import useImagesLoadingSpinner from "@/hooks/useImagesLoadingSpinner";
 import ReactStars from "@/ui/ReactStars/ReactStars";
@@ -82,7 +82,7 @@ function ProductDetails() {
       {
         limit: 4,
         categoryId: _singleProduct?.category,
-        subCategory: _singleProduct?.subCategory?.join(",")
+        subCategory: _singleProduct?.subCategory?.join(","),
       },
       { skip: !_singleProduct }
     );
@@ -107,7 +107,7 @@ function ProductDetails() {
       {
         id: productDetailsState?.selectedProduct?.productId,
         sort,
-        page
+        page,
       },
       { skip: !productDetailsState?.selectedProduct?.productId }
     );
@@ -140,19 +140,18 @@ function ProductDetails() {
 
   const { data: mainCategory, isLoading: mainCategoryLoading } =
     useGetCategoryByIdQuery(productDetailsState?.selectedProduct?.category, {
-      skip: !productDetailsState?.selectedProduct?.category
+      skip: !productDetailsState?.selectedProduct?.category,
     });
 
   useEffect(() => {
     action(ProductDetailsAction.SET_SELECTED_PRODUCT, {
-      value: data?.data?.products[productDetailsState?.currentProductIndex]
+      value: data?.data?.products[productDetailsState?.currentProductIndex],
     });
-    // setSelectedProduct(data?.data?.products[productDetailsState.currentProductIndex]);
   }, [data?.data?.products, productDetailsState?.currentProductIndex]);
 
   useEffect(() => {
     action(ProductDetailsAction.SET_SELECTED_COLOR, {
-      value: productDetailsState?.selectedProduct?.colors?.[0]
+      value: productDetailsState?.selectedProduct?.colors?.[0],
     });
   }, [productDetailsState?.selectedProduct?.colors]);
 
@@ -168,7 +167,7 @@ function ProductDetails() {
   }, [
     productDetailsState?.selectedColor,
     cart,
-    productDetailsState?.selectedProduct
+    productDetailsState?.selectedProduct,
   ]);
 
   useEffect(() => {
@@ -203,9 +202,9 @@ function ProductDetails() {
           maxQuantity: productDetailsState?.selectedColor.quantity,
           cart: user?.cart?.["_id"],
           colorId: productDetailsState?.selectedColor["_id"],
-          slug: productDetailsState?.selectedProduct.slug
+          slug: productDetailsState?.selectedProduct.slug,
         },
-        message: userTranslation("This Item is Added to your  Cart")
+        message: userTranslation("This Item is Added to your  Cart"),
       });
 
       dispatchRedux(
@@ -222,7 +221,7 @@ function ProductDetails() {
 
   useEffect(() => {
     action(ProductDetailsAction.SET_EXISTED_WISHlIST_ITEM, {
-      value: wishList.map((wishListItem) => wishListItem.colorId)
+      value: wishList.map((wishListItem) => wishListItem.colorId),
     });
   }, [wishList]);
 
@@ -263,9 +262,9 @@ function ProductDetails() {
             price: productDetailsState?.selectedProduct.saleProduct,
             maxQuantity: productDetailsState?.selectedColor.quantity,
             colorId: productDetailsState?.selectedColor["_id"],
-            slug: productDetailsState?.selectedProduct.slug
+            slug: productDetailsState?.selectedProduct.slug,
           },
-          message: userTranslation("This Item is Added to your Wish List")
+          message: userTranslation("This Item is Added to your Wish List"),
         });
       } else {
         toast.error(
@@ -277,7 +276,7 @@ function ProductDetails() {
 
   const handleChange = (selectedIndex) => {
     action(ProductDetailsAction.SET_CURRENT_PRODUCT_INDEX, {
-      value: selectedIndex
+      value: selectedIndex,
     });
 
     action(ProductDetailsAction.SET_SELECTED_COLOR, {
@@ -285,8 +284,8 @@ function ProductDetails() {
         color: "",
         label: "",
         value: "",
-        quantity: 0
-      }
+        quantity: 0,
+      },
     });
 
     action(ProductDetailsAction.SET_PRODUCT_QUANTITY, { value: 1 });
@@ -301,7 +300,7 @@ function ProductDetails() {
       return;
 
     action(ProductDetailsAction.SET_PRODUCT_QUANTITY, {
-      value: productDetailsState?.productQuantity + 1
+      value: productDetailsState?.productQuantity + 1,
     });
   }
 
@@ -312,7 +311,7 @@ function ProductDetails() {
     )
       return;
     action(ProductDetailsAction.SET_PRODUCT_QUANTITY, {
-      value: productDetailsState?.productQuantity - 1
+      value: productDetailsState?.productQuantity - 1,
     });
   }
 
@@ -327,7 +326,7 @@ function ProductDetails() {
       value:
         reviews?.data?.reduce((acc, review) => {
           return acc + review.ratings;
-        }, 0) / reviews?.data?.length
+        }, 0) / reviews?.data?.length,
     });
   }, [reviews?.data]);
 
@@ -410,7 +409,7 @@ function ProductDetails() {
             className="flex flex-col md:flex-row gap-5 h-[70rem] w-full"
             sx={{
               position: windowWidth > 1050 ? "sticky" : "",
-              top: "1rem"
+              top: "1rem",
             }}
           >
             <Box className="flex md:flex-col flex-row md:order-none order-1 gap-10">
@@ -419,7 +418,7 @@ function ProductDetails() {
                   <Box
                     onClick={() =>
                       action(ProductDetailsAction.SET_IMAGE_INDEX, {
-                        value: index
+                        value: index,
                       })
                     }
                     className={`${
@@ -527,7 +526,7 @@ function ProductDetails() {
               <span
                 className="bg-[#f1c40f] uppercase py-[.3rem] px-[.8rem] rounded transition-all duration-500"
                 style={{
-                  marginInlineEnd: "auto"
+                  marginInlineEnd: "auto",
                 }}
               >
                 {userTranslation("Sale")}
@@ -588,7 +587,7 @@ function ProductDetails() {
                         background:
                           selectedSize === product.size ? "#161616" : "",
                         color: selectedSize === product.size ? "white" : "",
-                        outline: "1px solid #161616"
+                        outline: "1px solid #161616",
                       }}
                       onClick={() => {
                         if (selectedSize === product.size) return;
@@ -612,10 +611,10 @@ function ProductDetails() {
                     <div
                       onClick={() => {
                         action(ProductDetailsAction.SET_SELECTED_COLOR, {
-                          value: color
+                          value: color,
                         });
                         action(ProductDetailsAction.SET_PRODUCT_QUANTITY, {
-                          value: 1
+                          value: 1,
                         });
                       }}
                       key={color.value}
@@ -672,7 +671,7 @@ function ProductDetails() {
                   onClick={() => {
                     handleAddCartItem(productDetailsState?.selectedProduct);
                     action(ProductDetailsAction?.SET_PRODUCT_QUANTITY, {
-                      value: 1
+                      value: 1,
                     });
                   }}
                   className="bg-[#ed0534] hover:bg-black transition duration-500 text-white p-4 text-2xl rounded-lg w-full"
@@ -719,8 +718,8 @@ function ProductDetails() {
                             }
                             reviews={reviews?.data}
                           />
-                        )
-                      }
+                        ),
+                      },
                     ]}
                   />
                   {reviews?.data?.length > 0 && (
@@ -742,8 +741,8 @@ function ProductDetails() {
               fontSize: "1.2rem",
               backgroundColor: "#ed0534",
               "&:hover": {
-                backgroundColor: "#161616"
-              }
+                backgroundColor: "#161616",
+              },
             }}
             type="button"
             variant="contained"

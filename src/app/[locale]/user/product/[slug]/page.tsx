@@ -342,6 +342,8 @@ function ProductDetails() {
     // eslint-disable-next-line
   }, [typeof window]);
 
+  if (isLoading) return <Spinner />;
+
   if (mainCategoryLoading) return <Spinner />;
 
   if (!_singleProduct && !data?.data.images) return null;

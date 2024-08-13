@@ -369,6 +369,8 @@
     "CATEGORY_ID_CANNOT_BE_EMPTY": "Category ID cannot be empty",
     "CATEGORY_ID_IS_REQUIRED": "Category ID is required",
     "CATEGORY_ID_MUST_BE_A_VALID_MONGODB_OBJECTID": "Category ID must be a valid MongoDB ObjectID",
-    "TOKEN_MUST_BE_A_VALID_HEXADECIMAL_STRING": "Token must be a valid hexadecimal string"
+    "TOKEN_MUST_BE_A_VALID_HEXADECIMAL_STRING": "Token must be a valid hexadecimal string",
+    "The left Quantity from Product": "The left Quantity from Product",
+    "is": "is"
   }
 }

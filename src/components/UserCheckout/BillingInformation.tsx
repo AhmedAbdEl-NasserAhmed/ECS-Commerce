@@ -23,7 +23,7 @@ function BillingInformation() {
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors }
   } = useForm({ mode: "onChange" });
 
   const [paymentFn, paymentResponse] = usePaymentCheckoutMutation();
@@ -44,7 +44,7 @@ function BillingInformation() {
   const countries = getNames().map((country) => ({
     label: country,
     value: country,
-    color: "#666666",
+    color: "#666666"
   }));
 
   function onSubmit(data) {
@@ -66,16 +66,15 @@ function BillingInformation() {
         building: data.building,
         apartment: data.apartment,
         street: data.street,
-        floor: data.floor,
+        floor: data.floor
       },
       cartItems: cart,
-      locale,
+      locale
     })
       .unwrap()
       .then((res) => {
         dispatch(makePayment(false));
         StorageService.set("userLang", locale);
-        // router.replace(`/${locale}`);
         return res;
       })
       .then((res) => {
@@ -83,7 +82,11 @@ function BillingInformation() {
       })
       .catch((err) => {
         dispatch(makePayment(false));
-        toast.error(tMessage(err.data.message));
+        toast.error(
+          ` ${tMessage("The left Quantity from Product")} ${
+            err.data.message[locale as string]
+          } ${tMessage("is")} ${err.data.message.quantity} `
+        );
       });
   }
 
@@ -110,8 +113,8 @@ function BillingInformation() {
                 value: 4,
                 message: userTranslation(
                   "The name should be more than 4 characters "
-                ),
-              },
+                )
+              }
             }}
             render={({ field }) => (
               <CustomizedTextField
@@ -140,8 +143,8 @@ function BillingInformation() {
                 value: 4,
                 message: userTranslation(
                   "The name should be more than 4 characters "
-                ),
-              },
+                )
+              }
             }}
             render={({ field }) => (
               <CustomizedTextField
@@ -169,8 +172,8 @@ function BillingInformation() {
             required: userTranslation("Please Enter A Valid Email"),
             pattern: {
               value: emailRegex,
-              message: userTranslation("Please Enter Valid Email Format"),
-            },
+              message: userTranslation("Please Enter Valid Email Format")
+            }
           }}
           render={({ field }) => (
             <CustomizedTextField
@@ -227,12 +230,12 @@ function BillingInformation() {
                 value={field.value}
                 onChange={field.onChange}
                 inputStyle={{
-                  width: "100%",
+                  width: "100%"
                 }}
                 inputProps={{
                   name: "phoneNumber",
                   required: true,
-                  autoFocus: true,
+                  autoFocus: true
                 }}
               />
             )}
@@ -366,8 +369,8 @@ function BillingInformation() {
           fontSize: "1.2rem",
           backgroundColor: "#ed0534",
           "&:hover": {
-            backgroundColor: "#141414",
-          },
+            backgroundColor: "#141414"
+          }
         }}
         type="submit"
         variant="contained"

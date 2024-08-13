@@ -70,19 +70,10 @@ function UserMenu({ setIsProfileOpen }) {
           className="flex items-center justify-center gap-4 "
           disabled={setCartItems.isLoading}
           onClick={() => {
-            if (user && user?.role === UserType.USER) {
-              cartItems({
-                user: user["_id"],
-                cartItems: cart,
-                wishListItems: wishList,
-              });
-            }
             logout();
             setIsProfileOpen(false);
             router.replace(`/${locale}`);
             toast.success(userTranslation("See you soon"));
-            dispatch(clearCookiesThunk("wishListItems"));
-            dispatch(clearCookiesThunk("cartItems"));
           }}
         >
           <span className="text-3xl">

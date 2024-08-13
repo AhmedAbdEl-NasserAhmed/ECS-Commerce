@@ -367,6 +367,8 @@
     "CATEGORY_ID_CANNOT_BE_EMPTY": "لا يمكن أن يكون معرف القسم فارغًا",
     "CATEGORY_ID_IS_REQUIRED": "معرف القسم مطلوب",
     "CATEGORY_ID_MUST_BE_A_VALID_MONGODB_OBJECTID": "يجب أن يكون معرف القسم معرفًا صالحًا لـ MongoDB",
-    "TOKEN_MUST_BE_A_VALID_HEXADECIMAL_STRING": "يجب أن يكون الرمز نصًا سداسي عشريًا صالحًا"
+    "TOKEN_MUST_BE_A_VALID_HEXADECIMAL_STRING": "يجب أن يكون الرمز نصًا سداسي عشريًا صالحًا",
+    "The left Quantity from Product": "الكمية المتبقة من المنتج",
+    "is": "تكون"
   }
 }

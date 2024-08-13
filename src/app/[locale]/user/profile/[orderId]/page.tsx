@@ -79,6 +79,15 @@ function OrderDetails() {
           stages={requestCheckupTimelineStages(userTranslation)}
         />
       </div>
+      <h2
+        className="mt-[5rem] mb-[3rem] text-[2rem] pb-[2rem]"
+        style={{
+          borderBottom: " 1px solid #F5F5F5",
+        }}
+      >
+        {userTranslation("Total Price")}{" "}
+        {formatCurrency(totalOrderPrice, locale as string)}
+      </h2>
 
       <BaseTable
         data={selectedOrderItems}

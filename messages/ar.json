@@ -377,6 +377,8 @@
     "KEY_NAME_IS_ALREADY_EXIST_IN_THE_DB": "الاسم موجود بالفعل في قاعدة البيانات",
     "KEY_SIZEVALUE_IS_ALREADY_EXIST_IN_THE_DB": "قيمة الحجم موجودة بالفعل في قاعدة البيانات",
     "KEY_EMAIL_IS_ALREADY_EXIST_IN_THE_DB": "البريد الإلكتروني موجود بالفعل في قاعدة البيانات",
-    "KEY_ID_IS_ALREADY_EXIST_IN_THE_DB": "المعرف موجود بالفعل في قاعدة البيانات"
+    "KEY_ID_IS_ALREADY_EXIST_IN_THE_DB": "المعرف موجود بالفعل في قاعدة البيانات",
+    "The left Quantity from Product": "الكمية المتبقة من المنتج",
+    "is": "تكون"
   }
 }

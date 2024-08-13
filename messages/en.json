@@ -379,6 +379,8 @@
     "KEY_NAME_IS_ALREADY_EXIST_IN_THE_DB": "The name is Already exist in the Db",
     "KEY_SIZEVALUE_IS_ALREADY_EXIST_IN_THE_DB": "The size is Already exist in the Db",
     "KEY_EMAIL_IS_ALREADY_EXIST_IN_THE_DB": "The email is Already exist in the Db",
-    "KEY_ID_IS_ALREADY_EXIST_IN_THE_DB": "The id is Already exist in the Db"
+    "KEY_ID_IS_ALREADY_EXIST_IN_THE_DB": "The id is Already exist in the Db",
+    "The left Quantity from Product": "The left Quantity from Product",
+    "is": "is"
   }
 }

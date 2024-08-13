@@ -24,10 +24,9 @@ const useLogout = () => {
         cartItems({
           user: user["_id"],
           cartItems: cart,
-          wishListItems: wishList,
+          wishListItems: wishList
         });
       }
-      // cartItems({ user: user["_id"], cartItems: cart });
       dispatch(clearCookiesThunk("cartItems"));
       dispatch(clearCookiesThunk("wishListItems"));
     }

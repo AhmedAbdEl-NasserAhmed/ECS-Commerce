@@ -382,6 +382,7 @@
     "is": "تكون",
     "PLEASE_ACTIVE_YOUR_ACCOUNT": "بالرجاء تفعيل الحساب اولا",
     "Something went wrong": "يوجد شىء خاطيء",
-    "COLORS0QUANTITY_COLOR_QUANTITY_IS_REQUIRED": "يوجد خطا في اعداد الالوان بالرجاء التحقق من الالوان"
+    "COLORS0QUANTITY_COLOR_QUANTITY_IS_REQUIRED": "يوجد خطا في اعداد الالوان بالرجاء التحقق من الالوان",
+    "order is not created alert": "يرجى ملاحظة: إذا أكملت عملية الشراء ولم يتم إنشاء طلبك، فيرجى"
   }
 }

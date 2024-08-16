@@ -384,6 +384,7 @@
     "The left Quantity from Product": "The left Quantity from Product",
     "is": "is",
     "PLEASE_ACTIVE_YOUR_ACCOUNT": "Please activate your account first",
-    "COLORS0QUANTITY_COLOR_QUANTITY_IS_REQUIRED": "Your colors quantity are not valid, please check again"
+    "COLORS0QUANTITY_COLOR_QUANTITY_IS_REQUIRED": "Your colors quantity are not valid, please check again",
+    "order is not created alert": "Please NOTE: if you complete your purchase and your order is not created so please"
   }
 }

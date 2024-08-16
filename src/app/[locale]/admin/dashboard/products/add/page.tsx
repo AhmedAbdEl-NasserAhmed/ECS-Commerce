@@ -2,6 +2,7 @@
 
 import useDebounceHook from "@/hooks/useDebounceHook";
 import {
+  setColors,
   setImages,
   setSubCategory,
 } from "@/lib/features/adminProductSlice/adminProductSlice";
@@ -166,11 +167,6 @@ function AddProductPage() {
         clearErrors("category");
       }
 
-      // setValue(
-      //   "images",
-      //   !dirtyFields.images ? productSearchName.images : formData.images
-      // );
-
       setValue(
         "price",
         !dirtyFields.price ? productSearchName.price : formData.price
@@ -219,6 +215,9 @@ function AddProductPage() {
     }
     if (Object.values(formData.images).filter(Boolean)) {
       dispatch(setImages({ data: { ...formData.images } }));
+    }
+    if (formData.colors && formData.colors.length > 0) {
+      dispatch(setColors({ data: [...formData.colors] }));
     }
   }
 
@@ -617,7 +616,9 @@ function AddProductPage() {
                     render={({ field }) => (
                       <SmartSearchInput
                         onRemove={() => {
-                          onRemoveMainCategory();
+                          if (productSearchName?._id) {
+                            onRemoveMainCategory();
+                          }
                           onRemoveProductName();
                         }}
                         lang={lang}
@@ -654,7 +655,7 @@ function AddProductPage() {
                     rules={{ required: "This field is required" }}
                     render={({ field }) => (
                       <BaseColorPicker
-                        existedColors={[]}
+                        existedColors={adminProduct.colors}
                         onChange={field.onChange}
                         disabled={productResponse.isLoading}
                         isMulti={true}

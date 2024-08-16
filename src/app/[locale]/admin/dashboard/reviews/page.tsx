@@ -12,12 +12,15 @@ import { reviewsTableHeaders } from "@/constants/reviewsTableHeaders";
 import { useLazyGetAllAdminReviewsQuery } from "@/lib/features/api/reviewsApi";
 import useBaseTablePagination from "@/hooks/useBaseTablePagination/useBaseTablePagination";
 import { useEffect } from "react";
+import { useGetSingleProductByIDQuery } from "@/lib/features/api/productsApi";
 
 function Reviews() {
   const { locale } = useParams();
 
   const [getPaginatedReviews, getPaginatedReviewsResponse] =
     useLazyGetAllAdminReviewsQuery();
+
+  // const { data: product, isFetching } = useGetSingleProductByIDQuery(1);
 
   const { paginationControllers } = useBaseTablePagination(
     getPaginatedReviewsResponse?.data?.numPages

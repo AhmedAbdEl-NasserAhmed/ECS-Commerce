@@ -8,7 +8,6 @@ import { useEffect, useId, useState } from "react";
 import { Box } from "@mui/material";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
 import ColorPickerInput from "../ColorPicketInput/ColorPickerInput";
-import { colorPickerDefaultColors } from "@/constants/colorOptions";
 
 function BaseColorPicker({
   field,
@@ -100,9 +99,7 @@ function BaseColorPicker({
 
   const [selectedColors, setSelectedColors] = useState([...existedColors]);
 
-  const [alreadySelectedColors, setAlreadySelectedColors] = useState([
-    ...colorPickerDefaultColors,
-  ]);
+  const [alreadySelectedColors, setAlreadySelectedColors] = useState([]);
 
   useEffect(() => {
     if (field.value.length === 0) {
@@ -119,12 +116,7 @@ function BaseColorPicker({
   }, [selectedColors]);
 
   const addToList = (color) => {
-    const alreadyDefaultColor = colorPickerDefaultColors.some(
-      (defaultColor) => defaultColor.value === color.value
-    );
-
     setAlreadySelectedColors((state) => {
-      if (alreadyDefaultColor) return state;
       return state.concat(color);
     });
   };
@@ -142,7 +134,6 @@ function BaseColorPicker({
         break;
       case "clear":
         setSelectedColors([]);
-        setAlreadySelectedColors(colorPickerDefaultColors);
         break;
     }
   };

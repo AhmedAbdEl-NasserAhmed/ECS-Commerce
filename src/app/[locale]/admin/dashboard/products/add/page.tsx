@@ -2,6 +2,7 @@
 
 import useDebounceHook from "@/hooks/useDebounceHook";
 import {
+  resetAdminProductState,
   setColors,
   setImages,
   setSubCategory,
@@ -23,8 +24,6 @@ import {
 } from "@/lib/helpers";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { sizes } from "@/lib/StaticLookups";
-import { StorageService } from "@/services/StorageService";
-import { Lang } from "@/types/enums";
 import { AdminProductProps } from "@/types/types";
 import AddProductImage from "@/ui/AddProductImage/AddProductImage";
 import BaseColorPicker from "@/ui/BaseColorPicker/BaseColorPicker";
@@ -43,11 +42,10 @@ import {
   Typography,
 } from "@mui/material";
 import { useTranslations } from "next-intl";
-import { createKey } from "next/dist/shared/lib/router/router";
 import Link from "next/link";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import toast from "react-hot-toast";
 import { HiChevronRight } from "react-icons/hi2";
@@ -85,11 +83,9 @@ function AddProductPage() {
   const lang = isChecked ? "ar" : "en";
 
   const [currentSubCategories, setCurrentSubCategories] = useState([]);
+
   useEffect(() => {
-    setCurrentSubCategories(
-      adminProduct.subCategory
-      // JSON.parse(localStorage.getItem(`subCategories${lang}`))
-    );
+    setCurrentSubCategories(adminProduct.subCategory);
 
     if (adminProduct.images.length > 0) {
       setValue("images", adminProduct.images);
@@ -121,27 +117,24 @@ function AddProductPage() {
   const [shouldUpdateCategoryValue, setShowUpdateCategoryValue] =
     useState(false);
 
-  const { data: productsBySlug, isLoading } = useGetSingleProductBySlugQuery(
+  const { data: productsBySlug } = useGetSingleProductBySlugQuery(
     productSearchName?.slug,
     { skip: !productSearchName?._id }
   );
 
-  const {
-    data: subCategory,
-    isFetching: isFetchingSubCategories,
-    refetch,
-  } = useGetSubCategoryQuery(
-    {
-      letter: subCategorydebounceValue,
-      categoryId: smartSeachvalue["_id"] || productSearchName?.category,
-      lang: locale,
-    },
-    {
-      skip:
-        !subCategorydebounceValue ||
-        (!smartSeachvalue["_id"] && !productSearchName?.category),
-    }
-  );
+  const { data: subCategory, isFetching: isFetchingSubCategories } =
+    useGetSubCategoryQuery(
+      {
+        letter: subCategorydebounceValue,
+        categoryId: smartSeachvalue["_id"] || productSearchName?.category,
+        lang: locale,
+      },
+      {
+        skip:
+          !subCategorydebounceValue ||
+          (!smartSeachvalue["_id"] && !productSearchName?.category),
+      }
+    );
 
   const productNameDebounceValue = useDebounceHook(productSearchName?.name);
 
@@ -204,6 +197,7 @@ function AddProductPage() {
       : formData?.["name-ar"]?.ar;
 
   const adminProduct = useAppSelector((store) => store.adminProductSlice);
+
   const shouldMainCategoryReset = useRef(false);
 
   const dispatch = useAppDispatch();
@@ -220,6 +214,12 @@ function AddProductPage() {
       dispatch(setColors({ data: [...formData.colors] }));
     }
   }
+
+  const pathname = usePathname();
+
+  useEffect(() => {
+    dispatch(resetAdminProductState());
+  }, [pathname]);
 
   useEffect(() => {
     if (productSearchName?.images) {

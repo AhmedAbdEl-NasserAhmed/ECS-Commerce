@@ -45,6 +45,7 @@ function AddSubCategoriesPage() {
   const { locale } = useParams();
 
   const router = useRouter();
+  const [allCategories, setAllCategories] = useState<string[]>([]);
 
   const [smartSeachvalue, setSmartSeachValue] = useState<{
     id: string;
@@ -62,6 +63,14 @@ function AddSubCategoriesPage() {
 
   const { data: AllCategories } = useGetAllCategoriesQuery("categories");
 
+  useEffect(() => {
+    setAllCategories(
+      data?.data.map((category) => {
+        return category.name?.[locale as string];
+      })
+    );
+  }, [data?.data, isChecked]);
+
   const params = useParams();
 
   const [addSubCategoryFn, subCategoryResponse] = useAddSubCategoryMutation();
@@ -69,7 +78,6 @@ function AddSubCategoriesPage() {
   function showInputsHandler(e) {
     setIsChecked(e.target.checked);
   }
-
 
   function handleAddSubCategorySubmit() {
     if (
@@ -168,12 +176,6 @@ function AddSubCategoriesPage() {
           <FormControlLabel
             control={
               <Switch
-                // disabled={
-                //   errors.category?.[lang] ||
-                //   formData.category?.en === "" ||
-                //   formData.name?.en === "" ||
-                //   formData.description?.en === ""
-                // }
                 checked={isChecked}
                 onChange={showInputsHandler}
                 sx={{
@@ -208,10 +210,10 @@ function AddSubCategoriesPage() {
               defaultValue={{ en: "", ar: "" }}
               rules={{
                 required: "This field is required",
-                // validate(value) {
-                //   if (!allCategories?.includes(value))
-                //     return "You Have to choose from available categories";
-                // },
+                validate(value) {
+                  if (!allCategories?.includes(value[locale as string]))
+                    return t("You Have to choose from available categories");
+                },
               }}
               render={({ field }) => (
                 <SmartSearchInput
@@ -232,37 +234,7 @@ function AddSubCategoriesPage() {
               )}
             />
           )}
-          {/* {isChecked && (
-            <Controller
-              name={"category.ar"}
-              control={control}
-              defaultValue={""}
-              rules={{
-                required: "هذا الحقل مطلوب",
-                // validate(value) {
-                //   if (!allCategories?.includes(value))
-                //     return "You Have to choose from available categories";
-                // },
-              }}
-              render={({ field }) => (
-                <SmartSearchInput
-                  lang={lang}
-                  errors={errors?.["category"]?.["ar"]}
-                  isFetching={isFetching}
-                  notAvailableMessage={tMessage("No Categories Available")}
-                  disabled={subCategoryResponse.isLoading || isFetching}
-                  shouldReset={subCategoryResponse.isSuccess}
-                  getSmartSearchValue={setSmartSeachValue}
-                  textLabel={"القسم الرئيسي"}
-                  placeholder={"بحث عن القسم"}
-                  defaultValue={formData.category.ar}
-                  data={data?.data}
-                  name={field.name}
-                  onChange={field.onChange}
-                />
-              )}
-            />
-          )} */}
+
           {!isChecked && (
             <Controller
               name={"name.en"}

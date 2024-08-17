@@ -23,10 +23,18 @@ const adminProductSlice = createSlice({
     setColors(state, action) {
       state.colors = action.payload.data;
     },
+    resetAdminProductState(state) {
+      state = initialState;
+    },
   },
 });
 
-export const { setSubCategory, setImages, setCategory, setColors } =
-  adminProductSlice.actions;
+export const {
+  setSubCategory,
+  setImages,
+  setCategory,
+  setColors,
+  resetAdminProductState,
+} = adminProductSlice.actions;
 
 export default adminProductSlice.reducer;

@@ -219,6 +219,8 @@ function AddProductPage() {
 
   useEffect(() => {
     dispatch(resetAdminProductState());
+    dispatch(setColors({ data: [] }));
+    setValue("colors", []);
   }, [pathname]);
 
   useEffect(() => {

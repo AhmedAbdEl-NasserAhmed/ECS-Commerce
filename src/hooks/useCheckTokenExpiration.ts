@@ -34,11 +34,15 @@ const useCheckTokenExpiration = () => {
 
   useEffect(() => {
     if (userToken && expirationDate) {
+      console.log("1. IF expiration checker");
       var timer = setInterval(() => {
         if (new Date().getTime() >= new Date(expirationDate).getTime()) {
           logout();
         }
       }, 10000);
+    } else {
+      console.log("2. ELSE logout()");
+      logout();
     }
     return () => clearInterval(timer);
   }, [pathname, isAuth, userToken, expirationDate]);

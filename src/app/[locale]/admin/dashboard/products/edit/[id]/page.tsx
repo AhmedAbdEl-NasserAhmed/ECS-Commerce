@@ -377,36 +377,6 @@ function EditProduct() {
                   />
                 )}
               />
-              {/* <Controller
-                name={"subCategory"}
-                control={control}
-                defaultValue={[]}
-                render={({ field }) => (
-                  <SmartSearchMultipleInput
-                    lang={Lang.ENGLISH}
-                    isFetching={isFetchingSubCategories}
-                    existedItems={productDetails?.data.subCategory}
-                    shouldReset={
-                      shouldResetMultipleSearchInput ||
-                      updateProductResponse.isSuccess ||
-                      (formData.category?.[Lang.ENGLISH] === "" &&
-                        smartSeachvalue.name?.[Lang.ENGLISH] === "")
-                    }
-                    disabled={
-                      updateProductResponse.isLoading ||
-                      smartSeachvalue.name?.[Lang.ENGLISH] === "" ||
-                      isFetchingSubCategories
-                    }
-                    getSmartSearchValue={setSmartSeachSubCategoryValue}
-                    textLabel={t("Collection")}
-                    data={subCategory?.data}
-                    placeholder={t("Collection placeholder")}
-                    name={field.name}
-                    onChange={field.onChange}
-                  />
-                )}
-              /> */}
-
               <Box className="col-span-full">
                 <Controller
                   name={"name-en"}
@@ -493,7 +463,6 @@ function EditProduct() {
                             formerHelperStyles={{
                               style: { fontSize: "1rem" },
                             }}
-                            // errors={errors}
                             customError={
                               errors?.["colors-quantity"]?.[color.label]
                             }
@@ -532,32 +501,19 @@ function EditProduct() {
                 )}
               />
 
-              <Controller
+              <CustomizedTextField
                 name={"quantity"}
-                control={control}
-                defaultValue={currentProduct?.quantity}
-                rules={{
-                  required: "This field is required",
-                  min: {
-                    value: 1,
-                    message: "Quantity should be more than 1",
-                  },
-                }}
-                render={({ field }) => (
-                  <CustomizedTextField
-                    inputProps={{ readOnly: true, disabled: true }}
-                    disabled={updateProductResponse.isLoading}
-                    textLabelClass={"font-semibold text-xl"}
-                    placeholder={t("Product Quantity")}
-                    textlabel={t("Product Quantity")}
-                    value={getQuantityValue()}
-                    formerHelperStyles={{ style: { fontSize: "1rem" } }}
-                    errors={errors}
-                    type={"number"}
-                    variant={"outlined"}
-                    size={"small"}
-                  />
-                )}
+                disabled={true}
+                inputProps={{ readOnly: true, disabled: true }}
+                textLabelClass={"font-semibold text-xl"}
+                placeholder={t("Product Quantity")}
+                textlabel={t("Product Quantity")}
+                value={getQuantityValue()}
+                formerHelperStyles={{ style: { fontSize: "1rem" } }}
+                errors={errors}
+                type={"number"}
+                variant={"outlined"}
+                size={"small"}
               />
 
               <Controller

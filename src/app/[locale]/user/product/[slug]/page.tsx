@@ -8,14 +8,7 @@ import Spinner from "@/ui/Spinner/Spinner";
 import { Box, Button } from "@mui/material";
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import {
-  ChangeEvent,
-  CSSProperties,
-  useEffect,
-  useReducer,
-  useRef,
-  useState,
-} from "react";
+import { ChangeEvent, useEffect, useReducer, useState } from "react";
 import { useGetCategoryByIdQuery } from "@/lib/features/api/categoriesApi";
 import { HiHeart, HiOutlineHeart } from "react-icons/hi2";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
@@ -46,7 +39,6 @@ import ReactStars from "@/ui/ReactStars/ReactStars";
 import { FaCartPlus } from "react-icons/fa6";
 import TitledProductList from "@/components/TitledProductList/TitledProductList";
 import useWindowResize from "@/hooks/useWindowResize";
-import Head from "next/head";
 import SharableSocialLinks from "@/components/SharableSocialLinks/SharableSocialLinks";
 import { Helmet } from "react-helmet";
 import { useTranslations } from "next-intl";
@@ -150,8 +142,10 @@ function ProductDetails() {
   }, [data?.data?.products, productDetailsState?.currentProductIndex]);
 
   useEffect(() => {
+    const firstAvailableColor =
+      productDetailsState?.selectedProduct?.colors?.find((c) => c.quantity > 0);
     action(ProductDetailsAction.SET_SELECTED_COLOR, {
-      value: productDetailsState?.selectedProduct?.colors?.[0],
+      value: firstAvailableColor,
     });
   }, [productDetailsState?.selectedProduct?.colors]);
 
@@ -171,7 +165,10 @@ function ProductDetails() {
   ]);
 
   useEffect(() => {
-    setSelectedSize(data?.data?.products?.[0]?.size);
+    const firstAvailableSize = data?.data?.products?.find(
+      (p) => p.quantity > 0
+    );
+    setSelectedSize(firstAvailableSize?.size);
   }, [data?.data?.products]);
 
   function handleAddCartItem(selectedProduct) {
@@ -579,23 +576,36 @@ function ProductDetails() {
               </h2>
               <div className="flex items-center gap-5">
                 {data?.data?.products?.map((product, idx) => {
+                  const notAvailable = product.quantity === 0;
                   return (
                     <div
                       key={product.size}
-                      className="cursor-pointer w-[4rem] py-5 bg-white text-center rounded-lg text-[#161616] uppercase font-semibold "
+                      className="relative cursor-pointer w-[4rem] py-5 bg-white text-center rounded-lg text-[#161616] uppercase font-semibold "
                       style={{
                         background:
                           selectedSize === product.size ? "#161616" : "",
                         color: selectedSize === product.size ? "white" : "",
                         outline: "1px solid #161616",
+                        opacity: notAvailable ? 0.3 : 1,
+                        cursor: notAvailable ? "not-allowed" : "",
                       }}
                       onClick={() => {
-                        if (selectedSize === product.size) return;
+                        if (selectedSize === product.size || notAvailable)
+                          return;
                         handleChange(idx);
                         setSelectedSize(product.size);
                       }}
                     >
                       {product.size}
+                      {notAvailable && (
+                        <span
+                          className="absolute w-full h-1 top-1/2 left-1/2"
+                          style={{
+                            background: "#f99797",
+                            transform: "translate(-50%, -50%) rotate(-45deg)",
+                          }}
+                        ></span>
+                      )}
                     </div>
                   );
                 })}
@@ -607,9 +617,11 @@ function ProductDetails() {
               </h2>
               <div className="flex gap-4">
                 {productDetailsState?.selectedProduct?.colors?.map((color) => {
+                  const notAvailable = color.quantity === 0;
                   return (
                     <div
                       onClick={() => {
+                        if (notAvailable) return;
                         action(ProductDetailsAction.SET_SELECTED_COLOR, {
                           value: color,
                         });
@@ -618,15 +630,28 @@ function ProductDetails() {
                         });
                       }}
                       key={color.value}
-                      className={`cursor-pointer w-8 h-8  border-2 border-[#F5F5F5] rounded-full ${
+                      className={`relative cursor-pointer w-8 h-8  border-2 border-[#F5F5F5] rounded-full ${
                         productDetailsState?.selectedColor?.value ===
                         color.value
                           ? "ring-offset-2 ring-2 ring-slate-400"
                           : ""
                       } `}
-                      style={{ backgroundColor: color.value }}
+                      style={{
+                        backgroundColor: color.value,
+                        opacity: notAvailable ? 0.5 : 1,
+                        cursor: notAvailable ? "not-allowed" : "",
+                      }}
                     >
                       &nbsp;
+                      {notAvailable && (
+                        <span
+                          className="absolute w-full h-1 top-1/2 left-1/2"
+                          style={{
+                            background: "#f99797",
+                            transform: "translate(-50%, -50%) rotate(-45deg)",
+                          }}
+                        ></span>
+                      )}
                     </div>
                   );
                 })}

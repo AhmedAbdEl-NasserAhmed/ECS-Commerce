@@ -35,6 +35,8 @@ const ProductCard = ({ product }) => {
     );
   }, []);
 
+  const notAvailable = product?.quantity === 0;
+
   return (
     <div
       className=""
@@ -105,16 +107,20 @@ const ProductCard = ({ product }) => {
         <h4 className="font-normal text-[1.4rem]">
           {product.name?.[locale as string]}
         </h4>
-        <div className="flex items-center gap-4 text-[1.6rem] font-medium">
-          {!!product.discount && (
-            <span className="line-through text-gray-300">
-              {formatCurrency(product.price, locale as string)}
+        {!notAvailable ? (
+          <div className="flex items-center gap-4 text-[1.6rem] font-medium">
+            {!!product.discount && (
+              <span className="line-through text-gray-300">
+                {formatCurrency(product.price, locale as string)}
+              </span>
+            )}
+            <span className="">
+              {formatCurrency(product.saleProduct, locale as string)}
             </span>
-          )}
-          <span className="">
-            {formatCurrency(product.saleProduct, locale as string)}
-          </span>
-        </div>
+          </div>
+        ) : (
+          <h2 className="text-3xl">{userTranslation("Out of stock")}</h2>
+        )}
       </div>
     </div>
   );

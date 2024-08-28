@@ -352,6 +352,8 @@ function ProductDetails() {
   const imageUrl =
     data?.data.images?.[0]?.url || "https://via.placeholder.com/1200x630";
 
+  const noAvailableSizes = data?.data?.totalQuantity === 0;
+
   return (
     <>
       <Helmet>
@@ -547,22 +549,24 @@ function ProductDetails() {
                 </h2>
               </div>
             )}
-            <Box className="flex items-center gap-5">
-              <h2 className="text-3xl font-semibold ">
-                {formatCurrency(
-                  productDetailsState?.selectedProduct?.saleProduct,
-                  locale as string
-                )}
-              </h2>
-              {productDetailsState?.selectedProduct?.discount > 0 && (
-                <h2 className="text-3xl font-semibold text-gray-400 line-through">
+            {!noAvailableSizes && (
+              <Box className="flex items-center gap-5">
+                <h2 className="text-3xl font-semibold ">
                   {formatCurrency(
-                    productDetailsState?.selectedProduct?.price,
+                    productDetailsState?.selectedProduct?.saleProduct,
                     locale as string
                   )}
                 </h2>
-              )}
-            </Box>
+                {productDetailsState?.selectedProduct?.discount > 0 && (
+                  <h2 className="text-3xl font-semibold text-gray-400 line-through">
+                    {formatCurrency(
+                      productDetailsState?.selectedProduct?.price,
+                      locale as string
+                    )}
+                  </h2>
+                )}
+              </Box>
+            )}
             <q className="text-2xl text-gray-400 capitalize leading-10">
               {
                 productDetailsState?.selectedProduct?.description?.[
@@ -657,7 +661,7 @@ function ProductDetails() {
                 })}
               </div>
             </Box>
-            {!isAdmin && (
+            {!isAdmin && !noAvailableSizes && (
               <Box className="flex items-center gap-5 my-5">
                 <button
                   disabled={productDetailsState?.productQuantity <= 1}
@@ -689,7 +693,7 @@ function ProductDetails() {
                 )}
               </p>
             )}
-            {!isAdmin && (
+            {!isAdmin && !noAvailableSizes && (
               <Box className="md:w-1/2">
                 <button
                   disabled={isAdmin}
@@ -707,6 +711,9 @@ function ProductDetails() {
                   </div>
                 </button>
               </Box>
+            )}
+            {noAvailableSizes && (
+              <h2 className="text-3xl">{userTranslation("Out of stock")}</h2>
             )}
           </Box>
         </Box>

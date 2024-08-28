@@ -252,7 +252,8 @@
     "Verify Email": "Verify Email",
     "Enter the OTP": "Enter the OTP",
     "HERE": "*HERE*",
-    "Total order price": "Total order price"
+    "Total order price": "Total order price",
+    "Out of stock": "Out of stock"
   },
   "messages": {
     "Please check form inputs": "Please check form inputs",

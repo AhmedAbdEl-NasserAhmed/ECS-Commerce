@@ -253,7 +253,12 @@
     "Enter the OTP": "Enter the OTP",
     "HERE": "*HERE*",
     "Total order price": "Total order price",
-    "Out of stock": "Out of stock"
+    "Out of stock": "Out of stock",
+    "Please make sure you accept our policies": "Please make sure you accept our policies",
+    "Privacy Policy": "Privacy Policy",
+    "Return and refund policy": "Return and refund policy",
+    "About": "About",
+    "About Orca": "About Orca"
   },
   "messages": {
     "Please check form inputs": "Please check form inputs",

@@ -223,3 +223,7 @@ export function removeSizesFoundInProducts(sizes, products) {
   // Filter the sizes array to remove sizes found in products
   return sizes.filter((size) => !productSizes.includes(size.value));
 }
+
+export const handleOpenPdf = (path: string) => {
+  window.open(path, "_blank");
+};

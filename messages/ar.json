@@ -253,7 +253,12 @@
     "Enter the OTP": "ادخل رمز التحقق",
     "HERE": "*هنا*",
     "Total order price": "مجموع الطلب",
-    "Out of stock": "هذا المنتج غير متوفر"
+    "Out of stock": "هذا المنتج غير متوفر",
+    "Please make sure you accept our policies": "يرجى التأكد من موافقتك على سياساتنا",
+    "Privacy Policy": "سياسة الخصوصية",
+    "Return and refund policy": "سياسة الإرجاع والاسترداد",
+    "About": "من نحن",
+    "About Orca": "عن Orca"
   },
   "messages": {
     "Please check form inputs": "الرجاء التحقق من المدخلات",

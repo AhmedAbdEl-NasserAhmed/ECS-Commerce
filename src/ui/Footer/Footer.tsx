@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import BaseContainer from "../Container/BaseContainer";
 import { useEffect, useState } from "react";
+import { handleOpenPdf } from "@/lib/helpers";
 
 function Footer() {
   const [isClient, setIsClient] = useState(false);
@@ -37,8 +38,8 @@ function Footer() {
           </div>
           {/* CENTER */}
           <div className="hidden lg:flex justify-between w-1/2">
-            <div className="flex flex-col justify-between">
-              <h1 className="text-heading-color1 font-medium uppercase text-3xl">
+            <div className="">
+              <h1 className="mb-16 text-heading-color1 font-medium uppercase text-3xl">
                 COMPANY
               </h1>
               <div className="flex flex-col gap-6">
@@ -59,8 +60,8 @@ function Footer() {
                 </Link>
               </div>
             </div>
-            <div className="flex flex-col justify-between">
-              <h1 className="text-heading-color1 font-medium uppercase text-3xl">
+            <div className="">
+              <h1 className="mb-16 text-heading-color1 font-medium uppercase text-3xl">
                 SHOP
               </h1>
               <div className="flex flex-col gap-6">
@@ -81,32 +82,34 @@ function Footer() {
                 </Link>
               </div>
             </div>
-            <div className="flex flex-col justify-between">
-              <h1 className="text-heading-color1 font-medium uppercase text-3xl">
+            <div className="">
+              <h1 className="mb-16 text-heading-color1 font-medium uppercase text-3xl">
                 HELP
               </h1>
               <div className="flex flex-col gap-6">
                 <Link href="" className="text-[1.6rem] font-normal">
                   Customer Service
                 </Link>
-                <Link href="" className="text-[1.6rem] font-normal">
-                  My Account
+                <Link
+                  href=""
+                  className="text-[1.6rem] font-normal"
+                  onClick={handleOpenPdf.bind(null, `/privacy-policy.pdf`)}
+                >
+                  Privacy Policy
                 </Link>
-                <Link href="" className="text-[1.6rem] font-normal">
-                  Find a Store
-                </Link>
-                <Link href="" className="text-[1.6rem] font-normal">
-                  Legal & Privacy
-                </Link>
-                <Link href="" className="text-[1.6rem] font-normal">
-                  Gift Card
+                <Link
+                  href=""
+                  className="text-[1.6rem] font-normal"
+                  onClick={handleOpenPdf.bind(null, `/return-policy.pdf`)}
+                >
+                  Return and refund policy
                 </Link>
               </div>
             </div>
           </div>
           {/* RIGHT */}
-          <div className="w-full md:w-1/2 lg:w-1/4 flex flex-col gap-8">
-            <h1 className="text-heading-color1 font-medium uppercase text-3xl">
+          <div className="w-full md:w-1/2 lg:w-1/4">
+            <h1 className="mb-16 text-heading-color1 font-medium uppercase text-3xl">
               SUBSCRIBE
             </h1>
             <p>

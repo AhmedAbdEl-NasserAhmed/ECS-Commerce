@@ -19,7 +19,11 @@ import { makePayment } from "@/lib/features/paymentSlice/paymentSlice";
 import { useTranslations } from "next-intl";
 import { StorageService } from "@/services/StorageService";
 
-function BillingInformation() {
+interface IProps {
+  isUserAcceptedAllPolicies: boolean;
+}
+
+function BillingInformation(props: IProps) {
   const {
     control,
     handleSubmit,
@@ -363,7 +367,7 @@ function BillingInformation() {
       </div>
 
       <Button
-        disabled={paymentResponse.isLoading}
+        disabled={!props.isUserAcceptedAllPolicies || paymentResponse.isLoading}
         sx={{
           padding: "0.85rem",
           fontSize: "1.2rem",

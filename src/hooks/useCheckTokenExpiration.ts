@@ -18,6 +18,11 @@ const useCheckTokenExpiration = () => {
     const userToken = StorageService.get("userToken", false);
 
     setUserToken(userToken);
+
+    if (!userToken) {
+      StorageService.delete("user");
+      StorageService.delete("userToken");
+    }
   }, [isAuth]);
 
   const currentDate = new Date();

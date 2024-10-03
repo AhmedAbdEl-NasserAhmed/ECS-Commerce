@@ -36,10 +36,12 @@ function NavBar() {
           <div className="w-1/3 xl:w-1/2 flex items-center gap-12 ">
             <Logo />
             <ul className="hidden md:flex gap-12 text-[1.6rem] font-semibold">
+              <li>
+                <Link href={`/${locale}/user/about`}>{user("About")}</Link>
+              </li>
               {data?.data?.length > 0 && (
                 <NavBarCategoriesList isLoading={isLoading} data={data} />
               )}
-
               <li>
                 <Link href={`/${locale}/user/contact`}>{user("Contact")}</Link>
               </li>

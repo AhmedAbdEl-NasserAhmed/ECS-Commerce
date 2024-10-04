@@ -269,6 +269,7 @@ function EditProduct() {
   };
 
   const areAllCategoriesEmpty = !allCategories || allCategories?.length === 0;
+  const noCategoryYet = !formData.category?.en || !formData.category?.ar;
 
   if (
     areAllCategoriesEmpty ||
@@ -358,7 +359,7 @@ function EditProduct() {
                     existedItems={productDetails?.data.subCategory}
                     disabled={
                       updateProductResponse.isLoading ||
-                      !smartSeachvalue["_id"] ||
+                      noCategoryYet ||
                       isFetchingSubCategories
                     }
                     shouldReset={

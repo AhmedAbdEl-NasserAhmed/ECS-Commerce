@@ -24,8 +24,6 @@ function HomePage() {
 
   const t = useTranslations("user");
 
-  useCheckTokenExpiration();
-
   useCookie("cartItems", "wishListItems");
 
   const groupedProducts = groupBy(data?.data, "slug");

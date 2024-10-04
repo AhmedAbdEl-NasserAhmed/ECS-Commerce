@@ -1,4 +1,3 @@
-import Head from "next/head";
 import StoreProvider from "./StoreProvider";
 import { Metadata } from "next";
 

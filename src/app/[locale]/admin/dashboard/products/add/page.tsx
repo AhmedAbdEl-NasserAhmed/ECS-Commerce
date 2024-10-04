@@ -110,6 +110,7 @@ function AddProductPage() {
         skip: !mainCategorydebounceValue,
       }
     );
+
   const [allCategories, setAllCategories] = useState<string[]>([]);
 
   const [productSearchName, setProductSearchName] = useState(null);
@@ -157,6 +158,7 @@ function AddProductPage() {
 
       if (searchedProductByNameCategoryValue) {
         setValue("category", searchedProductByNameCategoryValue);
+
         clearErrors("category");
       }
 
@@ -432,6 +434,8 @@ function AddProductPage() {
       ? removeSizesFoundInProducts(sizes, productsBySlug?.data?.products)
       : sizes;
 
+  const noCategoryYet = !formData.category?.en || !formData.category?.ar;
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
@@ -546,7 +550,7 @@ function AddProductPage() {
                       existedItems={currentSubCategories}
                       disabled={
                         productResponse.isLoading ||
-                        !smartSeachvalue["_id"] ||
+                        noCategoryYet ||
                         isFetchingSubCategories
                       }
                       shouldReset={
@@ -554,7 +558,6 @@ function AddProductPage() {
                         productResponse.isSuccess ||
                         (formData.category?.en === "" &&
                           smartSeachvalue?.name === "")
-                        // smartSeachvalue?.[lang]?.name === "")
                       }
                       getSmartSearchValue={setSmartSeachSubCategoryValue}
                       textLabel={t("Collection")}

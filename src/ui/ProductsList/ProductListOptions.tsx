@@ -31,7 +31,7 @@ function ProductListOptions({ product, productsBySlug = [] }) {
                 {product.size.toUpperCase()}
               </p>
             }
-            className={`!w-[3rem] !h-[3rem]`}
+            className={`!w-[3rem] !h-[3rem] pointer-events-none`}
           />
         );
       })}

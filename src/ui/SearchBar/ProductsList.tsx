@@ -28,7 +28,7 @@ function ProductsList({ data, setProductName, productName }) {
     const observer = new IntersectionObserver(handleObserver, {
       root: null,
       rootMargin: "0px",
-      threshold: 0
+      threshold: 0,
     });
 
     if (observer && ref.current) {

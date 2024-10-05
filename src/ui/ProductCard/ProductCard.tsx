@@ -44,29 +44,35 @@ const ProductCard = ({ product }) => {
         boxShadow: "0px 3px 15px 0px #0000000f",
       }}
     >
-      <div className="relative w-full group overflow-hidden h-[40rem]">
+      <div className="relative w-full group overflow-hidden aspect-[2/3]">
         <div
           className={`${
             product.images[0] && product.images[1] ? "hover:opacity-0 " : ""
-          } easy transition-opacity duration-500 rounded-md absolute z-10 h-full w-full overflow-hidden`}
+          } 
+            relative easy transition-opacity duration-500 rounded-md absolute z-10 h-full w-full overflow-hidden`}
         >
           <Image
             src={product.images[0]?.url || ""}
-            className="object-cover"
-            fill
-            sizes="25vw"
             quality={75}
-            alt="image"
+            alt={product.name?.[locale as string]}
+            layout="responsive" // Responsive layout instead of fill
+            width={500} // Set a base width for the image
+            height={750} // Set a corresponding height for the aspect ratio
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
         </div>
         {product.images[1] && (
-          <div className="absolute transition-all duration-500 rotate-0 scale-1 group-hover:rotate-3 group-hover:scale-110 rounded-md h-full w-full overflow-hidden">
+          <div className="absolute top-0 transition-all duration-500 rotate-0 scale-1 group-hover:rotate-3 group-hover:scale-110 rounded-md h-full w-full overflow-hidden">
             <Image
               src={product.images[1]?.url || ""}
-              fill
-              sizes="25vw"
-              alt="image"
+              quality={75}
+              alt={product.name?.[locale as string]}
+              layout="responsive" // Responsive layout instead of fill
+              width={500} // Set a base width for the image
+              height={750} // Set a corresponding height for the aspect ratio
               className="object-cover"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
           </div>
         )}
@@ -96,7 +102,7 @@ const ProductCard = ({ product }) => {
             transform: "translateX(-50%)",
           }}
         >
-          <div className="flex gap-2">
+          <div className="flex gap-2 pointer-events-none">
             {_colors?.map((color) => {
               return <ColorItem color={color.color} key={color.color} />;
             })}

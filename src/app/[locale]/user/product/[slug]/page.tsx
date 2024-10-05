@@ -462,7 +462,7 @@ function ProductDetails() {
                 alt="img"
                 fill
                 onLoad={handleLoadingImages}
-                className="object-cover border-2 border-[#dcdbdb] rounded-2xl"
+                className="object-contain border-2 border-[#dcdbdb] rounded-2xl"
               />
             </Box>
           </Box>

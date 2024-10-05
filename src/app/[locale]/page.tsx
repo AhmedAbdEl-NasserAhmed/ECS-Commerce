@@ -15,10 +15,9 @@ import UserProtectedRoute from "@/ui/UserProtectedRoute/UserProtectedRoute";
 import useCookie from "@/hooks/useCookie";
 import { useTranslations } from "next-intl";
 import { groupBy } from "@/lib/helpers";
-import useCheckTokenExpiration from "@/hooks/useCheckTokenExpiration";
 
 function HomePage() {
-  const { data, isLoading } = useGetAllProductsQuery({ limit: 6 });
+  const { data, isLoading } = useGetAllProductsQuery({ limit: 100 });
 
   const user = useAppSelector((state) => state.usersSlice.user);
 
@@ -47,14 +46,14 @@ function HomePage() {
       <TitledProductList
         title={t("Hot Products")}
         description="Mauris luctus nisi sapien tristique dignissim ornare"
-        products={uniqueProducts.filter(Boolean)}
+        products={uniqueProducts.filter(Boolean).slice(0, 4)}
         isLoading={isLoading}
         columns={4}
       />
       <TitledProductList
         title={t("Sale Products")}
         description="Mauris luctus nisi sapien tristique dignissim ornare"
-        products={uniqueSalesProducts.filter(Boolean)}
+        products={uniqueSalesProducts.filter(Boolean).slice(0, 4)}
         isLoading={isLoading}
         columns={4}
       />

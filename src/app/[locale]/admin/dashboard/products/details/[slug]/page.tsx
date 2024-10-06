@@ -80,7 +80,7 @@ function ProductDetails() {
 
   useEffect(() => {
     action(ProductViewActions.SET_PRODUCT, {
-      value: sortedProductsBySize[productState.currentProductIndex],
+      value: sortedProductsBySize?.[productState.currentProductIndex],
     });
   }, [data?.data?.products, productState.currentProductIndex]);
 

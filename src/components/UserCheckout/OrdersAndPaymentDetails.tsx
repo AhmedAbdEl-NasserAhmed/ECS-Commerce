@@ -1,9 +1,13 @@
+import CashOnDelivery from "./CashOnDelivery";
 import Orders from "./Orders";
 import PaymentDetails from "./PaymentDetails";
 import TermsAndConditions from "./TermsAndConditions";
+import { paymentMethod } from "./UserCheckout";
 
 interface IProps {
   setIsUserAcceptedAllPolicies: any;
+  setUserPaymentMethod: any;
+  userPaymentMethod: paymentMethod;
 }
 
 function OrdersAndPaymentDetails(props: IProps) {
@@ -12,6 +16,10 @@ function OrdersAndPaymentDetails(props: IProps) {
       <Orders />
       <TermsAndConditions
         setIsUserAcceptedAllPolicies={props.setIsUserAcceptedAllPolicies}
+      />
+      <CashOnDelivery
+        userPaymentMethod={props.userPaymentMethod}
+        setUserPaymentMethod={props.setUserPaymentMethod}
       />
       <PaymentDetails />
     </div>

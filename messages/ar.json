@@ -258,7 +258,10 @@
     "Privacy Policy": "سياسة الخصوصية",
     "Return and refund policy": "سياسة الإرجاع والاسترداد",
     "About": "من نحن",
-    "About Orca": "عن Orca"
+    "About Orca": "عن Orca",
+    "Select your payment method": "اختر وسيلة الدفع",
+    "Cash on delivery": "الدفع عند الاستلام",
+    "Credit Card or Debit Card": "بطاقة ائتمان أو بطاقة خصم"
   },
   "messages": {
     "Please check form inputs": "الرجاء التحقق من المدخلات",

@@ -18,9 +18,11 @@ import { clearCookiesThunk } from "@/lib/features/cookieSlice/cookieSlice";
 import { makePayment } from "@/lib/features/paymentSlice/paymentSlice";
 import { useTranslations } from "next-intl";
 import { StorageService } from "@/services/StorageService";
+import { paymentMethod } from "./UserCheckout";
 
 interface IProps {
   isUserAcceptedAllPolicies: boolean;
+  userPaymentMethod: paymentMethod;
 }
 
 function BillingInformation(props: IProps) {
@@ -60,6 +62,7 @@ function BillingInformation(props: IProps) {
     dispatch(makePayment(true));
 
     paymentFn({
+      method: props.userPaymentMethod,
       billing_data: {
         firstName: data.firstName,
         lastName: data.lastName,
@@ -82,7 +85,14 @@ function BillingInformation(props: IProps) {
         return res;
       })
       .then((res) => {
-        router.replace(res.url);
+        if (props.userPaymentMethod === "cash") {
+          toast.success(
+            ` ${userTranslation("Your Order is Completed Successfully")}`
+          );
+          router.replace(`/${locale as string}/user/profile`);
+        } else {
+          router.replace(res.url);
+        }
       })
       .catch((err) => {
         dispatch(makePayment(false));

@@ -258,7 +258,10 @@
     "Privacy Policy": "Privacy Policy",
     "Return and refund policy": "Return and refund policy",
     "About": "About",
-    "About Orca": "About Orca"
+    "About Orca": "About Orca",
+    "Select your payment method": "Select your payment method",
+    "Cash on delivery": "Cash on delivery",
+    "Credit Card or Debit Card": "Credit Card or Debit Card"
   },
   "messages": {
     "Please check form inputs": "Please check form inputs",

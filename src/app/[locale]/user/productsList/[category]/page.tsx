@@ -58,7 +58,7 @@ function ProductsByCategory() {
     subCategory: subCategory || undefined,
     sort: sort || "",
     sale: sale || "",
-    limit: 4,
+    limit: 24,
     page,
   });
 

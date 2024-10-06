@@ -41,6 +41,10 @@ function ProductDetails() {
       skip: !productState.selectedProduct?.category,
     });
 
+  const sortedProductsBySize = data?.data?.products
+    ?.slice()
+    ?.sort((a, b) => +a?.size - +b?.size);
+
   const { data: reviews, isFetching: loadingReview } =
     useGetProductReviewsQuery(
       {
@@ -76,7 +80,7 @@ function ProductDetails() {
 
   useEffect(() => {
     action(ProductViewActions.SET_PRODUCT, {
-      value: data?.data?.products[productState.currentProductIndex],
+      value: sortedProductsBySize[productState.currentProductIndex],
     });
   }, [data?.data?.products, productState.currentProductIndex]);
 
@@ -158,7 +162,7 @@ function ProductDetails() {
                 alt="img"
                 fill
                 onLoad={() => setIsLoadingImages(false)}
-                className="object-cover border-2 border-[#dcdbdb] rounded-2xl"
+                className="object-contain border-2 border-[#dcdbdb] rounded-2xl"
               />
             </Box>
           </Box>
@@ -230,7 +234,7 @@ function ProductDetails() {
                 {userTranslation("Pick Your Size")}
               </h2>
               <div className="flex items-center gap-5">
-                {data?.data?.products?.map((product, idx) => {
+                {sortedProductsBySize?.map((product, idx) => {
                   return (
                     <div
                       key={product.size}

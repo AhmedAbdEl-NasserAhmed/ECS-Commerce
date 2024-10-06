@@ -63,6 +63,10 @@ function ProductDetails() {
 
   const [selectedSize, setSelectedSize] = useState(null);
 
+  const sortedProductsBySize = data?.data?.products
+    ?.slice()
+    ?.sort((a, b) => +a?.size - +b?.size);
+
   function handleSortChange(e: ChangeEvent<HTMLSelectElement>) {
     setSort(e.target.value);
   }
@@ -165,7 +169,7 @@ function ProductDetails() {
   ]);
 
   useEffect(() => {
-    const firstAvailableSize = data?.data?.products?.find(
+    const firstAvailableSize = sortedProductsBySize?.find(
       (p) => p.quantity > 0
     );
     setSelectedSize(firstAvailableSize?.size);
@@ -579,7 +583,8 @@ function ProductDetails() {
                 {userTranslation("Pick Your Size")}
               </h2>
               <div className="flex items-center gap-5">
-                {data?.data?.products?.map((product, idx) => {
+                {/* asd */}
+                {sortedProductsBySize?.map((product, idx) => {
                   const notAvailable = product.quantity === 0;
                   return (
                     <div

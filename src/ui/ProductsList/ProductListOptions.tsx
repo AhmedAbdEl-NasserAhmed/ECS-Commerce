@@ -12,6 +12,10 @@ function ProductListOptions({ product, productsBySlug = [] }) {
 
   const { locale } = useParams();
 
+  const sortedProductsBySize = productsBySlug
+    ?.slice()
+    ?.sort((a, b) => +a?.size - +b?.size);
+
   return (
     <ul className="absolute top-7 items-center -end-36 group-hover:end-8 group-hover:z-20 transition-all duration-700  flex flex-col gap-5">
       {Layout.featureWishlist && (
@@ -22,7 +26,7 @@ function ProductListOptions({ product, productsBySlug = [] }) {
         onClick={() => router.push(`/${locale}/user/product/${product?.slug}`)}
         className="cursor-pointer"
       />
-      {productsBySlug?.map((product) => {
+      {sortedProductsBySize?.map((product) => {
         return (
           <ProductActionItem
             key={product.productId}

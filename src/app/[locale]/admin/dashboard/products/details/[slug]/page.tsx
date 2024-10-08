@@ -145,7 +145,7 @@ function ProductDetails() {
                       quality={100}
                       onLoad={() => setIsLoadingImages(false)}
                       fill
-                      className="object-cover rounded-2xl border-2 border-[#dcdbdb]"
+                      className="object-contain rounded-2xl border-2 border-[#dcdbdb]"
                     />
                   </Box>
                 );

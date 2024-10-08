@@ -56,8 +56,8 @@ const ProductCard = ({ product }) => {
             quality={75}
             alt={product.name?.[locale as string]}
             layout="responsive" // Responsive layout instead of fill
-            width={500} // Set a base width for the image
-            height={750} // Set a corresponding height for the aspect ratio
+            width={942} // Set a base width for the image
+            height={1177} // Set a corresponding height for the aspect ratio
             className="object-cover"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
@@ -69,8 +69,8 @@ const ProductCard = ({ product }) => {
               quality={75}
               alt={product.name?.[locale as string]}
               layout="responsive" // Responsive layout instead of fill
-              width={500} // Set a base width for the image
-              height={750} // Set a corresponding height for the aspect ratio
+              width={942} // Set a base width for the image
+              height={1177} // Set a corresponding height for the aspect ratio
               className="object-cover"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />

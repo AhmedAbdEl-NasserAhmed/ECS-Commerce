@@ -161,6 +161,7 @@ export const ordersTableHeadersWithoutActions = (t, locale) => [
       return formatCurrency(original.orderPrice, locale);
     },
   },
+
   {
     id: "orderStatus",
     header: () => <div>{t("order status")}</div>,
@@ -170,6 +171,17 @@ export const ordersTableHeadersWithoutActions = (t, locale) => [
       },
     }) => {
       return <OrderStatus status={OrderStatusEnum[original.orderStatus]} />;
+    },
+  },
+  {
+    id: "paymentMethod",
+    header: () => <div>{t("payment method")}</div>,
+    cell: ({
+      cell: {
+        row: { original },
+      },
+    }) => {
+      return original.paymentMethod;
     },
   },
 ];

@@ -68,6 +68,7 @@ function OrderDetails() {
 
   if (isFetching) return <Spinner />;
 
+  const isVisa = data?.data?.paymentMethod === "visa";
   const cannotBeCancelled = data?.data?.orderStatus !== "created";
   const isRefunded = data?.data?.orderStatus !== "refund";
   const isCancelled = data?.data?.orderStatus !== "cancelled";
@@ -92,24 +93,26 @@ function OrderDetails() {
           {userTranslation("cannot cancel order warning message")}{" "}
         </Alert>
       )}
-      <div className="flex justify-between items-center mb-10">
-        <div
-          className={`rounded-md text-white bg-black text-2xl flex items-center justify-center p-3 hover:text-black hover:bg-white text-black transition-all duration-200 ${
-            cannotBeCancelled
-              ? "bg-[#CCC] !text-black hover:bg-[#CCC] hover:text-black"
-              : ""
-          }`}
-        >
-          <IoMdClose fontSize={"2rem"} className="mr-2" />
-          <button
-            disabled={cannotBeCancelled}
-            onClick={() => {}}
-            className="disabled:opacity-30"
+      {!isVisa && (
+        <div className="flex justify-between items-center mb-10">
+          <div
+            className={`rounded-md text-white bg-black text-2xl flex items-center justify-center p-3 hover:text-black hover:bg-white text-black transition-all duration-200 ${
+              cannotBeCancelled
+                ? "bg-[#CCC] !text-black hover:bg-[#CCC] hover:text-black"
+                : ""
+            }`}
           >
-            {userTranslation("Cancel order")}
-          </button>
+            <IoMdClose fontSize={"2rem"} className="mr-2" />
+            <button
+              disabled={cannotBeCancelled}
+              onClick={() => {}}
+              className="disabled:opacity-30"
+            >
+              {userTranslation("Cancel order")}
+            </button>
+          </div>
         </div>
-      </div>
+      )}
 
       {!isRefunded ||
         (isCancelled && (

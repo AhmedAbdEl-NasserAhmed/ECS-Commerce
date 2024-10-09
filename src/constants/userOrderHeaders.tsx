@@ -77,7 +77,17 @@ export const useOrderHeaders = (userTranslation, locale) => {
         return <OrderStatus status={OrderStatusEnum[original.orderStatus]} />;
       },
     },
-
+    {
+      id: "paymentMethod",
+      header: () => <div>{userTranslation("payment method")}</div>,
+      cell: ({
+        cell: {
+          row: { original },
+        },
+      }) => {
+        return original.paymentMethod;
+      },
+    },
     {
       id: "actions",
       header: () => userTranslation("Actions"),

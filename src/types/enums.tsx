@@ -1,10 +1,10 @@
 export enum UserType {
   ADMIN = "admin",
-  USER = "user"
+  USER = "user",
 }
 export enum PaymentStatus {
   SUCCESS = "success",
-  FAIL = "fail"
+  FAIL = "fail",
 }
 
 export enum OrderStatusEnum {
@@ -12,16 +12,17 @@ export enum OrderStatusEnum {
   delivered = "DELIVERED",
   delivering = "DELIVERING",
   refund = "REFUND",
-  shipped = "SHIPPED"
+  shipped = "SHIPPED",
+  cancelled = "CANCELLED",
 }
 
 export enum HomeCategory {
   MAIN_CATEGORY = "pants",
   MALE_JEANS_EN = "male jeans",
-  FEMALE_JEANS_EN = "female jeans"
+  FEMALE_JEANS_EN = "female jeans",
 }
 
 export enum Lang {
   ENGLISH = "en",
-  ARABIC = "ar"
+  ARABIC = "ar",
 }

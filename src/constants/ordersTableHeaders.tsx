@@ -103,6 +103,17 @@ export const ordersTableHeaders = (t, locale) => [
     },
   },
   {
+    id: "paymentMethod",
+    header: () => <div>{t("payment method")}</div>,
+    cell: ({
+      cell: {
+        row: { original },
+      },
+    }) => {
+      return original.paymentMethod;
+    },
+  },
+  {
     id: "actions",
     header: () => <div>{t("Actions")}</div>,
     cell: ({

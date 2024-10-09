@@ -62,7 +62,6 @@ function BillingInformation(props: IProps) {
     dispatch(makePayment(true));
 
     paymentFn({
-      method: props.userPaymentMethod,
       billing_data: {
         firstName: data.firstName,
         lastName: data.lastName,

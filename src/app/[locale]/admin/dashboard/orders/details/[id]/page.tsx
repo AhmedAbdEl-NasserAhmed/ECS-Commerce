@@ -96,6 +96,9 @@ function ViewOrder() {
 
   if (isFetching) return <Spinner />;
 
+  const cannotBeCancelled = order?.data?.orderStatus !== "created";
+  const isRefunded = order?.data?.orderStatus !== "refund";
+  const isCancelled = order?.data?.orderStatus !== "cancelled";
   return (
     <Box className="px-10">
       <Box className="h-[10vh] flex justify-between items-center p-5">
@@ -139,18 +142,21 @@ function ViewOrder() {
           {t("Edit Order")}
         </Button>
       </Box>
-      <Box
-        sx={{
-          paddingInline: "7rem",
-          marginBlock: "3rem 5rem",
-        }}
-      >
-        <BaseTimeline
-          activeStageIndex={timelineData.activeStageIndex}
-          completedStagesIndexes={timelineData.completedStagesIndexes}
-          stages={requestCheckupTimelineStages}
-        />
-      </Box>
+      {!isRefunded ||
+        (isCancelled && (
+          <Box
+            sx={{
+              paddingInline: "7rem",
+              marginBlock: "3rem 5rem",
+            }}
+          >
+            <BaseTimeline
+              activeStageIndex={timelineData.activeStageIndex}
+              completedStagesIndexes={timelineData.completedStagesIndexes}
+              stages={requestCheckupTimelineStages}
+            />
+          </Box>
+        ))}
       <Box className="relative bg-white rounded-2xl border-2 p-10 border-slate-100 shadow-md">
         <Box className="mb-4">
           <h2 className="text-3xl font-semibold mb-5">{t("View Order")}</h2>
@@ -174,6 +180,11 @@ function ViewOrder() {
           <Box>
             <p className="font-semibold text-xl">{t("mobile")}</p>
             <p>{order?.data?.billingData?.[0]?.phoneNumber}</p>
+          </Box>
+          {/* DATA ITEM */}
+          <Box>
+            <p className="font-semibold text-xl">{t("payment method")}</p>
+            <p>{order?.data?.paymentMethod}</p>
           </Box>
           {/* DATA ITEM */}
           <Box>

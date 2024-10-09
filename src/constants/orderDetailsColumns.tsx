@@ -1,4 +1,6 @@
 import { formatCurrency } from "@/lib/helpers";
+import { OrderStatusEnum } from "@/types/enums";
+import OrderStatus from "@/ui/OrderStatus/OrderStatus";
 import Image from "next/image";
 
 export function orderDetailsColumns(userTranslation, locale) {

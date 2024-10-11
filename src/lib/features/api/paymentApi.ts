@@ -18,9 +18,18 @@ const paymentApi = createApi({
       }),
       invalidatesTags: ["PAYMENT"],
     }),
+    cashPaymentCheckout: builder.mutation({
+      query: (body) => ({
+        url: `payment/cashPayment`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["PAYMENT"],
+    }),
   }),
 });
 
-export const { usePaymentCheckoutMutation } = paymentApi;
+export const { usePaymentCheckoutMutation, useCashPaymentCheckoutMutation } =
+  paymentApi;
 
 export default paymentApi;

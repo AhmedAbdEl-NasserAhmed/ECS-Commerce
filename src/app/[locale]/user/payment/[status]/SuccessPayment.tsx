@@ -62,7 +62,7 @@ function SuccessPayment() {
           <FaCheckCircle />
         </div>
         <h2 className="text-2xl md:text-3xl text-green-500">
-          {userTranslation("YOU TRANSACTION IS SUCCESFUL")}
+          {userTranslation("YOUR TRANSACTION IS SUCCESFUL")}
         </h2>
       </div>
       <h2 className=" text-xl md:text-2xl font-semibold">

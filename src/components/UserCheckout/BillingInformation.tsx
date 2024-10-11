@@ -9,7 +9,10 @@ import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { Button } from "@mui/material";
 import ErrorMessage from "@/ui/ErrorMessage/ErrorMessage";
-import { usePaymentCheckoutMutation } from "@/lib/features/api/paymentApi";
+import {
+  useCashPaymentCheckoutMutation,
+  usePaymentCheckoutMutation,
+} from "@/lib/features/api/paymentApi";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import MiniSpinner from "@/ui/MiniSpinner/MiniSpinner";
 import { useParams, useRouter } from "next/navigation";
@@ -32,7 +35,8 @@ function BillingInformation(props: IProps) {
     formState: { errors },
   } = useForm({ mode: "onChange" });
 
-  const [paymentFn, paymentResponse] = usePaymentCheckoutMutation();
+  const [visaPaymentFn, visaPaymentResponse] = usePaymentCheckoutMutation();
+  const [cashPaymentFn, cashPaymentResponse] = useCashPaymentCheckoutMutation();
 
   const { locale } = useParams();
 
@@ -61,7 +65,7 @@ function BillingInformation(props: IProps) {
 
     dispatch(makePayment(true));
 
-    paymentFn({
+    const serverData = {
       billing_data: {
         firstName: data.firstName,
         lastName: data.lastName,
@@ -76,31 +80,52 @@ function BillingInformation(props: IProps) {
       },
       cartItems: cart,
       locale,
-    })
-      .unwrap()
-      .then((res) => {
-        dispatch(makePayment(false));
-        StorageService.set("userLang", locale);
-        return res;
-      })
-      .then((res) => {
-        if (props.userPaymentMethod === "cash") {
+    };
+
+    if (props.userPaymentMethod === "cash") {
+      return cashPaymentFn(serverData)
+        .unwrap()
+        .then((res) => {
+          dispatch(makePayment(false));
+          StorageService.set("userLang", locale);
+          return res;
+        })
+        .then((res) => {
+          dispatch(clearCookiesThunk("cartItems"));
+          StorageService.delete("userLang");
           toast.success(
             ` ${userTranslation("Your Order is Completed Successfully")}`
           );
-          router.replace(`/${locale as string}/user/profile`);
-        } else {
-          router.replace(res.url);
-        }
-      })
-      .catch((err) => {
-        dispatch(makePayment(false));
-        toast.error(
-          ` ${tMessage("The left Quantity from Product")} ${
-            err.data.message[locale as string]
-          } ${tMessage("is")} ${err.data.message.quantity || 0} `
-        );
-      });
+          router.replace(`/${locale as string}/user/profile/${res?.orderId}`);
+        })
+        .catch((err) => {
+          dispatch(makePayment(false));
+          toast.error(
+            ` ${tMessage("The left Quantity from Product")} ${
+              err.data.message[locale as string]
+            } ${tMessage("is")} ${err.data.message.quantity || 0} `
+          );
+        });
+    } else {
+      return visaPaymentFn(serverData)
+        .unwrap()
+        .then((res) => {
+          dispatch(makePayment(false));
+          StorageService.set("userLang", locale);
+          return res;
+        })
+        .then((res) => {
+          router.replace(res.data.url);
+        })
+        .catch((err) => {
+          dispatch(makePayment(false));
+          toast.error(
+            ` ${tMessage("The left Quantity from Product")} ${
+              err.data.message[locale as string]
+            } ${tMessage("is")} ${err.data.message.quantity || 0} `
+          );
+        });
+    }
   }
 
   return (
@@ -131,7 +156,9 @@ function BillingInformation(props: IProps) {
             }}
             render={({ field }) => (
               <CustomizedTextField
-                disabled={paymentResponse.isLoading}
+                disabled={
+                  visaPaymentResponse.isLoading || cashPaymentResponse.isLoading
+                }
                 textLabelClass={"font-semibold text-xl"}
                 placeholder={userTranslation("First Name")}
                 textlabel={userTranslation("First Name")}
@@ -161,7 +188,9 @@ function BillingInformation(props: IProps) {
             }}
             render={({ field }) => (
               <CustomizedTextField
-                disabled={paymentResponse.isLoading}
+                disabled={
+                  visaPaymentResponse.isLoading || cashPaymentResponse.isLoading
+                }
                 textLabelClass={"font-semibold text-xl"}
                 placeholder={userTranslation("Last Name")}
                 textlabel={userTranslation("Last Name")}
@@ -190,7 +219,9 @@ function BillingInformation(props: IProps) {
           }}
           render={({ field }) => (
             <CustomizedTextField
-              disabled={paymentResponse.isLoading}
+              disabled={
+                visaPaymentResponse.isLoading || cashPaymentResponse.isLoading
+              }
               textLabelClass={"font-semibold text-xl"}
               placeholder={userTranslation("Email Address")}
               textlabel={userTranslation("Email Address")}
@@ -214,7 +245,11 @@ function BillingInformation(props: IProps) {
             rules={{ required: userTranslation("This field is required") }}
             render={({ field }) => (
               <MultiChoiceSelectMenu
-                disabled={false || paymentResponse.isLoading}
+                disabled={
+                  false ||
+                  visaPaymentResponse.isLoading ||
+                  cashPaymentResponse.isLoading
+                }
                 isMulti={false}
                 textLabelClass={"font-semibold text-xl"}
                 placeholder={userTranslation("Select a Country")}
@@ -238,7 +273,9 @@ function BillingInformation(props: IProps) {
             rules={{ required: userTranslation("This field is required") }}
             render={({ field }) => (
               <PhoneInput
-                disabled={paymentResponse.isLoading}
+                disabled={
+                  visaPaymentResponse.isLoading || cashPaymentResponse.isLoading
+                }
                 country={"eg"}
                 value={field.value}
                 onChange={field.onChange}
@@ -268,7 +305,9 @@ function BillingInformation(props: IProps) {
             rules={{ required: userTranslation("This field is required") }}
             render={({ field }) => (
               <CustomizedTextField
-                disabled={paymentResponse.isLoading}
+                disabled={
+                  visaPaymentResponse.isLoading || cashPaymentResponse.isLoading
+                }
                 textLabelClass={"font-semibold text-xl"}
                 placeholder={userTranslation("City")}
                 textlabel={userTranslation("City")}
@@ -290,7 +329,9 @@ function BillingInformation(props: IProps) {
             rules={{ required: userTranslation("This field is required") }}
             render={({ field }) => (
               <CustomizedTextField
-                disabled={paymentResponse.isLoading}
+                disabled={
+                  visaPaymentResponse.isLoading || cashPaymentResponse.isLoading
+                }
                 textLabelClass={"font-semibold text-xl"}
                 placeholder={userTranslation("Apartment")}
                 textlabel={userTranslation("Apartment")}
@@ -315,7 +356,9 @@ function BillingInformation(props: IProps) {
             rules={{ required: userTranslation("This field is required") }}
             render={({ field }) => (
               <CustomizedTextField
-                disabled={paymentResponse.isLoading}
+                disabled={
+                  visaPaymentResponse.isLoading || cashPaymentResponse.isLoading
+                }
                 textLabelClass={"font-semibold text-xl"}
                 placeholder={userTranslation("Building")}
                 textlabel={userTranslation("Building")}
@@ -337,7 +380,9 @@ function BillingInformation(props: IProps) {
             rules={{ required: userTranslation("This field is required") }}
             render={({ field }) => (
               <CustomizedTextField
-                disabled={paymentResponse.isLoading}
+                disabled={
+                  visaPaymentResponse.isLoading || cashPaymentResponse.isLoading
+                }
                 textLabelClass={"font-semibold text-xl"}
                 placeholder={userTranslation("Street")}
                 textlabel={userTranslation("Street")}
@@ -359,7 +404,9 @@ function BillingInformation(props: IProps) {
             rules={{ required: userTranslation("This field is required") }}
             render={({ field }) => (
               <CustomizedTextField
-                disabled={paymentResponse.isLoading}
+                disabled={
+                  visaPaymentResponse.isLoading || cashPaymentResponse.isLoading
+                }
                 textLabelClass={"font-semibold text-xl"}
                 placeholder={userTranslation("Floor")}
                 textlabel={userTranslation("Floor")}
@@ -376,7 +423,11 @@ function BillingInformation(props: IProps) {
       </div>
 
       <Button
-        disabled={!props.isUserAcceptedAllPolicies || paymentResponse.isLoading}
+        disabled={
+          !props.isUserAcceptedAllPolicies ||
+          visaPaymentResponse.isLoading ||
+          cashPaymentResponse.isLoading
+        }
         sx={{
           padding: "0.85rem",
           fontSize: "1.2rem",
@@ -389,7 +440,7 @@ function BillingInformation(props: IProps) {
         variant="contained"
         size="large"
       >
-        {paymentResponse.isLoading ? (
+        {visaPaymentResponse.isLoading || cashPaymentResponse.isLoading ? (
           <MiniSpinner />
         ) : (
           userTranslation("Place Order")

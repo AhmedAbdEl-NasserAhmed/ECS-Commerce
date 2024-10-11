@@ -5,7 +5,7 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 
 const productsApi = createApi({
   reducerPath: "productsApi",
-  tagTypes: ["PRODUCTS", "CATEGORIES", "COLLECTIONS"],
+  tagTypes: ["PRODUCTS", "CATEGORIES", "COLLECTIONS", "PAYMENT"],
   baseQuery: axiosBaseQuery({
     baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
   }),
@@ -36,7 +36,7 @@ const productsApi = createApi({
           method: "GET",
         };
       },
-      providesTags: ["PRODUCTS", "CATEGORIES", "COLLECTIONS"],
+      providesTags: ["PRODUCTS", "CATEGORIES", "COLLECTIONS", "PAYMENT"],
     }),
 
     getProductByName: builder.query({
@@ -44,7 +44,7 @@ const productsApi = createApi({
         url: `products/filtered?letters=${letter}&lang=${lang}`,
         method: "GET",
       }),
-      providesTags: ["PRODUCTS", "CATEGORIES", "COLLECTIONS"],
+      providesTags: ["PRODUCTS", "CATEGORIES", "COLLECTIONS", "PAYMENT"],
       transformResponse: (response) => {
         const data = getUniqueValues(response.data, ["name"]);
         return data;
@@ -55,7 +55,7 @@ const productsApi = createApi({
         url: `products/colors?category=${categoryId}`,
         method: "GET",
       }),
-      providesTags: ["PRODUCTS", "CATEGORIES", "COLLECTIONS"],
+      providesTags: ["PRODUCTS", "CATEGORIES", "COLLECTIONS", "PAYMENT"],
     }),
 
     getSingleProductBySlug: builder.query({
@@ -63,7 +63,7 @@ const productsApi = createApi({
         url: `products/slug/${slug}`,
         method: "GET",
       }),
-      providesTags: ["PRODUCTS", "CATEGORIES", "COLLECTIONS"],
+      providesTags: ["PRODUCTS", "CATEGORIES", "COLLECTIONS", "PAYMENT"],
     }),
 
     getPaginatedProducts: builder.query({
@@ -74,7 +74,7 @@ const productsApi = createApi({
           method: "GET",
         };
       },
-      providesTags: ["PRODUCTS", "CATEGORIES", "COLLECTIONS"],
+      providesTags: ["PRODUCTS", "CATEGORIES", "COLLECTIONS", "PAYMENT"],
     }),
 
     getSingleProductByID: builder.query({
@@ -82,7 +82,7 @@ const productsApi = createApi({
         url: `products/id/${id}`,
         method: "GET",
       }),
-      providesTags: ["PRODUCTS", "CATEGORIES", "COLLECTIONS"],
+      providesTags: ["PRODUCTS", "CATEGORIES", "COLLECTIONS", "PAYMENT"],
     }),
 
     updateSingleProduct: builder.mutation({

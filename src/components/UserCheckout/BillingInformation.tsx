@@ -115,7 +115,7 @@ function BillingInformation(props: IProps) {
           return res;
         })
         .then((res) => {
-          router.replace(res.data.url);
+          router.replace(res.url);
         })
         .catch((err) => {
           dispatch(makePayment(false));

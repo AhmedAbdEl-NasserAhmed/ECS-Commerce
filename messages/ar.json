@@ -267,7 +267,8 @@
     "Select your payment method": "اختر وسيلة الدفع",
     "Cash on delivery": "الدفع عند الاستلام",
     "Credit Card or Debit Card": "بطاقة ائتمان أو بطاقة خصم",
-    "payment method": "وسيلة الدفع"
+    "payment method": "وسيلة الدفع",
+    "Your order has been cancelled": "تم إلغاء طلبك"
   },
   "messages": {
     "Please check form inputs": "الرجاء التحقق من المدخلات",

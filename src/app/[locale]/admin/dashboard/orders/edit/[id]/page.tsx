@@ -224,6 +224,11 @@ function EditOrder() {
                         label: OrderStatusEnum.refund,
                         color: "#e74c3c",
                       },
+                      {
+                        value: OrderStatusEnum.refund,
+                        label: OrderStatusEnum.refund,
+                        color: "#95a5a6",
+                      },
                     ]}
                     field={field}
                     errors={errors}

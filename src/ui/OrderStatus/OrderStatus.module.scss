@@ -42,4 +42,10 @@
       background-color: #e74c3c;
     }
   }
+  &--CANCELLED {
+    color: #95a5a6;
+    &::before {
+      background-color: #95a5a6;
+    }
+  }
 }

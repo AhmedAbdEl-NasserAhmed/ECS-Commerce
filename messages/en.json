@@ -267,7 +267,8 @@
     "Select your payment method": "Select your payment method",
     "Cash on delivery": "Cash on delivery",
     "Credit Card or Debit Card": "Credit Card or Debit Card",
-    "payment method": "Payment Method"
+    "payment method": "Payment Method",
+    "Your order has been cancelled": "Your order has been cancelled"
   },
   "messages": {
     "Please check form inputs": "Please check form inputs",

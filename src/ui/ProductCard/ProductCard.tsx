@@ -7,6 +7,7 @@ import { useParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useGetSingleProductBySlugQuery } from "@/lib/features/api/productsApi";
 import { formatCurrency } from "@/lib/helpers";
+import Link from "next/link";
 
 const ProductCard = ({ product }) => {
   const { data: category } = useGetCategoryByIdQuery(product?.category, {
@@ -45,23 +46,25 @@ const ProductCard = ({ product }) => {
       }}
     >
       <div className="relative w-full group overflow-hidden aspect-[2/3]">
-        <div
-          className={`${
-            product.images[0] && product.images[1] ? "hover:opacity-0 " : ""
-          } 
+        <Link href={`/${locale}/user/product/${product?.slug}`}>
+          <div
+            className={`${
+              product.images[0] && product.images[1] ? "hover:opacity-0 " : ""
+            } 
             relative easy transition-opacity duration-500 rounded-md absolute z-10 h-full w-full overflow-hidden`}
-        >
-          <Image
-            src={product.images[0]?.url || ""}
-            quality={75}
-            alt={product.name?.[locale as string]}
-            layout="responsive" // Responsive layout instead of fill
-            width={942} // Set a base width for the image
-            height={1177} // Set a corresponding height for the aspect ratio
-            className="object-cover"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          />
-        </div>
+          >
+            <Image
+              src={product.images[0]?.url || ""}
+              quality={75}
+              alt={product.name?.[locale as string]}
+              layout="responsive" // Responsive layout instead of fill
+              width={942} // Set a base width for the image
+              height={1177} // Set a corresponding height for the aspect ratio
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            />
+          </div>
+        </Link>
         {product.images[1] && (
           <div className="absolute top-0 transition-all duration-500 rotate-0 scale-1 group-hover:rotate-3 group-hover:scale-110 rounded-md h-full w-full overflow-hidden">
             <Image
@@ -110,9 +113,11 @@ const ProductCard = ({ product }) => {
         </div>
       </div>
       <div className="bg-white flex flex-col items-center justify-center h-[9rem] gap-[1rem]">
-        <h4 className="font-normal text-[1.4rem]">
-          {product.name?.[locale as string]}
-        </h4>
+        <Link href={`/${locale}/user/product/${product?.slug}`}>
+          <h4 className="font-normal text-[1.4rem]">
+            {product.name?.[locale as string]}
+          </h4>
+        </Link>
         {!notAvailable ? (
           <div className="flex items-center gap-4 text-[1.6rem] font-medium">
             {!!product.discount && (

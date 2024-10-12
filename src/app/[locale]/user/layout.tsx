@@ -2,7 +2,7 @@
 import useCookie from "@/hooks/useCookie";
 import { useAppSelector } from "@/lib/hooks";
 import { UserType } from "@/types/enums";
-import BreadCrumpet from "@/ui/BreadCrumpet/BreadCrumpet";
+import BreadCrumb from "@/ui/BreadCrumb/BreadCrumb";
 import CustomErrorBoundary from "@/ui/ErrorBoundary/ErrorBoundary";
 import FloatingWhatsAppComponent from "@/ui/FloatingWhatsAppIcon/FloatingWhatsAppIcon";
 import Footer from "@/ui/Footer/Footer";
@@ -21,7 +21,7 @@ function Layout({ children }) {
       <UserProtectedRoute>
         {!user?.isActive && user && <NotActiveMessage />}
         <NavBar />
-        <BreadCrumpet />
+        <BreadCrumb />
         {children}
         {user?.role !== UserType.ADMIN && <FloatingWhatsAppComponent />}
         <Footer />

@@ -7,11 +7,13 @@ import { useEffect, useState } from "react";
 import { handleOpenPdf } from "@/lib/helpers";
 import { useParams } from "next/navigation";
 import { useGetAllCategoriesQuery } from "@/lib/features/api/categoriesApi";
+import { useTranslations } from "next-intl";
 
 function Footer() {
   const [isClient, setIsClient] = useState(false);
   const { locale } = useParams();
-  const { data, isLoading } = useGetAllCategoriesQuery("categories");
+  const { data } = useGetAllCategoriesQuery("categories");
+  const userTranslation = useTranslations("user");
 
   useEffect(() => {
     setIsClient(true);
@@ -30,40 +32,51 @@ function Footer() {
               <div className="text-2xl tracking-wide font-semibold">ORCA</div>
             </Link>
             <p className="text-[1.6rem] font-normal">Egypt Cairo</p>
-            <span className="text-[1.6rem] font-semibold">hello@Orca.com</span>
-            <span className="text-[1.6rem] font-semibold">+1 234 567 890</span>
+            <span className="text-[1.6rem] font-semibold">
+              wear.orca.eg@gmail.com
+            </span>
+            <span className="text-[1.6rem] font-semibold">
+              +20 101 965 8353
+            </span>
             <div className="flex gap-6">
-              <Image src="/facebook.png" alt="" width={16} height={16} />
-              <Image src="/instagram.png" alt="" width={16} height={16} />
-              <Image src="/youtube.png" alt="" width={16} height={16} />
-              <Image src="/pinterest.png" alt="" width={16} height={16} />
-              <Image src="/x.png" alt="" width={16} height={16} />
+              <Link
+                href="https://www.facebook.com/profile.php?id=61567088061864"
+                target="_blank"
+              >
+                <Image src="/facebook.png" alt="" width={16} height={16} />{" "}
+              </Link>
+              <Link
+                href="https://www.instagram.com/orca.wear.eg"
+                target="_blank"
+              >
+                <Image src="/instagram.png" alt="" width={16} height={16} />{" "}
+              </Link>
             </div>
           </div>
           {/* CENTER */}
           <div className="hidden lg:flex justify-between w-1/2">
             <div className="">
               <h1 className="mb-16 text-heading-color1 font-medium uppercase text-3xl">
-                COMPANY
+                {userTranslation("COMPANY")}
               </h1>
               <div className="flex flex-col gap-6">
                 <Link
                   href={`/${locale}/user/about`}
                   className="text-[1.6rem] font-normal"
                 >
-                  About Us
+                  {userTranslation("About")}
                 </Link>
                 <Link
                   href={`/${locale}/user/contact`}
                   className="text-[1.6rem] font-normal"
                 >
-                  Contact Us
+                  {userTranslation("Contact Us")}
                 </Link>
               </div>
             </div>
             <div className="">
               <h1 className="mb-16 text-heading-color1 font-medium uppercase text-3xl">
-                SHOP
+                {userTranslation("SHOP")}
               </h1>
               <div className="flex flex-col gap-6">
                 {data?.data?.length > 0 &&
@@ -82,7 +95,7 @@ function Footer() {
             </div>
             <div className="">
               <h1 className="mb-16 text-heading-color1 font-medium uppercase text-3xl">
-                HELP
+                {userTranslation("HELP")}
               </h1>
               <div className="flex flex-col gap-6">
                 <Link
@@ -90,14 +103,14 @@ function Footer() {
                   className="text-[1.6rem] font-normal"
                   onClick={handleOpenPdf.bind(null, `/privacy-policy.pdf`)}
                 >
-                  Privacy Policy
+                  {userTranslation("Privacy Policy")}
                 </Link>
                 <Link
                   href=""
                   className="text-[1.6rem] font-normal"
                   onClick={handleOpenPdf.bind(null, `/return-policy.pdf`)}
                 >
-                  Return and refund policy
+                  {userTranslation("Return and refund policy")}
                 </Link>
               </div>
             </div>

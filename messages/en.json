@@ -263,12 +263,17 @@
     "Privacy Policy": "Privacy Policy",
     "Return and refund policy": "Return and refund policy",
     "About": "About",
+    "about": "About",
     "About Orca": "About Orca",
     "Select your payment method": "Select your payment method",
     "Cash on delivery": "Cash on delivery",
     "Credit Card or Debit Card": "Credit Card or Debit Card",
     "payment method": "Payment Method",
-    "Your order has been cancelled": "Your order has been cancelled"
+    "Your order has been cancelled": "Your order has been cancelled",
+    "about orca description": "We are a group of friends who came together to create ORCA. Fueled by a shared passion for fashion and individuality, we set out to build a brand that reflects who we are - bold, creative, and confident. Our goal is to craft high-quality, stylish pants that offer both comfort and versatility. With ORCA, you're not just wearing clothes; you're joining us on a journey that's all about celebrating unique style and the power of friendship.",
+    "HELP": "HELP",
+    "SHOP": "SHOP",
+    "COMPANY": "COMPANY"
   },
   "messages": {
     "Please check form inputs": "Please check form inputs",

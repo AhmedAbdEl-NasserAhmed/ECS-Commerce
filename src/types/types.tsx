@@ -16,6 +16,12 @@ export interface AdminMainCategory {
   };
 }
 
+export interface AdminPromocode {
+  promocode: string;
+  expiredAt: Date;
+  discount: number;
+}
+
 export interface UserReviewForm {
   review: string;
   stars: string;

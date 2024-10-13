@@ -1,14 +1,7 @@
 import useClickOutside from "@/hooks/useClickOutside";
-import { logoutUser } from "@/lib/features/usersSlice/usersSlice";
-import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { UserType } from "@/types/enums";
-import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import { useSetCartItemsMutation } from "@/lib/features/api/cartItemsApi";
-import { HiOutlineUserCircle } from "react-icons/hi2";
-import { HiOutlineLogout, HiOutlineViewGrid } from "react-icons/hi";
-import { clearCookiesThunk } from "@/lib/features/cookieSlice/cookieSlice";
+import { HiOutlineLogout } from "react-icons/hi";
 import useLogout from "@/hooks/useLogout";
 
 function AdminProfileMenu({ setIsProfileOpen }) {
@@ -17,8 +10,6 @@ function AdminProfileMenu({ setIsProfileOpen }) {
   const router = useRouter();
 
   const ref = useClickOutside({ close: setIsProfileOpen, value: false });
-
-  const dispatch = useAppDispatch();
 
   const logout = useLogout();
   return (

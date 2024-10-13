@@ -2,15 +2,9 @@
 
 import { Dispatch, SetStateAction, useState } from "react";
 import Image from "next/image";
-import { FaAngleDown, FaSearch } from "react-icons/fa";
-import { HiOutlineBell } from "react-icons/hi2";
-import { Box, InputAdornment } from "@mui/material";
-import CustomizedTextField from "@/ui/TextField/TextField";
+import { Box } from "@mui/material";
 import { HiMenuAlt3 } from "react-icons/hi";
-import { useParams, usePathname, useRouter } from "next/navigation";
-import { useAppDispatch } from "@/lib/hooks";
-import { logoutUser } from "@/lib/features/usersSlice/usersSlice";
-import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 import LanguageSelector from "@/ui/LanguageSelector/LanguageSelector";
 import AdminProfileMenu from "./AdminProfileMenu";
 
@@ -20,8 +14,6 @@ interface Props {
 }
 
 function Navbar({ setExpand, setExpanded }: Props) {
-  const router = useRouter();
-
   const [isProfileOpen, setIsProfileOpen] = useState<boolean>(false);
 
   return (

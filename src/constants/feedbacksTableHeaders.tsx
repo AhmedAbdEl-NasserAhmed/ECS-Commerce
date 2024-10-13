@@ -1,9 +1,5 @@
 "use client";
 
-import FeedbacksTableMenuOptions from "@/components/AdminFeedbacks/FeedbacksTableMenuOptions";
-import ReviewsTableMenuOptions from "@/components/AdminReviews/ReviewsTableMenuOptions";
-import { IoStarSharp } from "react-icons/io5";
-
 export const feedbacksTableHeaders = (t) => [
   {
     id: "name",

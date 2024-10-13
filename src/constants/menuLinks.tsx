@@ -9,6 +9,7 @@ import { PiFoldersFill } from "react-icons/pi";
 import { BsFillCartCheckFill } from "react-icons/bs";
 import { MdReviews } from "react-icons/md";
 import { MdFeedback } from "react-icons/md";
+import { IoBarcode } from "react-icons/io5";
 
 export const productLinks = (locale: string): AdminDashboardLink[] => {
   return [
@@ -23,6 +24,25 @@ export const productLinks = (locale: string): AdminDashboardLink[] => {
       id: 2,
       icon: <FaBox />,
       headLine: "ADD PRODUCT",
+      href: `${locale}/admin/dashboard/products/add`,
+      pathName: "product",
+    },
+  ];
+};
+
+export const promocodeLinks = (locale: string): AdminDashboardLink[] => {
+  return [
+    {
+      id: 1,
+      icon: <FaEye />,
+      headLine: "VIEW PROMOCODE",
+      href: `${locale}/admin/dashboard/products`,
+      pathName: "products",
+    },
+    {
+      id: 2,
+      icon: <FaBox />,
+      headLine: "ADD PROMOCODE",
       href: `${locale}/admin/dashboard/products/add`,
       pathName: "product",
     },
@@ -114,6 +134,21 @@ export const AdminSubmenuLinks = (locale, { tDashboard }) => [
       {
         href: `/${locale}/admin/dashboard/orders`,
         linkName: tDashboard("All Orders"),
+      },
+    ],
+  },
+  {
+    menuName: tDashboard("Promocodes"),
+    id: "promocodes",
+    icon: <IoBarcode />,
+    children: [
+      {
+        href: `/${locale}/admin/dashboard/promocodes`,
+        linkName: tDashboard("All Promocodes"),
+      },
+      {
+        href: `/${locale}/admin/dashboard/promocodes/add`,
+        linkName: tDashboard("Add Promocode"),
       },
     ],
   },

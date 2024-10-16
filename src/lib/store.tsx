@@ -16,6 +16,7 @@ import paymentSlice from "./features/paymentSlice/paymentSlice";
 import dashboardApi from "./features/api/dashboardApi";
 import wishListApi from "./features/api/wishListApi";
 import feedbackApi from "./features/api/feedbacks";
+import promocodesApi from "./features/api/promocodesApi";
 
 const persistConfig = {
   key: "root",
@@ -31,6 +32,7 @@ const rootReducer = combineReducers({
 
   [usersApi.reducerPath]: usersApi.reducer,
   [categoriesApi.reducerPath]: categoriesApi.reducer,
+  [promocodesApi.reducerPath]: promocodesApi.reducer,
   [subCategoriesApi.reducerPath]: subCategoriesApi.reducer,
   [productsApi.reducerPath]: productsApi.reducer,
   [ordersApi.reducerPath]: ordersApi.reducer,
@@ -50,6 +52,7 @@ export const store = configureStore({
     getDefaultMiddleware({ serializableCheck: false }).concat(
       usersApi.middleware,
       categoriesApi.middleware,
+      promocodesApi.middleware,
       subCategoriesApi.middleware,
       productsApi.middleware,
       ordersApi.middleware,

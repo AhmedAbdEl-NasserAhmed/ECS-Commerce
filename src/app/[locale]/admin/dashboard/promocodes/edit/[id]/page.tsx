@@ -1,93 +1,88 @@
 "use client";
 
 import {
-  useEditCategoryMutation,
-  useGetCategoryByIdQuery,
-} from "@/lib/features/api/categoriesApi";
-import { AdminMainCategory } from "@/types/types";
+  useEditPromocodeMutation,
+  useGetPromocodeByIdQuery,
+} from "@/lib/features/api/promocodesApi";
+import { AdminPromocode } from "@/types/types";
 import MiniSpinner from "@/ui/MiniSpinner/MiniSpinner";
-import Spinner from "@/ui/Spinner/Spinner";
 import CustomizedTextField from "@/ui/TextField/TextField";
-import {
-  Box,
-  Button,
-  FormControlLabel,
-  Switch,
-  Typography,
-} from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
-import { useParams, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useParams } from "next/navigation";
+import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { HiChevronRight } from "react-icons/hi2";
 
 function EditPromoCodePage() {
-  const params = useParams();
-
-  const router = useRouter();
-
-  const { locale } = useParams();
-
-  const { data: categoryData, isLoading } = useGetCategoryByIdQuery(params.id);
-
-  const [editCategory, editCategoryResponse] = useEditCategoryMutation();
-
-  const [isChecked, setIsChecked] = useState<boolean>(false);
-
-  function showInputsHandler(e) {
-    setIsChecked(e.target.checked);
-  }
-
-  const t = useTranslations("Dashboard");
-  const tMessage = useTranslations("messages");
-
   const {
     handleSubmit,
     control,
     watch,
     reset,
+    setValue,
     formState: { errors },
-  } = useForm<AdminMainCategory>({
+  } = useForm<AdminPromocode>({
     mode: "onChange",
   });
 
+  const { locale, id } = useParams();
+
+  const {
+    data: _promocode,
+    isLoading,
+    isFetching,
+  } = useGetPromocodeByIdQuery(id);
+
+  const promocode = {
+    _id: "670c74a16e9db96ad25b473c",
+    code: "ORCA-10Men",
+    expirationDate: "2024-12-01T00:00:00.000Z",
+    discount: 10,
+    __v: 0,
+  };
+
+  const [updatePromocode, updatePromocodeResponse] = useEditPromocodeMutation();
+
+  // const router = useRouter();
+
   const formData = watch();
 
-  function handleEditCategorySubmit() {
-    editCategory({
-      id: params.id,
-      data: {
-        name: formData.name,
-        description: formData.description,
-      },
+  const t = useTranslations("Dashboard");
+  const tMessage = useTranslations("messages");
+
+  function handleEditPromocodeSubmit() {
+    updatePromocode({
+      id,
+      code: formData.promocode,
+      expirationDate: new Date(formData.expiredAt).toISOString().slice(0, 10),
+      discount: +formData.discount,
     })
       .unwrap()
       .then((res) => {
         if (res.status === "success") {
-          toast.success(tMessage(`Your category has been updated!`));
-          router.replace(`/${locale}/admin/dashboard/categories`);
+          toast.success(tMessage("A New Promocode Updated"));
+          reset();
         }
       })
       .catch((err) => {
         if (err) {
-          toast.error(tMessage("This Category is Already Added"));
+          toast.error(tMessage(err?.data?.message));
         }
       });
   }
 
-  if (!categoryData) return <Spinner />;
-
   return (
     <form
-      onSubmit={handleSubmit(handleEditCategorySubmit)}
+      onSubmit={handleSubmit(handleEditPromocodeSubmit)}
       className=" flex flex-col gap-8 px-[4rem] py-[1.2rem] bg-[#FDFDFD] "
     >
       <Box className="h-[10vh] flex justify-between items-center">
         <Box className="flex flex-col gap-4">
           <h2 className="text-4xl font-semibold  text-gray-600">
-            {t("Edit Category")}
+            {t("Edit Promocode")}
           </h2>
           <Box className="flex items-center gap-4 text-[1.4rem]">
             <Link
@@ -99,197 +94,128 @@ function EditPromoCodePage() {
             <span>
               <HiChevronRight />
             </span>
-            <h4>{t("Categories")}</h4>
+            <h4>{t("Promocodes")}</h4>
           </Box>
         </Box>
       </Box>
       <Box className="relative grow flex flex-col gap-8 bg-white rounded-2xl border-2 p-10 border-slate-100 shadow-md">
-        <Box>
-          <Box className="flex justify-between items-center">
-            <h2 className="text-3xl font-semibold mb-5">
-              {t("Edit Category")}
-            </h2>
-            <FormControlLabel
-              control={
-                <Switch
-                  disabled={
-                    formData.name?.en === "" || formData.description?.en === ""
-                  }
-                  checked={isChecked}
-                  onChange={showInputsHandler}
-                  sx={{
-                    "& .MuiSwitch-switchBase.Mui-checked": {
-                      color: "red",
-                      "& + .MuiSwitch-track": {
-                        backgroundColor: "#ed0534",
-                      },
-                    },
-                    "& .MuiSwitch-track": {
-                      backgroundColor: "#161616",
-                      opacity: 1,
-                    },
-                  }}
-                />
-              }
-              label={
-                <Typography variant="h6">{`Show ${
-                  isChecked ? "English" : "Arabic"
-                }  Inputs`}</Typography>
-              }
-            />
+        <Box className="mb-4">
+          <Box>
+            <Box className="flex justify-between items-center">
+              <h2 className="text-3xl font-semibold mb-5">
+                {t("Edit Promocode")}
+              </h2>
+            </Box>
           </Box>
+
+          <span className=" absolute top-28 left-0 block h-[1px] w-full bg-gray-200">
+            &nbsp;
+          </span>
         </Box>
         <Box className="relative flex flex-col  gap-12">
-          {!isChecked && (
-            <Controller
-              name={"name.en"}
-              control={control}
-              defaultValue={categoryData?.data.name.en}
-              rules={{
-                required: "This field is required",
-              }}
-              render={({ field }) => (
-                <CustomizedTextField
-                  customError={errors?.["name"]?.["en"]}
-                  disabled={editCategoryResponse.isLoading}
-                  textLabelClass={"font-semibold text-xl"}
-                  placeholder={t("Category Name")}
-                  textlabel={`${t("Category Name")}${
-                    isChecked ? "(عربي)" : "(English)"
-                  }`}
-                  field={field}
-                  errors={errors}
-                  formerHelperStyles={{ style: { fontSize: "1rem" } }}
-                  type={"text"}
-                  variant={"outlined"}
-                  size={"small"}
+          <Controller
+            name={"promocode"}
+            control={control}
+            defaultValue={promocode.code}
+            rules={{
+              required: "This field is required",
+            }}
+            render={({ field }) => (
+              <CustomizedTextField
+                customError={errors?.promocode}
+                disabled={updatePromocodeResponse.isLoading}
+                textLabelClass={"font-semibold text-xl"}
+                placeholder={t("Promocode")}
+                textlabel={`${t("Promocode")}`}
+                field={field}
+                errors={errors}
+                formerHelperStyles={{ style: { fontSize: "1rem" } }}
+                type={"text"}
+                variant={"outlined"}
+                size={"small"}
+              />
+            )}
+          />
+          <Controller
+            name={"expiredAt"}
+            disabled={updatePromocodeResponse.isLoading}
+            control={control}
+            defaultValue={new Date(promocode.expirationDate)}
+            rules={{
+              required: "This field is required",
+            }}
+            render={({ field }) => (
+              <div className="flex flex-col gap-4">
+                <label className={"font-semibold text-xl"}>
+                  {t("Expired At")}
+                </label>
+                <input
+                  type="date"
+                  className="w-full h-[40px] rounded-lg border border-gray-300 px-4 pr-4 placeholder-gray-400 text-gray-600"
+                  name={field.name}
+                  min={new Date().toISOString().slice(0, 10)}
+                  onChange={field.onChange}
+                  defaultValue={new Date(promocode.expirationDate)
+                    .toISOString()
+                    .slice(0, 10)}
                 />
-              )}
-            />
-          )}
-          {isChecked && (
-            <Controller
-              name={"name.ar"}
-              control={control}
-              defaultValue={categoryData?.data.name.ar}
-              rules={{
-                required: "هذا الحقل مطلوب",
-              }}
-              render={({ field }) => (
-                <CustomizedTextField
-                  customError={errors?.["name"]?.["ar"]}
-                  disabled={editCategoryResponse.isLoading}
-                  textLabelClass={"font-semibold text-xl"}
-                  placeholder={"أسم القسم"}
-                  textlabel={`اسم القسم${isChecked ? "(عربي)" : "(English)"}`}
-                  field={field}
-                  errors={errors}
-                  formerHelperStyles={{ style: { fontSize: "1rem" } }}
-                  type={"text"}
-                  variant={"outlined"}
-                  size={"small"}
-                />
-              )}
-            />
-          )}
-          {!isChecked && (
-            <Controller
-              name={"description.en"}
-              disabled={editCategoryResponse.isLoading}
-              defaultValue={categoryData?.data.description.en}
-              control={control}
-              rules={{
-                required: "This field is required",
-              }}
-              render={({ field }) => (
-                <CustomizedTextField
-                  customError={errors?.["description"]?.["en"]}
-                  textLabelClass={"font-semibold text-xl"}
-                  placeholder={t("Category Description")}
-                  textlabel={`${t("Category Description")}${
-                    isChecked ? "(عربي)" : "(English)"
-                  }`}
-                  field={field}
-                  formerHelperStyles={{ style: { fontSize: "1rem" } }}
-                  errors={errors}
-                  type={"text"}
-                  variant={"outlined"}
-                  multiline={true}
-                  rows={6}
-                  sx={{
-                    "& .MuiInputBase-input": {
-                      fontSize: "1.4rem",
-                    },
-                    "& .MuiInputBase-inputMultiline": {
-                      fontSize: "1.4rem",
-                    },
-                  }}
-                />
-              )}
-            />
-          )}
-          {isChecked && (
-            <Controller
-              name={"description.ar"}
-              disabled={editCategoryResponse.isLoading}
-              defaultValue={categoryData?.data.description.ar}
-              control={control}
-              rules={{
-                required: "هذا الحقل مطلوب",
-              }}
-              render={({ field }) => (
-                <CustomizedTextField
-                  customError={errors?.["description"]?.["ar"]}
-                  textLabelClass={"font-semibold text-xl"}
-                  placeholder={"وصف القسم"}
-                  textlabel={`وصف القسم${isChecked ? "(عربي)" : "(English)"}`}
-                  field={field}
-                  formerHelperStyles={{ style: { fontSize: "1rem" } }}
-                  errors={errors}
-                  type={"text"}
-                  variant={"outlined"}
-                  multiline={true}
-                  rows={6}
-                  sx={{
-                    "& .MuiInputBase-input": {
-                      fontSize: "1.4rem",
-                    },
-                    "& .MuiInputBase-inputMultiline": {
-                      fontSize: "1.4rem",
-                    },
-                  }}
-                />
-              )}
-            />
-          )}
+              </div>
+            )}
+          />
+          <Controller
+            name={"discount"}
+            control={control}
+            defaultValue={promocode.discount}
+            rules={{
+              min: {
+                value: 0,
+                message: "This field should be more than 0 ",
+              },
+              max: {
+                value: 100,
+                message: "This field should be less than 100 % ",
+              },
+            }}
+            render={({ field }) => (
+              <CustomizedTextField
+                textLabelClass={"font-semibold text-xl"}
+                placeholder={"0"}
+                textlabel={t("Product Discount %")}
+                field={field}
+                formerHelperStyles={{ style: { fontSize: "1rem" } }}
+                errors={errors}
+                type={"number"}
+                variant={"outlined"}
+                size={"small"}
+              />
+            )}
+          />
         </Box>
         <Box>
-          {isChecked && (
-            <Button
-              disabled={isLoading || editCategoryResponse.isLoading}
-              sx={{
-                paddingInline: "1.6rem",
-                paddingBlock: "1rem",
-                fontSize: "1.3rem",
-                borderRadius: "5px",
-                backgroundColor: "#ed0534",
+          <Button
+            disabled={updatePromocodeResponse.isLoading}
+            sx={{
+              paddingInline: "1.6rem",
+              paddingBlock: "1rem",
+              fontSize: "1.3rem",
+              borderRadius: "5px",
+              backgroundColor: "#ed0534",
+              boxShadow: "none",
+              "&:hover": {
+                backgroundColor: "black",
                 boxShadow: "none",
-                "&:hover": {
-                  backgroundColor: "black",
-                  boxShadow: "none",
-                },
-              }}
-              type="submit"
-              variant="contained"
-              size="large"
-            >
-              {isLoading || editCategoryResponse.isLoading ? (
-                <MiniSpinner />
-              ) : (
-                t("Edit Promocode")
-              )}
-            </Button>
-          )}
+              },
+            }}
+            type="submit"
+            variant="contained"
+            size="large"
+          >
+            {updatePromocodeResponse.isLoading ? (
+              <MiniSpinner />
+            ) : (
+              t("Edit Promocode")
+            )}
+          </Button>
         </Box>
       </Box>
     </form>

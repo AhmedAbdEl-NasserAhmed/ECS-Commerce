@@ -56,7 +56,6 @@ const categoriesApi = createApi({
       },
       providesTags: ["CATEGORIES"],
     }),
-
     editCategory: builder.mutation({
       query: ({ id, data }) => ({
         url: `categories/${id}`,

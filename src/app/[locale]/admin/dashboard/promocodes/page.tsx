@@ -1,8 +1,9 @@
 "use client";
 
 import { categoriesTableHeaders } from "@/constants/categoriesTableHeaders";
+import { promocodesTableHeaders } from "@/constants/promocodesTableHeaders";
 import useBaseTablePagination from "@/hooks/useBaseTablePagination/useBaseTablePagination";
-import { useLazyGetAdminCategoryQuery } from "@/lib/features/api/categoriesApi";
+import { useLazyGetAllPromocodesQuery } from "@/lib/features/api/promocodesApi";
 import BaseTable from "@/ui/BaseReactTable";
 import Menus from "@/ui/Menus/Menus";
 import Spinner from "@/ui/Spinner/Spinner";
@@ -19,7 +20,7 @@ function PromoCodes() {
   const t = useTranslations("Dashboard");
 
   const [getPaginatedPromoCodes, getPaginatedPromoCodesResponse] =
-    useLazyGetAdminCategoryQuery();
+    useLazyGetAllPromocodesQuery();
 
   const { paginationControllers } = useBaseTablePagination(
     getPaginatedPromoCodesResponse?.data?.numPages
@@ -65,7 +66,7 @@ function PromoCodes() {
             <BaseTable
               data={getPaginatedPromoCodesResponse?.data?.data}
               isLoading={getPaginatedPromoCodesResponse?.isFetching}
-              columns={categoriesTableHeaders(locale, t)}
+              columns={promocodesTableHeaders(locale, t)}
               paginationControllers={paginationControllers}
             />
           )}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useAddCategoryMutation } from "@/lib/features/api/categoriesApi";
+import { useAddPromocodeMutation } from "@/lib/features/api/promocodesApi";
 import { AdminPromocode } from "@/types/types";
 import MiniSpinner from "@/ui/MiniSpinner/MiniSpinner";
 import CustomizedTextField from "@/ui/TextField/TextField";
@@ -23,9 +23,7 @@ function PromoCodePage() {
     mode: "onChange",
   });
 
-  const [addCategory, categoryState] = useAddCategoryMutation();
-
-  // const router = useRouter();
+  const [addPromocode, addPromocodeResponse] = useAddPromocodeMutation();
 
   const { locale } = useParams();
 
@@ -34,37 +32,29 @@ function PromoCodePage() {
   const t = useTranslations("Dashboard");
   const tMessage = useTranslations("messages");
 
-  function handleAddCategorySubmit() {
-    // if (
-    //   !formData.name.en ||
-    //   !formData.name.ar ||
-    //   !formData.description.en ||
-    //   !formData.description.ar
-    // ) {
-    //   toast.error(tMessage("Please check form inputs"));
-    //   return;
-    // }
-    // addCategory({
-    //   name: formData.name,
-    //   description: formData.description,
-    // })
-    //   .unwrap()
-    //   .then((res) => {
-    //     if (res.status === "success") {
-    //       toast.success(tMessage("A New Main Category Added"));
-    //       reset();
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     if (err) {
-    //       toast.error(tMessage("This Category is Already Added"));
-    //     }
-    //   });
+  function handleAddPromocodeSubmit() {
+    addPromocode({
+      code: formData.promocode,
+      expirationDate: formData.expiredAt,
+      discount: +formData.discount,
+    })
+      .unwrap()
+      .then((res) => {
+        if (res.status === "success") {
+          toast.success(tMessage("A New Promocode Added"));
+          reset();
+        }
+      })
+      .catch((err) => {
+        if (err) {
+          toast.error(tMessage("This Promocode is Already Added"));
+        }
+      });
   }
 
   return (
     <form
-      onSubmit={handleSubmit(handleAddCategorySubmit)}
+      onSubmit={handleSubmit(handleAddPromocodeSubmit)}
       className=" flex flex-col gap-8 px-[4rem] py-[1.2rem] bg-[#FDFDFD] "
     >
       <Box className="h-[10vh] flex justify-between items-center">
@@ -111,7 +101,7 @@ function PromoCodePage() {
             render={({ field }) => (
               <CustomizedTextField
                 customError={errors?.promocode}
-                disabled={categoryState.isLoading}
+                disabled={addPromocodeResponse.isLoading}
                 textLabelClass={"font-semibold text-xl"}
                 placeholder={t("Promocode")}
                 textlabel={`${t("Promocode")}`}
@@ -126,7 +116,7 @@ function PromoCodePage() {
           />
           <Controller
             name={"expiredAt"}
-            disabled={categoryState.isLoading}
+            disabled={addPromocodeResponse.isLoading}
             control={control}
             rules={{
               required: "This field is required",
@@ -140,6 +130,9 @@ function PromoCodePage() {
                   type="date"
                   className="w-full h-[40px] rounded-lg border border-gray-300 text-right pr-4 placeholder-gray-400 text-gray-600"
                   style={{ direction: "rtl" }}
+                  name={field.name}
+                  onChange={field.onChange}
+                  value={field.value.toISOString().slice(0, 10)}
                   min={new Date().toISOString().slice(0, 10)}
                 />
               </div>
@@ -148,7 +141,7 @@ function PromoCodePage() {
           <Controller
             name={"discount"}
             control={control}
-            // defaultValue={0}
+            defaultValue={0}
             rules={{
               min: {
                 value: 0,
@@ -176,7 +169,7 @@ function PromoCodePage() {
         </Box>
         <Box>
           <Button
-            disabled={categoryState.isLoading}
+            disabled={addPromocodeResponse.isLoading}
             sx={{
               paddingInline: "1.6rem",
               paddingBlock: "1rem",
@@ -193,7 +186,11 @@ function PromoCodePage() {
             variant="contained"
             size="large"
           >
-            {categoryState.isLoading ? <MiniSpinner /> : t("Add Promocode")}
+            {addPromocodeResponse.isLoading ? (
+              <MiniSpinner />
+            ) : (
+              t("Add Promocode")
+            )}
           </Button>
         </Box>
       </Box>

@@ -2,7 +2,7 @@ import { useTranslations } from "next-intl";
 import { paymentMethod } from "./UserCheckout";
 import { BsCashCoin } from "react-icons/bs";
 import { BsCreditCard } from "react-icons/bs";
-
+import PromocodeForm from "./PromocodeForm";
 interface IProps {
   setUserPaymentMethod: any;
   userPaymentMethod: paymentMethod;
@@ -19,37 +19,49 @@ const CashOnDelivery = (props: IProps) => {
         </h2>
         <span className="w-full h-1 block bg-[#ed0534] ">&nbsp;</span>
       </div>
-
-      <div className="flex items-center relative gap-2">
-        <input
-          id="visa"
-          name="payment-method"
-          value={"visa"}
-          type="radio"
-          checked={props.userPaymentMethod === "visa"}
-          onChange={(e) => props.setUserPaymentMethod("visa")}
-        />
-        <BsCreditCard fontSize={"2rem"} color="#f1c40f" className="mr-2 ml-1" />
-        <label htmlFor="visa" className="text-2xl font-semibold">
-          {userTranslation("Credit Card or Debit Card")}
-        </label>
-      </div>
-      <div className="flex items-center relative gap-2">
-        <input
-          id="cash-on-delivery"
-          name="payment-method"
-          type="radio"
-          value={"cash"}
-          onChange={(e) => props.setUserPaymentMethod("cash")}
-        />
-        <BsCashCoin
-          fontSize={"2rem"}
-          color="#2ecc71"
-          className="translate-y-[3px] mr-2 ml-1"
-        />
-        <label htmlFor="cash-on-delivery" className="text-2xl font-semibold">
-          {userTranslation("Cash on delivery")}
-        </label>
+      <div className="flex gap-5 justify-between items-start">
+        <div className="flex flex-col gap-8">
+          <div className="flex items-center relative gap-2">
+            <input
+              id="visa"
+              name="payment-method"
+              value={"visa"}
+              type="radio"
+              checked={props.userPaymentMethod === "visa"}
+              onChange={(e) => props.setUserPaymentMethod("visa")}
+            />
+            <BsCreditCard
+              fontSize={"2rem"}
+              color="#f1c40f"
+              className="mr-2 ml-1"
+            />
+            <label htmlFor="visa" className="text-2xl font-semibold">
+              {userTranslation("Credit Card or Debit Card")}
+            </label>
+          </div>
+          <div className="flex items-center relative gap-2">
+            <input
+              id="cash-on-delivery"
+              name="payment-method"
+              type="radio"
+              value={"cash"}
+              onChange={(e) => props.setUserPaymentMethod("cash")}
+            />
+            <BsCashCoin
+              fontSize={"2rem"}
+              color="#2ecc71"
+              className="translate-y-[3px] mr-2 ml-1"
+            />
+            <label
+              htmlFor="cash-on-delivery"
+              className="text-2xl font-semibold"
+            >
+              {userTranslation("Cash on delivery")}
+            </label>
+          </div>
+        </div>
+        <PromocodeForm />
+        <div></div>
       </div>
     </div>
   );

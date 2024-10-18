@@ -282,7 +282,11 @@
     "about orca description": "We are a group of friends who came together to create ORCA. Fueled by a shared passion for fashion and individuality, we set out to build a brand that reflects who we are - bold, creative, and confident. Our goal is to craft high-quality, stylish pants that offer both comfort and versatility. With ORCA, you're not just wearing clothes; you're joining us on a journey that's all about celebrating unique style and the power of friendship.",
     "HELP": "HELP",
     "SHOP": "SHOP",
-    "COMPANY": "COMPANY"
+    "COMPANY": "COMPANY",
+    "success promocode message": "You are now enjoying a {discount}% discount",
+    "fail promocode message": "The promo code has expired",
+    "Enter promo code": "Enter promo code",
+    "Apply": "Apply"
   },
   "messages": {
     "Please check form inputs": "Please check form inputs",

@@ -26,6 +26,7 @@ import { paymentMethod } from "./UserCheckout";
 interface IProps {
   isUserAcceptedAllPolicies: boolean;
   userPaymentMethod: paymentMethod;
+  enteredPromocode: any;
 }
 
 function BillingInformation(props: IProps) {
@@ -78,6 +79,7 @@ function BillingInformation(props: IProps) {
         street: data.street,
         floor: data.floor,
       },
+      promocode: props.enteredPromocode?.code,
       cartItems: cart,
       locale,
     };

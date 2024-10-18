@@ -3,9 +3,11 @@ import { paymentMethod } from "./UserCheckout";
 import { BsCashCoin } from "react-icons/bs";
 import { BsCreditCard } from "react-icons/bs";
 import PromocodeForm from "./PromocodeForm";
+import { AnyMxRecord } from "dns";
 interface IProps {
   setUserPaymentMethod: any;
   userPaymentMethod: paymentMethod;
+  setEnteredPromocode: AnyMxRecord;
 }
 
 const CashOnDelivery = (props: IProps) => {
@@ -60,7 +62,7 @@ const CashOnDelivery = (props: IProps) => {
             </label>
           </div>
         </div>
-        <PromocodeForm />
+        <PromocodeForm setEnteredPromocode={props.setEnteredPromocode} />
         <div></div>
       </div>
     </div>

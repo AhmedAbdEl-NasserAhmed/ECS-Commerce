@@ -286,7 +286,8 @@
     "success promocode message": "أنت الآن تستمتع بخصم {discount}%",
     "fail promocode message": "لقد انتهت صلاحية كود الخصم",
     "Enter promo code": "ادخل كود الخصم",
-    "Apply": "ادخل"
+    "Apply": "ادخل",
+    "NO_PROMO_FOUND_WITH_THIS_CODE": "كود الخصم غير صحيح"
   },
   "messages": {
     "Please check form inputs": "الرجاء التحقق من المدخلات",

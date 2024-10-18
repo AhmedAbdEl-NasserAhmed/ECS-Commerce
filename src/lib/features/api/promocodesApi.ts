@@ -37,6 +37,13 @@ const promocodesApi = createApi({
       }),
       providesTags: ["PROMOCODES"],
     }),
+    getPromocodeByCode: builder.query({
+      query: (code) => ({
+        url: `promoCodes/filter/${code}`,
+        method: "GET",
+      }),
+      providesTags: ["PROMOCODES"],
+    }),
     editPromocode: builder.mutation({
       query: ({ id, data }) => ({
         url: `promoCodes/${id}`,
@@ -62,6 +69,7 @@ export const {
   useLazyGetAllPromocodesQuery,
   useEditPromocodeMutation,
   useDeletePromocodeMutation,
+  useLazyGetPromocodeByCodeQuery,
 } = promocodesApi;
 
 export default promocodesApi;

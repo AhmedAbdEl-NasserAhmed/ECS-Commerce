@@ -12,16 +12,19 @@ function UserCheckout() {
     useState(false);
   const [userPaymentMethod, setUserPaymentMethod] =
     useState<paymentMethod>("visa");
+  const [enteredPromocode, setEnteredPromocode] = useState(null);
   return (
     <div className="flex justify-between flex-col lg:flex-row items-start  px-4 md:px-8 lg:px-16 xl:px-32 2xl:px-58 my-44 gap-16">
       <BillingInformation
         isUserAcceptedAllPolicies={isUserAcceptedAllPolicies}
         userPaymentMethod={userPaymentMethod}
+        enteredPromocode={enteredPromocode}
       />
       <OrdersAndPaymentDetails
         userPaymentMethod={userPaymentMethod}
         setIsUserAcceptedAllPolicies={setIsUserAcceptedAllPolicies}
         setUserPaymentMethod={setUserPaymentMethod}
+        setEnteredPromocode={setEnteredPromocode}
       />
     </div>
   );

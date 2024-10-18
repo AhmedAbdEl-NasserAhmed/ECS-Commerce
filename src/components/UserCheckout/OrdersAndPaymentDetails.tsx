@@ -8,6 +8,7 @@ interface IProps {
   setIsUserAcceptedAllPolicies: any;
   setUserPaymentMethod: any;
   userPaymentMethod: paymentMethod;
+  setEnteredPromocode: any;
 }
 
 function OrdersAndPaymentDetails(props: IProps) {
@@ -20,6 +21,7 @@ function OrdersAndPaymentDetails(props: IProps) {
       <CashOnDelivery
         userPaymentMethod={props.userPaymentMethod}
         setUserPaymentMethod={props.setUserPaymentMethod}
+        setEnteredPromocode={props.setEnteredPromocode}
       />
       <PaymentDetails />
     </div>

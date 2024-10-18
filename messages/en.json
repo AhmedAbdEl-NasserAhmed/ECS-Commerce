@@ -286,7 +286,8 @@
     "success promocode message": "You are now enjoying a {discount}% discount",
     "fail promocode message": "The promo code has expired",
     "Enter promo code": "Enter promo code",
-    "Apply": "Apply"
+    "Apply": "Apply",
+    "NO_PROMO_FOUND_WITH_THIS_CODE": "Wrong promo code"
   },
   "messages": {
     "Please check form inputs": "Please check form inputs",

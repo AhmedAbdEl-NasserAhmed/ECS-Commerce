@@ -21,6 +21,7 @@ function UserCheckout() {
         enteredPromocode={enteredPromocode}
       />
       <OrdersAndPaymentDetails
+        enteredPromocode={enteredPromocode}
         userPaymentMethod={userPaymentMethod}
         setIsUserAcceptedAllPolicies={setIsUserAcceptedAllPolicies}
         setUserPaymentMethod={setUserPaymentMethod}

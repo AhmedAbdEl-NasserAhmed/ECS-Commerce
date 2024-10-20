@@ -27,76 +27,6 @@ function OrderDetails() {
     skip: !orderId,
   });
 
-  const _dummy = {
-    _id: "6709164406e58185725fe5d1",
-    transaction_id: "1728648772237",
-    user: {
-      _id: "66bf67d0f792c1d16898ca6c",
-      name: "Khaled",
-      email: "khalednasser788@gmail.com",
-      role: "user",
-      isActive: true,
-      id: "66bf67d0f792c1d16898ca6c",
-    },
-    orderPrice: 4800,
-    paymentMethod: "cash",
-    items: [
-      {
-        product: {
-          name: {
-            en: "test",
-            ar: "تيست",
-          },
-          size: {
-            value: "XS",
-            label: "XS",
-            color: "#666666",
-          },
-          images: [
-            {
-              url: "http://res.cloudinary.com/dtvumfiux/image/upload/v1728051902/xrabgtuzkukeoxjnkxcq.jpg",
-              id: "xrabgtuzkukeoxjnkxcq",
-            },
-            {
-              url: "http://res.cloudinary.com/dtvumfiux/image/upload/v1728051904/ssccniaqvhuzso5a0qn7.jpg",
-              id: "ssccniaqvhuzso5a0qn7",
-            },
-          ],
-        },
-        price: 1200,
-        quantity: 4,
-        color: {
-          value: "IndianRed",
-          label: "IndianRed",
-          color: "#d64c4c",
-          quantity: 5,
-          _id: "66fffac0aaf4494eec424e61",
-        },
-        _id: "6709164406e58185725fe5d2",
-      },
-    ],
-    orderStatus: "DELIVERED".toLowerCase(),
-    billingData: [
-      {
-        firstName: "Khaled",
-        lastName: "Nasser",
-        apartment: "٣",
-        street:
-          "السويس, ميدان الاربعين, شارع مصطفي الوكيل اما مطعم دينا بجوار المسجد الاقصي",
-        building: "٣٦",
-        city: "Suez",
-        country: "Egypt",
-        floor: "٣",
-        phoneNumber: "01208741247",
-        _id: "6709164406e58185725fe5d4",
-      },
-    ],
-    paymentOrderId: "1728648772239",
-    createdAt: "2024-10-11T12:12:52.245Z",
-    updatedAt: "2024-10-11T12:31:10.765Z",
-    __v: 0,
-  };
-
   const [updateOrder, updateOrderResponse] = useUpdateOrderMutation();
 
   const userTranslation = useTranslations("user");
@@ -151,9 +81,7 @@ function OrderDetails() {
 
   const selectedOrderItems = data?.data.items;
 
-  const totalOrderPrice = selectedOrderItems?.reduce((acc, cur) => {
-    return acc + cur.price * cur.quantity;
-  }, 0);
+  const totalOrderPrice = data?.data?.orderPrice;
 
   if (isFetching) return <Spinner />;
 
@@ -162,7 +90,6 @@ function OrderDetails() {
   const isCancelled = data?.data?.orderStatus === "cancelled";
   const isCreated = data?.data?.orderStatus === "created";
   const cannotBeCancelled = !isCreated && !isCancelled && !isRefunded;
-
 
   return (
     <div className=" p-8 bg-white w-full text-center ">
@@ -186,7 +113,7 @@ function OrderDetails() {
       )}
 
       {!isVisa && isCreated && (
-        <div className="flex justify-between items-center mb-10">
+        <div className="flex justify-between items-center mb-20">
           {updateOrderResponse.isLoading ? (
             <Spinner />
           ) : (
@@ -215,15 +142,28 @@ function OrderDetails() {
           />
         </div>
       )}
-      <h2
+      <div
         className="mt-[5rem] mb-[3rem] text-[2rem] pb-[2rem]"
         style={{
           borderBottom: " 1px solid #F5F5F5",
         }}
       >
-        {userTranslation("Total Price")}{" "}
-        {formatCurrency(totalOrderPrice, locale as string)}
-      </h2>
+        <h2>
+          {userTranslation("Total Price")}{" "}
+          <span
+            className={data?.data?.promocodeDiscount ? "text-[#27ae60]" : ""}
+          >
+            {formatCurrency(totalOrderPrice, locale as string)}
+          </span>
+        </h2>
+        {data?.data?.promocodeDiscount && (
+          <p className="mt-1 text-[#27ae60] text-lg">
+            {userTranslation("this order has discount", {
+              discount: data?.data?.promocodeDiscount,
+            })}
+          </p>
+        )}
+      </div>
 
       <BaseTable
         data={selectedOrderItems}

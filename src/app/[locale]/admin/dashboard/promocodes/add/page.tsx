@@ -132,7 +132,7 @@ function PromoCodePage() {
                   style={{ direction: "rtl" }}
                   name={field.name}
                   onChange={field.onChange}
-                  value={field.value.toISOString().slice(0, 10)}
+                  value={field.value?.toISOString().slice(0, 10)}
                   min={new Date().toISOString().slice(0, 10)}
                 />
               </div>

@@ -287,7 +287,8 @@
     "fail promocode message": "The promo code has expired",
     "Enter promo code": "Enter promo code",
     "Apply": "Apply",
-    "NO_PROMO_FOUND_WITH_THIS_CODE": "Wrong promo code"
+    "NO_PROMO_FOUND_WITH_THIS_CODE": "Wrong promo code",
+    "this order has discount": "This order has {discount}% discount"
   },
   "messages": {
     "Please check form inputs": "Please check form inputs",

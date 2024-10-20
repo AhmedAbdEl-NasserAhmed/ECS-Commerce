@@ -4,7 +4,7 @@ import { useAppSelector } from "@/lib/hooks";
 import ProductDetailsTable from "./ProductDetailsTable/ProductDetailsTable";
 import { useTranslations } from "next-intl";
 
-function Orders() {
+function Orders(props) {
   const cart = useAppSelector(
     (state) => state.cookieSlice.cookieItems.cartItems
   );
@@ -34,6 +34,7 @@ function Orders() {
         userTranslation={userTranslation}
         totalCartItems={totalCartItems}
         cart={cart}
+        enteredPromocode={props.enteredPromocode}
       />
     </div>
   );

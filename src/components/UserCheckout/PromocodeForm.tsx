@@ -73,7 +73,9 @@ const PromocodeForm = (props: { setEnteredPromocode: any }) => {
         <button
           type="submit"
           disabled={!formData.code}
-          className={`flex items-center justify-center bg-[#ed0533] self-stretch w-20 border border-[#ed0533] rounded-md text-white font-medium text-xl hover:bg-white hover:text-[#ed0533] hover:border transition-all duration-200 ${
+          className={`flex items-center justify-center bg-[#ed0533] self-stretch w-20 border border-[#ed0533] rounded-md text-white font-medium text-xl ${
+            formData.code ? "hover:bg-white" : ""
+          } hover:text-[#ed0533] hover:border transition-all duration-200 ${
             !formData.code
               ? "bg-gray-300 text-white border-none hover:bg-gray-300 hover:text-white"
               : ""

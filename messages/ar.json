@@ -284,6 +284,7 @@
     "SHOP": "الاٌقسام",
     "COMPANY": "عن الشركة",
     "success promocode message": "أنت الآن تستمتع بخصم {discount}%",
+    "this order has discount": "هذا الطلب لديه {discount}٪ خصم",
     "fail promocode message": "لقد انتهت صلاحية كود الخصم",
     "Enter promo code": "ادخل كود الخصم",
     "Apply": "ادخل",

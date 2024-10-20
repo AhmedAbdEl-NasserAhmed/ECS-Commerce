@@ -9,12 +9,13 @@ interface IProps {
   setUserPaymentMethod: any;
   userPaymentMethod: paymentMethod;
   setEnteredPromocode: any;
+  enteredPromocode: any;
 }
 
 function OrdersAndPaymentDetails(props: IProps) {
   return (
     <div className="flex flex-col gap-8 w-full lg:w-1/2">
-      <Orders />
+      <Orders enteredPromocode={props.enteredPromocode} />
       <TermsAndConditions
         setIsUserAcceptedAllPolicies={props.setIsUserAcceptedAllPolicies}
       />

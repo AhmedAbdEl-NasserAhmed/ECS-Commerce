@@ -2,9 +2,19 @@ import { useParams } from "next/navigation";
 import styles from "./ProductDetailsTable.module.scss";
 import { formatCurrency } from "@/lib/helpers";
 
-function ProductDetailsTable({ userTranslation, cart, totalCartItems }) {
+function ProductDetailsTable({
+  userTranslation,
+  cart,
+  totalCartItems,
+  enteredPromocode,
+}) {
   const { locale } = useParams();
 
+  const hasPromocode = !!enteredPromocode;
+  let discountAmount = (totalCartItems * enteredPromocode?.discount) / 100;
+  const total = enteredPromocode
+    ? formatCurrency(totalCartItems - discountAmount)
+    : formatCurrency(totalCartItems, locale as string);
   return (
     <table className={styles.table}>
       <thead>
@@ -45,7 +55,19 @@ function ProductDetailsTable({ userTranslation, cart, totalCartItems }) {
           <td></td>
           <td></td>
           <td></td>
-          <td>{formatCurrency(totalCartItems, locale as string)}</td>
+          <td>
+            {hasPromocode && (
+              <span>
+                <span className="line-through text-gray-300">
+                  {formatCurrency(totalCartItems, locale as string)}
+                </span>{" "}
+                -{" "}
+              </span>
+            )}
+            <span className={`${hasPromocode ? "text-[#27ae60]" : ""}`}>
+              {total}
+            </span>
+          </td>
         </tr>
       </tfoot>
     </table>

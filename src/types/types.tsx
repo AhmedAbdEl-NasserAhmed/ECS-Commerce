@@ -18,7 +18,7 @@ export interface AdminMainCategory {
 
 export interface AdminPromocode {
   promocode: string;
-  expiredAt: Date;
+  expiredAt: Date | string;
   discount: number;
 }
 

@@ -6,6 +6,7 @@ import {
 } from "@/lib/features/api/promocodesApi";
 import { AdminPromocode } from "@/types/types";
 import MiniSpinner from "@/ui/MiniSpinner/MiniSpinner";
+import Spinner from "@/ui/Spinner/Spinner";
 import CustomizedTextField from "@/ui/TextField/TextField";
 import { Box, Button } from "@mui/material";
 import { useTranslations } from "next-intl";
@@ -21,8 +22,6 @@ function EditPromoCodePage() {
     handleSubmit,
     control,
     watch,
-    reset,
-    setValue,
     formState: { errors },
   } = useForm<AdminPromocode>({
     mode: "onChange",
@@ -31,40 +30,32 @@ function EditPromoCodePage() {
   const { locale, id } = useParams();
 
   const {
-    data: _promocode,
+    data: promocode,
     isLoading,
     isFetching,
   } = useGetPromocodeByIdQuery(id);
 
-  const promocode = {
-    _id: "670c74a16e9db96ad25b473c",
-    code: "ORCA-10Men",
-    expirationDate: "2024-12-01T00:00:00.000Z",
-    discount: 10,
-    __v: 0,
-  };
-
   const [updatePromocode, updatePromocodeResponse] = useEditPromocodeMutation();
-
-  // const router = useRouter();
 
   const formData = watch();
 
   const t = useTranslations("Dashboard");
   const tMessage = useTranslations("messages");
+  const tUser = useTranslations("user");
 
   function handleEditPromocodeSubmit() {
     updatePromocode({
       id,
-      code: formData.promocode,
-      expirationDate: new Date(formData.expiredAt).toISOString().slice(0, 10),
-      discount: +formData.discount,
+      data: {
+        code: formData.promocode,
+        expirationDate: new Date(formData.expiredAt).toISOString().slice(0, 10),
+        discount: +formData.discount,
+      },
     })
       .unwrap()
       .then((res) => {
         if (res.status === "success") {
-          toast.success(tMessage("A New Promocode Updated"));
-          reset();
+          toast.success(tMessage("The Promocode Updated"));
         }
       })
       .catch((err) => {
@@ -73,6 +64,8 @@ function EditPromoCodePage() {
         }
       });
   }
+
+  if (isFetching || isLoading) return <Spinner />;
 
   return (
     <form
@@ -116,7 +109,7 @@ function EditPromoCodePage() {
           <Controller
             name={"promocode"}
             control={control}
-            defaultValue={promocode.code}
+            defaultValue={promocode?.data?.code}
             rules={{
               required: "This field is required",
             }}
@@ -140,33 +133,43 @@ function EditPromoCodePage() {
             name={"expiredAt"}
             disabled={updatePromocodeResponse.isLoading}
             control={control}
-            defaultValue={new Date(promocode.expirationDate)}
+            defaultValue={new Date(promocode?.data?.expirationDate)}
             rules={{
               required: "This field is required",
             }}
-            render={({ field }) => (
-              <div className="flex flex-col gap-4">
-                <label className={"font-semibold text-xl"}>
-                  {t("Expired At")}
-                </label>
-                <input
-                  type="date"
-                  className="w-full h-[40px] rounded-lg border border-gray-300 px-4 pr-4 placeholder-gray-400 text-gray-600"
-                  name={field.name}
-                  min={new Date().toISOString().slice(0, 10)}
-                  onChange={field.onChange}
-                  defaultValue={new Date(promocode.expirationDate)
-                    .toISOString()
-                    .slice(0, 10)}
-                />
-              </div>
-            )}
+            render={({ field }) => {
+              return (
+                <div className="flex flex-col gap-4">
+                  <label className={"font-semibold text-xl"}>
+                    {t("Expired At")}
+                  </label>
+                  <input
+                    type="date"
+                    className="w-full h-[40px] rounded-lg border border-gray-300 px-4 pr-4 placeholder-gray-400 text-gray-600"
+                    name={field.name}
+                    style={{ textAlign: locale === "en" ? "left" : "right" }}
+                    min={new Date().toISOString().slice(0, 10)}
+                    onChange={field.onChange}
+                    value={new Date(field.value).toISOString().slice(0, 10)}
+                    defaultValue={new Date(promocode?.data?.expirationDate)
+                      .toISOString()
+                      .slice(0, 10)}
+                  />
+                  {errors["expiredAt"] && (
+                    <div className="text-red-600 -mt-3">
+                      {tUser("This field is required")}
+                    </div>
+                  )}
+                </div>
+              );
+            }}
           />
           <Controller
             name={"discount"}
             control={control}
-            defaultValue={promocode.discount}
+            defaultValue={promocode?.data?.discount}
             rules={{
+              required: "This field is required",
               min: {
                 value: 0,
                 message: "This field should be more than 0 ",

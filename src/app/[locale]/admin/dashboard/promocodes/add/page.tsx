@@ -8,6 +8,7 @@ import { Box, Button } from "@mui/material";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import { useRef } from "react";
 import { Controller, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { HiChevronRight } from "react-icons/hi2";
@@ -18,6 +19,7 @@ function PromoCodePage() {
     control,
     watch,
     reset,
+    setValue,
     formState: { errors },
   } = useForm<AdminPromocode>({
     mode: "onChange",
@@ -31,7 +33,8 @@ function PromoCodePage() {
 
   const t = useTranslations("Dashboard");
   const tMessage = useTranslations("messages");
-
+  const tUser = useTranslations("user");
+  const dateInput = useRef<HTMLInputElement>();
   function handleAddPromocodeSubmit() {
     addPromocode({
       code: formData.promocode,
@@ -42,7 +45,14 @@ function PromoCodePage() {
       .then((res) => {
         if (res.status === "success") {
           toast.success(tMessage("A New Promocode Added"));
-          reset();
+          reset({
+            promocode: "",
+            discount: 0,
+            expiredAt: "",
+          });
+          if (dateInput.current) {
+            dateInput.current.value = "";
+          }
         }
       })
       .catch((err) => {
@@ -94,7 +104,6 @@ function PromoCodePage() {
           <Controller
             name={"promocode"}
             control={control}
-            defaultValue={""}
             rules={{
               required: "This field is required",
             }}
@@ -127,22 +136,28 @@ function PromoCodePage() {
                   {t("Expired At")}
                 </label>
                 <input
+                  ref={dateInput}
                   type="date"
-                  className="w-full h-[40px] rounded-lg border border-gray-300 text-right pr-4 placeholder-gray-400 text-gray-600"
-                  style={{ direction: "rtl" }}
+                  className="w-full h-[40px] rounded-lg border border-gray-300 text-right px-4 pr-4 placeholder-gray-400 text-gray-600"
+                  style={{ textAlign: locale === "en" ? "left" : "right" }}
                   name={field.name}
                   onChange={field.onChange}
-                  value={field.value?.toISOString().slice(0, 10)}
+                  // value={field.value?.toISOString()?.slice(0, 10)}
                   min={new Date().toISOString().slice(0, 10)}
                 />
+                {errors["expiredAt"] && (
+                  <div className="text-red-600 -mt-3">
+                    {tUser("This field is required")}
+                  </div>
+                )}
               </div>
             )}
           />
           <Controller
             name={"discount"}
             control={control}
-            defaultValue={0}
             rules={{
+              required: "This field is required",
               min: {
                 value: 0,
                 message: "This field should be more than 0 ",

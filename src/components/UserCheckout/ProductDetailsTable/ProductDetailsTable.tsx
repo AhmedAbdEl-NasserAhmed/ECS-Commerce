@@ -11,10 +11,15 @@ function ProductDetailsTable({
   const { locale } = useParams();
 
   const hasPromocode = !!enteredPromocode;
+  const expirationDate = hasPromocode
+    ? new Date(enteredPromocode.expirationDate.slice(0, 10))
+    : new Date();
+  const isPromocodeExpired = new Date() >= expirationDate;
   let discountAmount = (totalCartItems * enteredPromocode?.discount) / 100;
-  const total = enteredPromocode
-    ? formatCurrency(totalCartItems - discountAmount)
-    : formatCurrency(totalCartItems, locale as string);
+  const total =
+    enteredPromocode && !isPromocodeExpired
+      ? formatCurrency(totalCartItems - discountAmount)
+      : formatCurrency(totalCartItems, locale as string);
   return (
     <table className={styles.table}>
       <thead>
@@ -56,7 +61,7 @@ function ProductDetailsTable({
           <td></td>
           <td></td>
           <td>
-            {hasPromocode && (
+            {hasPromocode && !isPromocodeExpired && (
               <span>
                 <span className="line-through text-gray-300">
                   {formatCurrency(totalCartItems, locale as string)}
@@ -64,7 +69,11 @@ function ProductDetailsTable({
                 -{" "}
               </span>
             )}
-            <span className={`${hasPromocode ? "text-[#27ae60]" : ""}`}>
+            <span
+              className={`${
+                hasPromocode && !isPromocodeExpired ? "text-[#27ae60]" : ""
+              }`}
+            >
               {total}
             </span>
           </td>

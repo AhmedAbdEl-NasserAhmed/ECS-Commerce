@@ -66,6 +66,12 @@ function BillingInformation(props: IProps) {
 
     dispatch(makePayment(true));
 
+    const hasPromocode = !!props.enteredPromocode;
+    const expirationDate = hasPromocode
+      ? new Date(props.enteredPromocode.expirationDate.slice(0, 10))
+      : new Date();
+    const isPromocodeExpired = new Date() >= expirationDate;
+
     const serverData = {
       billing_data: {
         firstName: data.firstName,
@@ -79,7 +85,7 @@ function BillingInformation(props: IProps) {
         street: data.street,
         floor: data.floor,
       },
-      promocode: props.enteredPromocode?.code,
+      ...(!isPromocodeExpired && { promocode: props.enteredPromocode?.code }),
       cartItems: cart,
       locale,
     };

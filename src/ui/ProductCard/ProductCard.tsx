@@ -55,11 +55,11 @@ const ProductCard = ({ product }) => {
           >
             <Image
               src={product.images[0]?.url || ""}
-              quality={75}
               alt={product.name?.[locale as string]}
               layout="responsive" // Responsive layout instead of fill
-              width={942} // Set a base width for the image
-              height={1177} // Set a corresponding height for the aspect ratio
+              quality={85}
+              width={1120} // Set a base width for the image
+              height={1400} // Set a corresponding height for the aspect ratio
               className="object-cover"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
@@ -69,11 +69,11 @@ const ProductCard = ({ product }) => {
           <div className="absolute top-0 transition-all duration-500 rotate-0 scale-1 group-hover:rotate-3 group-hover:scale-110 rounded-md h-full w-full overflow-hidden">
             <Image
               src={product.images[1]?.url || ""}
-              quality={75}
               alt={product.name?.[locale as string]}
               layout="responsive" // Responsive layout instead of fill
-              width={942} // Set a base width for the image
-              height={1177} // Set a corresponding height for the aspect ratio
+              quality={85}
+              width={1120} // Set a base width for the image
+              height={1400} // Set a corresponding height for the aspect ratio
               className="object-cover"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />

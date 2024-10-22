@@ -45,7 +45,7 @@ const ProductCard = ({ product }) => {
         boxShadow: "0px 3px 15px 0px #0000000f",
       }}
     >
-      <div className="relative w-full group overflow-hidden aspect-[2/3]">
+      <div className="relative w-full group overflow-hidden aspect-[4/5]">
         <Link href={`/${locale}/user/product/${product?.slug}`}>
           <div
             className={`${

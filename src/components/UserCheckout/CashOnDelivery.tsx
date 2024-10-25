@@ -21,7 +21,7 @@ const CashOnDelivery = (props: IProps) => {
         </h2>
         <span className="w-full h-1 block bg-[#ed0534] ">&nbsp;</span>
       </div>
-      <div className="flex gap-5 justify-between items-start">
+      <div className="flex gap-5 justify-between items-start flex-wrap">
         <div className="flex flex-col gap-8">
           <div className="flex items-center relative gap-2">
             <input

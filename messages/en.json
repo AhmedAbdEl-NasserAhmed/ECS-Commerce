@@ -107,7 +107,11 @@
   },
 
   "user": {
+    "productsList": "Products",
+    "contact": "Contact",
+    "login": "Login",
     "Shop": "Shop",
+    "shop": "Shop",
     "Home Page": "Home Page",
     "Profile": "Profile",
     "Cart": "Cart ",
@@ -165,6 +169,8 @@
     "EGP": "EGP",
     "Shipping and taxes calculated at checkout": "Shipping and taxes calculated at checkout",
     "Checkout": "Checkout",
+    "checkout": "Checkout",
+    "product": "Product",
     "Add To cart": "Add To cart",
     "Your Wish List is Empty 🥲": "Your Wish List is Empty 🥲",
     "This Item is Removed from wish List": "This Item is Removed from wish List",

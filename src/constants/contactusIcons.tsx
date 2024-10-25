@@ -8,13 +8,13 @@ function contactusIcons(t) {
     {
       id: 1,
       label: t("Phone"),
-      value: "01010101010",
+      value: "+20 101 965 8353",
       icon: <HiPhone />,
     },
     {
       id: 2,
       label: t("Email Address"),
-      value: "Help@Orca.com",
+      value: "wear.orca.eg@gmail.com",
       icon: <HiOutlineMail />,
     },
     {
@@ -27,13 +27,13 @@ function contactusIcons(t) {
     {
       id: 4,
       label: t("Facebook"),
-      value: "orca Page",
+      value: "Orca.eg",
       icon: <FaFacebook />,
     },
     {
       id: 5,
       label: t("Instagram"),
-      value: "orca Page Instagram",
+      value: "orca.wear.eg",
       icon: <FaSquareInstagram />,
     },
   ];

@@ -73,7 +73,16 @@ function LandingPageMenu() {
               />
             </li>
           )}
-
+          <li>
+            <button
+              onClick={() => {
+                router.replace(`/${locale}/user/contact`);
+                setOpens(false);
+              }}
+            >
+              {userTranslation("Contact Us")}
+            </button>
+          </li>
           {user?.role === UserType.ADMIN && (
             <li>
               <Link
@@ -98,16 +107,6 @@ function LandingPageMenu() {
               </button>
             </li>
           )}
-          <li>
-            <button
-              onClick={() => {
-                router.replace(`/${locale}/user/contact`);
-                setOpens(false);
-              }}
-            >
-              {userTranslation("Contact Us")}
-            </button>
-          </li>
 
           {user?.isActive && (
             <li className="border-2 border-white py-2.5 px-20">

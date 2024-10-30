@@ -14,7 +14,7 @@ function BreadCrumb() {
   const userTranslation = useTranslations("user");
 
   return (
-    <div className="bg-[url(/cloth_bg.png)] bg-cover bg-no-repeat h-[30vh]  mt-10 mb-15 flex items-center justify-center text-3xl text-white text-center">
+    <div className="bg-[url(/cloth_bg.png)] bg-cover bg-no-repeat h-[30vh] mb-15 flex items-center justify-center text-3xl text-white text-center">
       <div>
         <h2 className="capitalize font-semibold tracking-wider text-5xl">
           {userTranslation(currentRoute)}

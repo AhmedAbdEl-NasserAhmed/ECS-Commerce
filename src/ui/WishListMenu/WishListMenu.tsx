@@ -19,8 +19,10 @@ import useImagesLoadingSpinner from "@/hooks/useImagesLoadingSpinner";
 import Spinner from "../Spinner/Spinner";
 import { useTranslations } from "next-intl";
 import { HiOutlineHeart } from "react-icons/hi2";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { UserType } from "@/types/enums";
+import WishListSideMenu from "../WishListSideMenu/WishListSideMenu";
+import useMobileScreen from "@/hooks/useMobileScreen";
 
 const WishListMenu = () => {
   const { locale } = useParams();
@@ -86,13 +88,24 @@ const WishListMenu = () => {
     toast.success(t("Your Wish List is Empty 🥲"));
   };
 
+  const [openWishListMenu, setOpenWishListMenu] = useState<boolean>(false);
+
+  const isMobileScreen = useMobileScreen();
+
   if (user && user?.role === UserType.ADMIN) return;
 
   return (
     <div ref={ref} className="relative">
+      <WishListSideMenu
+        setOpens={() => {}}
+        openWishListMenu={openWishListMenu}
+        setOpenWishListMenu={setOpenWishListMenu}
+      />
       <span
         onClick={() => {
-          setIsWishListOpen((wishList) => !wishList);
+          isMobileScreen
+            ? setOpenWishListMenu(true)
+            : setIsWishListOpen((wishList) => !wishList);
         }}
         className="text-[2.4rem] cursor-pointer"
       >

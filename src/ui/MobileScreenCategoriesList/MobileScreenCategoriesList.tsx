@@ -33,12 +33,12 @@ function MobileScreenCategoriesList({
         openCategoriesMenu ? "start-0" : "-start-[900px]"
       } transition-all  duration-300 w-full  h-screen  backdrop-filter backdrop-blur-sm z-50 text-black  text-center text-[1.6rem] font-semibold cursor-default `}
     >
-      <ul className=" p-8 w-[70vw]  h-screen  flex flex-col items-center  text-center  overflow-y-scroll  bg-[#f1e5cd] text-[#333]">
-        <div className="grid grid-cols-2 items-center gap-36 mb-16 w-full ">
-          <h2 className="font-bold uppercase tracking-widest">
+      <ul className=" p-8 w-[80vw]  h-screen  flex flex-col items-center  text-center  overflow-y-scroll  bg-[#f1e5cd] text-[#333]">
+        <div className="grid grid-cols-2 items-center gap-15 mb-16 w-full ">
+          <h2 className="font-bold uppercase text-xl tracking-widest">
             {user("Categories")}
           </h2>
-          <h2 className="font-bold uppercase tracking-widest">
+          <h2 className="font-bold uppercase text-xl tracking-widest">
             {user("Collections")}
           </h2>
         </div>

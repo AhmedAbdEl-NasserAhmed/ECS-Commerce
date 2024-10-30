@@ -12,7 +12,7 @@ import Link from "next/link";
 import {
   addItemThunk,
   clearCookiesThunk,
-  removeItemThunk
+  removeItemThunk,
 } from "@/lib/features/cookieSlice/cookieSlice";
 import useImagesLoadingSpinner from "@/hooks/useImagesLoadingSpinner";
 import Spinner from "../Spinner/Spinner";
@@ -21,7 +21,7 @@ import { useTranslations } from "next-intl";
 const WishListSideMenu = ({
   setOpens,
   openWishListMenu,
-  setOpenWishListMenu
+  setOpenWishListMenu,
 }) => {
   const { locale } = useParams();
 
@@ -86,7 +86,7 @@ const WishListSideMenu = ({
   return (
     <div
       className={`fixed top-0 ${
-        openWishListMenu ? "start-0" : "-start-[900px]"
+        openWishListMenu ? "start-0" : "-start-[200vw]"
       } transition-all duration-300  h-screen w-full text-xl backdrop-filter backdrop-blur-sm z-50 text-black  `}
     >
       <div ref={ref} className="bg-white w-[70vw] h-full p-6 overflow-y-scroll">

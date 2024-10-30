@@ -8,7 +8,6 @@ import FloatingWhatsAppComponent from "@/ui/FloatingWhatsAppIcon/FloatingWhatsAp
 import Footer from "@/ui/Footer/Footer";
 import NavBar from "@/ui/NavBar/NavBar";
 import NotActiveMessage from "@/ui/NotActiveMessage/NotActiveMessage";
-import Spinner from "@/ui/Spinner/Spinner";
 import UserProtectedRoute from "@/ui/UserProtectedRoute/UserProtectedRoute";
 
 function Layout({ children }) {

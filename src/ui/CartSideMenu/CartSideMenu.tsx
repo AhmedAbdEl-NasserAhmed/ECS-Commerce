@@ -10,7 +10,7 @@ import { UserType } from "@/types/enums";
 import { CartItem } from "@/types/types";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import Spinner from "../Spinner/Spinner";
 import { useTranslations } from "next-intl";
@@ -112,7 +112,7 @@ function CartSideMenu({ setOpenSideMenu, openSideMenu, setOpens }) {
   return (
     <div
       className={`fixed top-0 ${
-        openSideMenu ? "start-0" : "-start-[900px]"
+        openSideMenu ? "start-0" : "-start-[200vw]"
       } transition-all duration-300 text-xl  h-screen w-full backdrop-filter backdrop-blur-sm z-50  `}
     >
       <div ref={ref} className="bg-white w-[70vw] h-full p-6 overflow-y-scroll">

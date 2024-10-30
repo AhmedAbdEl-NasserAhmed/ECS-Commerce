@@ -7,7 +7,6 @@ import SearchBar from "../SearchBar/SearchBar";
 import NavIcons from "../NavBarIcons/NavBarIcons";
 import BaseContainer from "../Container/BaseContainer";
 import NavBarCategoriesList from "../NavBarCaegoriesList/NavBarCategoriesList";
-import { useState } from "react";
 import { useParams } from "next/navigation";
 import { useGetAllCategoriesQuery } from "@/lib/features/api/categoriesApi";
 import { useTranslations } from "next-intl";
@@ -28,7 +27,10 @@ function NavBar() {
         {/*Mobile Screens*/}
         <div className="md:hidden h-full flex items-center justify-between ">
           <Logo />
-          <LandingPageMenu />
+          <div className="flex items-center justify-between gap-10">
+            <NavIcons />
+            <LandingPageMenu />
+          </div>
         </div>
 
         {/*Bigger Screens Screens*/}

@@ -15,6 +15,8 @@ import UserProtectedRoute from "@/ui/UserProtectedRoute/UserProtectedRoute";
 import useCookie from "@/hooks/useCookie";
 import { useTranslations } from "next-intl";
 import { groupBy } from "@/lib/helpers";
+import SearchBar from "@/ui/SearchBar/SearchBar";
+import useMobileScreen from "@/hooks/useMobileScreen";
 
 function HomePage() {
   const { data, isLoading } = useGetAllProductsQuery({ limit: 100 });
@@ -33,11 +35,13 @@ function HomePage() {
   const uniqueSalesProducts = Object.keys(groupedProducts).map((key) => {
     return groupedProducts[key].find((p) => p.discount > 0);
   });
+  const isMobileScreen = useMobileScreen();
 
   return (
     <UserProtectedRoute>
       {!user?.isActive && user && <NotActiveMessage />}
       <NavBar />
+      {isMobileScreen && <SearchBar />}
       <Slider />
       <BaseContainer className="p-36 mb-[40rem] md:mb-0">
         <HomePageCategory />

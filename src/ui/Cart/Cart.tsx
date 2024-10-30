@@ -19,6 +19,8 @@ import useImagesLoadingSpinner from "@/hooks/useImagesLoadingSpinner";
 import Spinner from "../Spinner/Spinner";
 import { useTranslations } from "next-intl";
 import { formatCurrency } from "@/lib/helpers";
+import CartSideMenu from "../CartSideMenu/CartSideMenu";
+import useMobileScreen from "@/hooks/useMobileScreen";
 
 const Cart = () => {
   const { locale } = useParams();
@@ -123,11 +125,22 @@ const Cart = () => {
 
   if (user && user?.role === UserType.ADMIN && !makePayment) return;
 
+  const [openSideMenu, setOpenSideMenu] = useState<boolean>(false);
+
+  const isMobileScreen = useMobileScreen();
+
   return (
     <div ref={ref} className="relative">
+      <CartSideMenu
+        setOpens={() => {}}
+        setOpenSideMenu={setOpenSideMenu}
+        openSideMenu={openSideMenu}
+      />
       <div
         onClick={() => {
-          setIsCartOpen((open) => !open);
+          isMobileScreen
+            ? setOpenSideMenu(true)
+            : setIsCartOpen((open) => !open);
         }}
       >
         <Image

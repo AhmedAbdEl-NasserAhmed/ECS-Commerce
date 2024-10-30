@@ -17,7 +17,7 @@ function SearchBar() {
 
   const { data } = useGetProductByNameQuery({
     letter: debounceValue,
-    lang: locale
+    lang: locale,
   });
 
   const user = useTranslations("user");

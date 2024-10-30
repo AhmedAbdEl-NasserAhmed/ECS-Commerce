@@ -1,22 +1,15 @@
 "use client";
 
-import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { useAppSelector } from "@/lib/hooks";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import CartSideMenu from "../CartSideMenu/CartSideMenu";
-import { logoutUser } from "@/lib/features/usersSlice/usersSlice";
 import { useParams, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import MobileScreenCategoriesList from "../MobileScreenCategoriesList/MobileScreenCategoriesList";
 import { UserType } from "@/types/enums";
 
-import { useSetCartItemsMutation } from "@/lib/features/api/cartItemsApi";
 import LanguageSelector from "../LanguageSelector/LanguageSelector";
-import { deleteCookie } from "cookies-next";
-import { clearCookiesThunk } from "@/lib/features/cookieSlice/cookieSlice";
-import WishListSideMenu from "../WishListSideMenu/WishListSideMenu";
-import { HiOutlineViewGrid } from "react-icons/hi";
 import { HiChevronDown, HiChevronUp } from "react-icons/hi2";
 import { useGetAllCategoriesQuery } from "@/lib/features/api/categoriesApi";
 import { useTranslations } from "next-intl";
@@ -29,31 +22,13 @@ function LandingPageMenu() {
 
   const router = useRouter();
 
-  const [openSideMenu, setOpenSideMenu] = useState<boolean>(false);
-
-  const [openWishListMenu, setOpenWishListMenu] = useState<boolean>(false);
-
   const [openCategoriesMenu, setOpenCategoriesMenu] = useState<boolean>(false);
 
   const { data, isLoading } = useGetAllCategoriesQuery("categories");
 
-  const dispatch = useAppDispatch();
-
-  const cart = useAppSelector(
-    (state) => state.cookieSlice.cookieItems.cartItems
-  );
-
   const user = useAppSelector((state) => state.usersSlice.user);
 
-  const wishList = useAppSelector(
-    (state) => state.cookieSlice.cookieItems.wishListItems
-  );
-
   const userTranslation = useTranslations("user");
-
-  const [cartItems] = useSetCartItemsMutation();
-
-  const userRoleAdmin = user?.role === UserType.ADMIN;
 
   const logout = useLogout();
 
@@ -111,31 +86,6 @@ function LandingPageMenu() {
             </li>
           )}
 
-          {!user?.isActive && (
-            <li>
-              <button
-                onClick={() => {
-                  router.replace(`/${locale}/user/register`);
-                  setOpens(false);
-                }}
-              >
-                {userTranslation("Sign up")}
-              </button>
-            </li>
-          )}
-          {!user?.isActive && (
-            <li>
-              <button
-                onClick={() => {
-                  router.replace(`/${locale}/user/login`);
-                  setOpens(false);
-                }}
-              >
-                {userTranslation("Log in")}
-              </button>
-            </li>
-          )}
-
           {user?.isActive && user?.role !== UserType.ADMIN && (
             <li>
               <button
@@ -146,22 +96,6 @@ function LandingPageMenu() {
               >
                 {userTranslation("Profile")}
               </button>
-            </li>
-          )}
-
-          {!userRoleAdmin && (
-            <li onClick={() => setOpenSideMenu(true)}>
-              <Link href="">
-                {userTranslation("Cart")}({cart.length})
-              </Link>
-            </li>
-          )}
-
-          {!userRoleAdmin && (
-            <li onClick={() => setOpenWishListMenu(true)}>
-              <Link href="">
-                {userTranslation("Wish List")}({wishList.length})
-              </Link>
             </li>
           )}
           <li>
@@ -190,28 +124,12 @@ function LandingPageMenu() {
             </li>
           )}
 
-          <li>
-            <LanguageSelector />{" "}
-          </li>
-
           <span
             onClick={() => setOpens(false)}
             className="text-6xl absolute top-4 end-4 cursor-pointer"
           >
             &times;
           </span>
-
-          <CartSideMenu
-            setOpens={setOpens}
-            setOpenSideMenu={setOpenSideMenu}
-            openSideMenu={openSideMenu}
-          />
-
-          <WishListSideMenu
-            setOpens={setOpens}
-            openWishListMenu={openWishListMenu}
-            setOpenWishListMenu={setOpenWishListMenu}
-          />
         </ul>
       )}
     </div>

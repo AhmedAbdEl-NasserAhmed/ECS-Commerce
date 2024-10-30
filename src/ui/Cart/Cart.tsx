@@ -123,11 +123,11 @@ const Cart = () => {
     toast.success(t("You Cart is Empty 🥲 "));
   };
 
-  if (user && user?.role === UserType.ADMIN && !makePayment) return;
-
   const [openSideMenu, setOpenSideMenu] = useState<boolean>(false);
 
   const isMobileScreen = useMobileScreen();
+
+  if (user && user?.role === UserType.ADMIN && !makePayment) return;
 
   return (
     <div ref={ref} className="relative">

@@ -93,6 +93,12 @@ function AddSubCategoriesPage() {
       toast.error(tMessage("Please check form inputs"));
       return;
     }
+    const formDataImagesLength = Object.values(data.images)[0];
+
+    if (!formDataImagesLength) {
+      toast.error(tMessage("You Have to add The size chart image"));
+      return;
+    }
     const isFileExists = !!formData.images["image-1"];
 
     const _formData = new FormData();

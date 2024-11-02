@@ -80,7 +80,6 @@ function ProductDetails() {
 
   const _singleProduct = data?.data?.products?.[0];
 
-
   const { data: relatedProductsData, isLoading: isRelatedProductsLoading } =
     useGetAllProductsQuery(
       {
@@ -152,7 +151,6 @@ function ProductDetails() {
       productDetailsState?.selectedProduct?.subCategory?.[0],
       { skip: !productDetailsState?.selectedProduct?.subCategory?.[0] }
     );
-
 
   useEffect(() => {
     action(ProductDetailsAction.SET_SELECTED_PRODUCT, {
@@ -377,8 +375,6 @@ function ProductDetails() {
 
   const noAvailableSizes = data?.data?.totalQuantity === 0;
 
-
-
   return (
     <>
       <Helmet>
@@ -456,17 +452,14 @@ function ProductDetails() {
             >
               {dashboardTranslation("Size chart")}
             </Typography>
-            {isSizeChartLoadingImage ? (
-              <Spinner />
-            ) : (
-              <Image
-                onLoad={() => setIsSizeChartLoadingImage(false)}
-                src={firstSubCategory?.data?.photo?.url}
-                width={700}
-                height={700}
-                alt="size-chart"
-              />
-            )}
+            {isSizeChartLoadingImage && <Spinner />}
+            <Image
+              onLoad={() => setIsSizeChartLoadingImage(false)}
+              src={firstSubCategory?.data?.photo?.url}
+              width={700}
+              height={700}
+              alt="size-chart"
+            />
           </Sheet>
         </Modal>
       )}

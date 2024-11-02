@@ -64,7 +64,6 @@ function EditSubCategoryPage() {
     name: string;
   }>({ id: "", name: "" });
 
-
   const [isChecked, setIsChecked] = useState<boolean>(false);
 
   const [isMainCategoryIncluded, setIsMainCategoryIncluded] =
@@ -81,7 +80,6 @@ function EditSubCategoryPage() {
       dispatch(setCategory({ data: { ...formData?.category } }));
     }
   }, [formData?.category]);
-
 
   useEffect(() => {
     const v = adminCollection.category || formData?.category;
@@ -153,9 +151,14 @@ function EditSubCategoryPage() {
       toast.error(tMessage("Please check form inputs"));
       return;
     }
+    const formDataImagesLength = Object.values(data.images)[0];
+
+    if (!formDataImagesLength) {
+      toast.error(tMessage("You Have to add The size chart image"));
+      return;
+    }
     const isFileExists = !!formData.images["image-1"];
     const _formData = new FormData();
-
 
     _formData.append("name", JSON.stringify(formData.name));
     _formData.append("description", JSON.stringify(formData.description));
@@ -195,7 +198,6 @@ function EditSubCategoryPage() {
 
   if (areAllCategoriesEmpty || isSubCategoryFetching || !subCategoryData)
     return <Spinner />;
-
 
   return (
     <form

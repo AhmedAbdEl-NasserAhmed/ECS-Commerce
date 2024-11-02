@@ -131,126 +131,124 @@ function LoginPage() {
   const [googleLogin, googleLoginResponse] = useSigninWithGoogleMutation();
 
   return (
-    <>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className=" mt-12 mb-12 bg-white shadow-[0px_0px_7px_5px_#0000000a] max-w-[80rem] m-auto"
-      >
-        <div className="p-8 flex flex-col gap-12 pb-0">
-          <h2 className="text-3xl text-black font-bold flex justify-center">
-            {userTranslation("Log in")}
-          </h2>
-          <Controller
-            name={"email"}
-            control={control}
-            defaultValue={""}
-            rules={{
-              required: userTranslation("Please Enter A Valid Email"),
-              pattern: {
-                value: emailRegex,
-                message: userTranslation("Please Enter Valid Email Format"),
-              },
-            }}
-            render={({ field }) => (
-              <CustomizedTextField
-                disabled={loginState.isLoading}
-                textLabelClass={"font-semibold text-xl"}
-                placeholder={userTranslation("Email Address")}
-                textlabel={userTranslation("Email Address")}
-                field={field}
-                formerHelperStyles={{ style: { fontSize: "1rem" } }}
-                errors={errors}
-                type={"text"}
-                variant={"outlined"}
-                size={"small"}
-              />
-            )}
-          />
-          <Controller
-            name={"password"}
-            control={control}
-            defaultValue={""}
-            rules={{
-              required: userTranslation("Please Enter A Valid Password"),
-            }}
-            render={({ field }) => (
-              <CustomizedTextField
-                disabled={loginState.isLoading}
-                textLabelClass={"font-semibold text-xl"}
-                placeholder={userTranslation("Password")}
-                textlabel={userTranslation("Password")}
-                field={field}
-                formerHelperStyles={{ style: { fontSize: "1rem" } }}
-                errors={errors}
-                type={showPassword ? "text" : "password"}
-                variant={"outlined"}
-                inputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="toggle password visibility"
-                        onClick={handleClickShowPassword}
-                        edge="end"
-                      >
-                        {showPassword ? <MdVisibility /> : <MdVisibilityOff />}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
-                size={"small"}
-              />
-            )}
-          />
-          <div className="flex justify-between">
-            <Link
-              className="text-xl text-[#ed0534] font-bold"
-              href={`/${locale}/user/register`}
-            >
-              {userTranslation("Craete a new account ")}
-            </Link>
-            <Link
-              className="text-[#ed0534]  font-semibold sm:text-md md:text-xl "
-              href={`/${locale}/user/forgetPassword`}
-            >
-              {userTranslation("Forget My Password")}
-            </Link>
-          </div>
-
-          <Button
-            disabled={loginState.isLoading || googleLoginResponse.isLoading}
-            sx={{
-              padding: "0.85rem",
-              fontSize: "1.2rem",
-              backgroundColor: "#ed0534",
-              "&:hover": {
-                backgroundColor: "#141414",
-              },
-            }}
-            type="submit"
-            variant="contained"
-            size="large"
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className=" mt-12 mb-12 bg-white shadow-[0px_0px_7px_5px_#0000000a] max-w-[80rem] m-auto"
+    >
+      <div className="p-8 flex flex-col gap-12 pb-0">
+        <h2 className="text-3xl text-black font-bold flex justify-center">
+          {userTranslation("Log in")}
+        </h2>
+        <Controller
+          name={"email"}
+          control={control}
+          defaultValue={""}
+          rules={{
+            required: userTranslation("Please Enter A Valid Email"),
+            pattern: {
+              value: emailRegex,
+              message: userTranslation("Please Enter Valid Email Format"),
+            },
+          }}
+          render={({ field }) => (
+            <CustomizedTextField
+              disabled={loginState.isLoading}
+              textLabelClass={"font-semibold text-xl"}
+              placeholder={userTranslation("Email Address")}
+              textlabel={userTranslation("Email Address")}
+              field={field}
+              formerHelperStyles={{ style: { fontSize: "1rem" } }}
+              errors={errors}
+              type={"text"}
+              variant={"outlined"}
+              size={"small"}
+            />
+          )}
+        />
+        <Controller
+          name={"password"}
+          control={control}
+          defaultValue={""}
+          rules={{
+            required: userTranslation("Please Enter A Valid Password"),
+          }}
+          render={({ field }) => (
+            <CustomizedTextField
+              disabled={loginState.isLoading}
+              textLabelClass={"font-semibold text-xl"}
+              placeholder={userTranslation("Password")}
+              textlabel={userTranslation("Password")}
+              field={field}
+              formerHelperStyles={{ style: { fontSize: "1rem" } }}
+              errors={errors}
+              type={showPassword ? "text" : "password"}
+              variant={"outlined"}
+              inputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      edge="end"
+                    >
+                      {showPassword ? <MdVisibility /> : <MdVisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+              size={"small"}
+            />
+          )}
+        />
+        <div className="flex justify-between">
+          <Link
+            className="text-xl text-[#ed0534] font-bold"
+            href={`/${locale}/user/register`}
           >
-            {loginState.isLoading || googleLoginResponse.isLoading ? (
-              <MiniSpinner />
-            ) : (
-              userTranslation("Log in")
-            )}
-          </Button>
+            {userTranslation("Craete a new account ")}
+          </Link>
+          <Link
+            className="text-[#ed0534]  font-semibold sm:text-md md:text-xl "
+            href={`/${locale}/user/forgetPassword`}
+          >
+            {userTranslation("Forget My Password")}
+          </Link>
         </div>
-        <div className="p-8 pb-10">
-          <p className="text-center my-4 relative text-[2rem] text-[#333] or-or">
-            OR
-          </p>
-          <div className="text-center">
-            {!googleLoginResponse.isLoading ? (
-              <GoogleLogin onSuccess={responseMessage} onError={errorMessage} />
-            ) : (
-              <Spinner />
-            )}
-          </div>
+
+        <Button
+          disabled={loginState.isLoading || googleLoginResponse.isLoading}
+          sx={{
+            padding: "0.85rem",
+            fontSize: "1.2rem",
+            backgroundColor: "#ed0534",
+            "&:hover": {
+              backgroundColor: "#141414",
+            },
+          }}
+          type="submit"
+          variant="contained"
+          size="large"
+        >
+          {loginState.isLoading || googleLoginResponse.isLoading ? (
+            <MiniSpinner />
+          ) : (
+            userTranslation("Log in")
+          )}
+        </Button>
+      </div>
+      <div className="p-8 pb-10">
+        <p className="text-center my-4 relative text-[2rem] text-[#333] or-or">
+          OR
+        </p>
+        <div className="text-center">
+          {!googleLoginResponse.isLoading ? (
+            <GoogleLogin onSuccess={responseMessage} onError={errorMessage} />
+          ) : (
+            <Spinner />
+          )}
         </div>
-      </form>
-    </>
+      </div>
+    </form>
   );
 }
 

@@ -26,6 +26,13 @@ const usersApi = createApi({
         method: "GET",
       }),
     }),
+    signinWithGoogle: builder.mutation({
+      query: (body) => ({
+        url: `auth/google`,
+        method: "POST",
+        body,
+      }),
+    }),
     userSignup: builder.mutation({
       query: (body) => ({
         url: "auth/signup",
@@ -72,6 +79,7 @@ export const {
   useActivateEmailMutation,
   useForgetPasswordMutation,
   useResetPasswordMutation,
+  useSigninWithGoogleMutation,
 } = usersApi;
 
 export default usersApi;

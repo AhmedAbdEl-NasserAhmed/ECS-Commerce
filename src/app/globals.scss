@@ -60,3 +60,22 @@ ul {
   opacity: 0 !important;
   background-color: transparent !important;
 }
+
+.or-or {
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    background-color: #ccc;
+    color: #ccc;
+    height: 1px;
+    top: 50%;
+    width: 45%;
+  }
+  &::before {
+    left: 0;
+  }
+  &::after {
+    right: 0;
+  }
+}

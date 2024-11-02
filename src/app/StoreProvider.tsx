@@ -2,6 +2,7 @@
 import { Provider } from "react-redux";
 import { store } from "../lib/store";
 import TokenExpirationChecker from "./TokenExpirationChecker";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 export default function StoreProvider({
   children,
@@ -9,9 +10,13 @@ export default function StoreProvider({
   children: React.ReactNode;
 }) {
   return (
-    <Provider store={store}>
-      <TokenExpirationChecker />
-      {children}
-    </Provider>
+    <GoogleOAuthProvider
+      clientId={process.env.NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID}
+    >
+      <Provider store={store}>
+        <TokenExpirationChecker />
+        {children}
+      </Provider>
+    </GoogleOAuthProvider>
   );
 }

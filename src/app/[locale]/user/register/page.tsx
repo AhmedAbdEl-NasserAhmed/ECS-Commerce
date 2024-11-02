@@ -1,7 +1,10 @@
 "use client";
 
+import GoogleAuthButton from "@/components/GoogleAuthButton/GoogleAuthButton";
 import { emailRegex, passwordRegex } from "@/constants/regx";
+import useSuccessLogin from "@/hooks/useSuccessLogin";
 import {
+  useSigninWithGoogleMutation,
   useUserloginMutation,
   useUserSignupMutation,
 } from "@/lib/features/api/usersApi";
@@ -68,176 +71,188 @@ function RegisterPage() {
       .catch((err) => toast.error(tMessage(err.data.message)));
   }
 
-  return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className=" mt-12 mb-12 bg-white shadow-[0px_0px_7px_5px_#0000000a] max-w-[80rem] m-auto  "
-    >
-      <div className="p-8 flex flex-col gap-12 ">
-        <h2 className="text-3xl text-black font-bold flex justify-center">
-          {userTranslation("REGISTER")}
-        </h2>
-        <Controller
-          name={"name"}
-          control={control}
-          defaultValue={""}
-          rules={{
-            required: "This field is required",
-            minLength: {
-              value: 4,
-              message: userTranslation(
-                "The name should be more than 4 characters "
-              ),
-            },
-          }}
-          render={({ field }) => (
-            <CustomizedTextField
-              disabled={signupResponse.isLoading}
-              textLabelClass={"font-semibold text-xl"}
-              placeholder={userTranslation("First Name")}
-              textlabel={userTranslation("First Name")}
-              field={field}
-              formerHelperStyles={{ style: { fontSize: "1rem" } }}
-              errors={errors}
-              type={"text"}
-              variant={"outlined"}
-              size={"small"}
-            />
-          )}
-        />
-        <Controller
-          name={"email"}
-          control={control}
-          defaultValue={""}
-          rules={{
-            required: userTranslation("Please Enter A Valid Email"),
-            pattern: {
-              value: emailRegex,
-              message: userTranslation("Please Enter Valid Email Format"),
-            },
-          }}
-          render={({ field }) => (
-            <CustomizedTextField
-              disabled={signupResponse.isLoading}
-              textLabelClass={"font-semibold text-xl"}
-              placeholder={userTranslation("Email Address")}
-              textlabel={userTranslation("Email Address")}
-              field={field}
-              formerHelperStyles={{ style: { fontSize: "1rem" } }}
-              errors={errors}
-              type={"text"}
-              variant={"outlined"}
-              size={"small"}
-            />
-          )}
-        />
-        <Controller
-          name={"password"}
-          control={control}
-          defaultValue={""}
-          rules={{
-            required: userTranslation("Please Enter A Valid Password"),
-            pattern: {
-              value: passwordRegex,
-              message: userTranslation(
-                "password must be at least 8 characters long and include an uppercase letter, lowercase letter, digit, and special character"
-              ),
-            },
-          }}
-          render={({ field }) => (
-            <CustomizedTextField
-              disabled={signupResponse.isLoading}
-              textLabelClass={"font-semibold text-xl"}
-              placeholder={userTranslation("Password")}
-              textlabel={userTranslation("Password")}
-              field={field}
-              formerHelperStyles={{ style: { fontSize: "1rem" } }}
-              errors={errors}
-              type={showPassword ? "text" : "password"}
-              variant={"outlined"}
-              inputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
-                      edge="end"
-                    >
-                      {showPassword ? <MdVisibility /> : <MdVisibilityOff />}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-              size={"small"}
-            />
-          )}
-        />
-        <Controller
-          name={"confirmPassword"}
-          control={control}
-          defaultValue={""}
-          rules={{
-            required: userTranslation("This field is required"),
-            validate: (value) => {
-              if (value !== formData.password)
-                return userTranslation("Password does not match");
-            },
-          }}
-          render={({ field }) => (
-            <CustomizedTextField
-              disabled={signupResponse.isLoading}
-              textLabelClass={"font-semibold text-xl"}
-              placeholder={userTranslation("Confirm Password")}
-              textlabel={userTranslation("Confirm Password")}
-              field={field}
-              formerHelperStyles={{ style: { fontSize: "1rem" } }}
-              errors={errors}
-              type={showConfirmPassword ? "text" : "password"}
-              variant={"outlined"}
-              inputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={handleClickShowConfirmPassword}
-                      edge="end"
-                    >
-                      {showConfirmPassword ? (
-                        <MdVisibility />
-                      ) : (
-                        <MdVisibilityOff />
-                      )}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-              size={"small"}
-            />
-          )}
-        />
+  const [googleLogin, googleLoginResponse] = useSigninWithGoogleMutation();
 
-        <Button
-          disabled={signupResponse.isLoading}
-          sx={{
-            padding: "0.85rem",
-            fontSize: "1.2rem",
-            backgroundColor: "#ed0534",
-            "&:hover": {
-              backgroundColor: "#141414",
-            },
-          }}
-          type="submit"
-          variant="contained"
-          size="large"
-        >
-          {signupResponse.isLoading ? (
-            <MiniSpinner />
-          ) : (
-            userTranslation("Register")
-          )}
-        </Button>
-      </div>
-    </form>
+  const { successLogin } = useSuccessLogin();
+
+  return (
+    <>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className=" mt-12 mb-12 bg-white shadow-[0px_0px_7px_5px_#0000000a] max-w-[80rem] m-auto  "
+      >
+        <div className="p-8 flex flex-col gap-12 ">
+          <h2 className="text-3xl text-black font-bold flex justify-center">
+            {userTranslation("REGISTER")}
+          </h2>
+          <GoogleAuthButton
+            callback={successLogin}
+            googleLogin={googleLogin}
+            googleLoginResponse={googleLoginResponse}
+            toDown
+          />
+          <Controller
+            name={"name"}
+            control={control}
+            defaultValue={""}
+            rules={{
+              required: "This field is required",
+              minLength: {
+                value: 4,
+                message: userTranslation(
+                  "The name should be more than 4 characters "
+                ),
+              },
+            }}
+            render={({ field }) => (
+              <CustomizedTextField
+                disabled={signupResponse.isLoading}
+                textLabelClass={"font-semibold text-xl"}
+                placeholder={userTranslation("First Name")}
+                textlabel={userTranslation("First Name")}
+                field={field}
+                formerHelperStyles={{ style: { fontSize: "1rem" } }}
+                errors={errors}
+                type={"text"}
+                variant={"outlined"}
+                size={"small"}
+              />
+            )}
+          />
+          <Controller
+            name={"email"}
+            control={control}
+            defaultValue={""}
+            rules={{
+              required: userTranslation("Please Enter A Valid Email"),
+              pattern: {
+                value: emailRegex,
+                message: userTranslation("Please Enter Valid Email Format"),
+              },
+            }}
+            render={({ field }) => (
+              <CustomizedTextField
+                disabled={signupResponse.isLoading}
+                textLabelClass={"font-semibold text-xl"}
+                placeholder={userTranslation("Email Address")}
+                textlabel={userTranslation("Email Address")}
+                field={field}
+                formerHelperStyles={{ style: { fontSize: "1rem" } }}
+                errors={errors}
+                type={"text"}
+                variant={"outlined"}
+                size={"small"}
+              />
+            )}
+          />
+          <Controller
+            name={"password"}
+            control={control}
+            defaultValue={""}
+            rules={{
+              required: userTranslation("Please Enter A Valid Password"),
+              pattern: {
+                value: passwordRegex,
+                message: userTranslation(
+                  "password must be at least 8 characters long and include an uppercase letter, lowercase letter, digit, and special character"
+                ),
+              },
+            }}
+            render={({ field }) => (
+              <CustomizedTextField
+                disabled={signupResponse.isLoading}
+                textLabelClass={"font-semibold text-xl"}
+                placeholder={userTranslation("Password")}
+                textlabel={userTranslation("Password")}
+                field={field}
+                formerHelperStyles={{ style: { fontSize: "1rem" } }}
+                errors={errors}
+                type={showPassword ? "text" : "password"}
+                variant={"outlined"}
+                inputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        edge="end"
+                      >
+                        {showPassword ? <MdVisibility /> : <MdVisibilityOff />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+                size={"small"}
+              />
+            )}
+          />
+          <Controller
+            name={"confirmPassword"}
+            control={control}
+            defaultValue={""}
+            rules={{
+              required: userTranslation("This field is required"),
+              validate: (value) => {
+                if (value !== formData.password)
+                  return userTranslation("Password does not match");
+              },
+            }}
+            render={({ field }) => (
+              <CustomizedTextField
+                disabled={signupResponse.isLoading}
+                textLabelClass={"font-semibold text-xl"}
+                placeholder={userTranslation("Confirm Password")}
+                textlabel={userTranslation("Confirm Password")}
+                field={field}
+                formerHelperStyles={{ style: { fontSize: "1rem" } }}
+                errors={errors}
+                type={showConfirmPassword ? "text" : "password"}
+                variant={"outlined"}
+                inputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowConfirmPassword}
+                        edge="end"
+                      >
+                        {showConfirmPassword ? (
+                          <MdVisibility />
+                        ) : (
+                          <MdVisibilityOff />
+                        )}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+                size={"small"}
+              />
+            )}
+          />
+
+          <Button
+            disabled={signupResponse.isLoading || googleLoginResponse.isLoading}
+            sx={{
+              padding: "0.85rem",
+              fontSize: "1.2rem",
+              backgroundColor: "#ed0534",
+              "&:hover": {
+                backgroundColor: "#141414",
+              },
+            }}
+            type="submit"
+            variant="contained"
+            size="large"
+          >
+            {signupResponse.isLoading || googleLoginResponse.isLoading ? (
+              <MiniSpinner />
+            ) : (
+              userTranslation("Register")
+            )}
+          </Button>
+        </div>
+      </form>
+    </>
   );
 }
 

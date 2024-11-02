@@ -9,7 +9,7 @@ const useMobileScreen = () => {
     }
   }, [typeof window]);
 
-  const isMobileScreen = windowWidth < 768;
+  const isMobileScreen = windowWidth > 0 && windowWidth < 768;
 
   return isMobileScreen;
 };

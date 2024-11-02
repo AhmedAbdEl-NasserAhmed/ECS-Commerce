@@ -8,6 +8,8 @@ import {
 import { useAddSubCategoryMutation } from "@/lib/features/api/subCategoriesApi";
 import { Lang } from "@/types/enums";
 import { AdminSubCategory } from "@/types/types";
+import AddProductImage from "@/ui/AddProductImage/AddProductImage";
+import ImageInput from "@/ui/AddProductImage/ImageInput";
 import MiniSpinner from "@/ui/MiniSpinner/MiniSpinner";
 import SmartSearchInput from "@/ui/SmartSearchInput/SmartSearchInput";
 import Spinner from "@/ui/Spinner/Spinner";
@@ -33,6 +35,7 @@ function AddSubCategoriesPage() {
     control,
     reset,
     watch,
+    setValue,
     formState: { errors },
   } = useForm<AdminSubCategory>({
     mode: "onChange",
@@ -90,11 +93,17 @@ function AddSubCategoriesPage() {
       toast.error(tMessage("Please check form inputs"));
       return;
     }
-    addSubCategoryFn({
-      name: formData.name,
-      description: formData.description,
-      category: smartSeachvalue["_id"],
-    })
+    const isFileExists = !!formData.images["image-1"];
+
+    const _formData = new FormData();
+
+    _formData.append("name", JSON.stringify(formData.name));
+    _formData.append("description", JSON.stringify(formData.description));
+    _formData.append("category", smartSeachvalue["_id"]);
+    if (isFileExists) {
+      _formData.append("chart", formData.images["image-1"]);
+    }
+    addSubCategoryFn(_formData)
       .unwrap()
       .then((res) => {
         if (res.status === "success") {
@@ -258,6 +267,18 @@ function AddSubCategoriesPage() {
                 />
               )}
             />
+          )}
+          {!isChecked && (
+            <Box className="">
+              <p className="font-semibold text-xl mb-4">Upload Size Chart</p>
+              <AddProductImage
+                disabled={subCategoryResponse.isLoading}
+                control={control}
+                formData={formData}
+                imagesNumber={1}
+                setValue={setValue}
+              />
+            </Box>
           )}
           {isChecked && (
             <Controller

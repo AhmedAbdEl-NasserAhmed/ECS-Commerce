@@ -95,6 +95,7 @@ function EditProduct() {
       }
     );
 
+
   const { data: subCategory, isFetching: isFetchingSubCategories } =
     useGetSubCategoryQuery(
       {

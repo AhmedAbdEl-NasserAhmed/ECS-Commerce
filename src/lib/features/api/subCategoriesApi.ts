@@ -12,11 +12,13 @@ const subCategoriesApi = createApi({
   }),
   endpoints: (builder) => ({
     addSubCategory: builder.mutation({
-      query: (body) => ({
-        url: "subCategories",
-        method: "POST",
-        body,
-      }),
+      query: (body) => {
+        return {
+          url: "subCategories",
+          method: "POST",
+          body,
+        };
+      },
       invalidatesTags: ["SUB-CATEGORY"],
     }),
 

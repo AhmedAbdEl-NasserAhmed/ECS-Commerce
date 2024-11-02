@@ -54,31 +54,3 @@ const GoogleAuthButton: React.FC<IGoogleAuthButton> = (props) => {
 };
 
 export default GoogleAuthButton;
-
-// import { useLazySigninWithGoogleQuery } from "@/lib/features/api/usersApi";
-// import Spinner from "@/ui/Spinner/Spinner";
-// import Image from "next/image";
-
-// interface IGoogleAuthButton {}
-
-// const GoogleAuthButton: React.FC<IGoogleAuthButton> = (props) => {
-//   const [signin, signinResponse] = useLazySigninWithGoogleQuery();
-
-//   console.log("signinResponse", signinResponse);
-
-//   const loading = signinResponse.isLoading || signinResponse.isFetching;
-
-//   return (
-//     <button
-//       className="flex items-center justify-between gap-4 border border-gray-500 px-6 py-2 rounded-full w-full text-[1.2rem] text-gray-800"
-//       onClick={() => signin("users")}
-//       disabled={loading}
-//     >
-//       <Image src={"/google.webp"} width={25} height={25} alt="google-auth" />
-//       {loading ? <Spinner /> : <span>Sign in with Google</span>}
-//       <span></span>
-//     </button>
-//   );
-// };
-
-// export default GoogleAuthButton;

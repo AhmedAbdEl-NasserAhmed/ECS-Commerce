@@ -3,15 +3,16 @@ import useDebounceHook from "@/hooks/useDebounceHook";
 import { setCategory } from "@/lib/features/adminProductSlice/adminProductSlice";
 import {
   useGetAllCategoriesQuery,
-  useGetCategoryQuery
+  useGetCategoryQuery,
 } from "@/lib/features/api/categoriesApi";
 import {
   useEditSubCategoryMutation,
-  useGetSubCategoryByIdQuery
+  useGetSubCategoryByIdQuery,
 } from "@/lib/features/api/subCategoriesApi";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { Lang } from "@/types/enums";
 import { AdminSubCategory } from "@/types/types";
+import AddProductImage from "@/ui/AddProductImage/AddProductImage";
 import MiniSpinner from "@/ui/MiniSpinner/MiniSpinner";
 import SmartSearchInput from "@/ui/SmartSearchInput/SmartSearchInput";
 import Spinner from "@/ui/Spinner/Spinner";
@@ -21,7 +22,7 @@ import {
   Button,
   FormControlLabel,
   Switch,
-  Typography
+  Typography,
 } from "@mui/material";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
@@ -43,9 +44,9 @@ function EditSubCategoryPage() {
     reset,
     watch,
     setValue,
-    formState: { errors, dirtyFields }
+    formState: { errors, dirtyFields },
   } = useForm<AdminSubCategory>({
-    mode: "onChange"
+    mode: "onChange",
   });
 
   const formData = watch();
@@ -62,6 +63,7 @@ function EditSubCategoryPage() {
     id: string;
     name: string;
   }>({ id: "", name: "" });
+
 
   const [isChecked, setIsChecked] = useState<boolean>(false);
 
@@ -80,6 +82,7 @@ function EditSubCategoryPage() {
     }
   }, [formData?.category]);
 
+
   useEffect(() => {
     const v = adminCollection.category || formData?.category;
     setValue("category", v);
@@ -97,7 +100,7 @@ function EditSubCategoryPage() {
   const { data, isLoading } = useGetCategoryQuery(
     { letter: debounceValue, lang: locale },
     {
-      skip: !debounceValue
+      skip: !debounceValue,
     }
   );
   const { data: categories } = useGetAllCategoriesQuery("categories");
@@ -127,6 +130,18 @@ function EditSubCategoryPage() {
     }
   }, [data?.data, smartSeachvalue.name, allCategories]);
 
+  useEffect(() => {
+    if (subCategoryData?.data?.photo) {
+      setValue("images", {
+        "image-1": {
+          id: subCategoryData?.data?.photo?.id,
+          url: subCategoryData?.data?.photo?.url,
+        },
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [subCategoryData?.data?.photo, setValue]);
+
   function handleEditSubCategorySubmit() {
     if (
       !formData.category.en ||
@@ -138,13 +153,24 @@ function EditSubCategoryPage() {
       toast.error(tMessage("Please check form inputs"));
       return;
     }
+    const isFileExists = !!formData.images["image-1"];
+    const _formData = new FormData();
+
+
+    _formData.append("name", JSON.stringify(formData.name));
+    _formData.append("description", JSON.stringify(formData.description));
+    _formData.append("category", subCategoryData?.data?.category?._id);
+    if (isFileExists) {
+      if (formData.images["image-1"] instanceof File) {
+        _formData.append("chart", formData.images["image-1"]);
+      } else {
+        _formData.append("chart", JSON.stringify(formData.images["image-1"]));
+      }
+    }
+
     editSubCategory({
       id: params.id,
-      data: {
-        name: formData.name,
-        description: formData.description,
-        category: smartSeachvalue["_id"]
-      }
+      data: _formData,
     })
       .unwrap()
       .then((res) => {
@@ -152,7 +178,7 @@ function EditSubCategoryPage() {
           toast.success(tMessage("A new collection updated"));
           setSmartSeachValue({
             id: "",
-            name: ""
+            name: "",
           });
           router.replace(`/${locale}/admin/dashboard/collections`);
           reset();
@@ -169,6 +195,7 @@ function EditSubCategoryPage() {
 
   if (areAllCategoriesEmpty || isSubCategoryFetching || !subCategoryData)
     return <Spinner />;
+
 
   return (
     <form
@@ -214,13 +241,13 @@ function EditSubCategoryPage() {
                   "& .MuiSwitch-switchBase.Mui-checked": {
                     color: "red",
                     "& + .MuiSwitch-track": {
-                      backgroundColor: "#ed0534"
-                    }
+                      backgroundColor: "#ed0534",
+                    },
                   },
                   "& .MuiSwitch-track": {
                     backgroundColor: "#161616",
-                    opacity: 1
-                  }
+                    opacity: 1,
+                  },
                 }}
               />
             }
@@ -248,7 +275,7 @@ function EditSubCategoryPage() {
                     !allCategories?.includes(value[locale as string])
                   )
                     return "You Have to choose from available categories";
-                }
+                },
               }}
               render={({ field }) => (
                 <SmartSearchInput
@@ -273,39 +300,7 @@ function EditSubCategoryPage() {
               )}
             />
           )}
-          {/* {isChecked && (
-            <Controller
-              name={"category.ar"}
-              control={control}
-              defaultValue={subCategoryData?.data.category.name.ar}
-              rules={{
-                required: "هذا الحقل مطلوب",
-                validate(value) {
-                  if (isMainCategoryIncluded && !allCategories?.includes(value))
-                    return "You Have to choose from available categories";
-                },
-              }}
-              render={({ field }) => (
-                <SmartSearchInput
-                  lang={lang}
-                  errors={errors?.["category"]?.["ar"]}
-                  isFetching={isSubCategoryFetching}
-                  notAvailableMessage={(tMessage("No Categories Available"))}
-                  disabled={
-                    editSubCategoryResponse.isLoading || isSubCategoryFetching
-                  }
-                  shouldReset={editSubCategoryResponse.isSuccess}
-                  getSmartSearchValue={setSmartSeachValue}
-                  textLabel={"القسم الرئيسي"}
-                  placeholder={"بحث عن القسم"}
-                  defaultValue={formData.category.ar}
-                  data={data?.data}
-                  name={field.name}
-                  onChange={field.onChange}
-                />
-              )}
-            />
-          )} */}
+
           {!isChecked && (
             <Controller
               name={"name.en"}
@@ -377,15 +372,27 @@ function EditSubCategoryPage() {
                   rows={6}
                   sx={{
                     "& .MuiInputBase-input": {
-                      fontSize: "1.4rem"
+                      fontSize: "1.4rem",
                     },
                     "& .MuiInputBase-inputMultiline": {
-                      fontSize: "1.4rem"
-                    }
+                      fontSize: "1.4rem",
+                    },
                   }}
                 />
               )}
             />
+          )}
+          {!isChecked && (
+            <Box className="">
+              <p className="font-semibold text-xl mb-4">Upload Size Chart</p>
+              <AddProductImage
+                disabled={editSubCategoryResponse.isLoading}
+                control={control}
+                formData={formData}
+                imagesNumber={1}
+                setValue={setValue}
+              />
+            </Box>
           )}
           {isChecked && (
             <Controller
@@ -410,11 +417,11 @@ function EditSubCategoryPage() {
                   rows={6}
                   sx={{
                     "& .MuiInputBase-input": {
-                      fontSize: "1.4rem"
+                      fontSize: "1.4rem",
                     },
                     "& .MuiInputBase-inputMultiline": {
-                      fontSize: "1.4rem"
-                    }
+                      fontSize: "1.4rem",
+                    },
                   }}
                 />
               )}
@@ -434,8 +441,8 @@ function EditSubCategoryPage() {
                 boxShadow: "none",
                 "&:hover": {
                   backgroundColor: "black",
-                  boxShadow: "none"
-                }
+                  boxShadow: "none",
+                },
               }}
               type="submit"
               variant="contained"

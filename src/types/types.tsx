@@ -40,6 +40,9 @@ export interface AdminSubCategory {
     en: string;
     ar: string;
   };
+  images?: {
+    [key: string]: any;
+  };
 }
 
 export type extraKey = { [key: string]: string };

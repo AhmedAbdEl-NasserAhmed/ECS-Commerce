@@ -43,6 +43,12 @@ import SharableSocialLinks from "@/components/SharableSocialLinks/SharableSocial
 import { Helmet } from "react-helmet";
 import { useTranslations } from "next-intl";
 import { formatCurrency } from "@/lib/helpers";
+import { IoShirt } from "react-icons/io5";
+import Modal from "@mui/joy/Modal";
+import ModalClose from "@mui/joy/ModalClose";
+import Sheet from "@mui/joy/Sheet";
+import Typography from "@mui/joy/Typography";
+import { useGetSubCategoryByIdQuery } from "@/lib/features/api/subCategoriesApi";
 
 function ProductDetails() {
   const params = useParams();
@@ -60,6 +66,7 @@ function ProductDetails() {
   const [sort, setSort] = useState<string>("");
 
   const userTranslation = useTranslations("user");
+  const dashboardTranslation = useTranslations("Dashboard");
 
   const [selectedSize, setSelectedSize] = useState(null);
 
@@ -72,6 +79,7 @@ function ProductDetails() {
   }
 
   const _singleProduct = data?.data?.products?.[0];
+
 
   const { data: relatedProductsData, isLoading: isRelatedProductsLoading } =
     useGetAllProductsQuery(
@@ -138,6 +146,13 @@ function ProductDetails() {
     useGetCategoryByIdQuery(productDetailsState?.selectedProduct?.category, {
       skip: !productDetailsState?.selectedProduct?.category,
     });
+
+  const { data: firstSubCategory, isLoading: isFirstSubCategoryLoading } =
+    useGetSubCategoryByIdQuery(
+      productDetailsState?.selectedProduct?.subCategory?.[0],
+      { skip: !productDetailsState?.selectedProduct?.subCategory?.[0] }
+    );
+
 
   useEffect(() => {
     action(ProductDetailsAction.SET_SELECTED_PRODUCT, {
@@ -334,6 +349,10 @@ function ProductDetails() {
   const windowWidth = useWindowResize();
 
   const [dynamicHref, setDynamicHref] = useState("");
+  const [isSizeChartLoadingImage, setIsSizeChartLoadingImage] =
+    useState<boolean>(true);
+
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -357,6 +376,8 @@ function ProductDetails() {
     data?.data.images?.[0]?.url || "https://via.placeholder.com/1200x630";
 
   const noAvailableSizes = data?.data?.totalQuantity === 0;
+
+
 
   return (
     <>
@@ -405,6 +426,50 @@ function ProductDetails() {
         <meta property="og:updated_time" content="1440432930" />
         <meta name="twitter:card" content="summary_large_image" />
       </Helmet>
+
+      {firstSubCategory?.data?.photo?.url && (
+        <Modal
+          open={open}
+          onClose={() => setOpen(false)}
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Sheet
+            variant="outlined"
+            sx={{
+              maxWidth: 500,
+              borderRadius: "md",
+              p: 3,
+              boxShadow: "lg",
+            }}
+          >
+            <ModalClose variant="plain" sx={{ m: 1 }} />
+            <Typography
+              component="h2"
+              id="modal-title"
+              level="h4"
+              textColor="inherit"
+              sx={{ fontWeight: "lg", mb: 1 }}
+            >
+              {dashboardTranslation("Size chart")}
+            </Typography>
+            {isSizeChartLoadingImage ? (
+              <Spinner />
+            ) : (
+              <Image
+                onLoad={() => setIsSizeChartLoadingImage(false)}
+                src={firstSubCategory?.data?.photo?.url}
+                width={700}
+                height={700}
+                alt="size-chart"
+              />
+            )}
+          </Sheet>
+        </Modal>
+      )}
 
       <BaseContainer className="p-[4rem]">
         <Box className="flex  flex-col gap-16 lg:flex-row ">
@@ -579,9 +644,22 @@ function ProductDetails() {
               }
             </q>
             <Box className="md:w-1/2 my-5">
-              <h2 className="text-2xl mb-5">
-                {userTranslation("Pick Your Size")}
-              </h2>
+              <div className="flex gap-5 items-center mb-7">
+                <h2 className="text-2xl">
+                  {userTranslation("Pick Your Size")}
+                </h2>
+                {firstSubCategory?.data?.photo?.url && (
+                  <button
+                    className="flex items-center gap-2 border-2 border-dotted border-red-500 px-4 py-1 text-lg uppercase font-medium"
+                    onClick={() => {
+                      setOpen(true);
+                    }}
+                  >
+                    <IoShirt />
+                    {dashboardTranslation("Size chart")}
+                  </button>
+                )}
+              </div>
               <div className="flex items-center gap-5">
                 {/* asd */}
                 {sortedProductsBySize?.map((product, idx) => {

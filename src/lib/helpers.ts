@@ -94,6 +94,40 @@ export function getUniqueValues(arr, values: string[]) {
   });
 }
 
+export function getUniqueValuesBasedOnSearchTerm(arr, lang, searchTerm) {
+  const regex = new RegExp(searchTerm, "i");
+
+  const uniqueItems = Array.from(
+    new Map(
+      (arr || [])
+        .filter((item) => regex.test(item.name[lang])) // Filter items by regex
+        .map((item) => [item.name[lang], item]) // Map each name to the item
+    ).values() // Extract unique items
+  );
+
+  return uniqueItems;
+}
+
+// export function findMatchingNames(data) {
+//   const lowerInputString = inputString.toLowerCase();
+
+//   // Filter and map to unique matched names
+//   const matchedNames = data
+//     .filter(
+//       (item) =>
+//         item.name.en.toLowerCase().includes(lowerInputString) ||
+//         item.name.ar.includes(lowerInputString)
+//     )
+//     .map((item) => item.name);
+
+//   // Return unique names
+//   const uniqueNames = Array.from(new Set(matchedNames)).map((name) =>
+//     JSON.parse(name as string)
+//   );
+
+//   return uniqueNames;
+// }
+
 export const queryBuilder = (query) => {
   let queryString = "";
 

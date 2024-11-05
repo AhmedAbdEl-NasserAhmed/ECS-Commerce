@@ -20,6 +20,7 @@ import { useGetSubCategoryQuery } from "@/lib/features/api/subCategoriesApi";
 import {
   getAddProductServerData,
   getSumFrom,
+  getUniqueValuesBasedOnSearchTerm,
   removeSizesFoundInProducts,
 } from "@/lib/helpers";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
@@ -436,6 +437,12 @@ function AddProductPage() {
 
   const noCategoryYet = !formData.category?.en || !formData.category?.ar;
 
+  const uniqueItems = getUniqueValuesBasedOnSearchTerm(
+    productName?.data,
+    locale,
+    productNameDebounceValue
+  );
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
@@ -602,7 +609,7 @@ function AddProductPage() {
                         textLabel={`${t("Product Name")} ${
                           isChecked ? "(عربي)" : "(English)"
                         }`}
-                        data={productName}
+                        data={uniqueItems || []}
                         placeholder={t("Product Name")}
                         name={field.name}
                         onChange={field.onChange}
@@ -642,7 +649,7 @@ function AddProductPage() {
                         textLabel={`اسم المنتج ${
                           isChecked ? "(عربي)" : "(English)"
                         }`}
-                        data={productName}
+                        data={uniqueItems || []}
                         placeholder={"اسم المنتج"}
                         name={field.name}
                         onChange={field.onChange}

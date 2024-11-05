@@ -29,12 +29,16 @@ function HomePage() {
 
   const groupedProducts = groupBy(data?.data, "slug");
 
-  const uniqueProducts = Object.keys(groupedProducts).map((key) => {
-    return groupedProducts[key].find((p) => p.discount === 0);
-  });
-  const uniqueSalesProducts = Object.keys(groupedProducts).map((key) => {
-    return groupedProducts[key].find((p) => p.discount > 0);
-  });
+  const uniqueProducts = Object.keys(groupedProducts)
+    .map((key) => {
+      return groupedProducts[key].find((p) => p.discount === 0);
+    })
+    .filter(Boolean);
+  const uniqueSalesProducts = Object.keys(groupedProducts)
+    .map((key) => {
+      return groupedProducts[key].find((p) => p.discount > 0);
+    })
+    .filter(Boolean);
   const isMobileScreen = useMobileScreen();
 
   return (
@@ -43,21 +47,29 @@ function HomePage() {
       <NavBar />
       {isMobileScreen && <SearchBar />}
       <Slider />
-      <BaseContainer className="p-36 mb-[40rem] md:mb-0">
+      <BaseContainer className="p-36 mb-[40rem] md:mb-0 pb-0">
         <HomePageCategory />
       </BaseContainer>
 
       <TitledProductList
+        title={t("All Products")}
+        description="Mauris luctus nisi sapien tristique dignissim ornare"
+        products={data?.data}
+        isLoading={isLoading}
+        columns={4}
+        baseContainerClass={"pb-40"}
+      />
+      <TitledProductList
         title={t("Hot Products")}
         description="Mauris luctus nisi sapien tristique dignissim ornare"
-        products={uniqueProducts.filter(Boolean).slice(0, 4)}
+        products={uniqueProducts}
         isLoading={isLoading}
         columns={4}
       />
       <TitledProductList
         title={t("Sale Products")}
         description="Mauris luctus nisi sapien tristique dignissim ornare"
-        products={uniqueSalesProducts.filter(Boolean).slice(0, 4)}
+        products={uniqueSalesProducts}
         isLoading={isLoading}
         columns={4}
       />

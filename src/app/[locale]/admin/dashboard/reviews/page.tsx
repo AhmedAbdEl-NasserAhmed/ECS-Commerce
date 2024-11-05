@@ -69,7 +69,7 @@ function Reviews() {
               isLoading={getPaginatedReviewsResponse.isFetching}
               paginationControllers={paginationControllers}
               data={getPaginatedReviewsResponse?.data?.data}
-              columns={reviewsTableHeaders(t)}
+              columns={reviewsTableHeaders(t, locale as string)}
             />
           )}
         </Menus>

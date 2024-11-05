@@ -190,7 +190,9 @@ function ProductDetails() {
 
   function handleAddCartItem(selectedProduct) {
     if (productDetailsState?.isColorExisted) {
-      toast.error(userTranslation("This Color and Size are Already Existed"));
+      toast.error(
+        userTranslation("This product is already added to your cart")
+      );
       return;
     }
 
@@ -536,7 +538,7 @@ function ProductDetails() {
             {isLoading ? (
               <Spinner />
             ) : (
-              <Box className="flex justify-between items-center  ">
+              <Box className="flex gap-5 items-center  ">
                 <h2 className="text-4xl font-semibold capitalize">
                   {
                     productDetailsState?.selectedProduct?.name?.[

@@ -45,10 +45,10 @@ const productsApi = createApi({
         method: "GET",
       }),
       providesTags: ["PRODUCTS", "CATEGORIES", "COLLECTIONS", "PAYMENT"],
-      transformResponse: (response) => {
-        const data = getUniqueValues(response.data, ["name"]);
-        return data;
-      },
+      // transformResponse: (response) => {
+      //   const data = getUniqueValues(response.data, ["name"]);
+      //   return data;
+      // },
     }),
     getAllProductsColors: builder.query({
       query: (categoryId) => ({

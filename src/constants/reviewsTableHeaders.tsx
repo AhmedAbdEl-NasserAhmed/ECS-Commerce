@@ -3,7 +3,7 @@
 import ReviewsTableMenuOptions from "@/components/AdminReviews/ReviewsTableMenuOptions";
 import { IoStarSharp } from "react-icons/io5";
 
-export const reviewsTableHeaders = (t) => [
+export const reviewsTableHeaders = (t, lang = "en") => [
   {
     id: "user",
     header: () => <div>{t("User name")}</div>,
@@ -24,6 +24,22 @@ export const reviewsTableHeaders = (t) => [
     id: "title",
     header: () => <div>{t("review")}</div>,
     accessorKey: "title",
+  },
+  {
+    id: "product",
+    header: () => <div>{t("Product Name")}</div>,
+    accessorKey: "title",
+    cell: ({
+      cell: {
+        row: { original },
+      },
+    }) => {
+      return (
+        <p>
+          {original.product.name[lang]} {original.product.size.value}
+        </p>
+      );
+    },
   },
   {
     id: "ratings",

@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import Spinner from "../Spinner/Spinner";
 
 function ProductsList({ data, setProductName, productName }) {
   const { locale } = useParams();
@@ -42,6 +43,8 @@ function ProductsList({ data, setProductName, productName }) {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  if (!data) return <Spinner />;
 
   return (
     <ul

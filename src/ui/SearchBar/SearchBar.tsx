@@ -15,7 +15,7 @@ function SearchBar() {
 
   const debounceValue = useDebounceHook(productName);
 
-  const { data } = useGetProductByNameQuery({
+  const { data, isLoading, isFetching } = useGetProductByNameQuery({
     letter: debounceValue,
     lang: locale,
   });
@@ -34,11 +34,13 @@ function SearchBar() {
       <button className="cursor-pointer">
         <Image src="/search.png" width={16} height={16} alt="Search-logo" />
       </button>
-      <ProductsList
-        productName={productName}
-        setProductName={setProductName}
-        data={data}
-      />
+      {(!isLoading || !isFetching) && (
+        <ProductsList
+          productName={productName}
+          setProductName={setProductName}
+          data={data?.data}
+        />
+      )}
     </div>
   );
 }

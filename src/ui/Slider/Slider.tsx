@@ -6,11 +6,38 @@ import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useTranslations } from "next-intl";
+import { useGetSubCategoryQuery } from "@/lib/features/api/subCategoriesApi";
+import { HomeCategory, Lang } from "@/types/enums";
+import { useGetCategoryQuery } from "@/lib/features/api/categoriesApi";
+import Spinner from "../Spinner/Spinner";
 
 function Slider() {
   const [currentSlide, setCurrentSlide] = useState<number>(0);
 
   const { locale } = useParams();
+
+  const { data: mainCategory, isLoading } = useGetCategoryQuery({
+    letter: HomeCategory.MAIN_CATEGORY,
+    lang: Lang.ENGLISH,
+  });
+
+  const { data: subCategories, isLoading: subCategoriesLoading } =
+    useGetSubCategoryQuery(
+      {
+        letter: HomeCategory.MALE_JEANS_EN,
+        lang: Lang.ENGLISH,
+        categoryId: mainCategory?.data[0]?.["_id"],
+      },
+      { skip: !mainCategory?.data[0]?.["_id"] }
+    );
+
+  const category = mainCategory?.data[0];
+  const subCategory = subCategories?.data.find((subCategory) => {
+    return (
+      subCategory.name[Lang.ENGLISH].toLowerCase() ===
+      HomeCategory.MALE_JEANS_EN
+    );
+  });
 
   const slideStyle =
     locale === "ar"
@@ -24,56 +51,50 @@ function Slider() {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev === slider.length - 1 ? 0 : prev + 1));
-    }, 3000);
+    }, 5000);
 
     return () => clearInterval(interval);
   }, []);
+
+  if (subCategoriesLoading || isLoading) return <Spinner />;
 
   return (
     <div className="relative h-[calc(70vh-90px)] overflow-hidden">
       <div
         className="w-max h-full flex transition-all ease-in-out duration-1000"
-        // style={{ transform: slideStyle }}
+        style={{ transform: slideStyle }}
       >
-        {slides(t).map((slide) => {
+        {slider.map((slide) => {
           return (
-            <div
-              className={`${slide.bg} w-screen h-full flex flex-col gap-16 xl:flex-row`}
+            <Link
               key={slide.id}
+              href={slide.href(locale, category, subCategory)}
             >
-              <div className="h-1/2 xl:w-1/2 xl:h-full flex flex-col items-center justify-center gap-8 2xl:gap-12 text-center">
-                <h2 className="text-xl lg:text-3xl 2xl:text-5xl">
-                  {slide.description}
-                </h2>
-                <h1 className="text-5xl lg:text-6xl 2xl:text-8xl font-semibold">
-                  {slide.title}
-                </h1>
-              </div>
-
-              <div className="relative h-1/2 xl:w-1/2 xl:h-full">
-                <Image
-                  src={slide.img}
-                  alt={slide.title}
-                  fill
-                  sizes="100%"
-                  className="object-cover"
-                />
-              </div>
-            </div>
+              <div
+                className={`w-screen h-full flex flex-col gap-16 xl:flex-row`}
+                style={{
+                  backgroundImage: `url(${slide.img})`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "50% 50%",
+                  backgroundRepeat: "no-repeat",
+                  aspectRatio: "16 / 9",
+                }}
+              ></div>
+            </Link>
           );
         })}
       </div>
       <ul className="absolute left-1/2 m-auto bottom-8 flex gap-4">
         {slides(t).map((slide, index) => (
           <li
-            className={`w-3 h-3 rounded-full ring-1 ring-gray-600 cursor-pointer flex justify-center items-center ${
+            className={`w-5 h-5 rounded-full ring-1 ring-gray-600 cursor-pointer flex justify-center items-center ${
               currentSlide === index ? "scale-150" : ""
             } `}
             key={slide.id}
             onClick={() => setCurrentSlide(index)}
           >
             {currentSlide === index && (
-              <div className="w-[6px] h-[6px] bg-gray-600 rounded-full"></div>
+              <div className="w-[8px] h-[8px] bg-gray-600 rounded-full"></div>
             )}
           </li>
         ))}

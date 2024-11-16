@@ -10,6 +10,7 @@ import { useGetSubCategoryQuery } from "@/lib/features/api/subCategoriesApi";
 import { HomeCategory, Lang } from "@/types/enums";
 import { useGetCategoryQuery } from "@/lib/features/api/categoriesApi";
 import Spinner from "../Spinner/Spinner";
+import useMobileScreen from "@/hooks/useMobileScreen";
 
 function Slider() {
   const [currentSlide, setCurrentSlide] = useState<number>(0);
@@ -39,6 +40,8 @@ function Slider() {
     );
   });
 
+  const isMobileScreen = useMobileScreen();
+
   const slideStyle =
     locale === "ar"
       ? `translateX(${currentSlide * 100}vw)`
@@ -59,7 +62,12 @@ function Slider() {
   if (subCategoriesLoading || isLoading) return <Spinner />;
 
   return (
-    <div className="relative h-[calc(70vh-90px)] overflow-hidden">
+    <div
+      className="relative h-[calc(70vh-90px)] overflow-hidden"
+      style={{
+        height: isMobileScreen ? "50vw" : "calc(70vh-90px)",
+      }}
+    >
       <div
         className="w-max h-full flex transition-all ease-in-out duration-1000"
         style={{ transform: slideStyle }}
@@ -78,6 +86,9 @@ function Slider() {
                   backgroundPosition: "50% 50%",
                   backgroundRepeat: "no-repeat",
                   aspectRatio: "16 / 9",
+                  maxHeight: "calc(100vh - 64px)", // Ensure it doesn't overflow
+                  overflow: "hidden",
+                  height: isMobileScreen ? "50vw" : "100%",
                 }}
               ></div>
             </Link>

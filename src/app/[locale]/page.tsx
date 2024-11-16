@@ -47,7 +47,7 @@ function HomePage() {
       <NavBar />
       {isMobileScreen && <SearchBar />}
       <Slider />
-      <BaseContainer className="p-36 mb-[40rem] md:mb-0 pb-0">
+      <BaseContainer className="p-24 mb-[3rem] md:mb-0 pb-0">
         <HomePageCategory />
       </BaseContainer>
 

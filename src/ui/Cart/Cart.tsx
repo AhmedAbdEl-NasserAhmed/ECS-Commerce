@@ -287,13 +287,13 @@ const Cart = () => {
                   <button
                     disabled={user?.role === UserType.ADMIN}
                     onClick={() => {
-                      if (token && user.isActive) {
-                        setIsCartOpen(false);
-                        addCartId();
-                        router.push(`/${locale}/user/checkout`);
-                      } else {
-                        toast.error(t("Please Log in First"));
-                      }
+                      // if (token && user.isActive) {
+                      setIsCartOpen(false);
+                      addCartId();
+                      router.push(`/${locale}/user/checkout`);
+                      // } else {
+                      //   toast.error(t("Please Log in First"));
+                      // }
                     }}
                     className="rounded-xl py-3 px-4 bg-black text-white disabled:cursor-not-allowed disabled:opacity-75"
                   >

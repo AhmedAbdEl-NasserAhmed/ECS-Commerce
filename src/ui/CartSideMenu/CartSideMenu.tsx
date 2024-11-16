@@ -247,14 +247,14 @@ function CartSideMenu({ setOpenSideMenu, openSideMenu, setOpens }) {
               <div className="flex justify-end text-xl">
                 <button
                   onClick={() => {
-                    if (token && user.isActive) {
-                      setOpenSideMenu(false);
-                      setOpens(false);
-                      addCartId();
-                      router.push(`/${locale}/user/checkout`);
-                    } else {
-                      toast.error(tMessage("Please Log in First"));
-                    }
+                    // if (token && user.isActive) {
+                    setOpenSideMenu(false);
+                    setOpens(false);
+                    addCartId();
+                    router.push(`/${locale}/user/checkout`);
+                    // } else {
+                    //   toast.error(tMessage("Please Log in First"));
+                    // }
                   }}
                   className="rounded-xl py-3 px-4 bg-black text-white disabled:cursor-not-allowed disabled:opacity-75"
                 >

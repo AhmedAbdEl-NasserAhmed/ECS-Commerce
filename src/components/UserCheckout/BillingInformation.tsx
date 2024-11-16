@@ -12,6 +12,8 @@ import ErrorMessage from "@/ui/ErrorMessage/ErrorMessage";
 import {
   useCashPaymentCheckoutMutation,
   usePaymentCheckoutMutation,
+  useUnAuthenticatedCashPaymentCheckoutMutation,
+  useUnAuthenticatedPaymentCheckoutMutation,
 } from "@/lib/features/api/paymentApi";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import MiniSpinner from "@/ui/MiniSpinner/MiniSpinner";
@@ -37,9 +39,17 @@ function BillingInformation(props: IProps) {
   } = useForm({ mode: "onChange" });
 
   const [visaPaymentFn, visaPaymentResponse] = usePaymentCheckoutMutation();
+  const [guestCashPaymentFn, guestCashPaymentResponse] =
+    useUnAuthenticatedCashPaymentCheckoutMutation();
+  const [guestVisaPaymentFn, guestBisaPaymentResponse] =
+    useUnAuthenticatedPaymentCheckoutMutation();
   const [cashPaymentFn, cashPaymentResponse] = useCashPaymentCheckoutMutation();
 
   const { locale } = useParams();
+
+  const user = useAppSelector((state) => state.usersSlice.user);
+
+  console.log("user", user);
 
   const router = useRouter();
 
@@ -91,48 +101,95 @@ function BillingInformation(props: IProps) {
     };
 
     if (props.userPaymentMethod === "cash") {
-      return cashPaymentFn(serverData)
-        .unwrap()
-        .then((res) => {
-          dispatch(makePayment(false));
-          StorageService.set("userLang", locale);
-          return res;
-        })
-        .then((res) => {
-          dispatch(clearCookiesThunk("cartItems"));
-          StorageService.delete("userLang");
-          toast.success(
-            ` ${userTranslation("Your Order is Completed Successfully")}`
-          );
-          router.replace(`/${locale as string}/user/profile/${res?.orderId}`);
-        })
-        .catch((err) => {
-          dispatch(makePayment(false));
-          toast.error(
-            ` ${tMessage("The left Quantity from Product")} ${
-              err.data.message[locale as string]
-            } ${tMessage("is")} ${err.data.message.quantity || 0} `
-          );
-        });
+      if (user) {
+        return cashPaymentFn(serverData)
+          .unwrap()
+          .then((res) => {
+            dispatch(makePayment(false));
+            StorageService.set("userLang", locale);
+            return res;
+          })
+          .then((res) => {
+            dispatch(clearCookiesThunk("cartItems"));
+            StorageService.delete("userLang");
+            toast.success(
+              ` ${userTranslation("Your Order is Completed Successfully")}`
+            );
+            router.replace(`/${locale as string}/user/profile/${res?.orderId}`);
+          })
+          .catch((err) => {
+            dispatch(makePayment(false));
+            toast.error(
+              ` ${tMessage("The left Quantity from Product")} ${
+                err.data.message[locale as string]
+              } ${tMessage("is")} ${err.data.message.quantity || 0} `
+            );
+          });
+      } else {
+        return guestCashPaymentFn(serverData)
+          .unwrap()
+          .then((res) => {
+            dispatch(makePayment(false));
+            StorageService.set("userLang", locale);
+            return res;
+          })
+          .then((res) => {
+            dispatch(clearCookiesThunk("cartItems"));
+            StorageService.delete("userLang");
+            toast.success(
+              ` ${userTranslation("Your Order is Completed Successfully")}`
+            );
+            router.replace(`/${locale as string}/user/profile/${res?.orderId}`);
+          })
+          .catch((err) => {
+            dispatch(makePayment(false));
+            toast.error(
+              ` ${tMessage("The left Quantity from Product")} ${
+                err.data.message[locale as string]
+              } ${tMessage("is")} ${err.data.message.quantity || 0} `
+            );
+          });
+      }
     } else {
-      return visaPaymentFn(serverData)
-        .unwrap()
-        .then((res) => {
-          dispatch(makePayment(false));
-          StorageService.set("userLang", locale);
-          return res;
-        })
-        .then((res) => {
-          router.replace(res.url);
-        })
-        .catch((err) => {
-          dispatch(makePayment(false));
-          toast.error(
-            ` ${tMessage("The left Quantity from Product")} ${
-              err.data.message[locale as string]
-            } ${tMessage("is")} ${err.data.message.quantity || 0} `
-          );
-        });
+      if (user) {
+        return visaPaymentFn(serverData)
+          .unwrap()
+          .then((res) => {
+            dispatch(makePayment(false));
+            StorageService.set("userLang", locale);
+            return res;
+          })
+          .then((res) => {
+            router.replace(res.url);
+          })
+          .catch((err) => {
+            dispatch(makePayment(false));
+            toast.error(
+              ` ${tMessage("The left Quantity from Product")} ${
+                err.data.message[locale as string]
+              } ${tMessage("is")} ${err.data.message.quantity || 0} `
+            );
+          });
+      } else {
+        return guestVisaPaymentFn(serverData)
+          .unwrap()
+          .then((res) => {
+            dispatch(makePayment(false));
+            StorageService.set("userLang", locale);
+            return res;
+          })
+          .then((res) => {
+            router.replace(res.url);
+          })
+          .catch((err) => {
+            dispatch(makePayment(false));
+            toast.error(
+              ` ${tMessage("The left Quantity from Product")} ${
+                err.data.message[locale as string]
+              } ${tMessage("is")} ${err.data.message.quantity || 0} `
+            );
+          });
+      }
     }
   }
 
@@ -165,7 +222,10 @@ function BillingInformation(props: IProps) {
             render={({ field }) => (
               <CustomizedTextField
                 disabled={
-                  visaPaymentResponse.isLoading || cashPaymentResponse.isLoading
+                  visaPaymentResponse.isLoading ||
+                  guestCashPaymentResponse.isLoading ||
+                  guestBisaPaymentResponse.isLoading ||
+                  cashPaymentResponse.isLoading
                 }
                 textLabelClass={"font-semibold text-xl"}
                 placeholder={userTranslation("First Name")}
@@ -197,7 +257,10 @@ function BillingInformation(props: IProps) {
             render={({ field }) => (
               <CustomizedTextField
                 disabled={
-                  visaPaymentResponse.isLoading || cashPaymentResponse.isLoading
+                  visaPaymentResponse.isLoading ||
+                  guestCashPaymentResponse.isLoading ||
+                  guestBisaPaymentResponse.isLoading ||
+                  cashPaymentResponse.isLoading
                 }
                 textLabelClass={"font-semibold text-xl"}
                 placeholder={userTranslation("Last Name")}
@@ -228,7 +291,10 @@ function BillingInformation(props: IProps) {
           render={({ field }) => (
             <CustomizedTextField
               disabled={
-                visaPaymentResponse.isLoading || cashPaymentResponse.isLoading
+                visaPaymentResponse.isLoading ||
+                guestCashPaymentResponse.isLoading ||
+                guestBisaPaymentResponse.isLoading ||
+                cashPaymentResponse.isLoading
               }
               textLabelClass={"font-semibold text-xl"}
               placeholder={userTranslation("Email Address")}
@@ -256,6 +322,8 @@ function BillingInformation(props: IProps) {
                 disabled={
                   false ||
                   visaPaymentResponse.isLoading ||
+                  guestCashPaymentResponse.isLoading ||
+                  guestBisaPaymentResponse.isLoading ||
                   cashPaymentResponse.isLoading
                 }
                 isMulti={false}
@@ -282,7 +350,10 @@ function BillingInformation(props: IProps) {
             render={({ field }) => (
               <PhoneInput
                 disabled={
-                  visaPaymentResponse.isLoading || cashPaymentResponse.isLoading
+                  visaPaymentResponse.isLoading ||
+                  guestCashPaymentResponse.isLoading ||
+                  guestBisaPaymentResponse.isLoading ||
+                  cashPaymentResponse.isLoading
                 }
                 country={"eg"}
                 value={field.value}
@@ -314,7 +385,10 @@ function BillingInformation(props: IProps) {
             render={({ field }) => (
               <CustomizedTextField
                 disabled={
-                  visaPaymentResponse.isLoading || cashPaymentResponse.isLoading
+                  visaPaymentResponse.isLoading ||
+                  guestCashPaymentResponse.isLoading ||
+                  guestBisaPaymentResponse.isLoading ||
+                  cashPaymentResponse.isLoading
                 }
                 textLabelClass={"font-semibold text-xl"}
                 placeholder={userTranslation("City")}
@@ -338,7 +412,10 @@ function BillingInformation(props: IProps) {
             render={({ field }) => (
               <CustomizedTextField
                 disabled={
-                  visaPaymentResponse.isLoading || cashPaymentResponse.isLoading
+                  visaPaymentResponse.isLoading ||
+                  guestCashPaymentResponse.isLoading ||
+                  guestBisaPaymentResponse.isLoading ||
+                  cashPaymentResponse.isLoading
                 }
                 textLabelClass={"font-semibold text-xl"}
                 placeholder={userTranslation("Apartment")}
@@ -365,7 +442,10 @@ function BillingInformation(props: IProps) {
             render={({ field }) => (
               <CustomizedTextField
                 disabled={
-                  visaPaymentResponse.isLoading || cashPaymentResponse.isLoading
+                  visaPaymentResponse.isLoading ||
+                  guestCashPaymentResponse.isLoading ||
+                  guestBisaPaymentResponse.isLoading ||
+                  cashPaymentResponse.isLoading
                 }
                 textLabelClass={"font-semibold text-xl"}
                 placeholder={userTranslation("Building")}
@@ -389,7 +469,10 @@ function BillingInformation(props: IProps) {
             render={({ field }) => (
               <CustomizedTextField
                 disabled={
-                  visaPaymentResponse.isLoading || cashPaymentResponse.isLoading
+                  visaPaymentResponse.isLoading ||
+                  guestCashPaymentResponse.isLoading ||
+                  guestBisaPaymentResponse.isLoading ||
+                  cashPaymentResponse.isLoading
                 }
                 textLabelClass={"font-semibold text-xl"}
                 placeholder={userTranslation("Street")}
@@ -413,7 +496,10 @@ function BillingInformation(props: IProps) {
             render={({ field }) => (
               <CustomizedTextField
                 disabled={
-                  visaPaymentResponse.isLoading || cashPaymentResponse.isLoading
+                  visaPaymentResponse.isLoading ||
+                  guestCashPaymentResponse.isLoading ||
+                  guestBisaPaymentResponse.isLoading ||
+                  cashPaymentResponse.isLoading
                 }
                 textLabelClass={"font-semibold text-xl"}
                 placeholder={userTranslation("Floor")}
@@ -434,6 +520,8 @@ function BillingInformation(props: IProps) {
         disabled={
           !props.isUserAcceptedAllPolicies ||
           visaPaymentResponse.isLoading ||
+          guestCashPaymentResponse.isLoading ||
+          guestBisaPaymentResponse.isLoading ||
           cashPaymentResponse.isLoading
         }
         sx={{
@@ -448,7 +536,10 @@ function BillingInformation(props: IProps) {
         variant="contained"
         size="large"
       >
-        {visaPaymentResponse.isLoading || cashPaymentResponse.isLoading ? (
+        {visaPaymentResponse.isLoading ||
+        guestCashPaymentResponse.isLoading ||
+        guestBisaPaymentResponse.isLoading ||
+        cashPaymentResponse.isLoading ? (
           <MiniSpinner />
         ) : (
           userTranslation("Place Order")

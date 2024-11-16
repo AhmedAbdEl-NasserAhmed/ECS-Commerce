@@ -17,11 +17,11 @@ function UserProtectedRoute({ children }) {
   );
 
   const forbiddenRoutes = [
-    "checkout",
+    // "checkout",
     "login",
     "register",
     "contact",
-    "payment",
+    // "payment",
   ];
 
   useEffect(() => {
@@ -29,9 +29,8 @@ function UserProtectedRoute({ children }) {
       router.back();
     } else if (
       !isAuthenticated &&
-      (pathName.includes("checkout") ||
-        pathName.includes("payment") ||
-        pathName.includes("profile"))
+      // pathName.includes("checkout") ||
+      (pathName.includes("payment") || pathName.includes("profile"))
     ) {
       router.back();
     }

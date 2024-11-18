@@ -6,11 +6,9 @@ function About() {
 
   return (
     <BaseContainer className="my-16 py-28">
-      {/* <hr /> */}
       <p className="text-4xl text-center my-10 leading-relaxed">
         {user("about orca description")}
       </p>
-      {/* <hr /> */}
     </BaseContainer>
   );
 }

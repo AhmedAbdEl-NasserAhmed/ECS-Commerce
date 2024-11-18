@@ -1,5 +1,6 @@
 "use client";
 
+import TextEditor from "@/components/ReactQuill/ReactQuill";
 import useDebounceHook from "@/hooks/useDebounceHook";
 import { setSubCategory } from "@/lib/features/adminProductSlice/adminProductSlice";
 import {
@@ -94,7 +95,6 @@ function EditProduct() {
         skip: !mainCategorydebounceValue,
       }
     );
-
 
   const { data: subCategory, isFetching: isFetchingSubCategories } =
     useGetSubCategoryQuery(
@@ -606,26 +606,13 @@ function EditProduct() {
                   rules={{ required: "This field is required" }}
                   defaultValue={productDetails?.data?.description.en}
                   render={({ field }) => (
-                    <CustomizedTextField
+                    <TextEditor
                       disabled={updateProductResponse.isLoading}
-                      textLabelClass={"font-semibold text-xl"}
                       placeholder={t("Product Description")}
-                      textlabel={`${t("Product Description")}(English)`}
-                      field={field}
-                      formerHelperStyles={{ style: { fontSize: "1rem" } }}
-                      customError={errors?.["description"]?.["en"]}
-                      type={"text"}
-                      variant={"outlined"}
-                      multiline={true}
-                      rows={6}
-                      sx={{
-                        "& .MuiInputBase-input": {
-                          fontSize: "1.4rem",
-                        },
-                        "& .MuiInputBase-inputMultiline": {
-                          fontSize: "1.4rem",
-                        },
-                      }}
+                      label={`${t("Product Description")}(English)`}
+                      // errors={errors}
+                      customError={errors?.["description"]?.["en"]?.message}
+                      {...field}
                     />
                   )}
                 />
@@ -678,28 +665,14 @@ function EditProduct() {
             rules={{ required: "This field is required" }}
             defaultValue={productDetails?.data?.description.ar}
             render={({ field }) => (
-              <CustomizedTextField
+              <TextEditor
+                disabled={updateProductResponse.isLoading}
+                placeholder={"وصف المنتج"}
+                label={`وصف المنتج`}
+                customError={errors?.["description"]?.["ar"]?.message}
                 onFocus={() => setLang(Lang.ARABIC)}
                 onBlur={() => setLang(Lang.ENGLISH)}
-                disabled={updateProductResponse.isLoading}
-                textLabelClass={"font-semibold text-xl"}
-                textlabel={"وصف المنتج(عربي)"}
-                placeholder={"وصف المنتج"}
-                field={field}
-                formerHelperStyles={{ style: { fontSize: "1rem" } }}
-                customError={errors?.["description"]?.["ar"]}
-                type={"text"}
-                variant={"outlined"}
-                multiline={true}
-                rows={6}
-                sx={{
-                  "& .MuiInputBase-input": {
-                    fontSize: "1.4rem",
-                  },
-                  "& .MuiInputBase-inputMultiline": {
-                    fontSize: "1.4rem",
-                  },
-                }}
+                {...field}
               />
             )}
           />

@@ -631,13 +631,17 @@ function ProductDetails() {
                 )}
               </Box>
             )}
-            <q className="text-2xl text-gray-400 capitalize leading-10">
-              {
-                productDetailsState?.selectedProduct?.description?.[
-                  locale as string
-                ]
-              }
-            </q>
+            <div
+              className="free-html"
+              dangerouslySetInnerHTML={{
+                __html:
+                  productDetailsState?.selectedProduct?.description?.[
+                    locale as string
+                  ],
+              }}
+            />
+            {/* <q className="text-2xl text-gray-400 capitalize leading-10">
+            </q> */}
             <Box className="md:w-1/2 my-5">
               <div className="flex gap-5 items-center mb-7">
                 <h2 className="text-2xl">

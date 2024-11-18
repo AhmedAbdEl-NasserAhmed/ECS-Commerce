@@ -223,11 +223,14 @@ function ProductDetails() {
               )}
             </Box>
             <q className="text-2xl text-gray-400 capitalize leading-10">
-              {
-                productState?.selectedProduct?.description?.[
-                  params.locale as string
-                ]
-              }
+              <div
+                dangerouslySetInnerHTML={{
+                  __html:
+                    productState?.selectedProduct?.description?.[
+                      params.locale as string
+                    ],
+                }}
+              />
             </q>
             <Box className="md:w-1/2 my-5">
               <h2 className="text-2xl mb-5">

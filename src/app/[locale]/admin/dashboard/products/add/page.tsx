@@ -1,5 +1,6 @@
 "use client";
 
+import TextEditor from "@/components/ReactQuill/ReactQuill";
 import useDebounceHook from "@/hooks/useDebounceHook";
 import {
   resetAdminProductState,
@@ -68,6 +69,8 @@ function AddProductPage() {
   const { locale } = useParams();
 
   const formData = watch();
+
+  console.log("formData", formData);
 
   const router = useRouter();
 
@@ -429,6 +432,8 @@ function AddProductPage() {
       shouldMainCategoryReset.current = false;
     }, 100);
   }
+
+  console.log("errors", errors);
 
   const _sizes =
     productSearchName?._id && productsBySlug?.data?.products
@@ -860,74 +865,43 @@ function AddProductPage() {
                 />
               )}
               {!isChecked && (
-                <Box className="col-span-full">
+                <Box className="col-span-full h-[200px]">
                   <Controller
                     name={"description.en"}
                     control={control}
                     rules={{ required: "This field is required" }}
                     defaultValue=""
                     render={({ field }) => (
-                      <CustomizedTextField
+                      <TextEditor
                         disabled={productResponse.isLoading}
-                        textLabelClass={"font-semibold text-xl"}
                         placeholder={t("Product Description")}
-                        textlabel={`${t("Product Description")} ${
+                        label={`${t("Product Description")} ${
                           isChecked ? "(عربي)" : "(English)"
                         }`}
-                        field={field}
-                        formerHelperStyles={{ style: { fontSize: "1rem" } }}
-                        customError={errors?.["description"]?.["en"]}
-                        type={"text"}
-                        variant={"outlined"}
-                        multiline={true}
-                        rows={6}
-                        sx={{
-                          "& .MuiInputBase-input": {
-                            fontSize: "1.4rem",
-                            lineHeight: "2.4rem",
-                          },
-                          "& .MuiInputBase-inputMultiline": {
-                            fontSize: "1.4rem",
-                            lineHeight: "2.4rem",
-                          },
-                        }}
+                        customError={errors?.["description"]?.["en"]?.message}
+                        {...field}
                       />
                     )}
                   />
                 </Box>
               )}
               {isChecked && (
-                <Box className="col-span-full">
+                <Box className="col-span-full h-[200px] ">
                   <Controller
                     name={"description.ar"}
                     control={control}
                     rules={{ required: "هذا الحقل مطلوب" }}
                     defaultValue=""
                     render={({ field }) => (
-                      <CustomizedTextField
+                      <TextEditor
                         disabled={productResponse.isLoading}
-                        textLabelClass={"font-semibold text-xl"}
-                        textlabel={`وصف المنتج ${
+                        placeholder={"وصف المنتج"}
+                        label={`وصف المنتج ${
                           isChecked ? "(عربي)" : "(English)"
                         }`}
-                        placeholder={"وصف المنتج"}
-                        field={field}
-                        formerHelperStyles={{ style: { fontSize: "1rem" } }}
-                        customError={errors?.["description"]?.["ar"]}
-                        type={"text"}
-                        variant={"outlined"}
-                        multiline={true}
-                        rows={6}
-                        sx={{
-                          "& .MuiInputBase-input": {
-                            fontSize: "1.4rem",
-                            lineHeight: "2.4rem",
-                          },
-                          "& .MuiInputBase-inputMultiline": {
-                            fontSize: "1.4rem",
-                            lineHeight: "2.4rem",
-                          },
-                        }}
+                        // errors={errors}
+                        customError={errors?.["description"]?.["ar"]?.message}
+                        {...field}
                       />
                     )}
                   />
@@ -948,7 +922,11 @@ function AddProductPage() {
           )}
         </Box>
         {isChecked && (
-          <Box>
+          <Box
+            sx={{
+              marginTop: "13rem",
+            }}
+          >
             <Button
               disabled={productResponse.isLoading}
               sx={{

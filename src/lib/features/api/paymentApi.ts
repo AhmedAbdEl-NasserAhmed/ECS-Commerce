@@ -34,14 +34,6 @@ const paymentApi = createApi({
       }),
       invalidatesTags: ["PAYMENT"],
     }),
-    unAuthenticatedCashPaymentCheckout: builder.mutation({
-      query: (body) => ({
-        url: `payment/UnAuthenticatedCashPayment`,
-        method: "POST",
-        body,
-      }),
-      invalidatesTags: ["PAYMENT"],
-    }),
   }),
 });
 
@@ -49,7 +41,6 @@ export const {
   usePaymentCheckoutMutation,
   useCashPaymentCheckoutMutation,
   useUnAuthenticatedPaymentCheckoutMutation,
-  useUnAuthenticatedCashPaymentCheckoutMutation,
 } = paymentApi;
 
 export default paymentApi;

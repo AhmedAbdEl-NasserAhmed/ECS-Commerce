@@ -1,6 +1,6 @@
 "use client";
 
-import { useParams, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 import SuccessPayment from "./SuccessPayment";
 import FailurePayment from "./FailurePayment";
 import { PaymentStatus } from "@/types/enums";

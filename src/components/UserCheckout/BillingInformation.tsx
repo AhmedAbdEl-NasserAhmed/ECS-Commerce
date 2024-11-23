@@ -12,7 +12,6 @@ import ErrorMessage from "@/ui/ErrorMessage/ErrorMessage";
 import {
   useCashPaymentCheckoutMutation,
   usePaymentCheckoutMutation,
-  useUnAuthenticatedCashPaymentCheckoutMutation,
   useUnAuthenticatedPaymentCheckoutMutation,
 } from "@/lib/features/api/paymentApi";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
@@ -39,8 +38,6 @@ function BillingInformation(props: IProps) {
   } = useForm({ mode: "onChange" });
 
   const [visaPaymentFn, visaPaymentResponse] = usePaymentCheckoutMutation();
-  const [guestCashPaymentFn, guestCashPaymentResponse] =
-    useUnAuthenticatedCashPaymentCheckoutMutation();
   const [guestVisaPaymentFn, guestBisaPaymentResponse] =
     useUnAuthenticatedPaymentCheckoutMutation();
   const [cashPaymentFn, cashPaymentResponse] = useCashPaymentCheckoutMutation();
@@ -101,55 +98,32 @@ function BillingInformation(props: IProps) {
     };
 
     if (props.userPaymentMethod === "cash") {
-      if (user) {
-        return cashPaymentFn(serverData)
-          .unwrap()
-          .then((res) => {
-            dispatch(makePayment(false));
-            StorageService.set("userLang", locale);
-            return res;
-          })
-          .then((res) => {
-            dispatch(clearCookiesThunk("cartItems"));
-            StorageService.delete("userLang");
-            toast.success(
-              ` ${userTranslation("Your Order is Completed Successfully")}`
-            );
-            router.replace(`/${locale as string}/user/profile/${res?.orderId}`);
-          })
-          .catch((err) => {
-            dispatch(makePayment(false));
-            toast.error(
-              ` ${tMessage("The left Quantity from Product")} ${
-                err.data.message[locale as string]
-              } ${tMessage("is")} ${err.data.message.quantity || 0} `
-            );
+      return cashPaymentFn(serverData)
+        .unwrap()
+        .then((res) => {
+          dispatch(makePayment(false));
+          StorageService.set("userLang", locale);
+          toast.success(userTranslation("guest_payment_success"), {
+            duration: 10000, // Delay in milliseconds (10 seconds)
           });
-      } else {
-        return guestCashPaymentFn(serverData)
-          .unwrap()
-          .then((res) => {
-            dispatch(makePayment(false));
-            StorageService.set("userLang", locale);
-            return res;
-          })
-          .then((res) => {
-            dispatch(clearCookiesThunk("cartItems"));
-            StorageService.delete("userLang");
-            toast.success(
-              ` ${userTranslation("Your Order is Completed Successfully")}`
-            );
-            router.replace(`/${locale as string}/user/profile/${res?.orderId}`);
-          })
-          .catch((err) => {
-            dispatch(makePayment(false));
-            toast.error(
-              ` ${tMessage("The left Quantity from Product")} ${
-                err.data.message[locale as string]
-              } ${tMessage("is")} ${err.data.message.quantity || 0} `
-            );
-          });
-      }
+          return res;
+        })
+        .then((res) => {
+          dispatch(clearCookiesThunk("cartItems"));
+          StorageService.delete("userLang");
+          toast.success(
+            ` ${userTranslation("Your Order is Completed Successfully")}`
+          );
+          router.replace(`/${locale as string}/user/profile/${res?.orderId}`);
+        })
+        .catch((err) => {
+          dispatch(makePayment(false));
+          toast.error(
+            ` ${tMessage("The left Quantity from Product")} ${
+              err.data.message[locale as string]
+            } ${tMessage("is")} ${err.data.message.quantity || 0} `
+          );
+        });
     } else {
       if (user) {
         return visaPaymentFn(serverData)
@@ -223,7 +197,6 @@ function BillingInformation(props: IProps) {
               <CustomizedTextField
                 disabled={
                   visaPaymentResponse.isLoading ||
-                  guestCashPaymentResponse.isLoading ||
                   guestBisaPaymentResponse.isLoading ||
                   cashPaymentResponse.isLoading
                 }
@@ -258,7 +231,6 @@ function BillingInformation(props: IProps) {
               <CustomizedTextField
                 disabled={
                   visaPaymentResponse.isLoading ||
-                  guestCashPaymentResponse.isLoading ||
                   guestBisaPaymentResponse.isLoading ||
                   cashPaymentResponse.isLoading
                 }
@@ -292,7 +264,6 @@ function BillingInformation(props: IProps) {
             <CustomizedTextField
               disabled={
                 visaPaymentResponse.isLoading ||
-                guestCashPaymentResponse.isLoading ||
                 guestBisaPaymentResponse.isLoading ||
                 cashPaymentResponse.isLoading
               }
@@ -322,7 +293,6 @@ function BillingInformation(props: IProps) {
                 disabled={
                   false ||
                   visaPaymentResponse.isLoading ||
-                  guestCashPaymentResponse.isLoading ||
                   guestBisaPaymentResponse.isLoading ||
                   cashPaymentResponse.isLoading
                 }
@@ -351,7 +321,6 @@ function BillingInformation(props: IProps) {
               <PhoneInput
                 disabled={
                   visaPaymentResponse.isLoading ||
-                  guestCashPaymentResponse.isLoading ||
                   guestBisaPaymentResponse.isLoading ||
                   cashPaymentResponse.isLoading
                 }
@@ -386,7 +355,6 @@ function BillingInformation(props: IProps) {
               <CustomizedTextField
                 disabled={
                   visaPaymentResponse.isLoading ||
-                  guestCashPaymentResponse.isLoading ||
                   guestBisaPaymentResponse.isLoading ||
                   cashPaymentResponse.isLoading
                 }
@@ -413,7 +381,6 @@ function BillingInformation(props: IProps) {
               <CustomizedTextField
                 disabled={
                   visaPaymentResponse.isLoading ||
-                  guestCashPaymentResponse.isLoading ||
                   guestBisaPaymentResponse.isLoading ||
                   cashPaymentResponse.isLoading
                 }
@@ -443,7 +410,6 @@ function BillingInformation(props: IProps) {
               <CustomizedTextField
                 disabled={
                   visaPaymentResponse.isLoading ||
-                  guestCashPaymentResponse.isLoading ||
                   guestBisaPaymentResponse.isLoading ||
                   cashPaymentResponse.isLoading
                 }
@@ -470,7 +436,6 @@ function BillingInformation(props: IProps) {
               <CustomizedTextField
                 disabled={
                   visaPaymentResponse.isLoading ||
-                  guestCashPaymentResponse.isLoading ||
                   guestBisaPaymentResponse.isLoading ||
                   cashPaymentResponse.isLoading
                 }
@@ -497,7 +462,6 @@ function BillingInformation(props: IProps) {
               <CustomizedTextField
                 disabled={
                   visaPaymentResponse.isLoading ||
-                  guestCashPaymentResponse.isLoading ||
                   guestBisaPaymentResponse.isLoading ||
                   cashPaymentResponse.isLoading
                 }
@@ -520,7 +484,6 @@ function BillingInformation(props: IProps) {
         disabled={
           !props.isUserAcceptedAllPolicies ||
           visaPaymentResponse.isLoading ||
-          guestCashPaymentResponse.isLoading ||
           guestBisaPaymentResponse.isLoading ||
           cashPaymentResponse.isLoading
         }
@@ -537,12 +500,11 @@ function BillingInformation(props: IProps) {
         size="large"
       >
         {visaPaymentResponse.isLoading ||
-        guestCashPaymentResponse.isLoading ||
         guestBisaPaymentResponse.isLoading ||
         cashPaymentResponse.isLoading ? (
           <MiniSpinner />
         ) : (
-          userTranslation("Place Order")
+          userTranslation("Pay Now")
         )}
       </Button>
     </form>

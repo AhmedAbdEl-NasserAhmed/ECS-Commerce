@@ -35,6 +35,9 @@ function SuccessPayment() {
     const language = StorageService.get("userLang");
     const updatedUrl = pathName.replace("/en", "/" + language);
     replaceCurrentUrl(updatedUrl);
+    toast.success(userTranslation("guest_payment_success"), {
+      duration: 10000, // Delay in milliseconds (10 seconds)
+    });
   }, [pathName]);
 
   useEffect(() => {

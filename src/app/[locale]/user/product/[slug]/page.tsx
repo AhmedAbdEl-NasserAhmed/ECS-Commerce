@@ -59,7 +59,9 @@ function ProductDetails() {
 
   const dispatchRedux = useAppDispatch();
 
-  const { data, isLoading } = useGetSingleProductBySlugQuery(params.slug);
+  const { data, isLoading, refetch } = useGetSingleProductBySlugQuery(
+    params.slug
+  );
 
   const [page, setPage] = useState<number>(1);
 
@@ -97,13 +99,13 @@ function ProductDetails() {
       product.size !== _singleProduct?.size
   );
 
-  const areRelatedProductsEmpty =
-    relatedProductsData?.data?.filter(
-      (product) =>
-        product.name?.[locale as string] !==
-          _singleProduct?.name?.[locale as string] &&
-        product.size !== _singleProduct?.size
-    )?.length === 0;
+  // const areRelatedProductsEmpty =
+  //   relatedProductsData?.data?.filter(
+  //     (product) =>
+  //       product.name?.[locale as string] !==
+  //         _singleProduct?.name?.[locale as string] &&
+  //       product.size !== _singleProduct?.size
+  //   )?.length === 0;
 
   const { data: reviews, isFetching: fetchingReviews } =
     useGetProductReviewsQuery(
@@ -157,6 +159,10 @@ function ProductDetails() {
       value: data?.data?.products[productDetailsState?.currentProductIndex],
     });
   }, [data?.data?.products, productDetailsState?.currentProductIndex]);
+
+  useEffect(() => {
+    refetch();
+  }, []);
 
   useEffect(() => {
     const firstAvailableColor =

@@ -106,14 +106,15 @@
     "Password": "Password",
     "Enter password": "Enter password"
   },
-
   "user": {
     "productsList": "Products",
     "contact": "Contact",
+    "guest_payment_success": "Please check the email associated with your payment",
     "login": "Login",
     "Shop": "Shop",
     "shop": "Shop",
     "Home Page": "Home Page",
+    "payment": "Payment",
     "Profile": "Profile",
     "Cart": "Cart ",
     "Contact Us": "Contact Us",
@@ -229,7 +230,7 @@
     "Building": "Building",
     "Street": "Street",
     "Floor": "Floor",
-    "Place Order": "Place Order",
+    "Pay Now": "Pay Now",
     "No Orders Yet": "No Orders Yet",
     "Your Order": "Your Order",
     "Product Name": "Product Name",
